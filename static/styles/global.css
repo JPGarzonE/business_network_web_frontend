@@ -1,0 +1,57 @@
+@import "./icons.css";
+
+@font-face{
+	font-family: 'Helvetica 45 Light';
+	src: url('/fonts/Helvetica45Light_22437.otf');
+}
+
+@font-face{
+	font-family: 'Metropolis';
+	src: url('/fonts/Metropolis-Regular.otf');
+}
+
+:root{
+    --principal-color: #5387cc;
+    --secondary-color: #ffffff;
+    --light-color: #b3b3b3;
+    --principal-text-color: #333333;
+    --secondary-text-color: #808080;
+    --success-color: #3fc68d;
+    --error-color: #e77557;
+
+    --title-font: 'Metropolis', sans-serif;
+    --body-font: 'Helvetica 45 Light', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    outline: none;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary-color);
+    color: var(--principal-text-color);
+    font-family: var(--body-font);
+    letter-spacing: 0.05em;
+	outline: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    font-family: var(--title-font);
+}
+
+p, figure {
+	margin: 0px;
+}

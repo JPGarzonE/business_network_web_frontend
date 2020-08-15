@@ -1,0 +1,120 @@
+@mixin icon{
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.icon{
+    &__add{
+        @include icon;
+        background-image: url('/static/images/add_icon.svg');
+        margin: 0px;
+
+        &--medium{
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    &__delete{
+        @include icon;
+
+        background-image: url('/static/images/delete_icon.svg');
+    }
+
+    &__down{
+        &__container{
+            position: absolute;
+            bottom: 1%;
+            left: 25%;
+            background-color: white;
+            border-radius: 100%;
+        }
+
+        @include icon;
+        width: 40px;
+        height: 40px;
+        margin-right: 0px;
+
+        transform: rotate(90deg);
+        background-image: url('/static/images/next_icon.svg');
+    }
+
+    &__edit{
+        @include icon;
+        background-image: url('/static/images/edit_icon.svg');
+
+        &--medium{
+            width: 35px;
+            height: 35px;
+        }
+    }
+
+    &__email{
+        @include icon;
+        background-image: url('/static/images/mail_icon.svg');
+
+        &--white{
+            @include icon;
+            background-image: url('/static/images/mail_white_icon.svg');
+        }
+    }
+
+    &__location{
+        @include icon;
+        background-image: url('/static/images/location_icon.svg');
+    }
+
+    &__next{
+        @include icon;
+        border-radius: 100%;
+        background-color: white;
+        background-image: url('/static/images/next_icon.svg');
+    }
+
+    &__previous{
+        @include icon;
+        border-radius: 100%;
+        background-color: white;
+        background-image: url('/static/images/previous_icon.svg');
+    }
+
+    &__profile{
+        @include icon;
+        background-image: url('/static/images/profile_icon.svg');
+    }
+
+    &__tel{
+        @include icon;
+        background-image: url('/static/images/tel_icon.svg');
+
+        &--white{
+            @include icon;
+            background-image: url('/static/images/tel_white_icon.svg');
+        }
+    }
+
+    &__upload{
+        @include icon;
+        width: 35px;
+        height: 35px;
+        background-image: url('/static/images/upload_icon.svg');
+    }
+
+    &__verified{
+        @include icon;
+        background-image: url('/static/images/verified_icon.svg');
+
+        &--medium{
+            @include icon;
+
+            width: 35px;
+            height: 35px;
+            background-image: url('/static/images/verified_icon.svg');
+        }
+    }
+}

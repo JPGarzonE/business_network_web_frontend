@@ -1,0 +1,27 @@
+{
+  "name": "business_network_main_frontend",
+  "version": "1.0.0",
+  "description": "Conecty frontend web app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "sapper dev",
+    "build": "sapper build",
+    "export": "sapper export",
+    "start": "node __sapper__/build"
+  },
+  "author": "Conecty",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "polka": "^0.5.2",
+    "sirv": "^1.0.1"
+  },
+  "devDependencies": {
+    "sapper": "^0.27.16",
+    "svelte": "^3.24.0",
+    "svelte-loader": "^2.13.6",
+    "webpack": "^4.44.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+    "background_color": "#ffffff",
+    "theme_color": "#333333",
+    "name": "Conecty",
+    "short_name": "Ccty",
+    "display": "minimal-ui",
+    "start_url": "/",
+    "icons": [
+      {
+        "src": "images/logo-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+}

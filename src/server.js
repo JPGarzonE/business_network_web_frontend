@@ -19,27 +19,35 @@ polka()
                 const cookie = req.cookies;
                 const AUTH_TOKEN = cookie['JPGE'];
                 
-                const response = await axios.get(`${API_URL}/me/`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Token ' + AUTH_TOKEN,
-                    }
-                });
-                
-                if( response.status === 200 ){
-                    const data = response.data;
+                try{
+                    const response = await axios.get(`${API_URL}/me/`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Token ' + AUTH_TOKEN,
+                        }
+                    });
 
-                    return {
-                        accessToken: AUTH_TOKEN,
-                        authenticated: true,
-                        isVerified: data.is_verified,
-                        username: data.username
+                    if( response.status === 200 ){
+                        const data = response.data;
+    
+                        return {
+                            accessToken: AUTH_TOKEN,
+                            authenticated: true,
+                            isVerified: data.is_verified,
+                            username: data.username
+                        }
+                    }else{
+                        return {
+                            authenticated: false
+                        }
                     }
-                }else{
+                }
+                catch(e){
                     return {
                         authenticated: false
                     }
                 }
+                
             }
         })
     )

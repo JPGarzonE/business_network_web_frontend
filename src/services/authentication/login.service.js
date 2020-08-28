@@ -14,8 +14,8 @@ export default class LoginService extends RequestService{
         if( !userData )
             throw new Error("userData is required in LoginService.login");
         
-        if( !userData.username )
-            throw new Error("userData.username is required in LoginService.login");
+        if( !userData.email )
+            throw new Error("userData.email is required in LoginService.login");
 
         if( !userData.password )
             throw new Error("userData.password is required in LoginService.login");

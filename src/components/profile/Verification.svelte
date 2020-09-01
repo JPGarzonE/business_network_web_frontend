@@ -2,6 +2,7 @@
     import { stores } from "@sapper/app";
     import { getContext, onMount } from 'svelte';
     import UserVerificationService from "../../services/verifications/user.verification.service.js";
+    import CheckCircleOutline from 'svelte-material-icons/CheckCircleOutline.svelte';
 
     const { session } = stores();
     const userVerificationService = new UserVerificationService();
@@ -23,9 +24,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 15px 20px;
+        margin: 15px 0px;
         padding: 7px;
-        border-radius: 6px;
+        border-radius: 0px;
+    }
+    .icon-check{
+        color: var(--secondary-color);
+        margin-right: 3%;
+        display: flex;
     }
 
     .ProfileVerification-card--verified {
@@ -46,14 +52,15 @@
     }
 
     .ProfileVerification-icon--verified {
-        width: 27px;
-        height: 27px;
-        margin-right: 15px;
+        width: 22px;
+        height: auto;
+        margin-right: 10px;
     }
 
     .ProfileVerification-title {
         color: white;
         text-align: center;
+        font-size: 0.8rem;
     }
 
     .ProfileVerification-submit-link {
@@ -63,9 +70,9 @@
 </style>
 
 <div class="ProfileVerification">
-    {#if profileIsVerified}
+    {#if true}
         <div class="ProfileVerification-card ProfileVerification-card--verified">
-            <span><i class="icon icon-verified ProfileVerification-icon--verified"></i></span>
+            <span class="icon-check"><CheckCircleOutline /></span>
             <span class="ProfileVerification-title">Empresa verificada</span>
         </div>
     {:else if isSessionUserProfile}

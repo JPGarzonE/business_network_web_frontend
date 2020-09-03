@@ -43,10 +43,13 @@
                 email: email,
                 password: password
             };
+
             const data = await loginService.login( userData );
             window.localStorage.setItem("JPGE", data.access_token);
             window.localStorage.setItem("access_username", data.user.username);
-            await goto('/profile/');
+            setCookie("JPGE", data.access_token, 1);
+            setCookie("access_username", data.user.username, 1);
+            await goto(`/profile/${data.user.username}`);
         }
         catch(e){
             const errors = e.message;
@@ -55,6 +58,13 @@
                 formErrorMessage = "Credenciales inválidas";
             }
         }
+    }
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 </script>
 

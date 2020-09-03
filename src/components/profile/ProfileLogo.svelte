@@ -31,14 +31,14 @@
         margin: 20px auto;
         margin-bottom: 30px;
         padding: 0.1em;
-        border: 2px solid var(--principal-color);
+        border: 1px solid var(--principal-color);
         background-color: white;
     }
 
     .ProfileLogo-container--default {
         width: 120px;
         background: white;
-        border: 2px solid var(--principal-color);
+        border: 1px solid var(--principal-color);
     }
 
     .ProfileLogo-image {

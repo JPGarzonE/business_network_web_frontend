@@ -1,176 +1,175 @@
-@import "/styles/button.css";
+@import '/styles/button.css';
 
 .ProfileForm {
-    width: 100%;
-    max-width: 768px;
-    height: 100%;
-    max-height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 20;
-    padding: 40px 30px;
-    background-color: white;
-    overflow-y: scroll;
+  width: 100%;
+  max-width: 768px;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 20;
+  padding: 40px 30px;
+  background-color: white;
+  overflow-y: scroll;
 }
 
 .ProfileForm-close-button {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .ProfileForm-close-button span {
-    font-size: 2em;;
+  font-size: 2em;
 }
 
 .ProfileForm-form {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .ProfileForm-group {
-    width: 100%;
-    display: flex;
+  width: 100%;
+  display: flex;
 }
 
 .form-group {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1.25em;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.25em;
 }
 
 .form-control {
-    width: 100%;
-    height: 40px;
-    max-width: 400px;
-    padding: 0 10px;
-    border: 1px solid var(--light-color);
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    line-height: 26px;
-    background-color: var(--secondary-color);
-    background-repeat: no-repeat;
-    color: var(--light-color);
-    letter-spacing: 0.065em;
-    font-size: 13px;
-    outline: none;
+  width: 100%;
+  height: 40px;
+  max-width: 400px;
+  padding: 0 10px;
+  border: 1px solid var(--light-color);
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  line-height: 26px;
+  background-color: var(--secondary-color);
+  background-repeat: no-repeat;
+  color: var(--light-color);
+  letter-spacing: 0.065em;
+  font-size: 13px;
+  outline: none;
 }
 
-.form-control::placeholder{
-    color: var(--light-color);
+.form-control::placeholder {
+  color: var(--light-color);
 }
 
-.form-control:focus{
-    border: 2px solid var(--principal-color);
-    color: var(--principal-text-color);
+.form-control:focus {
+  border: 2px solid var(--principal-color);
+  color: var(--principal-text-color);
 }
 
-.form-control--invalid{
-    border: 2px solid var(--error-color);
-    color: var(--error-color);
+.form-control--invalid {
+  border: 2px solid var(--error-color);
+  color: var(--error-color);
 }
 
-.form-control--valid{
-    border: 2px solid var(--success-color);
-    color: var(--success-color);
+.form-control--valid {
+  border: 2px solid var(--success-color);
+  color: var(--success-color);
 }
 
 .form-control-feedback {
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    margin-top: 5px;
-    font-size: .85em;
-    color: var(--secondary-text-color);
-    letter-spacing: 0.065em;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  margin-top: 5px;
+  font-size: 0.85em;
+  color: var(--secondary-text-color);
+  letter-spacing: 0.065em;
 }
 
 .form-control-feedback--invalid {
-    color: var(--error-color);
+  color: var(--error-color);
 }
 
 .form-button {
-    margin-bottom: 0.65em;
+  margin-bottom: 0.65em;
 }
 
 .form-button-group {
-    width: 100%;
-    max-width: 400px;
-    margin: 1.5em 0em 0em;
+  width: 100%;
+  max-width: 400px;
+  margin: 1.5em 0em 0em;
 }
 
 .form-button-group--loading {
-    color: transparent;
-    background-image: url('/images/submit_loader.gif');
-    background-size: 70px;
-    background-repeat: no-repeat;
-    background-position: center;
+  color: transparent;
+  background-image: url('/images/submit_loader.gif');
+  background-size: 70px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.form-message{
-    width: 100%;
-    max-width: 400px;
-    padding: 0px 10px;    
-    margin: 5px 0px 0px 16px;
-    font-weight: 400;
-    font-size: 12px;
-    color: var(--light-color);
-    letter-spacing: 0.065em;
+.form-message {
+  width: 100%;
+  max-width: 400px;
+  padding: 0px 10px;
+  margin: 5px 0px 0px 16px;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--light-color);
+  letter-spacing: 0.065em;
 }
 
-
-.form-message--invalid{
-    color: var(--error-color);
+.form-message--invalid {
+  color: var(--error-color);
 }
 
-.form-message--valid{
-    color: var(--success-color);
+.form-message--valid {
+  color: var(--success-color);
 }
 
-.form-banner--invalid{
-    width: 100%;
-    max-width: 400px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: 1px solid red;
-	border-radius: 5px;
-	padding: 10px;
-	font-size: 0.85em;
-	background-color: #ffa2894a;
-	color: red;
-	text-align: center;
+.form-banner--invalid {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid red;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 0.85em;
+  background-color: #ffa2894a;
+  color: red;
+  text-align: center;
 }
 
 @media screen and (min-width: 767px) {
-    .ProfileForm {
-        width: auto;
-        height: auto;
-        max-height: calc(100vh - 64px);
-        border-radius: 5px;
-    }
-    
-    .ProfileForm-form {
-        width: 80%;
-    }
+  .ProfileForm {
+    width: auto;
+    height: auto;
+    max-height: calc(100vh - 64px);
+    border-radius: 5px;
+  }
+
+  .ProfileForm-form {
+    width: 100%;
+  }
 }
 
 @media screen and (min-width: 425px) {
-    .ProfileForm {
-        padding: 30px 50px 45px;
-    }
+  .ProfileForm {
+    padding: 30px 50px 45px;
+  }
 }

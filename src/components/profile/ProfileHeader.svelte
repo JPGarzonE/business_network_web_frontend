@@ -3,8 +3,13 @@
     import Verification from "./Verification.svelte";
     import HeaderForm from "./forms/HeaderForm.svelte";
     import Modal from "../Modal.svelte";
+    import ButtomChat from "../ButtomChat.svelte"
     import { stores } from '@sapper/app';
     import { getContext } from 'svelte';
+    import Web from 'svelte-material-icons/Web.svelte';
+    import GoogleTranslate from 'svelte-material-icons/GoogleTranslate.svelte';
+    import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
+    
 
     export let name;
     export let industry;
@@ -68,12 +73,12 @@
         align-items: center;
         justify-content: center;
         margin-top: 85px;
-        padding: 0px 25px;
+        padding: 0px;
         border-radius: 7px;
     }
 
     .ProfileHeader-content {
-        width: 90%;
+        width: 100%;
         min-width: 210px;
         position: relative;
         bottom: 90px;
@@ -86,7 +91,7 @@
         text-transform: capitalize;
         font-size: 1.2em;
         font-weight: 100;
-        color: var(--principal-text-color);
+        color: var(--secondary-text-color);
     }
 
     .ProfileHeader-subheadline {
@@ -108,13 +113,15 @@
     }
 
     .ProfileHeader-data {
-        width: 100%;
+        width: 75%;
         display: flex;
         justify-content: center;
         align-items: center;
         align-self: flex-start;
-        margin-bottom: 15px;
-        font-size: 15px;
+        margin-bottom: 0.9rem;
+        font-size: 0.9rem;
+        color: #b3b3b3;
+        margin-left: 10%;
     }
 
     .ProfileHeader-bottom {
@@ -138,6 +145,14 @@
         background-color: transparent;
         font-size: 1.1em;
     }
+    .icon-wrapper{
+        display: flex;
+        border: 1px solid var(--principal-color);
+        border-radius: 100%;
+        color:var(--principal-color);
+        margin-right: 5%;
+        padding: 2px;
+    }
 
     @media screen and (min-width: 1024px){
         .ProfileHeader-name {
@@ -150,7 +165,7 @@
             max-width: 300px;
             min-height: 430px;
             margin: 90px auto 20px;
-            border: 2px solid var(--principal-color);
+            border: 1px solid var(--principal-color);
         }
 
         .ProfileHeader-content {
@@ -178,13 +193,11 @@
         </Modal>
     {/if}
 
-    <Verification />
-
     <div class="ProfileHeader-container">
         <div class="ProfileHeader-content">
-            <ProfileLogo {logo} />
-
-            <h1 class="ProfileHeader-name">{name}</h1>
+            <ProfileLogo {logo} />            
+            <Verification />
+            <h2 class="ProfileHeader-name">{name}</h2>
             <div class="ProfileHeader-subheadline">
                 <p class="ProfileHeader-industry">{industry}</p>
                 {#if locationSubtitle}
@@ -192,34 +205,18 @@
                 {/if}
             </div>
             <p class="ProfileHeader-data">
-                <i class="icon icon-location"></i>
+                <i class="icon-wrapper"><MapMarkerOutline /></i>
                 <span class="ProfileHeader-address">{address ? address : "No tiene aún"}</span>
             </p>
-
-            {#if $session.authenticated}
-                {#if $session.isVerified || isSessionUserProfile}
                     <p class="ProfileHeader-data">
-                        <i class="icon icon-tel"></i>
-                        {contactPhone ? contactPhone : "No tiene aún"}
+                        <i class="icon-wrapper"><GoogleTranslate  /></i>
+                        {locationSubtitle ? locationSubtitle : "Medellin"}
                     </p>
                     <p class="ProfileHeader-data">
-                        <i class="icon icon-email"></i>
-                        {contactEmail ? contactEmail : "No tiene aún"}
+                        <i class="icon-wrapper"><Web /></i>
+                        {locationSubtitle ? locationSubtitle : "Colombia, Chile, Peru"}
                     </p>
-                {:else}
-                    <p class="ProfileHeader-data">
-                        <i class="icon icon-tel"></i>
-                        <i class="icon icon-email"></i>
-                        No puedes contactar con nadie hasta estar verificado
-                    </p>
-                {/if}
-            {:else}
-                <p class="ProfileHeader-data">
-                    <i class="icon icon-tel"></i>
-                    <i class="icon icon-email"></i>
-                    <span class="ProfileHeader-register-now"><a href="/">Registrate </a> para ver este contenido</span>
-                </p>
-            {/if}
+            <ButtomChat />
         </div>
 
         {#if isSessionUserProfile }

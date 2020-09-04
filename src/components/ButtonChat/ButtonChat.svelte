@@ -7,7 +7,7 @@
 <style>
 	button {
 		color: #fff;
-		background-color:var(--buttom-color);
+		background-color:var(--button-color);
 		border-radius: 5px;
 		padding: 11px 8px;
 		border: none;
@@ -30,6 +30,6 @@
 </style>
 
 <button on:click={buttonAction}>
-    <span class="iconButton-Chat-icon"><Headphones /></span>
+    <span class="iconButton-Chat-icon" ><Headphones /></span>
     <span class="icon-button-chat-text">Chatea con un vendedor </span>
   </button>

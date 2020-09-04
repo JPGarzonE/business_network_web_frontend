@@ -27,6 +27,7 @@
         margin: 15px 0px;
         padding: 7px;
         border-radius: 0px;
+        height: 35px;
     }
     .icon-check{
         color: var(--secondary-color);
@@ -36,6 +37,7 @@
 
     .ProfileVerification-card--verified {
         background-color: var(--success-color);
+        height: 35px;
     }
 
     .ProfileVerification-card--inprogress {
@@ -53,14 +55,13 @@
 
     .ProfileVerification-icon--verified {
         width: 22px;
-        height: auto;
         margin-right: 10px;
     }
 
     .ProfileVerification-title {
         color: white;
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 
     .ProfileVerification-submit-link {

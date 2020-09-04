@@ -2,6 +2,7 @@
     import Modal from "../Modal.svelte";
     import LogoUpload from "./forms/LogoUpload.svelte";
     import { getContext } from 'svelte';
+    import EditButton from "../EditButton/EditButton.svelte";
     export let logo;
 
     const profileUsername = getContext("profileUsername");
@@ -39,6 +40,13 @@
         width: 120px;
         background: white;
         border: 1px solid var(--principal-color);
+    }
+
+    .CertificationCard-edit-button{
+    position: absolute;
+    top: 70%;
+    right: 0;
+    padding: 5px;
     }
 
     .ProfileLogo-image {
@@ -106,12 +114,10 @@
     <figure class="ProfileLogo-container {logo && logo.path ? "" : "ProfileLogo-container--default"}">
         <img src={logo && logo.path ? logo.path : "/images/profile_icon.svg"} 
             alt={profileUsername} class="ProfileLogo-image {logo && logo.path ? "" : "ProfileLogo-image--default"}">
-
-        {#if isSessionUserProfile}
-            <div class="ProfileLogo-edit-container" on:click={toggleEditableMode}>
-                <span><i style="width:30px;height:30px;" class="icon icon-upload"></i></span>
-                <span>{logo && logo.path ? "Actualizar" : "Agregar"}</span>
-            </div>
-        {/if}
+            {#if isSessionUserProfile}
+            <div class="CertificationCard-edit-button">
+                <EditButton size={20} color="var(--light-color)" on:click={toggleEditableMode} />
+              </div>
+            {/if}
     </figure>
 </div>

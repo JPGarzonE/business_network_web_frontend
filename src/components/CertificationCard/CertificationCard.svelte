@@ -11,7 +11,7 @@
   export let category;
   export let description;
 
-  const isSessionUserProfile = true || getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let editableMode = false;
   let displayStory = false;
@@ -170,10 +170,11 @@
         class="CertificationCard-media-image--default" />
     {/if}
   </figure>
-
+ {#if isSessionUserProfile}
   <div class="CertificationCard-edit-button">
     <EditButton size={25} color="gray" on:click={toggleEditableMode} />
   </div>
+  {/if}
 
   <h4 class="CertificationCard-name">{name}</h4>
 

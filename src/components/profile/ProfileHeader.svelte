@@ -3,7 +3,8 @@
     import Verification from "./Verification.svelte";
     import HeaderForm from "./forms/HeaderForm.svelte";
     import Modal from "../Modal.svelte";
-    import ButtomChat from "../ButtomChat.svelte"
+    import ButtonChat from "../ButtonChat/ButtonChat.svelte"
+    import EditButton from '../EditButton/EditButton.svelte';
     import { stores } from '@sapper/app';
     import { getContext } from 'svelte';
     import Web from 'svelte-material-icons/Web.svelte';
@@ -76,22 +77,30 @@
         padding: 0px;
         border-radius: 7px;
     }
+    .ProfileHeader-NameContainer{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+    }
 
     .ProfileHeader-content {
         width: 100%;
         min-width: 210px;
         position: relative;
-        bottom: 90px;
+        margin-bottom: 20px;
     }
 
     .ProfileHeader-name {
         max-width: 200px;
-        margin: 0 auto 20px auto;
         text-align: center;
         text-transform: capitalize;
         font-size: 1.2em;
         font-weight: 100;
         color: var(--secondary-text-color);
+    }
+    .ProfileHeader-NameEditor{
+        margin:auto 0;
     }
 
     .ProfileHeader-subheadline {
@@ -131,7 +140,6 @@
         justify-content: center;
         align-items: center;
         position: absolute;
-        bottom: 2%;
         left: 0;
         right: 0;
     }
@@ -169,7 +177,7 @@
         }
 
         .ProfileHeader-content {
-            bottom: 100px;
+            margin-top: -100px;
         }
 
         .ProfileHeader-data {
@@ -197,7 +205,14 @@
         <div class="ProfileHeader-content">
             <ProfileLogo {logo} />            
             <Verification />
-            <h2 class="ProfileHeader-name">{name}</h2>
+            <div class="ProfileHeader-NameContainer">
+                <p class="ProfileHeader-name">{name}</p>
+                {#if isSessionUserProfile}
+                <div class="ProfileHeader-NameEditor">
+                <EditButton size={17} color="gray" on:click={toggleEditableMode} />
+                </div>
+                {/if}
+            </div>
             <div class="ProfileHeader-subheadline">
                 <p class="ProfileHeader-industry">{industry}</p>
                 {#if locationSubtitle}
@@ -216,16 +231,7 @@
                         <i class="icon-wrapper"><Web /></i>
                         {locationSubtitle ? locationSubtitle : "Colombia, Chile, Peru"}
                     </p>
-            <ButtomChat />
+            <ButtonChat />
         </div>
-
-        {#if isSessionUserProfile }
-            <div class="ProfileHeader-bottom">
-                <button on:click|preventDefault={toggleEditableMode} id="profile-header-edit"
-                    class="form-button button--variant ProfileHeader-button--edit" >
-                    Editar detalles
-                </button>
-            </div>
-        {/if}
     </div>
 </div>

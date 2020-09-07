@@ -4,9 +4,10 @@
   import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
   import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
   import Modal from '../../components/Modal.svelte';
+  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
   import CertificationForm from '../CertificationForm/CertificationForm.svelte';
 
-  const isSessionUserProfile = true || getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext('isSessionUserProfile');
   const profileUsername = getContext('profileUsername');
   const certificationsService = new CertificationsService();
   let CertificationsList = [];
@@ -49,50 +50,10 @@
     letter-spacing: 0.1em;
   }
 
-  .CertificationsList-empty-card {
-    width: 260px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0 30px 0 0;
-    border: 2px solid var(--principal-color);
-    border-radius: 5px;
-    padding: 0;
-    cursor: pointer;
-  }
-
-  .CertificationsList-empty-card-image {
-    width: 140px;
-    padding: 15px 20px;
-    transform: rotate(270deg);
-  }
-
   .CertificationsList-card--create {
-    width: auto;
-    min-width: 80%;
-    height: 200px;
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0 30px 0 0;
-    border-radius: 5px;
-    margin-right: 30px;
-    padding: 20px;
-    background-color: #f1f1f169;
-    border: 1.5px solid var(--principal-color);
-    cursor: pointer;
-  }
-
-  .CertificationsList-card--create span {
-    margin-bottom: 10px;
-  }
-
-  .CertificationsList-card--create p {
-    font-size: 15px;
-    color: var(--principal-color);
+    justify-content: flex-end;
   }
 
   .CertificationsList-empty-message {
@@ -143,39 +104,28 @@
 
   <h3 class="CertificationsList-headline">Certificaciones</h3>
 
+  {#if isSessionUserProfile}
+    <div class="CertificationsList-card--create" on:click={toggleEditableMode}>
+      <CreateButton size={25} />
+    </div>
+  {/if}
   <HorizontalScrollList
     id="DNA-list"
     beginningItemsNumber={CertificationsList ? CertificationsList.length : 0}>
-    {#if isSessionUserProfile}
-      <div
-        class="CertificationsList-card--create"
-        on:click={toggleEditableMode}>
-        <span>
-          <i class="icon icon-add icon-add--medium" />
-        </span>
-        <p>Crear ADN</p>
-      </div>
-    {:else if CertificationsList && CertificationsList.length <= 0}
-      <div class="CertificationsList-empty-card">
-        <img
-          class="CertificationsList-empty-card-image"
-          src="/images/profile_icon.svg"
-          alt="icon_default" />
-      </div>
-      <div class="CertificationsList-empty-message">
-        La compañia todavía no ha agregado elementos que la identifiquen
-      </div>
-    {/if}
-
+    <CertificationCard
+      id={123}
+      name={'holas'}
+      media={{ path: 'https://lh3.googleusercontent.com/proxy/-K--hSUg0WCOLegImu4fZM6-YklLSFibiWXrrypnUqgzgg1txdbkWL2lzKwN2xtbKQYnPJeoN6avqbTMTygJ-67uSkKIDgiveg' }} />
     {#each CertificationsList as element}
       <CertificationCard
         id={element.id}
         media={element.media}
         name={element.name}
-        category={element.category}
         description={element.description} />
     {:else}
-      <p>Loading...</p>
+      <div class="CertificationsList-empty-message">
+        <p>La compañia todavía no ha agregado elementos que la identifiquen</p>
+      </div>
     {/each}
   </HorizontalScrollList>
 </div>

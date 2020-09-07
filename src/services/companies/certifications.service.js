@@ -8,11 +8,15 @@ export default class CertificationsService extends RequestService {
   }
 
   getUserCertificationsPath(username) {
-    return `https://run.mocky.io/v3/34e834c6-f8c0-4341-ab9a-132a52b621f0`;
+    return `/companies/${username}/certificates/`;
   }
 
   get CertificationPath() {
-    return '/dnaelements/';
+    return '/certificates/';
+  }
+
+  get CompaniesPath() {
+    return '/companies/';
   }
 
   getUserCertifications(username) {
@@ -24,12 +28,11 @@ export default class CertificationsService extends RequestService {
     return this.get(
       this.getUserCertificationsPath(username),
       { 'Content-Type': 'application/json' },
-      null,
-      true
+      null
     );
   }
 
-  getCertificationElementById(CertificationID, accessToken) {
+  getCertificationElementById(username, CertificationID, accessToken) {
     if (!CertificationID)
       throw new Error(
         'CertificationID is required in CertificationsService.getCertificationElementById'
@@ -45,7 +48,12 @@ export default class CertificationsService extends RequestService {
       Authorization: 'Token ' + accessToken,
     };
 
-    const RequestUrl = this.CertificationPath + certificationID + '/';
+    const RequestUrl =
+      this.CompaniesPath +
+      username +
+      this.CertificationPath +
+      certificationID +
+      '/';
 
     return this.get(RequestUrl, headers, null);
   }
@@ -100,7 +108,7 @@ export default class CertificationsService extends RequestService {
     };
 
     const Image = await this._imageService.uploadUserImage(image, accessToken);
-    certificationData.media_id = Image.id;
+    certificationData.image_id = Image.id;
 
     return this.post(
       this.getUserCertificationsPath(username),
@@ -182,5 +190,30 @@ export default class CertificationsService extends RequestService {
     return this.patch(RequestUrl, headers, certificationData);
   }
 
-  deleteCertificationElement() {}
+  deleteCertificationElement(username, certificationID, accessToken) {
+    if (!username)
+      throw new Error(
+        'Username is required in CertificationsService.updateUserCertificationElementWithImage'
+      );
+
+    if (!certificationID)
+      throw new Error(
+        'certificationID is required in CertificationsService.updateUserCertificationElementWithImage'
+      );
+
+    if (!accessToken)
+      throw new Error(
+        'accessToken is required in CertificationsService.updateUserCertificationElementWithImage'
+      );
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Token ' + accessToken,
+    };
+
+    const RequestUrl =
+      this.getUserCertificationsPath(username) + certificationID + '/';
+
+    return this.delete(RequestUrl, headers, certificationData);
+  }
 }

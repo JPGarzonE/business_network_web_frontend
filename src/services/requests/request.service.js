@@ -80,5 +80,22 @@ export default class RequestService {
     });
   }
 
-  delete(endpoint, headers, body) {}
+  async delete(endpoint, headers) {
+    const RequestURL = this.URL;
+    RequestURL.pathname = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
+
+    return fetch(RequestURL, {
+      method: 'DELETE',
+      headers: headers,
+    }).then(async (response) => {
+      return response.json().then((data) => {
+        if (response.ok) return data;
+        else
+          throw new RequestError({
+            status: response.status,
+            message: data,
+          });
+      });
+    });
+  }
 }

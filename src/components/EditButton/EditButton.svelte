@@ -16,9 +16,6 @@
     border-radius: 100%;
     border: 2px solid gray;
   }
-  .EditButton:hover svg path {
-    fill: orange !important;
-  }
 </style>
 
 <button class="EditButton" on:click>

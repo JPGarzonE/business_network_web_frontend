@@ -11,7 +11,7 @@
   export let category;
   export let description;
 
-  const isSessionUserProfile = true || getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let editableMode = false;
   let displayStory = false;
@@ -73,18 +73,7 @@
     border-radius: 10px;
     border-bottom-left-radius: unset;
     border-bottom-right-radius: unset;
-    box-shadow: 0px 3px 3px var(--lightest-gray);
-  }
-
-  .CertificationCard-media-container:hover > .CertificationCard-media-image,
-  .CertificationCard-media-container:hover
-    > .CertificationCard-media-image--default {
-    opacity: 0.2;
-  }
-
-  .CertificationCard-media-container--empty {
-    border-top: 2px solid var(--principal-color);
-    border-bottom: 1px solid var(--light-color);
+    box-shadow: 0px 4px 4px var(--lightest-gray);
   }
 
   .CertificationCard-media-image {
@@ -95,10 +84,6 @@
     border-radius: 10px;
     border-bottom-left-radius: unset;
     border-bottom-right-radius: unset;
-  }
-
-  .CertificationCard-media-image--default {
-    padding: 25px;
   }
 
   .CertificationCard-name {
@@ -159,7 +144,7 @@
   {/if}
 
   <figure
-    class="CertificationCard-media-container {media && media.path ? '' : 'CertificationCard-media-container--empty'}"
+    class="CertificationCard-media-container"
     on:click={toggleEditableMode}>
     {#if media && media.path}
       <img src={media.path} alt={name} class="CertificationCard-media-image" />
@@ -167,13 +152,15 @@
       <img
         src="/images/profile_icon.svg"
         alt={name}
-        class="CertificationCard-media-image--default" />
+        class="CertificationCard-media-image" />
     {/if}
   </figure>
 
-  <div class="CertificationCard-edit-button">
-    <EditButton size={25} color="gray" on:click={toggleEditableMode} />
-  </div>
+  {#if isSessionUserProfile}
+    <div class="CertificationCard-edit-button">
+      <EditButton size={25} color="gray" on:click={toggleEditableMode} />
+    </div>
+  {/if}
 
   <h4 class="CertificationCard-name">{name}</h4>
 

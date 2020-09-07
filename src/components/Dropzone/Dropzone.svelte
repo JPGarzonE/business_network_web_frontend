@@ -3,7 +3,9 @@
   import CloudUploadOutline from 'svelte-material-icons/CloudUploadOutline.svelte';
   import ImageOutline from 'svelte-material-icons/ImageOutline.svelte';
   export let imagePath; // If not, isn't required
+  export let multiple = false;
   export let imageFile; // For binding the value from an external component
+  let uploadedImage = '';
 
   let files = {
     accepted: [],
@@ -12,26 +14,16 @@
 
   function handleFilesSelect(e) {
     console.log('handleFilesSelect -> e', e);
+    URL.revokeObjectURL(uploadedImage);
     const { acceptedFiles, fileRejections } = e.detail;
-    files.accepted = [...files.accepted, ...acceptedFiles];
-    files.rejected = [...files.rejected, ...fileRejections];
-  }
-
-  function handleImageUpload(event) {
-    const ImageUploadInput = event.target;
-    imageFile = ImageUploadInput.files[0];
-
-    const Reader = new FileReader();
-    Reader.onload = (e) => {
-      let res = e.target.result;
-      updateImagePreview(res);
-    };
-
-    Reader.readAsDataURL(imageFile);
-  }
-
-  function updateImagePreview(imgValue) {
-    imagePath = imgValue;
+    files.accepted = multiple
+      ? [...files.accepted, ...acceptedFiles]
+      : acceptedFiles;
+    files.rejected = multiple
+      ? [...files.rejected, ...fileRejections]
+      : fileRejections;
+    uploadedImage = URL.createObjectURL(files.accepted[0]);
+    imageFile = files.accepted[0];
   }
 </script>
 
@@ -43,16 +35,12 @@
     justify-content: center;
     align-items: center;
     background-color: var(--extra-light-gray);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
     border: 2px dashed #000000;
   }
 
-  .ImageUploadInput-image {
-    width: 100%;
-    max-height: inherit;
-    height: 100%;
-    display: flex;
-    object-fit: cover;
-  }
   .ImageUploadInput-title {
     font-size: 1rem;
     font-weight: bold;
@@ -73,7 +61,6 @@
     height: 70px;
     color: var(--white);
     font-size: 0.75rem;
-    cursor: pointer;
   }
   .dropzone-content {
     width: 100%;
@@ -83,25 +70,31 @@
     justify-content: center;
     align-items: center;
   }
+  .dropzone-content.image-defined {
+    background-color: var(--extra-light-gray-transparent);
+    opacity: 0.8;
+  }
+  .dropzone-content.image-defined:hover {
+    background-color: var(--extra-light-gray-transparent);
+    opacity: 1;
+  }
 </style>
 
-<div class="ImageUploadInput">
+<div
+  class="ImageUploadInput"
+  style={imagePath || uploadedImage ? `background-image: url(${uploadedImage ? uploadedImage : imagePath})` : ''}>
   <Dropzone
     on:drop={handleFilesSelect}
-    containerStyles="width: 100%; height: 100%; background-color: transparent;"
-    multiple={false}>
-    <div class="dropzone-content">
-      {#if imagePath}
-        <img
-          src={imagePath}
-          alt="certificate preview"
-          class="ImageUploadInput-image" />
-      {/if}
+    accept={['image/*']}
+    containerStyles={`width: 100%; height: 100%; padding: 0; background-color: transparent;`}
+    {multiple}>
+    <div
+      class={`dropzone-content ${imagePath || uploadedImage ? 'image-defined' : ''}`}>
       <CloudUploadOutline size={80} />
-      {#if !imagePath}
+      {#if !imagePath && !uploadedImage}
         <span class="ImageUploadInput-title">Arrastra y suelta el archivo</span>
       {/if}
-      {#if !imagePath}
+      {#if !imagePath && !uploadedImage}
         <span class="ImageUploadInput-subtitle">o selecciona otra opción</span>
       {/if}
 

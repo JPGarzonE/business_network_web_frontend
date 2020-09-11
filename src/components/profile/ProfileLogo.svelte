@@ -1,123 +1,102 @@
 <script>
-    import Modal from "../Modal.svelte";
-    import LogoUpload from "./forms/LogoUpload.svelte";
-    import { getContext } from 'svelte';
-    import EditButton from "../EditButton/EditButton.svelte";
-    export let logo;
+  import Modal from '../Modal.svelte';
+  import LogoUpload from './forms/LogoUpload.svelte';
+  import { getContext } from 'svelte';
+  import EditButton from '../EditButton/EditButton.svelte';
+  export let logo;
 
-    const profileUsername = getContext("profileUsername");
-    const isSessionUserProfile = getContext("isSessionUserProfile");
+  const profileUsername = getContext('profileUsername');
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
-    let editableMode = false;
+  let editableMode = false;
 
-    function toggleEditableMode() {
-        editableMode = !editableMode;
-    }
+  function toggleEditableMode() {
+    editableMode = !editableMode;
+  }
 
-    function reloadComponentData( company ) {
-        logo = company.logo;
-        editableMode = false;
-    }
+  function reloadComponentData(company) {
+    logo = company.logo;
+    editableMode = false;
+  }
 </script>
 
 <style>
-    .ProfileLogo-container {
-        width: auto;
-        max-width: 150px;
-        border-radius: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        margin: 20px auto;
-        margin-bottom: 30px;
-        padding: 0.1em;
-        border: 1px solid var(--principal-color);
-        background-color: white;
-    }
+  .ProfileLogo-container {
+    width: auto;
+    max-width: 150px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 20px auto;
+    margin-bottom: 30px;
+    padding: 0.1em;
+    border: 1px solid var(--principal-color);
+    background-color: white;
+  }
 
-    .ProfileLogo-container--default {
-        width: 120px;
-        background: white;
-        border: 1px solid var(--principal-color);
-    }
+  .ProfileLogo-container--default {
+    width: 120px;
+    background: white;
+    border: 1px solid var(--principal-color);
+  }
 
-    .CertificationCard-edit-button{
+  .CertificationCard-edit-button {
     position: absolute;
     top: 70%;
     right: 0;
     padding: 5px;
+  }
+
+  .ProfileLogo-image {
+    width: 100%;
+    max-height: 130px;
+    min-height: 100px;
+    border-radius: inherit;
+    object-fit: cover;
+  }
+
+  .ProfileLogo-image--default {
+    padding: 20px;
+  }
+
+  @media screen and (min-width: 767px) {
+    .ProfileLogo-container--default {
+      width: 150px;
     }
+  }
 
-    .ProfileLogo-image {
-        width: 100%;
-        max-height: 130px;
-        min-height: 100px;
-        border-radius: inherit;
-        object-fit: cover;
+  @media screen and (min-width: 850px) {
+    .ProfileLogo-container--default {
+      width: 130px;
     }
-
-    .ProfileLogo-image--default {
-        padding: 20px;
-    }
-
-    .ProfileLogo-edit-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 4px 0px;
-        border-radius: 13px;
-        border-top-left-radius: unset;
-        border-top-right-radius: unset;
-        color: white;
-        background-color: #0000004d;
-        cursor: pointer;
-    }
-
-    @media screen and (min-width: 767px){
-        .ProfileLogo-container--default {
-            width: 150px;
-        }
-    }
-
-    @media screen and (min-width: 850px){
-        .ProfileLogo-container:hover > .ProfileLogo-edit-container{
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .ProfileLogo-container--default {
-            width: 130px;
-        }
-
-        .ProfileLogo-edit-container {
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0s, opacity 0.3s linear;
-        }
-    }
+  }
 </style>
 
 <div class="ProfileLogo">
-    {#if editableMode && isSessionUserProfile}
-        <Modal on:click={toggleEditableMode}>
-            <LogoUpload actualLogo={logo} on:click={toggleEditableMode} afterSubmit={reloadComponentData} />
-        </Modal>
-    {/if}
+  {#if editableMode && isSessionUserProfile}
+    <Modal on:click={toggleEditableMode}>
+      <LogoUpload
+        actualLogo={logo}
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData} />
+    </Modal>
+  {/if}
 
-    <figure class="ProfileLogo-container {logo && logo.path ? "" : "ProfileLogo-container--default"}">
-        <img src={logo && logo.path ? logo.path : "/images/profile_icon.svg"} 
-            alt={profileUsername} class="ProfileLogo-image {logo && logo.path ? "" : "ProfileLogo-image--default"}">
-            {#if isSessionUserProfile}
-            <div class="CertificationCard-edit-button">
-                <EditButton size={20} color="var(--light-color)" on:click={toggleEditableMode} />
-              </div>
-            {/if}
-    </figure>
+  <figure
+    class="ProfileLogo-container {logo && logo.path ? '' : 'ProfileLogo-container--default'}">
+    <img
+      src={logo && logo.path ? logo.path : '/images/profile_icon.svg'}
+      alt={profileUsername}
+      class="ProfileLogo-image {logo && logo.path ? '' : 'ProfileLogo-image--default'}" />
+    {#if isSessionUserProfile}
+      <div class="CertificationCard-edit-button">
+        <EditButton
+          size={20}
+          color="var(--light-color)"
+          onEdit={toggleEditableMode} />
+      </div>
+    {/if}
+  </figure>
 </div>

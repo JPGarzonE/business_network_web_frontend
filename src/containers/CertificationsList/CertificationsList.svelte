@@ -29,6 +29,10 @@
     CertificationsList = [...CertificationsList, certificationData];
     editableMode = false;
   }
+
+  function onDeleteCertification(id) {
+    CertificationsList = CertificationsList.filter((item) => item.id !== id);
+  }
 </script>
 
 <style>
@@ -66,19 +70,6 @@
     color: var(--secondary-text-color);
   }
 
-  @media screen and (min-width: 420px) {
-    .CertificationsList-card--create {
-      min-width: 65%;
-    }
-  }
-
-  @media screen and (min-width: 480px) {
-    .CertificationsList-card--create {
-      min-width: 280px;
-      margin-right: 40px;
-    }
-  }
-
   @media screen and (min-width: 850px) {
     .CertificationsList-headline {
       margin-bottom: 15px;
@@ -112,19 +103,16 @@
   <HorizontalScrollList
     id="DNA-list"
     beginningItemsNumber={CertificationsList ? CertificationsList.length : 0}>
-    <CertificationCard
-      id={123}
-      name={'holas'}
-      media={{ path: 'https://lh3.googleusercontent.com/proxy/-K--hSUg0WCOLegImu4fZM6-YklLSFibiWXrrypnUqgzgg1txdbkWL2lzKwN2xtbKQYnPJeoN6avqbTMTygJ-67uSkKIDgiveg' }} />
     {#each CertificationsList as element}
       <CertificationCard
-        id={element.id}
-        media={element.media}
-        name={element.name}
-        description={element.description} />
+        id={element.certificate.id}
+        media={element.certificate.logo}
+        name={element.certificate.name}
+        description={element.certificate.description}
+        onDelete={onDeleteCertification} />
     {:else}
       <div class="CertificationsList-empty-message">
-        <p>La compañia todavía no ha agregado elementos que la identifiquen</p>
+        <p>La compañia todavía no ha certificaciones que la identifiquen</p>
       </div>
     {/each}
   </HorizontalScrollList>

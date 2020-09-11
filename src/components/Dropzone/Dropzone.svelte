@@ -28,7 +28,7 @@
 </script>
 
 <style>
-  .ImageUploadInput {
+  .Dropzone {
     width: 100%;
     height: 100%;
     display: flex;
@@ -41,11 +41,11 @@
     border: 2px dashed #000000;
   }
 
-  .ImageUploadInput-title {
+  .Dropzone-title {
     font-size: 1rem;
     font-weight: bold;
   }
-  .ImageUploadInput-subtitle {
+  .Dropzone-subtitle {
     font-size: 0.875rem;
     font-weight: bold;
     margin-bottom: 23px;
@@ -81,7 +81,7 @@
 </style>
 
 <div
-  class="ImageUploadInput"
+  class="Dropzone"
   style={imagePath || uploadedImage ? `background-image: url(${uploadedImage ? uploadedImage : imagePath})` : ''}>
   <Dropzone
     on:drop={handleFilesSelect}
@@ -92,10 +92,10 @@
       class={`dropzone-content ${imagePath || uploadedImage ? 'image-defined' : ''}`}>
       <CloudUploadOutline size={80} />
       {#if !imagePath && !uploadedImage}
-        <span class="ImageUploadInput-title">Arrastra y suelta el archivo</span>
+        <span class="Dropzone-title">Arrastra y suelta el archivo</span>
       {/if}
       {#if !imagePath && !uploadedImage}
-        <span class="ImageUploadInput-subtitle">o selecciona otra opción</span>
+        <span class="Dropzone-subtitle">o selecciona otra opción</span>
       {/if}
 
       <div class="upload-card">

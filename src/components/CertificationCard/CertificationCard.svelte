@@ -1,16 +1,19 @@
 <script>
   import { getContext } from 'svelte';
+  import { stores } from '@sapper/app';
   import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
   import Modal from '../Modal.svelte';
   import EditButton from '../EditButton/EditButton.svelte';
   import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';
+  import CertificationsService from '../../services/companies/certifications.service.js';
 
   export let id;
   export let media;
   export let name;
   export let category;
   export let description;
-
+  export let onDelete;
+  const { session } = stores();
   const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let editableMode = false;
@@ -22,6 +25,20 @@
 
   function toggleStoryDisplay() {
     displayStory = !displayStory;
+  }
+
+  async function deleteCertification() {
+    try {
+      const certificationsService = new CertificationsService();
+      const certificationData = await certificationsService.deleteCertificationElement(
+        $session.username,
+        id,
+        $session.accessToken
+      );
+      onDelete(id);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   function reloadComponentData(CertificationElementData) {
@@ -43,7 +60,7 @@
 <style>
   .CertificationCard {
     position: relative;
-    max-width: 300px;
+    max-width: 280px;
     width: auto;
     height: fit-content;
     min-width: 250px;
@@ -158,7 +175,12 @@
 
   {#if isSessionUserProfile}
     <div class="CertificationCard-edit-button">
-      <EditButton size={25} color="gray" on:click={toggleEditableMode} />
+      <EditButton
+        size={25}
+        color="gray"
+        onEdit={toggleEditableMode}
+        onDelete={deleteCertification}
+        menuButton />
     </div>
   {/if}
 
@@ -171,7 +193,7 @@
   {/if}
 
   <div class="CertificationCard-bottom">
-    <p class="CertificationCard-category">{category}</p>
+    <p class="CertificationCard-category">{category || 'Certificaciones'}</p>
 
     {#if description}
       <span on:click={toggleStoryDisplay}>

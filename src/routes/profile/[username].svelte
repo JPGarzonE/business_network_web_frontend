@@ -30,7 +30,6 @@
 
     const principalLocation = await loadCompanyPrincipalLocation(username);
     const portfolioElements = await loadPortfolio(username);
-    const registeredRelationships = await loadRelationships(user.id);
     const unregisteredRelationships = await loadUnregisteredRelationships(
       username
     );
@@ -42,7 +41,6 @@
       location: principalLocation,
       portfolioElements,
       interestElements,
-      registeredRelationships,
       unregisteredRelationships,
     };
   }
@@ -109,8 +107,7 @@
   import ProfileHeader from '../../components/profile/ProfileHeader.svelte';
   import Portfolio from '../../components/profile/Portfolio.svelte';
   import Interests from '../../components/profile/Interests.svelte';
-  import Relationship from '../../components/profile/Relationships.svelte';
-  import Relationships from '../../components/profile/Relationships.svelte';
+  import Relationships from '../../containers/Relationships/Relationships.svelte';
   import CertificationsList from '../../containers/CertificationsList/CertificationsList.svelte';
 
   export let user;
@@ -119,7 +116,6 @@
   export let location;
   export let portfolioElements;
   export let interestElements;
-  export let registeredRelationships;
   export let unregisteredRelationships;
 
   let company = user.company;
@@ -195,7 +191,7 @@
 
     <Interests {interestElements} />
 
-    <Relationships {registeredRelationships} {unregisteredRelationships} />
+    <Relationships {unregisteredRelationships} />
   </div>
 </div>
 

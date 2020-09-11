@@ -12,6 +12,18 @@
   align-items: center;
 }
 
+.list-button {
+  background-color: var(--extra-light-gray);
+  color: var(--secondary-text-color);
+  font-weight: bold;
+  text-transform: none;
+  font-size: 0.75rem;
+}
+
+.list-button:hover {
+  background-color: var(--principal-color);
+  color: var(--white);
+}
 .button--principal {
   margin: 0px;
   background-color: var(--principal-color);

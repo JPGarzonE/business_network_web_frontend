@@ -88,14 +88,12 @@ export default class RequestService {
       method: 'DELETE',
       headers: headers,
     }).then(async (response) => {
-      return response.json().then((data) => {
-        if (response.ok) return data;
-        else
-          throw new RequestError({
-            status: response.status,
-            message: data,
-          });
-      });
+      if (response.ok) return response;
+      else
+        throw new RequestError({
+          status: response.status,
+          message: data,
+        });
     });
   }
 }

@@ -240,11 +240,12 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={name}
-        label="Nombre del certificado"
+        label="Nombre del certificado*"
         input$aria-controls="certificate-name"
         input$aria-describedby="certificate-name"
-        input$maxlength="50" />
-      <HelperText id="certificate-name">Máximo 50 caracteres</HelperText>
+        input$maxlength="50"
+        on:input={validateName} />
+      <HelperText id="certificate-name">{nameFeedback}</HelperText>
     </div>
 
     <div class="form-group">
@@ -256,9 +257,13 @@
         label="Añadir descripción"
         input$aria-controls="certificate-description"
         input$aria-describedby="certificate-description"
-        input$maxlength="155">
+        input$maxlength="155"
+        on:input={validateDescription}>
         <CharacterCounter>0 / 50</CharacterCounter>
       </Textfield>
+      <HelperText id="certificate-description">
+        {descriptionFeedback}
+      </HelperText>
     </div>
 
     <button

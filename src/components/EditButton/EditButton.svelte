@@ -1,8 +1,12 @@
 <script>
   import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
-
+  import Menu from '@smui/menu';
   export let size;
   export let color;
+  export let onEdit = () => {};
+  export let onDelete = () => {};
+  export let menuButton = false;
+  let menu = false;
 </script>
 
 <style>
@@ -18,6 +22,12 @@
   }
 </style>
 
-<button class="EditButton" on:click>
+<button
+  class="EditButton"
+  on:click={menuButton ? () => menu.setOpen(true) : onEdit}>
   <PencilOutline {size} {color} />
 </button>
+<Menu bind:this={menu}>
+  <button class="button list-button" on:click={onEdit}>Editar</button>
+  <button class="button list-button" on:click={onDelete}>Eliminar</button>
+</Menu>

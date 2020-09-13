@@ -45,7 +45,7 @@ export default class UnregisteredRelationshipService extends RequestService {
   createUnregisteredRelationship(
     accessToken,
     unregisteredCompanyData,
-    industry
+    relationshipType
   ) {
     if (!accessToken)
       throw new Error(
@@ -57,9 +57,9 @@ export default class UnregisteredRelationshipService extends RequestService {
         'name is required in UnregisteredRelationshipService.createUnregisteredRelationship'
       );
 
-    if (!industry)
+    if (!relationshipType)
       throw new Error(
-        'industry is required in UnregisteredRelationshipService.createUnregisteredRelationship'
+        'relationshipType is required in UnregisteredRelationshipService.createUnregisteredRelationship'
       );
 
     const headers = {
@@ -71,7 +71,7 @@ export default class UnregisteredRelationshipService extends RequestService {
       unregistered: {
         ...unregisteredCompanyData,
       },
-      type: industry,
+      type: relationshipType,
     };
 
     return this.post(
@@ -116,7 +116,7 @@ export default class UnregisteredRelationshipService extends RequestService {
 
   updateUnregisteredRelationshipType(
     accessToken,
-    unregisteredRelationshipID,
+    relationshipID,
     relationshipType
   ) {
     if (!accessToken)
@@ -124,9 +124,9 @@ export default class UnregisteredRelationshipService extends RequestService {
         'accessToken is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
       );
 
-    if (!unregisteredRelationshipID)
+    if (!relationshipID)
       throw new Error(
-        'unregisteredRelationshipID is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
+        'relationshipID is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
       );
 
     if (!relationshipType)
@@ -135,7 +135,7 @@ export default class UnregisteredRelationshipService extends RequestService {
       );
 
     const RequestUrl =
-      this.unregisteredRelationshipsPath + unregisteredRelationshipID + '/';
+      this.unregisteredRelationshipsPath + relationshipID + '/';
 
     const headers = {
       'Content-Type': 'application/json',
@@ -149,5 +149,25 @@ export default class UnregisteredRelationshipService extends RequestService {
     return this.patch(RequestUrl, headers, RelationshipData);
   }
 
-  deleteUnregisteredRelationship() {}
+  deleteUnregisteredRelationship(relationshipID, accessToken) {
+    if (!relationshipID)
+      throw new Error(
+        'relationshipID is required in CertificationsService.updateUserCertificationElementWithImage'
+      );
+
+    if (!accessToken)
+      throw new Error(
+        'accessToken is required in CertificationsService.updateUserCertificationElementWithImage'
+      );
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Token ' + accessToken,
+    };
+
+    return this.delete(
+      this.unregisteredRelationshipsPath + '/' + relationshipID,
+      headers
+    );
+  }
 }

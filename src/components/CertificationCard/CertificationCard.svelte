@@ -10,7 +10,6 @@
   export let id;
   export let media;
   export let name;
-  export let category;
   export let description;
   export let onDelete;
   const { session } = stores();
@@ -42,16 +41,10 @@
   }
 
   function reloadComponentData(CertificationElementData) {
-    name = CertificationElementData.name;
-    category = CertificationElementData.category
-      ? CertificationElementData.category
-      : null;
-    media = CertificationElementData.media
-      ? CertificationElementData.media
-      : null;
-    description = CertificationElementData.description
-      ? CertificationElementData.description
-      : null;
+    const { certificate } = CertificationElementData;
+    name = certificate.name;
+    media = certificate.logo ? certificate.logo : null;
+    description = certificate.description ? certificate.description : null;
 
     editableMode = false;
   }
@@ -78,6 +71,7 @@
     top: 0;
     right: 0;
     padding: 5px;
+    z-index: 10;
   }
   .CertificationCard-media-container {
     position: relative;
@@ -156,7 +150,7 @@
       <CertificationForm
         on:click={toggleEditableMode}
         afterSubmit={reloadComponentData}
-        CertificationElement={{ id: id, name: name, category: category, description: description, media: media }} />
+        CertificationElement={{ id: id, name: name, description: description, media: media }} />
     </Modal>
   {/if}
 
@@ -193,7 +187,7 @@
   {/if}
 
   <div class="CertificationCard-bottom">
-    <p class="CertificationCard-category">{category || 'Certificaciones'}</p>
+    <p class="CertificationCard-category">Certificaciones</p>
 
     {#if description}
       <span on:click={toggleStoryDisplay}>

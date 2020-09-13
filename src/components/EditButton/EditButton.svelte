@@ -3,6 +3,7 @@
   import Menu from '@smui/menu';
   export let size;
   export let color;
+  export let anchorButton;
   export let onEdit = () => {};
   export let onDelete = () => {};
   export let menuButton = false;
@@ -20,14 +21,28 @@
     border-radius: 100%;
     border: 2px solid gray;
   }
+  :global(.EditButton-menu) {
+    left: unset !important;
+    right: 10px;
+  }
 </style>
 
 <button
   class="EditButton"
-  on:click={menuButton ? () => menu.setOpen(true) : onEdit}>
+  on:click={menuButton ? () => menu.setOpen(true) : onEdit}
+  bind:this={anchorButton}>
   <PencilOutline {size} {color} />
 </button>
-<Menu bind:this={menu}>
-  <button class="button list-button" on:click={onEdit}>Editar</button>
-  <button class="button list-button" on:click={onDelete}>Eliminar</button>
+<Menu
+  class="EditButton-menu"
+  bind:this={menu}
+  anchor={false}
+  bind:anchorElement={anchorButton}
+  anchorCorner="BOTTOM_LEFT">
+  <button
+    class="button list-button"
+    on:click|stopPropagation={onEdit}>Editar</button>
+  <button
+    class="button list-button"
+    on:click|stopPropagation={onDelete}>Eliminar</button>
 </Menu>

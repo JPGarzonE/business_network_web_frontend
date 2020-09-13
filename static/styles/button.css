@@ -12,6 +12,10 @@
   align-items: center;
 }
 
+.button svg {
+  margin: 0 8px;
+}
+
 .list-button {
   background-color: var(--extra-light-gray);
   color: var(--secondary-text-color);

@@ -8,7 +8,6 @@
   import CompanyService from '../../services/companies/companies.service.js';
   import { getContext, onMount } from 'svelte';
 
-  export let registeredRelationships = [];
   export let unregisteredRelationships = [];
   const profileUsername = getContext('profileUsername');
   const isSessionUserProfile = getContext('isSessionUserProfile');
@@ -31,52 +30,17 @@
     displayUnregisteredCreateForm = true;
   }
 
-  let relationships = [];
-  let screenSize = 700;
-
-  onMount(async () => {
-    window.addEventListener('resize', () => {
-      screenSize = window.innerWidth;
-    });
-    screenSize = window.innerWidth;
-
-    for (let i = 0; i < registeredRelationships.length; i++) {
-      let relationship = registeredRelationships[i];
-      let otherCompany;
-
-      if (relationship.requester.username === profileUsername)
-        otherCompany = relationship.addressed;
-      else otherCompany = relationship.requester;
-
-      const companyData = await companyService.getCompany(
-        otherCompany.username
-      );
-      let company = {
-        isRegisteredCompany: true,
-        username: otherCompany.username,
-        name: companyData.name,
-        logoPath: companyData.logo ? companyData.logo.path : null,
-        industry: companyData.industry,
-        isVerified: true,
-      };
-
-      relationships = [...relationships, company];
-    }
-
-    for (let i = 0; i < unregisteredRelationships.length; i++) {
-      let unregisteredCompany = unregisteredRelationships.unregistered;
-      let company = {
-        isRegisteredCompany: false,
-        username: null,
-        name: unregisteredCompany.name,
-        logoPath: null,
-        industry: unregisteredCompany.industry,
-        isVerified: false,
-      };
-
-      relationships = [...relationships, company];
-    }
-  });
+  function reloadComponentData(unregisteredRelationshipData) {
+    unregisteredRelationships = [
+      ...unregisteredRelationships,
+      unregisteredRelationshipData,
+    ];
+  }
+  function onDeleteUnregisteredRelationship(id) {
+    unregisteredRelationships = unregisteredRelationships.filter(
+      (item) => item.id !== id
+    );
+  }
 </script>
 
 <style>
@@ -147,7 +111,7 @@
     <Modal on:click={toggleUnregisteredCreateForm}>
       <UnregisteredRelationshipForm
         on:click={toggleUnregisteredCreateForm}
-        afterSubmit=" " />
+        afterSubmit={reloadComponentData} />
     </Modal>
   {/if}
 
@@ -159,14 +123,11 @@
       <CreateButton size={25} />
     </div>
   {/if}
-  <HorizontalScrollList>
-    <RelationshipCard
-      name="huger"
-      industry="Desarrollo"
-      location="Bog. Colombia" />
-
-    {#each relationships as company}
-      <RelationshipCard {...company} />
+  <HorizontalScrollList id="relationships">
+    {#each unregisteredRelationships as relationshipData}
+      <RelationshipCard
+        {relationshipData}
+        onDelete={onDeleteUnregisteredRelationship} />
     {:else}
       <div class="ProfileRelationships-empty-message">
         <p>La compañia todavía no ha las empresas con las que trabaja</p>

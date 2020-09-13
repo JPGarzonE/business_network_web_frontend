@@ -185,7 +185,7 @@ export default class CertificationsService extends RequestService {
       this.getUserCertificationsPath(username) + certificationID + '/';
 
     const Image = await this._imageService.uploadUserImage(image, accessToken);
-    certificationData.media_id = Image.id;
+    certificationData.logo_id = Image.id;
 
     return this.patch(RequestUrl, headers, certificationData);
   }

@@ -101,7 +101,7 @@
     </div>
   {/if}
   <HorizontalScrollList
-    id="DNA-list"
+    id="certifications-list"
     beginningItemsNumber={CertificationsList ? CertificationsList.length : 0}>
     {#each CertificationsList as element}
       <CertificationCard

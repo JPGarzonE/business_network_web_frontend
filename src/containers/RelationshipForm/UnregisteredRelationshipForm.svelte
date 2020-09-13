@@ -10,16 +10,28 @@
   import { INDUSTRIES } from '../../store/store.js';
 
   export let afterSubmit;
+  export let unregisteredRelationship; // Pass if is an update form
+
+  const editMode = unregisteredRelationship !== undefined;
+
   const fields = ['name', 'industry', 'country', 'type'];
   const { session } = stores();
   const isSessionUserProfile = getContext('isSessionUserProfile');
   const unregisteredRelationshipService = new UnregisteredRelationshipService();
 
-  let name = '';
-  let industry = INDUSTRIES ? INDUSTRIES[0] : '';
+  const { unregistered = {}, type = '', id: relationshipID } = editMode
+    ? unregisteredRelationship
+    : {};
+
+  let name = editMode ? unregistered.name : '';
+  let industry = editMode
+    ? unregistered.industry
+    : INDUSTRIES
+    ? INDUSTRIES[0]
+    : '';
   let otherIndustry = '';
-  let country = '';
-  let relationshipType = '';
+  let country = editMode ? unregistered.country : '';
+  let relationshipType = type ? type : '';
 
   $: industryIsOther = industry.includes('OTROS');
   let formErrorMessage = '';
@@ -53,7 +65,6 @@
           otherIndustryFeedback = 'Máximo 50 caracteres';
           return false;
         }
-
         otherIndustryFeedback = '';
         return true;
       } else if (
@@ -122,20 +133,33 @@
 
     try {
       if (isSessionUserProfile) {
-        validateUnregisteredRelationshipForm();
-        let dataToSubmit = {
-          name,
-          country,
-          relationshipType,
-        };
+        if (editMode) {
+          const unregisteredRelationshipData = await unregisteredRelationshipService.updateUnregisteredRelationshipType(
+            $session.accessToken,
+            relationshipID,
+            relationshipType
+          );
+          afterSubmit(unregisteredRelationshipData);
+          console.log(
+            'submit -> unregisteredRelationshipData',
+            unregisteredRelationshipData
+          );
+        } else {
+          validateUnregisteredRelationshipForm();
+          let dataToSubmit = {
+            name,
+            country,
+            industry,
+          };
 
-        const unregisteredRelationshipData = await unregisteredRelationshipService.createUnregisteredRelationship(
-          $session.accessToken,
-          dataToSubmit,
-          industryIsOther ? otherIndustry : industry
-        );
+          const unregisteredRelationshipData = await unregisteredRelationshipService.createUnregisteredRelationship(
+            $session.accessToken,
+            dataToSubmit,
+            relationshipType
+          );
 
-        afterSubmit(unregisteredRelationshipData);
+          afterSubmit(unregisteredRelationshipData);
+        }
       }
     } catch (e) {
       console.error('submit -> e', e);
@@ -174,12 +198,6 @@
     color: var(--secondary-text-color);
   }
 
-  .UnregisteredRelationshipForm-subtitle {
-    text-align: center;
-    font-size: 0.95em;
-    color: var(--secondary-text-color);
-  }
-
   .UnregisteredRelationshipForm-button {
     margin-top: 3em;
   }
@@ -199,17 +217,14 @@
   </button>
 
   <div class="UnregisteredRelationshipForm-headline">
-    <h3 class="UnregisteredRelationshipForm-title">Añadir cliente</h3>
+    <h3 class="UnregisteredRelationshipForm-title">
+      {editMode ? 'Actualizar cliente' : 'Añadir cliente'}
+    </h3>
 
     {#if formErrorMessage}
       <div class="form-banner--invalid">
         <p>{formErrorMessage}</p>
       </div>
-    {:else}
-      <p class="UnregisteredRelationshipForm-subtitle">
-        Busca la empresa en la plataforma, si no la encuentras, ¡la puedes
-        agregar tu mismo!
-      </p>
     {/if}
   </div>
 
@@ -223,35 +238,51 @@
         input$aria-controls="company-name"
         input$aria-describedby="company-name"
         input$maxlength="60"
-        on:input={validateName} />
+        on:input={validateName}
+        disabled={editMode} />
       <HelperText id="company-name">{nameFeedback}</HelperText>
     </div>
 
-    <div class="form-group">
-      <Select variant="outlined" bind:value={industry} label="Categoría*">
-        {#each INDUSTRIES as ind}
-          <Option value={ind} selected={industry === ind.toLowerCase()}>
-            {ind}
-          </Option>
-        {/each}
-      </Select>
-    </div>
-    {#if industryIsOther}
+    {#if !editMode}
+      <div class="form-group">
+        <Select variant="outlined" bind:value={industry} label="Categoría*">
+          {#each INDUSTRIES as ind}
+            <Option value={ind} selected={industry === ind.toLowerCase()}>
+              {ind}
+            </Option>
+          {/each}
+        </Select>
+      </div>
+      {#if industryIsOther}
+        <div class="form-group">
+          <Textfield
+            style="width: 100%;"
+            variant="outlined"
+            bind:value={otherIndustry}
+            label="¿Cuál otra?"
+            input$aria-controls="company-other-industry"
+            input$aria-describedby="company-other-industry"
+            input$maxlength="60"
+            on:input={validateOtherIndustry} />
+          <HelperText id="company-other-industry">
+            {otherIndustryFeedback}
+          </HelperText>
+        </div>
+      {/if}
+    {:else}
       <div class="form-group">
         <Textfield
           style="width: 100%;"
           variant="outlined"
-          bind:value={otherIndustry}
-          label="¿Cuál otra?"
-          input$aria-controls="company-other-industry"
-          input$aria-describedby="company-other-industry"
+          bind:value={industry}
+          label="Categoría*"
+          input$aria-controls="company-industry"
+          input$aria-describedby="company-industry"
           input$maxlength="60"
-          on:input={validateOtherIndustry} />
-        <HelperText id="company-other-industry">
-          {otherIndustryFeedback}
-        </HelperText>
+          disabled={true} />
       </div>
     {/if}
+
     <div class="form-group">
       <Textfield
         style="width: 100%;"
@@ -261,7 +292,8 @@
         input$aria-controls="company-country"
         input$aria-describedby="company-country"
         input$maxlength="40"
-        on:input={validateCountry} />
+        on:input={validateCountry}
+        disabled={editMode} />
       <HelperText id="company-country">{countryFeedback}</HelperText>
     </div>
 
@@ -282,7 +314,7 @@
       on:click|preventDefault={submit}
       class="UnregisteredRelationshipForm-button button button--secondary">
       <PlusCircleOutline size={15} />
-      Añadir Cliente
+      {editMode ? 'Actualizar Cliente' : 'Añadir Cliente'}
     </button>
   </form>
 </div>

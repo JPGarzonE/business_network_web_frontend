@@ -1,18 +1,58 @@
 <script>
+  import { getContext } from 'svelte';
   import { goto } from '@sapper/app';
+  import { stores } from '@sapper/app';
+  import Modal from '../Modal.svelte';
+  import EditButton from '../EditButton/EditButton.svelte';
+  import UnregisteredRelationshipForm from '../../containers/RelationshipForm/UnregisteredRelationshipForm.svelte';
+  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
 
-  export let idx;
-  export let isRegisteredCompany = true;
+  export let onDelete;
+  export let isRegisteredCompany = false;
   export let username;
-  export let name;
-  export let location;
-  export let logoPath;
-  export let industry;
+  export let relationshipData;
+
+  const { session } = stores();
+
+  const {
+    name = '',
+    city = '',
+    country = '',
+    logoPath = '',
+    industry = '',
+  } = relationshipData ? relationshipData.unregistered : {};
+
+  const location = `${city ? city + '. ' : ''}${country}`;
+
   //export let isVerified;
   //export let unregistered;
+  const isSessionUserProfile = getContext('isSessionUserProfile');
+
+  let displayUnregisteredForm = false;
+
+  function toggleEditableMode() {
+    displayUnregisteredForm = !displayUnregisteredForm;
+  }
+
+  async function deleteRelationship() {
+    try {
+      const unregisteredServiceInstance = new UnregisteredRelationshipService();
+      unregisteredServiceInstance.deleteUnregisteredRelationship(
+        relationshipData.id,
+        $session.accessToken
+      );
+      onDelete(relationshipData.id);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   async function handleRelationshipClick() {
     if (isRegisteredCompany) await goto(`/profile/${username}`);
+  }
+
+  function reloadComponentData(unregisteredRelationshipData) {
+    relationshipData.type = unregisteredRelationshipData.type;
   }
 </script>
 
@@ -25,19 +65,21 @@
     padding: 10px 5px;
     border-radius: 3px;
     font-size: 1.2em;
+  }
+  .RelationshipCard-wrapper {
+    position: relative;
+  }
+
+  .selectable:hover {
+    opacity: 0.7;
     cursor: pointer;
   }
-
-  .RelationshipCard:hover {
-    opacity: 0.7;
-  }
-
-  .RelationshipCard--pair {
-    background-color: #4a4b4f1f;
-  }
-
-  .RelationshipCard--odd {
-    background-color: white;
+  .RelationshipCard-edit-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    z-index: 10;
   }
 
   .RelationshipCard-logo-container {
@@ -89,11 +131,6 @@
       flex-direction: column;
     }
 
-    .RelationshipCard--pair,
-    .RelationshipCard--odd {
-      background-color: transparent;
-    }
-
     .RelationshipCard-logo-container {
       width: 100%;
       padding: 10px;
@@ -105,26 +142,48 @@
   }
 </style>
 
-<div
-  class="RelationshipCard RelationshipCard--{idx % 2 == 0 ? 'pair' : 'odd'}"
-  on:click={handleRelationshipClick}>
-  <figure class="RelationshipCard-logo-container">
-    <img
-      src={logoPath ? logoPath : '/images/profile_icon.svg'}
-      alt="{name} logo"
-      class="RelationshipCard-logo-image" />
-  </figure>
-  <p class="RelationshipCard-name">
-    <a
-      class="RelationshipCard-link"
-      href={isRegisteredCompany ? `/profile/${username}` : ''}
-      target="_blank">{name}</a>
-  </p>
-  <span class="RelationshipCard-location">
-    <a
-      class="RelationshipCard-link"
-      href={isRegisteredCompany ? `/profile/${username}` : ''}
-      target="_blank">{location}</a>
-  </span>
-  <span class="RelationshipCard-industry">{industry ? industry : ''}</span>
+{#if displayUnregisteredForm && isSessionUserProfile}
+  <Modal on:click={toggleEditableMode}>
+    <UnregisteredRelationshipForm
+      on:click={toggleEditableMode}
+      afterSubmit={reloadComponentData}
+      unregisteredRelationship={relationshipData} />
+  </Modal>
+{/if}
+<div class="RelationshipCard-wrapper">
+  {#if isSessionUserProfile}
+    <div class="RelationshipCard-edit-button">
+      <EditButton
+        size={25}
+        color="gray"
+        onEdit={toggleEditableMode}
+        onDelete={deleteRelationship}
+        menuButton />
+    </div>
+  {/if}
+  <div
+    class="RelationshipCard {isRegisteredCompany ? 'selectable' : ''}"
+    on:click={isRegisteredCompany ? handleRelationshipClick : undefined}>
+    <figure class="RelationshipCard-logo-container">
+      <img
+        src={logoPath ? logoPath : '/images/profile_icon.svg'}
+        alt="{name} logo"
+        class="RelationshipCard-logo-image" />
+    </figure>
+    <p class="RelationshipCard-name">
+      <a
+        class="RelationshipCard-link"
+        href={isRegisteredCompany ? `/profile/${username}` : undefined}
+        target="_blank">{name}</a>
+    </p>
+    {#if location}
+      <span class="RelationshipCard-location">
+        <a
+          class="RelationshipCard-link"
+          href={isRegisteredCompany ? `/profile/${username}` : undefined}
+          target="_blank">{location}</a>
+      </span>
+    {/if}
+    <span class="RelationshipCard-industry">{industry ? industry : ''}</span>
+  </div>
 </div>

@@ -15,18 +15,15 @@
 
   const fields = ['name', 'description'];
 
-  let name =
-    CertificationElement && CertificationElement.name
-      ? CertificationElement.name
-      : '';
-  let description =
-    CertificationElement && CertificationElement.description
-      ? CertificationElement.description
-      : '';
-  let media =
-    CertificationElement && CertificationElement.media
-      ? CertificationElement.media
-      : '';
+  const certificationEditData = CertificationElement
+    ? CertificationElement
+    : {};
+
+  let name = certificationEditData.name ? certificationEditData.name : '';
+  let description = certificationEditData.description
+    ? certificationEditData.description
+    : '';
+  let media = certificationEditData.media ? certificationEditData.media : '';
   let newMediaFile;
   let formErrorMessage = '';
   let nameFeedback;
@@ -92,12 +89,12 @@
 
         if (description) dataToSubmit.description = description;
 
-        let certificationElement;
-        if (CertificationElement && CertificationElement.id)
-          certificationElement = await submitUpdate(dataToSubmit);
-        else certificationElement = await submitCreate(dataToSubmit);
+        let certification;
+        if (certificationEditData.id)
+          certification = await submitUpdate(dataToSubmit);
+        else certification = await submitCreate(dataToSubmit);
 
-        afterSubmit(certificationElement);
+        afterSubmit(certification);
       }
     } catch (e) {
       const error = e.message;
@@ -143,7 +140,7 @@
     if (newMediaFile) {
       const certificationData = await certificationsService.updateUserCertificationElementWithImage(
         $session.username,
-        CertificationElement.id,
+        certificationEditData.id,
         newMediaFile,
         dataToSubmit,
         $session.accessToken
@@ -153,7 +150,7 @@
     } else {
       const certificationData = await certificationsService.updateUserCertificationElement(
         $session.username,
-        CertificationElement.id,
+        certificationEditData.id,
         dataToSubmit,
         $session.accessToken
       );
@@ -270,7 +267,7 @@
       on:click|preventDefault={submit}
       class="CertificationForm-button button button--secondary">
       <PlusCircleOutline size={15} />
-      Añadir certificado
+      {CertificationElement ? 'Actualizar certificado' : 'Añadir certificado'}
     </button>
   </form>
 </div>

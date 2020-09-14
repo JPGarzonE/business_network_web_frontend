@@ -1,24 +1,28 @@
 <script>
-  import { getContext, onMount } from 'svelte';
-  import { stores } from '@sapper/app';
-  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
-  import Modal from '../Modal.svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
-  import ProductForm from '../../containers/ProductForm/ProductForm.svelte';
-  import ProductService from '../../services/companies/product.service.js';
-
+  import { getContext, onMount } from "svelte";
+  import { stores } from "@sapper/app";
+  import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
+  import Modal from "../Modal.svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
+  import ProductForm from "../../containers/ProductForm/ProductForm.svelte";
+  import ProductService from "../../services/companies/product.service.js";
+  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
   export let productElement;
   export let onDelete;
 
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
 
   let editableMode = false;
   let displayStory = false;
-  let willDelete = false;
+  let confirmationMode = false;
 
   function toggleEditableMode() {
     editableMode = !editableMode;
+  }
+  function toggleConfirmation() {
+    confirmationMode = !confirmationMode;
+    console.log("toggleConfirmation -> confirmationMode", confirmationMode);
   }
 
   function toggleStoryDisplay() {
@@ -112,6 +116,13 @@
   }
 </style>
 
+{#if confirmationMode && isSessionUserProfile}
+  <ConfirmationModal
+    title="Desea eliminar el producto {productElement.name}"
+    onAccept={onDeleteProduct}
+    onDecline={toggleConfirmation} />
+{/if}
+
 {#if editableMode && isSessionUserProfile}
   <Modal on:click={toggleEditableMode}>
     <ProductForm
@@ -141,7 +152,7 @@
         size={25}
         color="gray"
         onEdit={toggleEditableMode}
-        onDelete={onDeleteProduct}
+        onDelete={toggleConfirmation}
         menuButton />
     </div>
   {/if}

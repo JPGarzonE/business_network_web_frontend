@@ -3,10 +3,13 @@
   import CloudUploadOutline from 'svelte-material-icons/CloudUploadOutline.svelte';
   import CreateButton from '../../components/CreateButton/CreateButton.svelte';
   import ImageOutline from 'svelte-material-icons/ImageOutline.svelte';
+  import DeleteCircleOutline from 'svelte-material-icons/DeleteCircleOutline.svelte';
   export let imagePath; // If not, isn't required
   export let multiple = false;
   export let small = false;
   export let imageFile; // For binding the value from an external component
+  export let onDelete = () => {};
+  export let allowDelete = false;
   let uploadedImage = '';
 
   let files = {
@@ -14,6 +17,12 @@
     rejected: [],
   };
 
+  function deleteFile() {
+    URL.revokeObjectURL(uploadedImage);
+    uploadedImage = '';
+    imageFile = undefined;
+    onDelete();
+  }
   function handleFilesSelect(e) {
     URL.revokeObjectURL(uploadedImage);
     const { acceptedFiles, fileRejections } = e.detail;
@@ -30,6 +39,7 @@
 
 <style>
   .Dropzone {
+    position: relative;
     width: 100%;
     height: 100%;
     display: flex;
@@ -50,6 +60,20 @@
     font-size: 0.875rem;
     font-weight: bold;
     margin-bottom: 23px;
+  }
+  .delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    background-color: var(--white);
+    border-radius: 100%;
+    z-index: 10;
+  }
+  .delete-button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 4px var(--super-extra-light-gray);
   }
 
   .upload-card {
@@ -84,6 +108,11 @@
 <div
   class="Dropzone"
   style={imagePath || uploadedImage ? `background-image: url(${uploadedImage ? uploadedImage : imagePath})` : ''}>
+  {#if allowDelete}
+    <div class="delete-button" on:click={deleteFile}>
+      <DeleteCircleOutline size={25} color="var(--principal-color)" />
+    </div>
+  {/if}
   <Dropzone
     on:drop={handleFilesSelect}
     accept={['image/*']}

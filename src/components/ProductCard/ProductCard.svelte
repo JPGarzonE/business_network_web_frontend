@@ -1,18 +1,17 @@
 <script>
-  import { getContext, onMount } from "svelte";
-  import { stores } from "@sapper/app";
-  import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
-  import Modal from "../Modal.svelte";
-  import EditButton from "../EditButton/EditButton.svelte";
-  import ProductForm from "../../containers/ProductForm/ProductForm.svelte";
-  import ProductService from "../../services/companies/product.service.js";
+  import { getContext, onMount } from 'svelte';
+  import { stores } from '@sapper/app';
+  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
+  import Modal from '../Modal.svelte';
+  import EditButton from '../EditButton/EditButton.svelte';
+  import ProductForm from '../../containers/ProductForm/ProductForm.svelte';
+  import ProductService from '../../services/companies/product.service.js';
 
   export let productElement;
   export let onDelete;
 
   const { session } = stores();
-  const isSessionUserProfile = true;
-  /*getContext("isSessionUserProfile");*/
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let editableMode = false;
   let displayStory = false;
@@ -25,26 +24,9 @@
   function toggleStoryDisplay() {
     displayStory = !displayStory;
   }
-  onMount(() => {
-    console.log("productElement de prduct card", productElement);
-  });
 
-  function reloadComponentData(ProductElementData) {
-    name = productElement.name;
-    category = productElement.category ? productElement.category : null;
-    media = productElement.media ? productElement.media : null;
-    description = productElement.description
-      ? productElement.description
-      : null;
-    minimum_price = productElement.minimum_price
-      ? productElement.minimum_price
-      : null;
-    maximum_price = productElement.maximum_price
-      ? productElement.maximum_price
-      : null;
-    currency_id = productElement.currency_id
-      ? productElement.currency_id.code
-      : null;
+  function reloadComponentData(productElementData) {
+    productElement = productElementData;
     editableMode = false;
   }
   async function onDeleteProduct() {
@@ -56,7 +38,6 @@
         $session.accessToken
       );
       onDelete(productElement.id);
-      console.log("onDeleteProduct -> productElement.id", productElement.id);
     } catch (e) {
       console.error(e);
     }
@@ -100,8 +81,6 @@
     display: flex;
     object-fit: contain;
     border-radius: 10px;
-    border-bottom-left-radius: unset;
-    border-bottom-right-radius: unset;
   }
 
   .ProductCard-media-image--default {

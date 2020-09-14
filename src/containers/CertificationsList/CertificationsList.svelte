@@ -1,14 +1,14 @@
 <script>
-  import { getContext, onMount } from "svelte";
-  import CertificationsService from "../../services/companies/certifications.service.js";
-  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
-  import CertificationCard from "../../components/CertificationCard/CertificationCard.svelte";
-  import Modal from "../../components/Modal.svelte";
-  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
-  import CertificationForm from "../CertificationForm/CertificationForm.svelte";
+  import { getContext, onMount } from 'svelte';
+  import CertificationsService from '../../services/companies/certifications.service.js';
+  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
+  import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
+  import Modal from '../../components/Modal.svelte';
+  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
+  import CertificationForm from '../CertificationForm/CertificationForm.svelte';
 
-  const isSessionUserProfile = true || getContext("isSessionUserProfile");
-  const profileUsername = getContext("profileUsername");
+  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const profileUsername = getContext('profileUsername');
   const certificationsService = new CertificationsService();
   export let certificationsList = [];
 

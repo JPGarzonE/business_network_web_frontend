@@ -1,11 +1,12 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
-  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
-  import Modal from '../Modal.svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
-  import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';
-  import CertificationsService from '../../services/companies/certifications.service.js';
+  import { getContext } from "svelte";
+  import { stores } from "@sapper/app";
+  import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
+  import Modal from "../Modal.svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
+  import CertificationForm from "../../containers/CertificationForm/CertificationForm.svelte";
+  import CertificationsService from "../../services/companies/certifications.service.js";
+  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
 
   export let id;
   export let media;
@@ -13,13 +14,18 @@
   export let description;
   export let onDelete;
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
 
   let editableMode = false;
   let displayStory = false;
+  let confirmationMode = false;
 
   function toggleEditableMode() {
     editableMode = !editableMode;
+  }
+
+  function toggleConfirmation() {
+    confirmationMode = !confirmationMode;
   }
 
   function toggleStoryDisplay() {
@@ -27,6 +33,7 @@
   }
 
   async function deleteCertification() {
+    toggleConfirmation;
     try {
       const certificationsService = new CertificationsService();
       const certificationData = await certificationsService.deleteCertificationElement(
@@ -139,6 +146,12 @@
   }
 </style>
 
+{#if confirmationMode && isSessionUserProfile}
+  <ConfirmationModal
+    title="Desea eliminar el Certificado {name}"
+    onAccept={deleteCertification}
+    onDecline={toggleConfirmation} />
+{/if}
 <div class="CertificationCard">
   {#if editableMode && isSessionUserProfile}
     <Modal on:click={toggleEditableMode}>
@@ -168,7 +181,7 @@
         size={25}
         color="gray"
         onEdit={toggleEditableMode}
-        onDelete={deleteCertification}
+        onDelete={toggleConfirmation}
         menuButton />
     </div>
   {/if}

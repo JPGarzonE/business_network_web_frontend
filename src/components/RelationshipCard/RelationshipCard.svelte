@@ -1,40 +1,47 @@
 <script>
-  import { getContext } from 'svelte';
-  import { goto } from '@sapper/app';
-  import { stores } from '@sapper/app';
-  import Modal from '../Modal.svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
-  import UnregisteredRelationshipForm from '../../containers/RelationshipForm/UnregisteredRelationshipForm.svelte';
-  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
+  import { getContext } from "svelte";
+  import { goto } from "@sapper/app";
+  import { stores } from "@sapper/app";
+  import Modal from "../Modal.svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
+  import UnregisteredRelationshipForm from "../../containers/RelationshipForm/UnregisteredRelationshipForm.svelte";
+  import UnregisteredRelationshipService from "../../services/relationships/unregistered.relationship.service.js";
+  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
 
   export let onDelete;
   export let isRegisteredCompany = false;
   export let username;
   export let relationshipData;
 
+  let confirmationMode = false;
+
   const { session } = stores();
 
   const {
-    name = '',
-    city = '',
-    country = '',
-    logoPath = '',
-    industry = '',
+    name = "",
+    city = "",
+    country = "",
+    logoPath = "",
+    industry = "",
   } = relationshipData ? relationshipData.unregistered : {};
 
-  const location = `${city ? city + '. ' : ''}${country}`;
+  const location = `${city ? city + ". " : ""}${country}`;
 
   //export let isVerified;
   //export let unregistered;
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
 
   let displayUnregisteredForm = false;
 
   function toggleEditableMode() {
     displayUnregisteredForm = !displayUnregisteredForm;
   }
+  function toggleConfirmation() {
+    confirmationMode = !confirmationMode;
+  }
 
   async function deleteRelationship() {
+    toggleConfirmation;
     try {
       const unregisteredServiceInstance = new UnregisteredRelationshipService();
       unregisteredServiceInstance.deleteUnregisteredRelationship(
@@ -132,6 +139,12 @@
   }
 </style>
 
+{#if confirmationMode && isSessionUserProfile}
+  <ConfirmationModal
+    title="Desea eliminar la relacion con {name}"
+    onAccept={deleteRelationship}
+    onDecline={toggleConfirmation} />
+{/if}
 {#if displayUnregisteredForm && isSessionUserProfile}
   <Modal on:click={toggleEditableMode}>
     <UnregisteredRelationshipForm
@@ -147,7 +160,7 @@
         size={25}
         color="gray"
         onEdit={toggleEditableMode}
-        onDelete={deleteRelationship}
+        onDelete={toggleConfirmation}
         menuButton />
     </div>
   {/if}

@@ -22,7 +22,6 @@
   }
   function toggleConfirmation() {
     confirmationMode = !confirmationMode;
-    console.log("toggleConfirmation -> confirmationMode", confirmationMode);
   }
 
   function toggleStoryDisplay() {
@@ -34,6 +33,7 @@
     editableMode = false;
   }
   async function onDeleteProduct() {
+    toggleConfirmation;
     try {
       const productService = new ProductService();
       const productData = await productService.deleteUserProduct(

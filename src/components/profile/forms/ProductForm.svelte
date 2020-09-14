@@ -165,9 +165,7 @@
   }
 
   async function updateProduct(dataToSubmit) {
-    console.log("Update product");
     if (newMediaFile) {
-      console.log("With image: ", newMediaFile);
       const productElementData = await productService.updateUserProductWithImage(
         $session.username,
         product.id,
@@ -175,17 +173,14 @@
         dataToSubmit,
         $session.accessToken
       );
-      console.log("then: ", productElementData);
       return productElementData;
     } else {
-      console.log("Without image");
       const productElementData = await productService.updateUserProduct(
         $session.username,
         product.id,
         dataToSubmit,
         $session.accessToken
       );
-      console.log("then: ", productElementData);
       return productElementData;
     }
   }

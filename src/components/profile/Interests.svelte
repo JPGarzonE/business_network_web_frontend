@@ -1,21 +1,20 @@
 <script context="module">
-  import { writable } from 'svelte/store';
+  import { writable } from "svelte/store";
   export const editableMode = writable(false);
 </script>
 
 <script>
-  import { stores } from '@sapper/app';
-  import { getContext } from 'svelte';
-  import ProfileInterestChip from '../interests/ProfileInterestChip.svelte';
+  import { stores } from "@sapper/app";
+  import { getContext } from "svelte";
+  import ProfileInterestChip from "../interests/ProfileInterestChip.svelte";
 
   export let interestElements;
 
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
   const { session } = stores();
 
   function toggleEditableMode() {
     editableMode.update((mode) => !mode);
-    console.log('edit click');
   }
 </script>
 
@@ -151,7 +150,6 @@
       <span
         class="ProfileInterests-button--variant"
         on:click={toggleEditableMode}>
-        <!-- editableMode.update(mode => {console.log("click"); return !mode}) -->
         {$editableMode ? 'Dejar de editar' : 'Editar'}
       </span>
       <span

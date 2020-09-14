@@ -1,15 +1,15 @@
 <script>
-  import ProfileLogo from './ProfileLogo.svelte';
-  import Verification from './Verification.svelte';
-  import HeaderForm from './forms/HeaderForm.svelte';
-  import Modal from '../Modal.svelte';
-  import ButtonChat from '../ButtonChat/ButtonChat.svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
-  import { stores } from '@sapper/app';
-  import { getContext } from 'svelte';
-  import Web from 'svelte-material-icons/Web.svelte';
-  import GoogleTranslate from 'svelte-material-icons/GoogleTranslate.svelte';
-  import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
+  import ProfileLogo from "./ProfileLogo.svelte";
+  import Verification from "./Verification.svelte";
+  import HeaderForm from "./forms/HeaderForm.svelte";
+  import Modal from "../Modal.svelte";
+  import ButtonChat from "../ButtonChat/ButtonChat.svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
+  import { stores } from "@sapper/app";
+  import { getContext } from "svelte";
+  import Web from "svelte-material-icons/Web.svelte";
+  import GoogleTranslate from "svelte-material-icons/GoogleTranslate.svelte";
+  import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
 
   export let name;
   export let industry;
@@ -17,7 +17,7 @@
   export let contact;
   export let location;
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
 
   let editableMode = false;
 
@@ -39,7 +39,7 @@
   $: {
     if (contact) {
       if (contact.phone)
-        contactPhone = `${contact.ext_phone ? contact.ext_phone : ''} ${
+        contactPhone = `${contact.ext_phone ? contact.ext_phone : ""} ${
           contact.phone
         }`;
 
@@ -59,7 +59,7 @@
 </script>
 
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .ProfileHeader-container {
     position: relative;

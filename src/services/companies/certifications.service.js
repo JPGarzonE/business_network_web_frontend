@@ -1,5 +1,5 @@
-import RequestService from '../requests/request.service.js';
-import ImageService from '../multimedia/image.service.js';
+import RequestService from "../requests/request.service.js";
+import ImageService from "../multimedia/image.service.js";
 
 export default class CertificationsService extends RequestService {
   constructor() {
@@ -12,22 +12,22 @@ export default class CertificationsService extends RequestService {
   }
 
   get CertificationPath() {
-    return '/certificates/';
+    return "/certificates/";
   }
 
   get CompaniesPath() {
-    return '/companies/';
+    return "/companies/";
   }
 
   getUserCertifications(username) {
     if (!username)
       throw new Error(
-        'Username is required in CertificationsService.getUserCertifications'
+        "Username is required in CertificationsService.getUserCertifications"
       );
 
     return this.get(
       this.getUserCertificationsPath(username),
-      { 'Content-Type': 'application/json' },
+      { "Content-Type": "application/json" },
       null
     );
   }
@@ -35,17 +35,17 @@ export default class CertificationsService extends RequestService {
   getCertificationElementById(username, CertificationID, accessToken) {
     if (!CertificationID)
       throw new Error(
-        'CertificationID is required in CertificationsService.getCertificationElementById'
+        "CertificationID is required in CertificationsService.getCertificationElementById"
       );
 
     if (!accessToken)
       throw new Error(
-        'accessToken is required in CertificationsService.getCertificationElementById'
+        "accessToken is required in CertificationsService.getCertificationElementById"
       );
 
     let headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
     };
 
     const RequestUrl =
@@ -53,7 +53,7 @@ export default class CertificationsService extends RequestService {
       username +
       this.CertificationPath +
       certificationID +
-      '/';
+      "/";
 
     return this.get(RequestUrl, headers, null);
   }
@@ -61,17 +61,17 @@ export default class CertificationsService extends RequestService {
   createUserCertificationElement(username, certificationData, accessToken) {
     if (!username)
       throw new Error(
-        'Username is required in CertificationsService.createUserCertificationElement'
+        "Username is required in CertificationsService.createUserCertificationElement"
       );
 
     if (!accessToken)
       throw new Error(
-        'accessToken is required in CertificationsService.createUserCertificationElement'
+        "accessToken is required in CertificationsService.createUserCertificationElement"
       );
 
     const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
     };
 
     return this.post(
@@ -89,22 +89,22 @@ export default class CertificationsService extends RequestService {
   ) {
     if (!username)
       throw new Error(
-        'Username is required in CertificationsService.createUserCertificationElementWithImage'
+        "Username is required in CertificationsService.createUserCertificationElementWithImage"
       );
 
     if (!image)
       throw new Error(
-        'logo is required in CertificationsService.createUserCertificationElementWithImage'
+        "logo is required in CertificationsService.createUserCertificationElementWithImage"
       );
 
     if (!accessToken)
       throw new Error(
-        'accessToken is required in CertificationsService.createUserCertificationElementWithImage'
+        "accessToken is required in CertificationsService.createUserCertificationElementWithImage"
       );
 
     const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
     };
 
     const Image = await this._imageService.uploadUserImage(image, accessToken);
@@ -125,26 +125,26 @@ export default class CertificationsService extends RequestService {
   ) {
     if (!username)
       throw new Error(
-        'Username is required in CertificationsService.updateUserCertificationElement'
+        "Username is required in CertificationsService.updateUserCertificationElement"
       );
 
     if (!certificationID)
       throw new Error(
-        'certificationID is required in CertificationsService.updateUserCertificationElement'
+        "certificationID is required in CertificationsService.updateUserCertificationElement"
       );
 
     if (!accessToken)
       throw new Error(
-        'accessToken is required in CertificationsService.updateUserCertificationElement'
+        "accessToken is required in CertificationsService.updateUserCertificationElement"
       );
 
     const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
     };
 
     const RequestUrl =
-      this.getUserCertificationsPath(username) + certificationID + '/';
+      this.getUserCertificationsPath(username) + certificationID + "/";
 
     return this.patch(RequestUrl, headers, certificationData);
   }
@@ -158,31 +158,31 @@ export default class CertificationsService extends RequestService {
   ) {
     if (!username)
       throw new Error(
-        'Username is required in CertificationsService.updateUserCertificationElementWithImage'
+        "Username is required in CertificationsService.updateUserCertificationElementWithImage"
       );
 
     if (!certificationID)
       throw new Error(
-        'certificationID is required in CertificationsService.updateUserCertificationElementWithImage'
+        "certificationID is required in CertificationsService.updateUserCertificationElementWithImage"
       );
 
     if (!image)
       throw new Error(
-        'logo is required in CertificationsService.updateUserCertificationElementWithImage'
+        "logo is required in CertificationsService.updateUserCertificationElementWithImage"
       );
 
     if (!accessToken)
       throw new Error(
-        'accessToken is required in CertificationsService.updateUserCertificationElementWithImage'
+        "accessToken is required in CertificationsService.updateUserCertificationElementWithImage"
       );
 
     const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
     };
 
     const RequestUrl =
-      this.getUserCertificationsPath(username) + certificationID + '/';
+      this.getUserCertificationsPath(username) + certificationID + "/";
 
     const Image = await this._imageService.uploadUserImage(image, accessToken);
     certificationData.logo_id = Image.id;
@@ -193,26 +193,26 @@ export default class CertificationsService extends RequestService {
   deleteCertificationElement(username, certificationID, accessToken) {
     if (!username)
       throw new Error(
-        'Username is required in CertificationsService.updateUserCertificationElementWithImage'
+        "Username is required in CertificationsService.deleteCertificationElement"
       );
 
     if (!certificationID)
       throw new Error(
-        'certificationID is required in CertificationsService.updateUserCertificationElementWithImage'
+        "certificationID is required in CertificationsService.deleteCertificationElement"
       );
 
     if (!accessToken)
       throw new Error(
-        'accessToken is required in CertificationsService.updateUserCertificationElementWithImage'
+        "accessToken is required in CertificationsService.deleteCertificationElement"
       );
 
     const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
     };
 
     const RequestUrl =
-      this.getUserCertificationsPath(username) + certificationID + '/';
+      this.getUserCertificationsPath(username) + certificationID + "/";
 
     return this.delete(RequestUrl, headers);
   }

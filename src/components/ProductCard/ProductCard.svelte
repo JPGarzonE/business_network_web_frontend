@@ -1,19 +1,14 @@
 <script>
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import { stores } from "@sapper/app";
   import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
   import Modal from "../Modal.svelte";
   import EditButton from "../EditButton/EditButton.svelte";
   import ProductForm from "../../containers/ProductForm/ProductForm.svelte";
+  import ProductService from "../../services/companies/product.service.js";
 
-  export let id;
-  export let media;
-  export let name;
-  export let category;
-  export let description;
-  export let minimum_price;
-  export let maximum_price;
-  export let currency_id;
+  export let productElement;
+  export let onDelete;
 
   const { session } = stores();
   const isSessionUserProfile = true;
@@ -21,6 +16,7 @@
 
   let editableMode = false;
   let displayStory = false;
+  let willDelete = false;
 
   function toggleEditableMode() {
     editableMode = !editableMode;
@@ -29,34 +25,38 @@
   function toggleStoryDisplay() {
     displayStory = !displayStory;
   }
+  onMount(() => {
+    console.log("productElement de prduct card", productElement);
+  });
 
   function reloadComponentData(ProductElementData) {
-    name = ProductElementData.name;
-    category = ProductElementData.category ? ProductElementData.category : null;
-    media = ProductElementData.media ? ProductElementData.media : null;
-    description = ProductElementData.description
-      ? ProductElementData.description
+    name = productElement.name;
+    category = productElement.category ? productElement.category : null;
+    media = productElement.media ? productElement.media : null;
+    description = productElement.description
+      ? productElement.description
       : null;
-    minimum_price = ProductElementData.minimum_price
-      ? ProductElementData.minimum_price
+    minimum_price = productElement.minimum_price
+      ? productElement.minimum_price
       : null;
-    maximum_price = ProductElementData.maximum_price
-      ? ProductElementData.maximum_price
+    maximum_price = productElement.maximum_price
+      ? productElement.maximum_price
       : null;
-    currency_id = ProductElementData.currency_id
-      ? ProductElementData.currency_id
+    currency_id = productElement.currency_id
+      ? productElement.currency_id.code
       : null;
     editableMode = false;
   }
-  async function deleteProduct() {
+  async function onDeleteProduct() {
     try {
       const productService = new ProductService();
-      const certificationData = await productService.deleteProductElement(
+      const productData = await productService.deleteUserProduct(
         $session.username,
-        id,
+        productElement.id,
         $session.accessToken
       );
-      onDelete(id);
+      onDelete(productElement.id);
+      console.log("onDeleteProduct -> productElement.id", productElement.id);
     } catch (e) {
       console.error(e);
     }
@@ -138,19 +138,21 @@
     <ProductForm
       on:click={toggleEditableMode}
       afterSubmit={reloadComponentData}
-      ProductElement={{ id: id, name: name, category: category, description: description, media: media, minimum_price: minimum_price, maximum_price: maximum_price, currency_id: currency_id }} />
+      ProductElement={productElement} />
   </Modal>
 {/if}
 <div class="ProductCard">
   <figure
-    class="ProductCard-media-container {media && media.path ? '' : 'ProductCard-media-container--empty'}"
-    on:click={toggleEditableMode}>
-    {#if media && media.path}
-      <img src={media.path} alt={name} class="ProductCard-media-image" />
+    class="ProductCard-media-container {productElement.images[0] && productElement.images[0].path ? '' : 'ProductCard-media-container--empty'}">
+    {#if productElement.images[0] && productElement.images[0].path}
+      <img
+        src={productElement.images[0].path}
+        alt={productElement.name}
+        class="ProductCard-media-image" />
     {:else}
       <img
         src="/images/profile_icon.svg"
-        alt={name}
+        alt={productElement.name}
         class="ProductCard-media-image--default" />
     {/if}
   </figure>
@@ -160,20 +162,20 @@
         size={25}
         color="gray"
         onEdit={toggleEditableMode}
-        onDelete={deleteProduct}
+        onDelete={onDeleteProduct}
         menuButton />
     </div>
   {/if}
 
-  <h4 class="ProductCard-name">{name}</h4>
+  <h4 class="ProductCard-name">{productElement.name}</h4>
 
-  {#if category}
-    <p class="ProductCard-story">{category}</p>
+  {#if productElement.category}
+    <p class="ProductCard-story">{productElement.category}</p>
   {/if}
-  {#if minimum_price != null && maximum_price != null}
+  {#if productElement.minimum_price != null && productElement.maximum_price != null}
     <p class="ProductCard-price">
-      {minimum_price} - {maximum_price}
-      {currency_id}
+      {productElement.minimum_price} - {productElement.maximum_price}
+      {productElement.currency.code}
     </p>
   {/if}
 </div>

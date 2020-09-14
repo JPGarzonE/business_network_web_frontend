@@ -1,4 +1,5 @@
 <script>
+  import { element } from "svelte/internal";
   import { getContext, onMount } from "svelte";
   import ProductService from "../../services/companies/product.service.js";
   import VerticalList from "../../components/componentLists/VerticalList.svelte";
@@ -13,20 +14,33 @@
   const productService = new ProductService();
 
   let editableMode = false;
+  let showedAll = false;
 
   function toggleEditableMode() {
     editableMode = !editableMode;
   }
+  function reloadComponentData(productData) {
+    productList = [...productList, productData];
+    editableMode = false;
+  }
 
+  function onDeleteProduct(id) {
+    console.log("onDeleteProduct -> id", id);
+    productList = productList.filter((item) => item.id !== id);
+    console.log("onDeleteProduct -> item", item);
+  }
   const loadMore = async () => {
     const productsData = await productService.getUserProducts(profileUsername);
     productList = productsData.results;
+    console.log("loadMore -> productList", productList);
+    showedAll = true;
   };
 </script>
 
 <style>
   .Products {
     display: flex;
+    flex-wrap: wrap;
   }
   .ProductsList {
     position: relative;
@@ -104,20 +118,14 @@
   {/if}
   <div class="Products">
     {#each productList as element}
-      <ProductCard
-        id={element.id}
-        media={element.media}
-        name={element.name}
-        category={element.category}
-        minimum_price={element.minimum_price}
-        maximum_price={element.maximum_price} />
+      <ProductCard productElement={element} onDelet={onDeleteProduct} />
     {:else}
       {#if productList.length >= 1}
         <p>Loading...</p>
       {/if}
     {/each}
   </div>
-  {#if productList.length >= 5}
+  {#if productList.length >= 4 && !showedAll}
     <div class="ProdusctShowMore" on:click={loadMore}>
       <span class="ProdusctShowMoreText">Ver más productos</span>
     </div>

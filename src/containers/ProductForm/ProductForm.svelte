@@ -1,52 +1,63 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
-  import Textfield from '@smui/textfield';
-  import Select, { Option } from '@smui/select';
-  import HelperText from '@smui/textfield/helper-text';
-  import CharacterCounter from '@smui/textfield/character-counter/index';
-  import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
-  import Dropzone from '../../components/Dropzone/Dropzone.svelte';
-  import ProductService from '../../services/companies/product.service.js';
-  import { CATEGORY } from '../../store/store.js';
-  export let afterSubmit;
+  import { getContext } from "svelte";
+  import { stores } from "@sapper/app";
+  import Textfield from "@smui/textfield";
+  import Select, { Option } from "@smui/select";
+  import HelperText from "@smui/textfield/helper-text";
+  import CharacterCounter from "@smui/textfield/character-counter/index";
+  import PlusCircleOutline from "svelte-material-icons/PlusCircleOutline.svelte";
+  import Dropzone from "../../components/Dropzone/Dropzone.svelte";
+  import ProductService from "../../services/companies/product.service.js";
+  import { CATEGORY } from "../../store/store.js";
   export let ProductElement; // Pass if is an update form
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
 
-  const fields = ['name', 'description'];
+  const fields = [
+    "name",
+    "description",
+    "certificates",
+    "minimum_purchase",
+    "tariff_heading",
+    "maximum_price",
+    "minimum_price",
+    "category",
+  ];
 
   const productEditData = ProductElement ? ProductElement : {};
+  console.log("productEditData", productEditData);
   const editMode = ProductElement !== undefined;
 
-  let name = productEditData.name ? productEditData.name : '';
+  let name = productEditData.name ? productEditData.name : "";
+  console.log("productEditData.name", productEditData.name);
+  console.log("name", name);
   let category = ProductElement
     ? ProductElement.category
     : CATEGORY
     ? CATEGORY[0]
-    : '';
+    : "";
   let description = productEditData.description
     ? productEditData.description
-    : '';
+    : "";
 
-  let media = productEditData.media ? productEditData.media : '';
+  let media = productEditData.media ? productEditData.media : {};
 
   let minimum_price = productEditData.minimum_price
     ? productEditData.minimum_price
-    : '';
+    : "";
   let maximum_price = productEditData.maximum_price
     ? productEditData.maximum_price
-    : '';
+    : "";
   let currency_id = productEditData.currency ? productEditData.currency.id : 1;
   let certificates = productEditData.certificates
     ? productEditData.certificates
-    : '';
+    : "";
   let minimum_purchase = productEditData.minimum_purchase
     ? productEditData.minimum_purchase
-    : '';
+    : "";
   let tariff_heading = productEditData.tariff_heading
     ? productEditData.tariff_heading
-    : '';
+    : "";
   let newMediaFiles = {
     main: undefined,
     secondary1: undefined,
@@ -61,17 +72,17 @@
   function validateName() {
     if (name && name.length >= 2) {
       if (name.length > 50) {
-        nameFeedback = 'Máximo 50 caracteres';
+        nameFeedback = "Máximo 50 caracteres";
         return false;
       }
 
-      nameFeedback = '';
+      nameFeedback = "";
       return true;
     } else if (name && name.length > 0 && name.length < 2) {
-      nameFeedback = 'Mínimo 2 caracteres';
+      nameFeedback = "Mínimo 2 caracteres";
       return false;
     } else {
-      nameFeedback = 'El nombre es obligatorio';
+      nameFeedback = "El nombre es obligatorio";
       return false;
     }
   }
@@ -87,10 +98,10 @@
       minimum_price.length > 0 &&
       minimum_price.length < 2
     ) {
-      minimumPriceFeedback = 'Mínimo 2 caracteres';
+      minimumPriceFeedback = "Mínimo 2 caracteres";
       return false;
     }
-    minimumPriceFeedback = '';
+    minimumPriceFeedback = "";
     return true;
   }
   function validateMaxPrice() {
@@ -104,28 +115,27 @@
       maximum_price.length > 0 &&
       maximum_price.length < 2
     ) {
-      maximumPriceFeedback = 'Mínimo 2 caracteres';
+      maximumPriceFeedback = "Mínimo 2 caracteres";
       return false;
     }
 
-    maximumPriceFeedback = '';
+    maximumPriceFeedback = "";
     return true;
   }
 
   function validateProductForm() {
     if (!validateName() && !validateMinPrice() && !validateMaxPrice()) {
-      formErrorMessage = 'Los datos no son válidos';
+      formErrorMessage = "Los datos no son válidos";
       throw new Error();
     } else {
-      formErrorMessage = '';
+      formErrorMessage = "";
     }
   }
 
   async function submit(event) {
-    console.log(ProductElement);
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
+    Target.style.cursor = "not-allowed";
 
     try {
       if (isSessionUserProfile) {
@@ -140,29 +150,24 @@
           description: description,
           currency_id: currency_id,
         };
-
         if (description) dataToSubmit.description = description;
-
-        let productElement;
         if (ProductElement && ProductElement.id)
           productElement = await submitUpdate(dataToSubmit);
         else productElement = await submitCreate(dataToSubmit);
-
-        afterSubmit(productElement);
       }
     } catch (e) {
-      console.error('submit -> e', e);
+      console.error("submit -> e", e);
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
+          formErrorMessage += `${formErrorMessage ? "\n" : ""}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 
@@ -194,7 +199,7 @@
     const productService = new ProductService();
 
     if (newMediaFiles.main) {
-      const productData = await productService.updateUserProductElementWithImage(
+      const productData = await productService.updateUserProductWithImage(
         $session.username,
         ProductElement.id,
         newMediaFiles,
@@ -204,7 +209,7 @@
 
       return productData;
     } else {
-      const productData = await productService.updateUserProductElement(
+      const productData = await productService.updateUserProduct(
         $session.username,
         ProductElement.id,
         dataToSubmit,
@@ -217,7 +222,7 @@
 </script>
 
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .ProductForm-headline {
     width: 100%;
@@ -296,27 +301,27 @@
     <Dropzone
       id="ProductForm"
       bind:imageFile={newMediaFiles.main}
-      imagePath={media ? media.path : null} />
+      imagePath={ProductElement.images[0] ? ProductElement.images[0].path : null} />
     <div class="productform-previewMini">
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary1}
-          imagePath={media ? media.path : null}
+          imagePath={ProductElement.images[1] ? ProductElement.images[1].path : null}
           small="true" />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary2}
-          imagePath={media ? media.path : null}
+          imagePath={ProductElement.images[2] ? ProductElement.images[2].path : null}
           small="true" />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary3}
-          imagePath={media ? media.path : null}
+          imagePath={ProductElement.images[3] ? ProductElement.images[3].path : null}
           small="true" />
       </div>
     </div>

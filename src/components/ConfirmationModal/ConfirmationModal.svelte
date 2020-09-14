@@ -19,6 +19,7 @@
     justify-content: center;
     align-items: center;
   }
+
   .ConfirmationModal-overlay {
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
@@ -30,22 +31,30 @@
     bottom: 0;
     z-index: 15;
   }
+  .ConfirmationModal-actions {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+  }
+  .ConfirmationModal-button {
+    margin: 0 15px;
+  }
 </style>
 
 <div class="ConfirmationModal">
   <div class="ConfirmationModal-overlay" on:click />
-  <section>
-    <div class="ConfirmationMOdalTitle">{title}</div>
-    <div>
-      <button
-        on:click={onAccept}
-        class="ProductForm-button button button--secondary">
-        Aceptar
-      </button>
+  <section class="ConfimationForm">
+    <h4 class="ConfirmationModal-title">{title}</h4>
+    <div class="ConfirmationModal-actions">
       <button
         on:click={onDecline}
-        class="ProductForm-button button button--secondary">
+        class="ConfirmationModal-button button button--primary">
         Cancelar
+      </button>
+      <button
+        on:click={onAccept}
+        class="ConfirmationModal-button button button--secondary">
+        Aceptar
       </button>
     </div>
   </section>

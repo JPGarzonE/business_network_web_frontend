@@ -14,6 +14,19 @@
   background-color: white;
   overflow-y: auto;
 }
+.ConfimationForm {
+  width: 100%;
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 20;
+  padding: 40px 30px;
+  background-color: white;
+  border-radius: 10px;
+  overflow-y: auto;
+}
 
 .ProfileForm-close-button {
   width: 40px;
@@ -161,6 +174,11 @@
     height: auto;
     max-height: calc(100vh - 64px);
     border-radius: 5px;
+  }
+
+  .ConfimationForm {
+    width: 30%;
+    height: 200px;
   }
 
   .ProfileForm-form {

@@ -11,6 +11,10 @@ export default class ProductService extends RequestService {
     return `/companies/${username}/products/`;
   }
 
+  getUserProductImagesPath(productId) {
+    return `/products/${productId}/images/`;
+  }
+
   get productsPath() {
     return '/products/';
   }
@@ -179,7 +183,6 @@ export default class ProductService extends RequestService {
         );
         filteredAgainImageList = [...filteredAgainImageList, Image.id];
       } else if (typeof filteredImageList[i] === 'number') {
-        console.log('entramos aqui tambien');
         filteredAgainImageList = [
           ...filteredAgainImageList,
           filteredImageList[i],
@@ -189,6 +192,32 @@ export default class ProductService extends RequestService {
     productData.images = filteredAgainImageList;
 
     return this.patch(RequestUrl, headers, productData);
+  }
+
+  deleteUserProductImage(productID, imageID, accessToken) {
+    if (!productID)
+      throw new Error(
+        'productID is required in ProductService.deleteUserProduct'
+      );
+
+    if (!imageID)
+      throw new Error(
+        'productID is required in ProductService.deleteUserProduct'
+      );
+
+    if (!accessToken)
+      throw new Error(
+        'accessToken is required in ProductService.deleteUserProduct'
+      );
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Token ' + accessToken,
+    };
+
+    const RequestUrl = this.getUserProductImagesPath(productID) + imageID + '/';
+
+    return this.delete(RequestUrl, headers);
   }
 
   deleteUserProduct(username, productID, accessToken) {

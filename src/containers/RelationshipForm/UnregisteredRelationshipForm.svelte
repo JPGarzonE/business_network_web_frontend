@@ -140,10 +140,6 @@
             relationshipType
           );
           afterSubmit(unregisteredRelationshipData);
-          console.log(
-            'submit -> unregisteredRelationshipData',
-            unregisteredRelationshipData
-          );
         } else {
           validateUnregisteredRelationshipForm();
           let dataToSubmit = {

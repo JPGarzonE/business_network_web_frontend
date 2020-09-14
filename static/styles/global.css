@@ -21,9 +21,11 @@
   --button-color: #ff9c41;
 
   --lightest-gray: rgba(0, 0, 0, 0.05);
+  --super-extra-light-gray: rgba(0, 0, 0, 0.25);
   --extra-light-gray: #f1f0f0;
   --extra-light-gray-transparent: rgb(222, 222, 222, 0.5);
   --white: #ffffff;
+  --light-orange: #ffe3c9;
 
   --title-font: 'Metropolis', sans-serif;
   --body-font: 'Helvetica 45 Light', sans-serif;

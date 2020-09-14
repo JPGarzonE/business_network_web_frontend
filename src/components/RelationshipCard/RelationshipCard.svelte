@@ -53,6 +53,7 @@
 
   function reloadComponentData(unregisteredRelationshipData) {
     relationshipData.type = unregisteredRelationshipData.type;
+    displayUnregisteredForm = false;
   }
 </script>
 
@@ -60,14 +61,18 @@
   .RelationshipCard {
     width: auto;
     display: flex;
+    padding: 0 20px;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     padding: 10px 5px;
     border-radius: 3px;
     font-size: 1.2em;
+    width: 180px;
   }
   .RelationshipCard-wrapper {
     position: relative;
+    width: 210px;
   }
 
   .selectable:hover {
@@ -83,7 +88,8 @@
   }
 
   .RelationshipCard-logo-container {
-    width: 20%;
+    width: 100%;
+    max-width: 150px;
     display: flex;
     justify-content: center;
     margin: 0px 10px;
@@ -91,7 +97,7 @@
   }
 
   .RelationshipCard-logo-image {
-    width: 35px;
+    width: 150px;
     border: 1px solid var(--secondary-text-color);
     border-radius: inherit;
   }
@@ -123,22 +129,6 @@
   .RelationshipCard-link {
     text-decoration: none;
     color: inherit;
-  }
-
-  @media screen and (min-width: 700px) {
-    .RelationshipCard {
-      max-width: 230px;
-      flex-direction: column;
-    }
-
-    .RelationshipCard-logo-container {
-      width: 100%;
-      padding: 10px;
-    }
-
-    .RelationshipCard-logo-image {
-      width: 180px;
-    }
   }
 </style>
 

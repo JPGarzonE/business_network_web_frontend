@@ -10,28 +10,21 @@
   const isSessionUserProfile = true || getContext("isSessionUserProfile");
   const profileUsername = getContext("profileUsername");
   const certificationsService = new CertificationsService();
-  let CertificationsList = [];
+  export let certificationsList = [];
 
   let editableMode = false;
-
-  onMount(async () => {
-    const data = await certificationsService.getUserCertifications(
-      profileUsername
-    );
-    CertificationsList = data.results;
-  });
 
   function toggleEditableMode() {
     editableMode = !editableMode;
   }
 
   function reloadComponentData(certificationData) {
-    CertificationsList = [...CertificationsList, certificationData];
+    certificationsList = [...certificationsList, certificationData];
     editableMode = false;
   }
 
   function onDeleteCertification(id) {
-    CertificationsList = CertificationsList.filter((item) => item.id !== id);
+    certificationsList = certificationsList.filter((item) => item.id !== id);
   }
 </script>
 
@@ -40,12 +33,13 @@
     position: relative;
     margin: 0 20px;
     padding: 40px 20px 30px;
-    border: 2px solid var(--principal-color);
     border-radius: 5px;
   }
 
   .CertificationsList-headline {
+    padding: 15px;
     margin: 0 0 30px;
+    border-bottom: 0.05em solid var(--light-color);
     color: var(--principal-text-color);
     font-size: 1.1em;
     font-weight: 100;
@@ -74,12 +68,10 @@
     .CertificationsList-headline {
       margin-bottom: 15px;
       padding: 15px;
-      border-bottom: 0.05em solid var(--light-color);
     }
 
     .CertificationsList {
-      border: none;
-      padding: unset;
+      padding: 0;
     }
   }
 </style>
@@ -102,8 +94,8 @@
   {/if}
   <HorizontalScrollList
     id="certifications-list"
-    beginningItemsNumber={CertificationsList ? CertificationsList.length : 0}>
-    {#each CertificationsList as element}
+    beginningItemsNumber={certificationsList.length}>
+    {#each certificationsList as element}
       <CertificationCard
         id={element.certificate.id}
         media={element.certificate.logo}

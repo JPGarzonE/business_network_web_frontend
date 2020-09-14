@@ -35,6 +35,7 @@
       ...unregisteredRelationships,
       unregisteredRelationshipData,
     ];
+    displayUnregisteredCreateForm = false;
   }
   function onDeleteUnregisteredRelationship(id) {
     unregisteredRelationships = unregisteredRelationships.filter(
@@ -45,13 +46,11 @@
 
 <style>
   .ProfileRelationships {
-    grid-area: relationships;
     position: relative;
     margin: 0 20px;
     margin-bottom: 0px;
     padding: 40px 20px 30px;
     padding-bottom: 30px;
-    border: 2px solid var(--principal-color);
     border-bottom: none;
     border-radius: 5px;
     border-bottom-left-radius: 0px;
@@ -59,6 +58,8 @@
   }
 
   .ProfileRelationships-headline {
+    border-bottom: 0.05em solid var(--light-color);
+    padding: 15px;
     margin: 0 0 30px;
     color: var(--principal-text-color);
     font-size: 1.1em;
@@ -87,13 +88,10 @@
     .ProfileRelationships {
       margin: 20px;
       padding: unset;
-      border: none;
     }
 
     .ProfileRelationships-headline {
       margin-bottom: 15px;
-      padding: 15px;
-      border-bottom: 0.05em solid var(--light-color);
     }
   }
 </style>
@@ -123,7 +121,9 @@
       <CreateButton size={25} />
     </div>
   {/if}
-  <HorizontalScrollList id="relationships">
+  <HorizontalScrollList
+    id="relationships"
+    beginningItemsNumber={unregisteredRelationships.length}>
     {#each unregisteredRelationships as relationshipData}
       <RelationshipCard
         {relationshipData}

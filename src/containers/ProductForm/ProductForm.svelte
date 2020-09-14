@@ -1,106 +1,131 @@
 <script>
-  import { getContext } from "svelte";
-  import { stores } from "@sapper/app";
-  import Textfield from "@smui/textfield";
-  import Select, { Option } from "@smui/select";
-  import HelperText from "@smui/textfield/helper-text";
-  import CharacterCounter from "@smui/textfield/character-counter/index";
-  import PlusCircleOutline from "svelte-material-icons/PlusCircleOutline.svelte";
-  import Dropzone from "../../components/Dropzone/Dropzone.svelte";
-  import ProductService from "../../services/companies/product.service.js";
-  import { CATEGORY } from "../../store/store.js";
+  import { getContext } from 'svelte';
+  import { stores } from '@sapper/app';
+  import Textfield from '@smui/textfield';
+  import Select, { Option } from '@smui/select';
+  import HelperText from '@smui/textfield/helper-text';
+  import CharacterCounter from '@smui/textfield/character-counter/index';
+  import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
+  import Dropzone from '../../components/Dropzone/Dropzone.svelte';
+  import ProductService from '../../services/companies/product.service.js';
+  import { CATEGORY } from '../../store/store.js';
   export let afterSubmit;
   export let ProductElement; // Pass if is an update form
   const { session } = stores();
-  const isSessionUserProfile = true;
-  /*getContext("isSessionUserProfile");*/
+  const isSessionUserProfile = getContext('isSessionUserProfile');
+
+  const fields = ['name', 'description'];
+
+  const productEditData = ProductElement ? ProductElement : {};
+  const editMode = ProductElement !== undefined;
+
+  let name = productEditData.name ? productEditData.name : '';
   let category = ProductElement
     ? ProductElement.category
     : CATEGORY
     ? CATEGORY[0]
-    : "";
-  const fields = ["name", "description"];
-
-  const productEditData = ProductElement ? ProductElement : {};
-
-  let name = productEditData.name ? productEditData.name : "";
+    : '';
   let description = productEditData.description
     ? productEditData.description
-    : "";
-  let media = productEditData.media ? productEditData.media : "";
+    : '';
+
+  let media = productEditData.media ? productEditData.media : '';
+
   let minimum_price = productEditData.minimum_price
     ? productEditData.minimum_price
-    : "";
+    : '';
   let maximum_price = productEditData.maximum_price
     ? productEditData.maximum_price
-    : "";
-  let currency_id = productEditData.currency_id
-    ? productEditData.currency_id
-    : "";
+    : '';
+  let currency_id = productEditData.currency ? productEditData.currency.id : 1;
   let certificates = productEditData.certificates
     ? productEditData.certificates
-    : "";
+    : '';
   let minimum_purchase = productEditData.minimum_purchase
     ? productEditData.minimum_purchase
-    : "";
+    : '';
   let tariff_heading = productEditData.tariff_heading
     ? productEditData.tariff_heading
-    : "";
-  let newMediaFile;
+    : '';
+  let newMediaFiles = {
+    main: undefined,
+    secondary1: undefined,
+    secondary2: undefined,
+    secondary3: undefined,
+  };
   let formErrorMessage = null;
   let nameFeedback;
-  let descriptionFeedback;
+  let minimumPriceFeedback;
+  let maximumPriceFeedback;
 
   function validateName() {
     if (name && name.length >= 2) {
       if (name.length > 50) {
-        nameFeedback = "Máximo 50 caracteres";
+        nameFeedback = 'Máximo 50 caracteres';
         return false;
       }
 
-      nameFeedback = "";
+      nameFeedback = '';
       return true;
     } else if (name && name.length > 0 && name.length < 2) {
-      nameFeedback = "Mínimo 2 caracteres";
+      nameFeedback = 'Mínimo 2 caracteres';
       return false;
     } else {
-      nameFeedback = "El nombre es obligatorio";
+      nameFeedback = 'El nombre es obligatorio';
       return false;
     }
   }
 
-  function validateDescription() {
-    if (description && description.length >= 2) {
-      if (description.length > 155) {
-        descriptionFeedback = `${description.length} caracteres - Máximo 155`;
+  function validateMinPrice() {
+    if (minimum_price && minimum_price.length >= 2) {
+      if (minimum_price.length > 50) {
+        minimumPriceFeedback = `${minimum_price.length} caracteres - Máximo 50`;
         return false;
       }
     } else if (
-      description &&
-      description.length > 0 &&
-      description.length < 2
+      minimum_price &&
+      minimum_price.length > 0 &&
+      minimum_price.length < 2
     ) {
-      descriptionFeedback = "Mínimo 2 caracteres";
+      minimumPriceFeedback = 'Mínimo 2 caracteres';
+      return false;
+    }
+    minimumPriceFeedback = '';
+    return true;
+  }
+  function validateMaxPrice() {
+    if (maximum_price && maximum_price.length >= 2) {
+      if (maximum_price.length > 50) {
+        maximumPriceFeedback = `${maximum_price.length} caracteres - Máximo 50`;
+        return false;
+      }
+    } else if (
+      maximum_price &&
+      maximum_price.length > 0 &&
+      maximum_price.length < 2
+    ) {
+      maximumPriceFeedback = 'Mínimo 2 caracteres';
       return false;
     }
 
-    descriptionFeedback = "";
+    maximumPriceFeedback = '';
     return true;
   }
 
   function validateProductForm() {
-    if (!(validateName() && validateDescription())) {
-      formErrorMessage = "Los datos no son válidos";
+    if (!validateName() && !validateMinPrice() && !validateMaxPrice()) {
+      formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
-      formErrorMessage = "";
+      formErrorMessage = '';
     }
   }
 
   async function submit(event) {
+    console.log(ProductElement);
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = "not-allowed";
+    Target.style.cursor = 'not-allowed';
 
     try {
       if (isSessionUserProfile) {
@@ -126,27 +151,29 @@
         afterSubmit(productElement);
       }
     } catch (e) {
+      console.error('submit -> e', e);
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? "\n" : ""}${field}: ${
+          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = "pointer";
+      Target.style.cursor = 'pointer';
     }
   }
 
   async function submitCreate(dataToSubmit) {
     const productService = new ProductService();
 
-    if (newMediaFile) {
+    if (newMediaFiles.main) {
+      const imagesList = Object.values(newMediaFiles);
       const productData = await productService.createUserProductWithImage(
         $session.username,
-        newMediaFile,
+        imagesList,
         dataToSubmit,
         $session.accessToken
       );
@@ -166,11 +193,11 @@
   async function submitUpdate(dataToSubmit) {
     const productService = new ProductService();
 
-    if (newMediaFile) {
+    if (newMediaFiles.main) {
       const productData = await productService.updateUserProductElementWithImage(
         $session.username,
         ProductElement.id,
-        newMediaFile,
+        newMediaFiles,
         dataToSubmit,
         $session.accessToken
       );
@@ -190,7 +217,7 @@
 </script>
 
 <style>
-  @import "/styles/form.css";
+  @import '/styles/form.css';
 
   .ProductForm-headline {
     width: 100%;
@@ -268,27 +295,27 @@
   <div class="ProductForm-preview">
     <Dropzone
       id="ProductForm"
-      bind:imageFile={newMediaFile}
+      bind:imageFile={newMediaFiles.main}
       imagePath={media ? media.path : null} />
     <div class="productform-previewMini">
       <div>
         <Dropzone
           id="ProductForm"
-          bind:imageFile={newMediaFile}
+          bind:imageFile={newMediaFiles.secondary1}
           imagePath={media ? media.path : null}
           small="true" />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
-          bind:imageFile={newMediaFile}
+          bind:imageFile={newMediaFiles.secondary2}
           imagePath={media ? media.path : null}
           small="true" />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
-          bind:imageFile={newMediaFile}
+          bind:imageFile={newMediaFiles.secondary3}
           imagePath={media ? media.path : null}
           small="true" />
       </div>
@@ -302,13 +329,13 @@
         variant="outlined"
         bind:value={name}
         label="Nombre del Producto"
-        input$aria-controls="certificate-name"
-        input$aria-describedby="certificate-name"
-        input$maxlength="50" />
-      <HelperText id="certificate-name">Máximo 50 caracteres</HelperText>
+        input$aria-controls="product-name"
+        input$aria-describedby="product-name"
+        input$maxlength="50"
+        on:input={validateName} />
+      <HelperText id="product-name">Máximo 50 caracteres</HelperText>
     </div>
     <div class="form-group">
-      <HelperText id="certificate-name">Máximo 50 caracteres</HelperText>
       <Select
         style="width: 100%;"
         variant="outlined"
@@ -326,19 +353,23 @@
         <Textfield
           style="width: 45%;"
           variant="outlined"
+          type="number"
           bind:value={minimum_price}
           label="Precio mínimo"
-          input$aria-controls="certificate-name"
-          input$aria-describedby="certificate-name"
-          input$maxlength="50" />
+          input$aria-controls="product-name"
+          input$aria-describedby="product-name"
+          input$maxlength="50"
+          on:input={validateMinPrice} />
         <Textfield
           style="width: 45%;"
           variant="outlined"
+          type="number"
           bind:value={maximum_price}
           label="Precio máximo"
-          input$aria-controls="certificate-name"
-          input$aria-describedby="certificate-name"
-          input$maxlength="50" />
+          input$aria-controls="product-name"
+          input$aria-describedby="product-name"
+          input$maxlength="50"
+          on:input={validateMaxPrice} />
       </div>
     </div>
     <div class="form-group">
@@ -347,10 +378,10 @@
         variant="outlined"
         bind:value={tariff_heading}
         label="Partida arancelaria"
-        input$aria-controls="certificate-name"
-        input$aria-describedby="certificate-name"
+        input$aria-controls="product-name"
+        input$aria-describedby="product-name"
         input$maxlength="50" />
-      <HelperText id="certificate-name">Máximo 50 caracteres</HelperText>
+      <HelperText id="product-name">Máximo 50 caracteres</HelperText>
     </div>
     <div class="form-group">
       <Textfield
@@ -358,10 +389,10 @@
         variant="outlined"
         bind:value={minimum_purchase}
         label="Compra mínima"
-        input$aria-controls="certificate-name"
-        input$aria-describedby="certificate-name"
+        input$aria-controls="product-name"
+        input$aria-describedby="product-name"
         input$maxlength="50" />
-      <HelperText id="certificate-name">Máximo 50 caracteres</HelperText>
+      <HelperText id="product-name">Máximo 50 caracteres</HelperText>
     </div>
     <div class="form-group">
       <Textfield
@@ -369,10 +400,10 @@
         variant="outlined"
         bind:value={certificates}
         label="Certificaciones"
-        input$aria-controls="certificate-name"
-        input$aria-describedby="certificate-name"
+        input$aria-controls="product-name"
+        input$aria-describedby="product-name"
         input$maxlength="50" />
-      <HelperText id="certificate-name">Máximo 50 caracteres</HelperText>
+      <HelperText id="product-name">Máximo 50 caracteres</HelperText>
     </div>
     <div class="form-group">
       <Textfield
@@ -381,8 +412,8 @@
         variant="outlined"
         bind:value={description}
         label="Añadir descripción"
-        input$aria-controls="certificate-description"
-        input$aria-describedby="certificate-description"
+        input$aria-controls="product-description"
+        input$aria-describedby="product-description"
         input$maxlength="155">
         <CharacterCounter>0 / 50</CharacterCounter>
       </Textfield>

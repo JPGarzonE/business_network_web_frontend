@@ -81,20 +81,15 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    border-radius: 10px;
-    border-bottom-left-radius: unset;
-    border-bottom-right-radius: unset;
     box-shadow: 0px 4px 4px var(--lightest-gray);
   }
 
   .CertificationCard-media-image {
     width: 100%;
     max-height: 100%;
+    border-radius: 5px;
     display: flex;
     object-fit: contain;
-    border-radius: 10px;
-    border-bottom-left-radius: unset;
-    border-bottom-right-radius: unset;
   }
 
   .CertificationCard-name {

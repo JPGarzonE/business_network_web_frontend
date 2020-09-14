@@ -8,6 +8,16 @@
   export let onDelete = () => {};
   export let menuButton = false;
   let menu = false;
+  let open = false;
+
+  const editAction = () => {
+    menu.setOpen(false);
+    onEdit();
+  };
+  const deleteAction = () => {
+    menu.setOpen(false);
+    onDelete();
+  };
 </script>
 
 <style>
@@ -16,10 +26,19 @@
     background-color: unset;
     border: 2px solid transparent;
     padding: 2px 4px;
+    border-radius: 100%;
   }
   .EditButton:hover {
-    border-radius: 100%;
-    border: 2px solid gray;
+    background-color: var(--white);
+    box-shadow: 0px 0px 4px var(--super-extra-light-gray);
+  }
+
+  .EditButton:active {
+    background-color: var(--light-orange);
+  }
+
+  :global(.EditButton:hover path) {
+    fill: var(--button-color);
   }
   :global(.EditButton-menu) {
     left: unset !important;
@@ -28,7 +47,7 @@
 </style>
 
 <button
-  class="EditButton"
+  class="EditButton {open ? 'active' : ''}"
   on:click={menuButton ? () => menu.setOpen(true) : onEdit}
   bind:this={anchorButton}>
   <PencilOutline {size} {color} />
@@ -37,12 +56,13 @@
   class="EditButton-menu"
   bind:this={menu}
   anchor={false}
+  {open}
   bind:anchorElement={anchorButton}
   anchorCorner="BOTTOM_LEFT">
   <button
     class="button list-button"
-    on:click|stopPropagation={onEdit}>Editar</button>
+    on:click|stopPropagation={editAction}>Editar</button>
   <button
     class="button list-button"
-    on:click|stopPropagation={onDelete}>Eliminar</button>
+    on:click|stopPropagation={deleteAction}>Eliminar</button>
 </Menu>

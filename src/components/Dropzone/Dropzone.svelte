@@ -1,13 +1,13 @@
 <script>
-  import Dropzone from "svelte-file-dropzone";
-  import CloudUploadOutline from "svelte-material-icons/CloudUploadOutline.svelte";
-  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
-  import ImageOutline from "svelte-material-icons/ImageOutline.svelte";
+  import Dropzone from 'svelte-file-dropzone';
+  import CloudUploadOutline from 'svelte-material-icons/CloudUploadOutline.svelte';
+  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
+  import ImageOutline from 'svelte-material-icons/ImageOutline.svelte';
   export let imagePath; // If not, isn't required
   export let multiple = false;
   export let small = false;
   export let imageFile; // For binding the value from an external component
-  let uploadedImage = "";
+  let uploadedImage = '';
 
   let files = {
     accepted: [],
@@ -15,7 +15,6 @@
   };
 
   function handleFilesSelect(e) {
-    console.log("handleFilesSelect -> e", e);
     URL.revokeObjectURL(uploadedImage);
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = multiple

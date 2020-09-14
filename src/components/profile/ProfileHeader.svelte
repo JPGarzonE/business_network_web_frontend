@@ -65,14 +65,16 @@
     position: relative;
     width: auto;
     height: auto;
-    min-height: 400px;
+    max-width: 300px;
+    min-height: 430px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 85px;
     padding: 0px;
     border-radius: 7px;
+    border: 1px solid var(--principal-color);
+    margin: 90px auto 20px;
   }
   .ProfileHeader-NameContainer {
     display: flex;
@@ -84,6 +86,7 @@
     width: 100%;
     min-width: 210px;
     position: relative;
+    margin-top: -100px;
     margin-bottom: 20px;
   }
 
@@ -122,7 +125,7 @@
   .ProfileHeader-data {
     width: 75%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     align-self: flex-start;
     margin-bottom: 0.9rem;
@@ -142,29 +145,6 @@
   @media screen and (min-width: 1024px) {
     .ProfileHeader-name {
       font-size: 1.3em;
-    }
-  }
-
-  @media screen and (min-width: 850px) {
-    .ProfileHeader-container {
-      max-width: 300px;
-      min-height: 430px;
-      margin: 90px auto 20px;
-      border: 1px solid var(--principal-color);
-    }
-
-    .ProfileHeader-content {
-      margin-top: -100px;
-    }
-
-    .ProfileHeader-data {
-      justify-content: flex-start;
-    }
-  }
-
-  @supports (display: grid) {
-    .ProfileHeader {
-      grid-area: header;
     }
   }
 </style>

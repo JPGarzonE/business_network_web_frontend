@@ -1,46 +1,46 @@
 <script>
-  import ProductService from '../../../services/companies/product.service.js';
-  import ServiceService from '../../../services/companies/service.service.js';
-  import { stores } from '@sapper/app';
-  import { getContext } from 'svelte';
+  import ProductService from "../../../services/companies/product.service.js";
+  import ServiceService from "../../../services/companies/service.service.js";
+  import { stores } from "@sapper/app";
+  import { getContext } from "svelte";
 
   export let afterSubmit;
   export let type;
   export let product; // Pass if is an update form
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
   const productService = new ProductService();
   const serviceService = new ServiceService();
 
-  const Types = ['Producto', 'Servicio'];
-  const fields = ['name', 'category', 'description'];
+  const Types = ["Producto", "Servicio"];
+  const fields = ["name", "category", "description"];
 
   if (!type) type = Types[0];
-  let name = product ? product.name : null;
-  let category = product ? product.category : null;
-  let description = product ? product.description : null;
-  let media = product ? product.media : null;
+  let name = product ? product.name : "";
+  let category = product ? product.category : "";
+  let description = product ? product.description : "";
+  let media = product ? product.media : "";
   let newMediaFile;
 
   let nameFeedback;
   let categoryFeedback;
   let descriptionFeedback;
 
-  let formErrorMessage = '';
+  let formErrorMessage = "";
 
   function validateName() {
     if (name && name.length >= 2) {
       if (name.length > 50) {
-        nameFeedback = 'Máximo 50 caracteres';
+        nameFeedback = "Máximo 50 caracteres";
       }
 
-      nameFeedback = '';
+      nameFeedback = "";
       return true;
     } else if (name && name.length > 0 && name.length < 2) {
-      nameFeedback = 'Mínimo 2 caracteres';
+      nameFeedback = "Mínimo 2 caracteres";
       return false;
     } else {
-      nameFeedback = 'El nombre es obligatorio';
+      nameFeedback = "El nombre es obligatorio";
       return false;
     }
   }
@@ -48,14 +48,14 @@
   function validateCategory() {
     if (category && category.length >= 3) {
       if (category.length > 60) {
-        categoryFeedback = 'Máximo 60 caracteres';
+        categoryFeedback = "Máximo 60 caracteres";
         return false;
       }
 
-      categoryFeedback = '';
+      categoryFeedback = "";
       return true;
     } else if (category && category.length > 0 && category.length < 3) {
-      categoryFeedback = 'Mínimo 3 caracteres';
+      categoryFeedback = "Mínimo 3 caracteres";
       return false;
     }
 
@@ -75,27 +75,27 @@
       description.length > 0 &&
       description.length < 2
     ) {
-      descriptionFeedback = 'Mínimo 2 caracteres';
+      descriptionFeedback = "Mínimo 2 caracteres";
       return false;
     }
 
-    descriptionFeedback = '';
+    descriptionFeedback = "";
     return true;
   }
 
   function validateProductForm() {
     if (!(validateName() && validateCategory() && validateDescription())) {
-      formErrorMessage = 'Los datos no son válidos';
+      formErrorMessage = "Los datos no son válidos";
       throw new Error();
     } else {
-      formErrorMessage = '';
+      formErrorMessage = "";
     }
   }
 
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
+    Target.style.cursor = "not-allowed";
 
     try {
       if (isSessionUserProfile) {
@@ -107,7 +107,7 @@
         if (description) dataToSubmit.description = description;
 
         let productElement;
-        if (type.toLowerCase() === 'producto') {
+        if (type.toLowerCase() === "producto") {
           if (product) productElement = await updateProduct(dataToSubmit);
           else productElement = await createProduct(dataToSubmit);
         } else {
@@ -121,23 +121,34 @@
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
+          formErrorMessage += `${formErrorMessage ? "\n" : ""}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 
-  async function createProduct(dataToSubmit) {
+  async function createProduct() {
     if (newMediaFile) {
       const productElementData = await productService.createUserProductWithImage(
         $session.username,
         newMediaFile,
-        dataToSubmit,
+        {
+          category: "string",
+          name: "string",
+          minimum_price: 10,
+          maximum_price: 30,
+          tariff_heading: "string",
+          minimum_purchase: "string",
+          description: "string",
+          currency_id: 0,
+          certificates: [0],
+          images: [0],
+        },
         $session.accessToken
       );
 
@@ -154,9 +165,9 @@
   }
 
   async function updateProduct(dataToSubmit) {
-    console.log('Update product');
+    console.log("Update product");
     if (newMediaFile) {
-      console.log('With image: ', newMediaFile);
+      console.log("With image: ", newMediaFile);
       const productElementData = await productService.updateUserProductWithImage(
         $session.username,
         product.id,
@@ -164,17 +175,17 @@
         dataToSubmit,
         $session.accessToken
       );
-      console.log('then: ', productElementData);
+      console.log("then: ", productElementData);
       return productElementData;
     } else {
-      console.log('Without image');
+      console.log("Without image");
       const productElementData = await productService.updateUserProduct(
         $session.username,
         product.id,
         dataToSubmit,
         $session.accessToken
       );
-      console.log('then: ', productElementData);
+      console.log("then: ", productElementData);
       return productElementData;
     }
   }
@@ -225,7 +236,7 @@
 </script>
 
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .ProductForm-headline {
     width: 100%;
@@ -415,7 +426,6 @@
         <p class="form-control-feedback">Máximo 60 caracteres</p>
       {/if}
     </div>
-
     <div class="form-group">
       <textarea
         name="description"
@@ -439,7 +449,7 @@
     </div>
 
     <button
-      on:click|preventDefault={submit}
+      on:click|preventDefault={createProduct}
       class="ProductForm-button button button--principal">
       Aceptar y mostrar
     </button>

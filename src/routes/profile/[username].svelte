@@ -1,18 +1,18 @@
 <script context="module">
-  import { API_URL } from '../../store/store.js';
-  import UserService from '../../services/users/user.service.js';
-  import ContactService from '../../services/companies/contact.service.js';
-  import LocationService from '../../services/companies/location.service.js';
-  import ProductService from '../../services/companies/product.service.js';
-  import ServiceService from '../../services/companies/service.service.js';
-  import InterestService from '../../services/companies/interest.service.js';
-  import RelationshipService from '../../services/relationships/relationship.service.js';
-  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
+  import { API_URL } from "../../store/store.js";
+  import UserService from "../../services/users/user.service.js";
+  import ContactService from "../../services/companies/contact.service.js";
+  import LocationService from "../../services/companies/location.service.js";
+  import ProductService from "../../services/companies/product.service.js";
+  import ServiceService from "../../services/companies/service.service.js";
+  import InterestService from "../../services/companies/interest.service.js";
+  import RelationshipService from "../../services/relationships/relationship.service.js";
+  import UnregisteredRelationshipService from "../../services/relationships/unregistered.relationship.service.js";
 
   export async function preload(page, session) {
     const userService = new UserService();
     const { username } = page.params;
-    console.log('Preload session: ', session);
+    console.log("Preload session: ", session);
 
     const data = await userService.getUser(username, session.accessToken);
     const user = data.user;
@@ -29,7 +29,7 @@
         : null;
 
     const principalLocation = await loadCompanyPrincipalLocation(username);
-    const portfolioElements = await loadPortfolio(username);
+    const productList = await loadPortfolio(username);
     const unregisteredRelationships = await loadUnregisteredRelationships(
       username
     );
@@ -39,7 +39,7 @@
       isSessionUserProfile,
       contact: principalContact,
       location: principalLocation,
-      portfolioElements,
+      productList,
       interestElements,
       unregisteredRelationships,
     };
@@ -62,7 +62,10 @@
 
   async function loadPortfolio(username) {
     const productService = new ProductService();
-    const productsData = await productService.getUserProducts(username);
+    const productsData = await productService.getUserProducts(username, {
+      page: 0,
+      pageLength: 4,
+    });
     const products = productsData.results;
 
     const serviceService = new ServiceService();
@@ -100,29 +103,29 @@
 </script>
 
 <script>
-  import { setContext } from 'svelte';
+  import { setContext } from "svelte";
 
-  import Header from '../../components/Header.svelte';
-  import Footer from '../../components/Footer.svelte';
-  import ProfileHeader from '../../components/profile/ProfileHeader.svelte';
-  import Portfolio from '../../components/profile/Portfolio.svelte';
-  import Interests from '../../components/profile/Interests.svelte';
-  import Relationships from '../../containers/Relationships/Relationships.svelte';
-  import CertificationsList from '../../containers/CertificationsList/CertificationsList.svelte';
+  import Header from "../../components/Header.svelte";
+  import Footer from "../../components/Footer.svelte";
+  import ProfileHeader from "../../components/profile/ProfileHeader.svelte";
+  import Interests from "../../components/profile/Interests.svelte";
+  import Relationships from "../../containers/Relationships/Relationships.svelte";
+  import CertificationsList from "../../containers/CertificationsList/CertificationsList.svelte";
+  import ProductList from "../../containers/ProductList/ProductList.svelte";
 
   export let user;
   export let isSessionUserProfile;
   export let contact;
   export let location;
-  export let portfolioElements;
   export let interestElements;
   export let unregisteredRelationships;
+  export let productList;
 
   let company = user.company;
 
-  setContext('profileUsername', user.username);
-  setContext('profileIsVerified', user.is_verified);
-  setContext('isSessionUserProfile', isSessionUserProfile);
+  setContext("profileUsername", user.username);
+  setContext("profileIsVerified", user.is_verified);
+  setContext("isSessionUserProfile", isSessionUserProfile);
 </script>
 
 <style>
@@ -134,9 +137,18 @@
   }
 
   .UserProfile-content {
-    max-width: 800px;
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+  }
+  .UserProfile-ConetentRigth {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+  }
+  .UserProfile-ConetentLeft {
+    flex-grow: 1;
   }
 
   @media screen and (min-width: 850px) {
@@ -147,27 +159,6 @@
 
   /* In all the components that grid is needed the @support 
     styles are going to be at the bottom of the file */
-  @supports (display: grid) {
-    .UserProfile-content {
-      max-width: 1365px;
-    }
-
-    @media screen and (min-width: 850px) {
-      .UserProfile-content {
-        display: grid;
-        grid-template:
-          105px auto minmax(auto, 230px) auto auto/minmax(300px, 360px)
-          minmax(65%, auto);
-        grid-template-areas:
-          'header dna'
-          'header dna'
-          'header portfolio'
-          'interests portfolio'
-          'interests relationships';
-        margin: 10px 40px;
-      }
-    }
-  }
 </style>
 
 <svelte:head>
@@ -178,20 +169,23 @@
 
 <div class="UserProfile">
   <div class="UserProfile-content">
-    <ProfileHeader
-      name={company.name}
-      industry={company.industry}
-      logo={company.logo}
-      {contact}
-      {location} />
+    <div class="UserProfile-ConetentLeft">
+      <ProfileHeader
+        name={company.name}
+        industry={company.industry}
+        logo={company.logo}
+        {contact}
+        {location} />
+    </div>
+    <div class="UserProfile-ConetentRigth">
+      <CertificationsList />
 
-    <CertificationsList />
+      <ProductList {productList} />
 
-    <Portfolio {portfolioElements} />
+      <Interests {interestElements} />
 
-    <Interests {interestElements} />
-
-    <Relationships {unregisteredRelationships} />
+      <Relationships {unregisteredRelationships} />
+    </div>
   </div>
 </div>
 

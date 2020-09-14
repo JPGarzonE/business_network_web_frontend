@@ -433,7 +433,6 @@
         <p class="form-control-feedback">Máximo 50 caracteres</p>
       {/if}
     </div>
-
     <div class="form-group">
       <textarea
         name="description"

@@ -1,48 +1,48 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
-  import Textfield from '@smui/textfield';
-  import HelperText from '@smui/textfield/helper-text';
-  import CharacterCounter from '@smui/textfield/character-counter/index';
-  import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
-  import Dropzone from '../../components/Dropzone/Dropzone.svelte';
-  import CertificationsService from '../../services/companies/certifications.service.js';
+  import { getContext } from "svelte";
+  import { stores } from "@sapper/app";
+  import Textfield from "@smui/textfield";
+  import HelperText from "@smui/textfield/helper-text";
+  import CharacterCounter from "@smui/textfield/character-counter/index";
+  import PlusCircleOutline from "svelte-material-icons/PlusCircleOutline.svelte";
+  import Dropzone from "../../components/Dropzone/Dropzone.svelte";
+  import CertificationsService from "../../services/companies/certifications.service.js";
 
   export let afterSubmit;
   export let CertificationElement; // Pass if is an update form
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext("isSessionUserProfile");
 
-  const fields = ['name', 'description'];
+  const fields = ["name", "description"];
 
   const certificationEditData = CertificationElement
     ? CertificationElement
     : {};
 
-  let name = certificationEditData.name ? certificationEditData.name : '';
+  let name = certificationEditData.name ? certificationEditData.name : "";
   let description = certificationEditData.description
     ? certificationEditData.description
-    : '';
-  let media = certificationEditData.media ? certificationEditData.media : '';
+    : "";
+  let media = certificationEditData.media ? certificationEditData.media : "";
   let newMediaFile;
-  let formErrorMessage = '';
+  let formErrorMessage = null;
   let nameFeedback;
   let descriptionFeedback;
 
   function validateName() {
     if (name && name.length >= 2) {
       if (name.length > 50) {
-        nameFeedback = 'Máximo 50 caracteres';
+        nameFeedback = "Máximo 50 caracteres";
         return false;
       }
 
-      nameFeedback = '';
+      nameFeedback = null;
       return true;
     } else if (name && name.length > 0 && name.length < 2) {
-      nameFeedback = 'Mínimo 2 caracteres';
+      nameFeedback = "Mínimo 2 caracteres";
       return false;
     } else {
-      nameFeedback = 'El nombre es obligatorio';
+      nameFeedback = "El nombre es obligatorio";
       return false;
     }
   }
@@ -58,27 +58,27 @@
       description.length > 0 &&
       description.length < 2
     ) {
-      descriptionFeedback = 'Mínimo 2 caracteres';
+      descriptionFeedback = "Mínimo 2 caracteres";
       return false;
     }
 
-    descriptionFeedback = '';
+    descriptionFeedback = null;
     return true;
   }
 
   function validateCertificationForm() {
     if (!(validateName() && validateDescription())) {
-      formErrorMessage = 'Los datos no son válidos';
+      formErrorMessage = "Los datos no son válidos";
       throw new Error();
     } else {
-      formErrorMessage = '';
+      formErrorMessage = null;
     }
   }
 
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
+    Target.style.cursor = "not-allowed";
 
     try {
       if (isSessionUserProfile) {
@@ -100,14 +100,14 @@
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
+          formErrorMessage += `${formErrorMessage ? "\n" : null}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 
@@ -161,7 +161,7 @@
 </script>
 
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .CertificationForm-headline {
     width: 100%;

@@ -1,129 +1,168 @@
 import RequestService from "../requests/request.service.js";
 import ImageService from "../multimedia/image.service.js";
 
-export default class ProductService extends RequestService{
+export default class ProductService extends RequestService {
+  constructor() {
+    super();
+    this._imageService = new ImageService();
+  }
 
-    constructor(){
-        super();
-        this._imageService = new ImageService();
+  getUserProductsPath(username) {
+    return `/companies/${username}/products/`;
+  }
+
+  get productsPath() {
+    return "/products/";
+  }
+
+  getUserProducts(username, pageSettings = {}) {
+    if (!username)
+      throw new Error("Username is required in ProductService.getUserProducts");
+    let qSP;
+    if (pageSettings.pageLength && pageSettings.page) {
+      qSP = {
+        limit: pageSettings.pageLength,
+        offset: pageSettings.page * pageSettings.pageLength,
+      };
     }
+    let requestURL = this.getUserProductsPath(username);
+    return this.get(
+      requestURL,
+      { "Content-Type": "application/json" },
+      qSP ? qSP : null
+    );
+  }
 
-    getUserProductsPath( username ){
-        return `/companies/${username}/products/`;
-    }
+  getProductById(productID, accessToken) {
+    if (!productID)
+      throw new Error("productID is required in ProductService.getProductById");
 
-    get productsPath(){
-        return "/products/";
-    }
+    if (!accessToken)
+      throw new Error(
+        "accessToken is required in ProductService.getProductById"
+      );
 
-    getUserProducts( username ){
-        if( !username )
-            throw new Error("Username is required in ProductService.getUserProducts");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
+    };
 
-        return this.get( this.getUserProductsPath( username ), {'Content-Type': 'application/json'}, null );
-    }
+    const RequestUrl = this.productsPath + productID + "/";
 
-    getProductById(productID, accessToken ){
-        if( !productID )
-            throw new Error("productID is required in ProductService.getProductById");
-    
-        if( !accessToken )
-            throw new Error("accessToken is required in ProductService.getProductById");
-        
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+    return this.get(RequestUrl, headers, null);
+  }
 
-        const RequestUrl = this.productsPath + productID + "/";
+  createUserProduct(username, productData, accessToken) {
+    if (!username)
+      throw new Error(
+        "Username is required in ProductService.createUserProduct"
+      );
 
-        return this.get( RequestUrl, headers, null );
-    }
+    if (!accessToken)
+      throw new Error(
+        "accessToken is required in ProductService.createUserProduct"
+      );
 
-    createUserProduct( username, productData, accessToken ){
-        if( !username )
-            throw new Error("Username is required in ProductService.createUserProduct");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
+    };
 
-        if( !accessToken )
-            throw new Error("accessToken is required in ProductService.createUserProduct");
+    return this.post(this.getUserProductsPath(username), headers, productData);
+  }
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+  async createUserProductWithImage(username, image, productData, accessToken) {
+    if (!username)
+      throw new Error(
+        "Username is required in ProductService.createUserProductWithImage"
+      );
 
-        return this.post(this.getUserProductsPath(username), headers, productData );
-    }
+    if (!image)
+      throw new Error(
+        "logo is required in ProductService.createUserProductWithImage"
+      );
 
-    async createUserProductWithImage( username, image, productData, accessToken ){
-        if( !username )
-            throw new Error("Username is required in ProductService.createUserProductWithImage");
+    if (!accessToken)
+      throw new Error(
+        "accessToken is required in ProductService.createUserProductWithImage"
+      );
 
-        if( !image )
-            throw new Error("logo is required in ProductService.createUserProductWithImage");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
+    };
 
-        if( !accessToken )
-            throw new Error("accessToken is required in ProductService.createUserProductWithImage");
+    const Image = await this._imageService.uploadUserImage(image, accessToken);
+    productData.media_id = Image.id;
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+    return this.post(this.getUserProductsPath(username), headers, productData);
+  }
 
-        const Image = await this._imageService.uploadUserImage( image, accessToken );
-        productData.media_id = Image.id;
+  updateUserProduct(username, productID, productData, accessToken) {
+    if (!username)
+      throw new Error(
+        "Username is required in ProductService.updateUserProduct"
+      );
 
-        return this.post( this.getUserProductsPath(username), headers, productData );
-    }
+    if (!productID)
+      throw new Error(
+        "productID is required in ProductService.updateUserProduct"
+      );
 
-    updateUserProduct( username, productID, productData, accessToken ){
-        if( !username )
-            throw new Error("Username is required in ProductService.updateUserProduct");
+    if (!accessToken)
+      throw new Error(
+        "accessToken is required in ProductService.updateUserProduct"
+      );
 
-        if( !productID )
-            throw new Error("productID is required in ProductService.updateUserProduct");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
+    };
 
-        if( !accessToken )
-            throw new Error("accessToken is required in ProductService.updateUserProduct");
+    const RequestUrl = this.getUserProductsPath(username) + productID + "/";
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+    return this.patch(RequestUrl, headers, productData);
+  }
 
-        const RequestUrl = this.getUserProductsPath(username) + productID + "/";
+  async updateUserProductWithImage(
+    username,
+    productID,
+    image,
+    productData,
+    accessToken
+  ) {
+    if (!username)
+      throw new Error(
+        "Username is required in ProductService.updateUserProductWithImage"
+      );
 
-        return this.patch( RequestUrl, headers, productData );
-    }
+    if (!productID)
+      throw new Error(
+        "productID is required in ProductService.updateUserProductWithImage"
+      );
 
-    async updateUserProductWithImage( username, productID, image, productData, accessToken ){
-        if( !username )
-            throw new Error("Username is required in ProductService.updateUserProductWithImage");
+    if (!image)
+      throw new Error(
+        "logo is required in ProductService.updateUserProductWithImage"
+      );
 
-        if( !productID )
-            throw new Error("productID is required in ProductService.updateUserProductWithImage");
+    if (!accessToken)
+      throw new Error(
+        "accessToken is required in ProductService.updateUserProductWithImage"
+      );
 
-        if( !image )
-            throw new Error("logo is required in ProductService.updateUserProductWithImage");
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Token " + accessToken,
+    };
 
-        if( !accessToken )
-            throw new Error("accessToken is required in ProductService.updateUserProductWithImage");
+    const RequestUrl = this.getUserProductsPath(username) + productID + "/";
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+    const Image = await this._imageService.uploadUserImage(image, accessToken);
+    productData.media_id = Image.id;
 
-        const RequestUrl = this.getUserProductsPath(username) + productID + "/";
+    return this.patch(RequestUrl, headers, productData);
+  }
 
-        const Image = await this._imageService.uploadUserImage( image, accessToken );
-        productData.media_id = Image.id;
-
-        return this.patch( RequestUrl, headers, productData );
-    }
-
-    deleteUserProduct(){
-
-    }
-
+  deleteUserProduct() {}
 }

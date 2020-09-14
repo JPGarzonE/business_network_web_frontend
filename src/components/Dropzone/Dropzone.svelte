@@ -1,11 +1,13 @@
 <script>
-  import Dropzone from 'svelte-file-dropzone';
-  import CloudUploadOutline from 'svelte-material-icons/CloudUploadOutline.svelte';
-  import ImageOutline from 'svelte-material-icons/ImageOutline.svelte';
+  import Dropzone from "svelte-file-dropzone";
+  import CloudUploadOutline from "svelte-material-icons/CloudUploadOutline.svelte";
+  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
+  import ImageOutline from "svelte-material-icons/ImageOutline.svelte";
   export let imagePath; // If not, isn't required
   export let multiple = false;
+  export let small = false;
   export let imageFile; // For binding the value from an external component
-  let uploadedImage = '';
+  let uploadedImage = "";
 
   let files = {
     accepted: [],
@@ -13,7 +15,7 @@
   };
 
   function handleFilesSelect(e) {
-    console.log('handleFilesSelect -> e', e);
+    console.log("handleFilesSelect -> e", e);
     URL.revokeObjectURL(uploadedImage);
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = multiple
@@ -90,18 +92,22 @@
     {multiple}>
     <div
       class={`dropzone-content ${imagePath || uploadedImage ? 'image-defined' : ''}`}>
-      <CloudUploadOutline size={80} />
-      {#if !imagePath && !uploadedImage}
-        <span class="Dropzone-title">Arrastra y suelta el archivo</span>
-      {/if}
-      {#if !imagePath && !uploadedImage}
-        <span class="Dropzone-subtitle">o selecciona otra opción</span>
-      {/if}
+      {#if small}
+        <CreateButton size={80} color="var(--extra-light-gray-transparent)" />
+      {:else}
+        {#if !imagePath && !uploadedImage}
+          <CloudUploadOutline size={80} />
+          <span class="Dropzone-title">Arrastra y suelta el archivo</span>
+        {/if}
+        {#if !imagePath && !uploadedImage}
+          <span class="Dropzone-subtitle">o selecciona otra opción</span>
+        {/if}
 
-      <div class="upload-card">
-        <ImageOutline size={25} />
-        <span>Subir imagen</span>
-      </div>
+        <div class="upload-card">
+          <ImageOutline size={25} />
+          <span>Subir imagen</span>
+        </div>
+      {/if}
     </div>
   </Dropzone>
 </div>

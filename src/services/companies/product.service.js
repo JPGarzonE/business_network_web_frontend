@@ -141,11 +141,11 @@ export default class ProductService extends RequestService {
     username,
     productID,
     images,
+    imagesToDelete,
     productData,
     accessToken
   ) {
-    console.log('images', images);
-    console.log('productData', productData);
+    console.log('imagesToDelete', imagesToDelete);
     if (!username)
       throw new Error(
         'Username is required in ProductService.updateUserProductWithImage'
@@ -176,24 +176,22 @@ export default class ProductService extends RequestService {
     let filteredAgainImageList = [];
     let filteredImageList = images.filter((item) => item !== undefined);
     for (let i = 0; i < filteredImageList.length; i++) {
-      if (typeof filteredImageList[i] === 'object') {
-        const Image = await this._imageService.uploadUserImage(
-          filteredImageList[i],
-          accessToken
-        );
-        filteredAgainImageList = [...filteredAgainImageList, Image.id];
-      } else if (typeof filteredImageList[i] === 'number') {
-        filteredAgainImageList = [
-          ...filteredAgainImageList,
-          filteredImageList[i],
-        ];
-      }
+      const Image = await this._imageService.uploadUserImage(
+        filteredImageList[i],
+        accessToken
+      );
+      filteredAgainImageList = [...filteredAgainImageList, Image.id];
     }
+
     productData.images = filteredAgainImageList;
+    /*
+    for (let i = 0; i < imagesToDelete.length; i++) {
+      await this.deleteUserProductImage(productID, imagesToDelete[i]);
+    }
 
     return this.patch(RequestUrl, headers, productData);
+    */
   }
-
   deleteUserProductImage(productID, imageID, accessToken) {
     if (!productID)
       throw new Error(

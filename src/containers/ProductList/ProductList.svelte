@@ -9,7 +9,7 @@
   import ProductForm from '../ProductForm/ProductForm.svelte';
   export let productList = [];
 
-  const isSessionUserProfile = true || getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext('isSessionUserProfile');
   const profileUsername = getContext('profileUsername');
   const productService = new ProductService();
 
@@ -66,11 +66,12 @@
     width: 100%;
   }
 
+  .ProdusctShowMore {
+    display: flex;
+    justify-content: center;
+  }
+
   @media screen and (min-width: 850px) {
-    .ProdusctShowMore {
-      display: flex;
-      justify-content: center;
-    }
     .ProdusctShowMoreText {
       color: var(--principal-color);
       cursor: pointer;

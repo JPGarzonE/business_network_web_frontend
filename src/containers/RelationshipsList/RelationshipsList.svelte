@@ -38,9 +38,9 @@
     displayUnregisteredCreateForm = false;
   }
   function onDeleteUnregisteredRelationship(id) {
-    unregisteredRelationships = unregisteredRelationships.filter(
-      (item) => item.id !== id
-    );
+    const newArray = unregisteredRelationships.filter((item) => item.id !== id);
+    unregisteredRelationships = [];
+    unregisteredRelationships = newArray;
   }
 </script>
 

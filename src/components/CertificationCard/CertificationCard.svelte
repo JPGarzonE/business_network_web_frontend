@@ -1,12 +1,12 @@
 <script>
-  import { getContext } from "svelte";
-  import { stores } from "@sapper/app";
-  import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
-  import Modal from "../Modal.svelte";
-  import EditButton from "../EditButton/EditButton.svelte";
-  import CertificationForm from "../../containers/CertificationForm/CertificationForm.svelte";
-  import CertificationsService from "../../services/companies/certifications.service.js";
-  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
+  import { getContext } from 'svelte';
+  import { stores } from '@sapper/app';
+  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
+  import Modal from '../Modal.svelte';
+  import EditButton from '../EditButton/EditButton.svelte';
+  import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';
+  import CertificationsService from '../../services/companies/certifications.service.js';
+  import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
   export let id;
   export let media;
@@ -14,7 +14,7 @@
   export let description;
   export let onDelete;
   const { session } = stores();
-  const isSessionUserProfile = getContext("isSessionUserProfile");
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let editableMode = false;
   let displayStory = false;
@@ -33,7 +33,7 @@
   }
 
   async function deleteCertification() {
-    toggleConfirmation;
+    toggleConfirmation();
     try {
       const certificationsService = new CertificationsService();
       const certificationData = await certificationsService.deleteCertificationElement(

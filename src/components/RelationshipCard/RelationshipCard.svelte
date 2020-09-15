@@ -1,12 +1,12 @@
 <script>
-  import { getContext } from "svelte";
-  import { goto } from "@sapper/app";
-  import { stores } from "@sapper/app";
-  import Modal from "../Modal.svelte";
-  import EditButton from "../EditButton/EditButton.svelte";
-  import UnregisteredRelationshipForm from "../../containers/RelationshipForm/UnregisteredRelationshipForm.svelte";
-  import UnregisteredRelationshipService from "../../services/relationships/unregistered.relationship.service.js";
-  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
+  import { getContext } from 'svelte';
+  import { goto } from '@sapper/app';
+  import { stores } from '@sapper/app';
+  import Modal from '../Modal.svelte';
+  import EditButton from '../EditButton/EditButton.svelte';
+  import UnregisteredRelationshipForm from '../../containers/RelationshipForm/UnregisteredRelationshipForm.svelte';
+  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
+  import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
   export let onDelete;
   export let isRegisteredCompany = false;
@@ -17,19 +17,33 @@
 
   const { session } = stores();
 
-  const {
-    name = "",
-    city = "",
-    country = "",
-    logoPath = "",
-    industry = "",
+  let {
+    name = '',
+    city = '',
+    country = '',
+    logoPath = '',
+    industry = '',
   } = relationshipData ? relationshipData.unregistered : {};
+  let location = '';
 
-  const location = `${city ? city + ". " : ""}${country}`;
+  $: {
+    const unregistered =
+      relationshipData && relationshipData.unregistered
+        ? relationshipData.unregistered
+        : {};
+    name = unregistered && unregistered.name ? unregistered.name : '';
+    city = unregistered && unregistered.city ? unregistered.city : '';
+    country = unregistered && unregistered.country ? unregistered.country : '';
+    logoPath =
+      unregistered && unregistered.logoPath ? unregistered.logoPath : '';
+    industry =
+      unregistered && unregistered.industry ? unregistered.industry : '';
+    location = `${city ? city + '. ' : ''}${country}`;
+  }
 
   //export let isVerified;
   //export let unregistered;
-  const isSessionUserProfile = getContext("isSessionUserProfile");
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let displayUnregisteredForm = false;
 
@@ -41,10 +55,10 @@
   }
 
   async function deleteRelationship() {
-    toggleConfirmation;
+    toggleConfirmation();
     try {
       const unregisteredServiceInstance = new UnregisteredRelationshipService();
-      unregisteredServiceInstance.deleteUnregisteredRelationship(
+      await unregisteredServiceInstance.deleteUnregisteredRelationship(
         relationshipData.id,
         $session.accessToken
       );

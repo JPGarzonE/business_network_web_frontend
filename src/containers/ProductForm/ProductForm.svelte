@@ -57,23 +57,12 @@
     ? productEditData.tariff_heading
     : '';
   let newMediaFiles = {
-    main:
-      editMode && productEditData.images[0]
-        ? productEditData.images[0].id
-        : undefined,
-    secondary1:
-      editMode && productEditData.images[1]
-        ? productEditData.images[2].id
-        : undefined,
-    secondary2:
-      editMode && productEditData.images[3]
-        ? productEditData.images[3].id
-        : undefined,
-    secondary3:
-      editMode && productEditData.images[4]
-        ? productEditData.images[4].id
-        : undefined,
+    main: undefined,
+    secondary1: undefined,
+    secondary2: undefined,
+    secondary3: undefined,
   };
+  let imagesToDelete = [];
 
   let formErrorMessage = null;
   let nameFeedback;
@@ -210,16 +199,22 @@
   async function submitUpdate(dataToSubmit) {
     const productService = new ProductService();
 
-    if (newMediaFiles.main) {
+    if (
+      newMediaFiles.main ||
+      newMediaFiles.secondary1 ||
+      newMediaFiles.secondary2 ||
+      newMediaFiles.secondary3
+    ) {
       const imagesList = Object.values(newMediaFiles);
+      imagesToDelete.map((item) => ProductElement.images[item]);
       const productData = await productService.updateUserProductWithImage(
         $session.username,
         ProductElement.id,
         imagesList,
+        imagesToDelete,
         dataToSubmit,
         $session.accessToken
       );
-
       return productData;
     } else {
       const productData = await productService.updateUserProduct(
@@ -231,6 +226,9 @@
 
       return productData;
     }
+  }
+  function deleteImage(id) {
+    imagesToDelete = [...imagesToDelete, id];
   }
 </script>
 
@@ -314,32 +312,44 @@
     <Dropzone
       id="ProductForm"
       bind:imageFile={newMediaFiles.main}
-      imagePath={editMode && ProductElement.images[0] ? ProductElement.images[0].path : null}
-      allowDelete />
+      imagePath={editMode && ProductElement.images[0] && !imagesToDelete.includes(0) ? ProductElement.images[0].path : null}
+      allowDelete
+      onDelete={() => {
+        editMode && ProductElement.images[0] && !imagesToDelete.includes(0) ? deleteImage(0) : '';
+      }} />
     <div class="productform-previewMini">
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary1}
-          imagePath={editMode && ProductElement.images[1] ? ProductElement.images[1].path : null}
+          imagePath={editMode && ProductElement.images[1] && !imagesToDelete.includes(1) ? ProductElement.images[1].path : null}
           small="true"
-          allowDelete />
+          allowDelete
+          onDelete={() => {
+            editMode && ProductElement.images[1] && !imagesToDelete.includes(1) ? deleteImage(1) : '';
+          }} />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary2}
-          imagePath={editMode && ProductElement.images[2] ? ProductElement.images[2].path : null}
+          imagePath={editMode && ProductElement.images[2] && !imagesToDelete.includes(2) ? ProductElement.images[2].path : null}
           small="true"
-          allowDelete />
+          allowDelete
+          onDelete={() => {
+            editMode && ProductElement.images[2] && !imagesToDelete.includes(2) ? deleteImage(2) : '';
+          }} />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary3}
-          imagePath={editMode && ProductElement.images[3] ? ProductElement.images[3].path : null}
+          imagePath={editMode && ProductElement.images[3] && !imagesToDelete.includes(3) ? ProductElement.images[3].path : null}
           small="true"
-          allowDelete />
+          allowDelete
+          onDelete={() => {
+            editMode && ProductElement.images[3] && !imagesToDelete.includes(3) ? deleteImage(3) : '';
+          }} />
       </div>
     </div>
   </div>

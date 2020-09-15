@@ -1,17 +1,17 @@
 <script>
-  import { getContext, onMount } from "svelte";
-  import { stores } from "@sapper/app";
-  import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
-  import Modal from "../Modal.svelte";
-  import EditButton from "../EditButton/EditButton.svelte";
-  import ProductForm from "../../containers/ProductForm/ProductForm.svelte";
-  import ProductService from "../../services/companies/product.service.js";
-  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
+  import { getContext, onMount } from 'svelte';
+  import { stores } from '@sapper/app';
+  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
+  import Modal from '../Modal.svelte';
+  import EditButton from '../EditButton/EditButton.svelte';
+  import ProductForm from '../../containers/ProductForm/ProductForm.svelte';
+  import ProductService from '../../services/companies/product.service.js';
+  import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
   export let productElement;
   export let onDelete;
 
   const { session } = stores();
-  const isSessionUserProfile = getContext("isSessionUserProfile");
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let editableMode = false;
   let displayStory = false;
@@ -51,8 +51,9 @@
 <style>
   .ProductCard {
     position: relative;
-    width: 25%;
-    padding: 2% 2%;
+    width: 100%;
+    padding: 15px 2%;
+    margin: 15px 0;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -113,6 +114,19 @@
     padding: 0px 15px;
     color: var(--light-color);
     font-size: 1em;
+  }
+
+  @media screen and (min-width: 850px) {
+    .ProductCard {
+      width: 50%;
+      margin: 0;
+    }
+  }
+  @media screen and (min-width: 1260px) {
+    .ProductCard {
+      width: 25%;
+      padding: 2% 2%;
+    }
   }
 </style>
 

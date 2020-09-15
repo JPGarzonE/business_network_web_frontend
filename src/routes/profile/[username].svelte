@@ -1,13 +1,13 @@
 <script context="module">
-  import { API_URL } from "../../store/store.js";
-  import UserService from "../../services/users/user.service.js";
-  import ContactService from "../../services/companies/contact.service.js";
-  import LocationService from "../../services/companies/location.service.js";
-  import CertificationsService from "../../services/companies/certifications.service.js";
-  import ProductService from "../../services/companies/product.service.js";
-  import ServiceService from "../../services/companies/service.service.js";
-  import RelationshipService from "../../services/relationships/relationship.service.js";
-  import UnregisteredRelationshipService from "../../services/relationships/unregistered.relationship.service.js";
+  import { API_URL } from '../../store/store.js';
+  import UserService from '../../services/users/user.service.js';
+  import ContactService from '../../services/companies/contact.service.js';
+  import LocationService from '../../services/companies/location.service.js';
+  import CertificationsService from '../../services/companies/certifications.service.js';
+  import ProductService from '../../services/companies/product.service.js';
+  import ServiceService from '../../services/companies/service.service.js';
+  import RelationshipService from '../../services/relationships/relationship.service.js';
+  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
 
   export async function preload(page, session) {
     const userService = new UserService();
@@ -97,14 +97,14 @@
 </script>
 
 <script>
-  import { setContext } from "svelte";
+  import { setContext } from 'svelte';
 
-  import Header from "../../components/Header.svelte";
-  import Footer from "../../components/Footer.svelte";
-  import ProfileHeader from "../../components/profile/ProfileHeader.svelte";
-  import RelationshipsList from "../../containers/RelationshipsList/RelationshipsList.svelte";
-  import CertificationsList from "../../containers/CertificationsList/CertificationsList.svelte";
-  import ProductList from "../../containers/ProductList/ProductList.svelte";
+  import Header from '../../components/Header.svelte';
+  import Footer from '../../components/Footer.svelte';
+  import ProfileHeader from '../../components/profile/ProfileHeader.svelte';
+  import RelationshipsList from '../../containers/RelationshipsList/RelationshipsList.svelte';
+  import CertificationsList from '../../containers/CertificationsList/CertificationsList.svelte';
+  import ProductList from '../../containers/ProductList/ProductList.svelte';
 
   export let user;
   export let isSessionUserProfile;
@@ -116,9 +116,9 @@
 
   let company = user.company;
 
-  setContext("profileUsername", user.username);
-  setContext("profileIsVerified", user.is_verified);
-  setContext("isSessionUserProfile", isSessionUserProfile);
+  setContext('profileUsername', user.username);
+  setContext('profileIsVerified', user.is_verified);
+  setContext('isSessionUserProfile', isSessionUserProfile);
 </script>
 
 <style>

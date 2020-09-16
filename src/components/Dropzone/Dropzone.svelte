@@ -24,6 +24,7 @@
     onDelete();
   }
   function handleFilesSelect(e) {
+    onDelete();
     URL.revokeObjectURL(uploadedImage);
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = multiple

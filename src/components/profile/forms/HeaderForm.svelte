@@ -1,30 +1,30 @@
 <script>
-  import LocationService from "../../../services/companies/location.service.js";
-  import ContactService from "../../../services/companies/contact.service.js";
-  import GoogleTranslate from "svelte-material-icons/GoogleTranslate.svelte";
-  import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
-  import { stores } from "@sapper/app";
-  import { getContext } from "svelte";
+  import LocationService from '../../../services/companies/location.service.js';
+  import ContactService from '../../../services/companies/contact.service.js';
+  import GoogleTranslate from 'svelte-material-icons/GoogleTranslate.svelte';
+  import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
+  import { stores } from '@sapper/app';
+  import { getContext } from 'svelte';
 
   export let afterSubmit;
   export let name;
-  export let industry = "";
+  export let industry = '';
   export let contact;
   export let location;
   const { session } = stores();
-  const isSessionUserProfile = getContext("isSessionUserProfile");
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
-  const countries = ["Colombia", "Estados unidos"];
-  const fields = ["city", "country", "address", "ext", "phone", "email"];
+  const countries = ['Colombia', 'Estados unidos'];
+  const fields = ['city', 'country', 'address', 'ext', 'phone', 'email'];
 
-  let city = location && location.city ? location.city : "";
+  let city = location && location.city ? location.city : '';
   let country;
-  let address = location && location.address ? location.address : "";
-  let ext = contact && contact.ext_phone ? contact.ext_phone : "";
-  let phone = contact && contact.phone ? contact.phone : "";
-  let email = contact && contact.email ? contact.email : "";
+  let address = location && location.address ? location.address : '';
+  let ext = contact && contact.ext_phone ? contact.ext_phone : '';
+  let phone = contact && contact.phone ? contact.phone : '';
+  let email = contact && contact.email ? contact.email : '';
 
-  let formErrorMessage = "";
+  let formErrorMessage = '';
 
   let cityFeedback;
   let addressFeedback;
@@ -37,10 +37,10 @@
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
     if (emailMatch) {
-      emailFeedback = "";
+      emailFeedback = '';
       return true;
     } else {
-      emailFeedback = "Correo inválido";
+      emailFeedback = 'Correo inválido';
       return false;
     }
   }
@@ -48,70 +48,70 @@
   function validateCity() {
     if (city && city.length >= 1) {
       if (city.length > 40) {
-        cityFeedback = "Máximo 40 caracteres";
+        cityFeedback = 'Máximo 40 caracteres';
         return false;
       }
 
-      cityFeedback = "";
+      cityFeedback = '';
       return true;
     } else {
-      cityFeedback = "La ciudad es obligatoria";
+      cityFeedback = 'La ciudad es obligatoria';
       return false;
     }
   }
 
   function validateAddress() {
     if (address.length > 0 && address.length < 2) {
-      addressFeedback = "Mínimo 2 caracteres";
+      addressFeedback = 'Mínimo 2 caracteres';
       return false;
     } else if (address.length > 40) {
-      addressFeedback = "Máximo 40 caracteres";
+      addressFeedback = 'Máximo 40 caracteres';
       return false;
     }
 
-    addressFeedback = "";
+    addressFeedback = '';
     return true;
   }
 
   function validateExt() {
     if (ext.length > 5) {
-      extFeedback = "Máximo 5 caracteres";
+      extFeedback = 'Máximo 5 caracteres';
       return false;
     }
 
-    extFeedback = "";
+    extFeedback = '';
     return true;
   }
 
   function validatePhone() {
     if (phone.length > 0 && phone.length < 6) {
-      phoneFeedback = "Mínimo 6 caracteres";
+      phoneFeedback = 'Mínimo 6 caracteres';
       return false;
     } else if (phone.length > 15) {
-      phoneFeedback = "Máximo 15 caracteres";
+      phoneFeedback = 'Máximo 15 caracteres';
       return false;
     }
 
-    phoneFeedback = "";
+    phoneFeedback = '';
     return true;
   }
 
   function validateHeaderForm() {
     if (!(validateCity() && validateAddress())) {
-      formErrorMessage = "Los datos no son válidos";
+      formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else if (!(validateExt() && validatePhone() && validateEmailPattern())) {
-      formErrorMessage = "Los datos no son válidos";
+      formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
-      formErrorMessage = "";
+      formErrorMessage = '';
     }
   }
 
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = "not-allowed";
+    Target.style.cursor = 'not-allowed';
 
     try {
       if (isSessionUserProfile) {
@@ -126,14 +126,14 @@
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? "\n" : ""}${field}: ${
+          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = "pointer";
+      Target.style.cursor = 'pointer';
     }
   }
 
@@ -142,9 +142,9 @@
     let dataToSubmit = {};
 
     if (contact) {
-      contact.ext_phone = contact.ext_phone ? contact.ext_phone : "";
-      contact.phone = contact.phone ? contact.phone : "";
-      contact.email = contact.email ? contact.email : "";
+      contact.ext_phone = contact.ext_phone ? contact.ext_phone : '';
+      contact.phone = contact.phone ? contact.phone : '';
+      contact.email = contact.email ? contact.email : '';
 
       if (ext != contact.ext_phone) dataToSubmit.ext_phone = ext;
       if (phone != contact.phone) dataToSubmit.phone = phone;
@@ -162,9 +162,9 @@
         return contactData;
       }
     } else {
-      if (ext != "") dataToSubmit.ext_phone = ext;
-      if (phone != "") dataToSubmit.phone = phone;
-      if (email != "") dataToSubmit.email = email;
+      if (ext != '') dataToSubmit.ext_phone = ext;
+      if (phone != '') dataToSubmit.phone = phone;
+      if (email != '') dataToSubmit.email = email;
 
       const dataToSubmitIsEmpty = Object.keys(dataToSubmit).length === 0;
       if (!dataToSubmitIsEmpty) {
@@ -184,9 +184,9 @@
     let dataToSubmit = {};
 
     if (location) {
-      location.city = location.city ? location.city : "";
-      location.country = location.country ? location.country : "";
-      location.address = location.address ? location.address : "";
+      location.city = location.city ? location.city : '';
+      location.country = location.country ? location.country : '';
+      location.address = location.address ? location.address : '';
 
       if (city != location.city) dataToSubmit.city = city;
       if (country != location.country) dataToSubmit.country = country;
@@ -204,9 +204,9 @@
         return locationData;
       }
     } else {
-      if (city != "") dataToSubmit.city = city;
-      if (country != "") dataToSubmit.country = country;
-      if (address != "") dataToSubmit.address = address;
+      if (city != '') dataToSubmit.city = city;
+      if (country != '') dataToSubmit.country = country;
+      if (address != '') dataToSubmit.address = address;
 
       const dataToSubmitIsEmpty = Object.keys(dataToSubmit).length === 0;
       if (!dataToSubmitIsEmpty) {
@@ -223,7 +223,7 @@
 </script>
 
 <style>
-  @import "/styles/form.css";
+  @import '/styles/form.css';
 
   .HeaderForm-headline {
     width: 80%;
@@ -260,23 +260,17 @@
 
   .HeaderForm-country,
   .HeaderForm-city,
-  .HeaderForm-ext,
-  .HeaderForm-phone,
-  .HeaderForm-email,
   .HeaderForm-address {
     border: none;
     border-bottom: 1px solid var(--secondary-text-color);
   }
 
-  .HeaderForm-country,
-  .HeaderForm-ext {
+  .HeaderForm-country {
     width: 45%;
     margin-right: 15px;
   }
 
   .HeaderForm-city,
-  .HeaderForm-phone,
-  .HeaderForm-email,
   .HeaderForm-address {
     width: 100%;
   }

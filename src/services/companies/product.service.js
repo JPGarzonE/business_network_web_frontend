@@ -59,7 +59,7 @@ export default class ProductService extends RequestService {
     return this.get(RequestUrl, headers, null);
   }
 
-  createUserProduct(username, productData, accessToken) {
+  createUserProduct({ username, productData, accessToken }) {
     if (!username)
       throw new Error(
         'Username is required in ProductService.createUserProduct'
@@ -78,7 +78,12 @@ export default class ProductService extends RequestService {
     return this.post(this.getUserProductsPath(username), headers, productData);
   }
 
-  async createUserProductWithImage(username, images, productData, accessToken) {
+  async createUserProductWithImage({
+    username,
+    images,
+    productData,
+    accessToken,
+  }) {
     if (!username)
       throw new Error(
         'Username is required in ProductService.createUserProductWithImage'
@@ -111,7 +116,13 @@ export default class ProductService extends RequestService {
     return this.post(this.getUserProductsPath(username), headers, productData);
   }
 
-  updateUserProduct(username, productID, productData, accessToken) {
+  async updateUserProduct({
+    username,
+    productID,
+    imagesToDelete,
+    productData,
+    accessToken,
+  }) {
     if (!username)
       throw new Error(
         'Username is required in ProductService.updateUserProduct'
@@ -134,17 +145,25 @@ export default class ProductService extends RequestService {
 
     const RequestUrl = this.getUserProductsPath(username) + productID + '/';
 
+    for (let i = 0; i < imagesToDelete.length; i++) {
+      await this.deleteUserProductImage(
+        productID,
+        imagesToDelete[i].id,
+        accessToken
+      );
+    }
+
     return this.patch(RequestUrl, headers, productData);
   }
 
-  async updateUserProductWithImage(
+  async updateUserProductWithImage({
     username,
     productID,
     images,
     imagesToDelete,
     productData,
-    accessToken
-  ) {
+    accessToken,
+  }) {
     console.log('imagesToDelete', imagesToDelete);
     if (!username)
       throw new Error(
@@ -173,6 +192,14 @@ export default class ProductService extends RequestService {
 
     const RequestUrl = this.getUserProductsPath(username) + productID + '/';
 
+    for (let i = 0; i < imagesToDelete.length; i++) {
+      await this.deleteUserProductImage(
+        productID,
+        imagesToDelete[i].id,
+        accessToken
+      );
+    }
+
     let filteredAgainImageList = [];
     let filteredImageList = images.filter((item) => item !== undefined);
     for (let i = 0; i < filteredImageList.length; i++) {
@@ -184,14 +211,10 @@ export default class ProductService extends RequestService {
     }
 
     productData.images = filteredAgainImageList;
-    /*
-    for (let i = 0; i < imagesToDelete.length; i++) {
-      await this.deleteUserProductImage(productID, imagesToDelete[i]);
-    }
 
     return this.patch(RequestUrl, headers, productData);
-    */
   }
+
   deleteUserProductImage(productID, imageID, accessToken) {
     if (!productID)
       throw new Error(

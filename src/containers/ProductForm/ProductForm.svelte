@@ -177,20 +177,20 @@
 
     if (newMediaFiles.main) {
       const imagesList = Object.values(newMediaFiles);
-      const productData = await productService.createUserProductWithImage(
-        $session.username,
-        imagesList,
-        dataToSubmit,
-        $session.accessToken
-      );
+      const productData = await productService.createUserProductWithImage({
+        username: $session.username,
+        images: imagesList,
+        productData: dataToSubmit,
+        accessToken: $session.accessToken,
+      });
 
       return productData;
     } else {
-      const productData = await productService.createUserProduct(
-        $session.username,
-        dataToSubmit,
-        $session.accessToken
-      );
+      const productData = await productService.createUserProduct({
+        username: $session.username,
+        productData: dataToSubmit,
+        accessToken: $session.accessToken,
+      });
 
       return productData;
     }
@@ -198,6 +198,9 @@
 
   async function submitUpdate(dataToSubmit) {
     const productService = new ProductService();
+    const imagesToDeleteList = imagesToDelete.map(
+      (item) => ProductElement.images[item]
+    );
 
     if (
       newMediaFiles.main ||
@@ -206,23 +209,23 @@
       newMediaFiles.secondary3
     ) {
       const imagesList = Object.values(newMediaFiles);
-      imagesToDelete.map((item) => ProductElement.images[item]);
-      const productData = await productService.updateUserProductWithImage(
-        $session.username,
-        ProductElement.id,
-        imagesList,
-        imagesToDelete,
-        dataToSubmit,
-        $session.accessToken
-      );
+      const productData = await productService.updateUserProductWithImage({
+        username: $session.username,
+        productID: ProductElement.id,
+        images: imagesList,
+        imagesToDelete: imagesToDeleteList,
+        productData: dataToSubmit,
+        accessToken: $session.accessToken,
+      });
       return productData;
     } else {
-      const productData = await productService.updateUserProduct(
-        $session.username,
-        ProductElement.id,
-        dataToSubmit,
-        $session.accessToken
-      );
+      const productData = await productService.updateUserProduct({
+        username: $session.username,
+        productID: ProductElement.id,
+        imagesToDelete: imagesToDeleteList,
+        productData: dataToSubmit,
+        accessToken: $session.accessToken,
+      });
 
       return productData;
     }

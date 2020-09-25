@@ -1,40 +1,57 @@
 <script>
   import { getContext } from 'svelte';
+  import { stores } from '@sapper/app';
   import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
   import Modal from '../Modal.svelte';
   import EditButton from '../EditButton/EditButton.svelte';
   import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';
+  import CertificationsService from '../../services/companies/certifications.service.js';
+  import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
   export let id;
   export let media;
   export let name;
-  export let category;
   export let description;
-
-  const isSessionUserProfile = true || getContext('isSessionUserProfile');
+  export let onDelete;
+  const { session } = stores();
+  const isSessionUserProfile = getContext('isSessionUserProfile');
 
   let editableMode = false;
   let displayStory = false;
+  let confirmationMode = false;
 
   function toggleEditableMode() {
     editableMode = !editableMode;
+  }
+
+  function toggleConfirmation() {
+    confirmationMode = !confirmationMode;
   }
 
   function toggleStoryDisplay() {
     displayStory = !displayStory;
   }
 
+  async function deleteCertification() {
+    toggleConfirmation();
+    try {
+      const certificationsService = new CertificationsService();
+      const certificationData = await certificationsService.deleteCertificationElement(
+        $session.username,
+        id,
+        $session.accessToken
+      );
+      onDelete(id);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   function reloadComponentData(CertificationElementData) {
-    name = CertificationElementData.name;
-    category = CertificationElementData.category
-      ? CertificationElementData.category
-      : null;
-    media = CertificationElementData.media
-      ? CertificationElementData.media
-      : null;
-    description = CertificationElementData.description
-      ? CertificationElementData.description
-      : null;
+    const { certificate } = CertificationElementData;
+    name = certificate.name;
+    media = certificate.logo ? certificate.logo : null;
+    description = certificate.description ? certificate.description : null;
 
     editableMode = false;
   }
@@ -43,7 +60,7 @@
 <style>
   .CertificationCard {
     position: relative;
-    max-width: 300px;
+    max-width: 280px;
     width: auto;
     height: fit-content;
     min-width: 250px;
@@ -61,6 +78,7 @@
     top: 0;
     right: 0;
     padding: 5px;
+    z-index: 10;
   }
   .CertificationCard-media-container {
     position: relative;
@@ -70,35 +88,15 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    border-radius: 10px;
-    border-bottom-left-radius: unset;
-    border-bottom-right-radius: unset;
-    box-shadow: 0px 3px 3px var(--lightest-gray);
-  }
-
-  .CertificationCard-media-container:hover > .CertificationCard-media-image,
-  .CertificationCard-media-container:hover
-    > .CertificationCard-media-image--default {
-    opacity: 0.2;
-  }
-
-  .CertificationCard-media-container--empty {
-    border-top: 2px solid var(--principal-color);
-    border-bottom: 1px solid var(--light-color);
+    box-shadow: 0px 4px 4px var(--lightest-gray);
   }
 
   .CertificationCard-media-image {
     width: 100%;
     max-height: 100%;
+    border-radius: 5px;
     display: flex;
     object-fit: contain;
-    border-radius: 10px;
-    border-bottom-left-radius: unset;
-    border-bottom-right-radius: unset;
-  }
-
-  .CertificationCard-media-image--default {
-    padding: 25px;
   }
 
   .CertificationCard-name {
@@ -148,18 +146,24 @@
   }
 </style>
 
+{#if confirmationMode && isSessionUserProfile}
+  <ConfirmationModal
+    title="Desea eliminar el Certificado {name}"
+    onAccept={deleteCertification}
+    onDecline={toggleConfirmation} />
+{/if}
 <div class="CertificationCard">
   {#if editableMode && isSessionUserProfile}
     <Modal on:click={toggleEditableMode}>
       <CertificationForm
         on:click={toggleEditableMode}
         afterSubmit={reloadComponentData}
-        CertificationElement={{ id: id, name: name, category: category, description: description, media: media }} />
+        CertificationElement={{ id: id, name: name, description: description, media: media }} />
     </Modal>
   {/if}
 
   <figure
-    class="CertificationCard-media-container {media && media.path ? '' : 'CertificationCard-media-container--empty'}"
+    class="CertificationCard-media-container"
     on:click={toggleEditableMode}>
     {#if media && media.path}
       <img src={media.path} alt={name} class="CertificationCard-media-image" />
@@ -167,13 +171,20 @@
       <img
         src="/images/profile_icon.svg"
         alt={name}
-        class="CertificationCard-media-image--default" />
+        class="CertificationCard-media-image" />
     {/if}
   </figure>
 
-  <div class="CertificationCard-edit-button">
-    <EditButton size={25} color="gray" on:click={toggleEditableMode} />
-  </div>
+  {#if isSessionUserProfile}
+    <div class="CertificationCard-edit-button">
+      <EditButton
+        size={25}
+        color="gray"
+        onEdit={toggleEditableMode}
+        onDelete={toggleConfirmation}
+        menuButton />
+    </div>
+  {/if}
 
   <h4 class="CertificationCard-name">{name}</h4>
 
@@ -184,7 +195,7 @@
   {/if}
 
   <div class="CertificationCard-bottom">
-    <p class="CertificationCard-category">{category}</p>
+    <p class="CertificationCard-category">Certificaciones</p>
 
     {#if description}
       <span on:click={toggleStoryDisplay}>

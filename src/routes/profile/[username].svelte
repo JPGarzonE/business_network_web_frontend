@@ -3,16 +3,15 @@
   import UserService from '../../services/users/user.service.js';
   import ContactService from '../../services/companies/contact.service.js';
   import LocationService from '../../services/companies/location.service.js';
+  import CertificationsService from '../../services/companies/certifications.service.js';
   import ProductService from '../../services/companies/product.service.js';
   import ServiceService from '../../services/companies/service.service.js';
-  import InterestService from '../../services/companies/interest.service.js';
   import RelationshipService from '../../services/relationships/relationship.service.js';
   import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
 
   export async function preload(page, session) {
     const userService = new UserService();
     const { username } = page.params;
-    console.log('Preload session: ', session);
 
     const data = await userService.getUser(username, session.accessToken);
     const user = data.user;
@@ -23,26 +22,19 @@
         ? await loadCompanyPrincipalContact(username, session.accessToken)
         : null;
 
-    const interestElements =
-      session.authenticated && (session.isVerified || isSessionUserProfile)
-        ? await loadInterests(username, session.accessToken)
-        : null;
-
     const principalLocation = await loadCompanyPrincipalLocation(username);
-    const portfolioElements = await loadPortfolio(username);
-    const registeredRelationships = await loadRelationships(user.id);
+    const productList = await loadPortfolio(username);
+    const certificationsList = await loadCertifications(username);
     const unregisteredRelationships = await loadUnregisteredRelationships(
       username
     );
-
     return {
       user,
       isSessionUserProfile,
       contact: principalContact,
       location: principalLocation,
-      portfolioElements,
-      interestElements,
-      registeredRelationships,
+      productList,
+      certificationsList,
       unregisteredRelationships,
     };
   }
@@ -64,7 +56,10 @@
 
   async function loadPortfolio(username) {
     const productService = new ProductService();
-    const productsData = await productService.getUserProducts(username);
+    const productsData = await productService.getUserProducts(username, {
+      page: 0,
+      pageLength: 4,
+    });
     const products = productsData.results;
 
     const serviceService = new ServiceService();
@@ -74,9 +69,9 @@
     return products.concat(services);
   }
 
-  async function loadInterests(username, accessToken) {
-    const interestService = new InterestService();
-    const data = await interestService.getUserInterests(username, accessToken);
+  async function loadCertifications(username) {
+    const certificationsService = new CertificationsService();
+    const data = await certificationsService.getUserCertifications(username);
     return data.results;
   }
 
@@ -107,20 +102,17 @@
   import Header from '../../components/Header.svelte';
   import Footer from '../../components/Footer.svelte';
   import ProfileHeader from '../../components/profile/ProfileHeader.svelte';
-  import Portfolio from '../../components/profile/Portfolio.svelte';
-  import Interests from '../../components/profile/Interests.svelte';
-  import Relationship from '../../components/profile/Relationships.svelte';
-  import Relationships from '../../components/profile/Relationships.svelte';
+  import RelationshipsList from '../../containers/RelationshipsList/RelationshipsList.svelte';
   import CertificationsList from '../../containers/CertificationsList/CertificationsList.svelte';
+  import ProductList from '../../containers/ProductList/ProductList.svelte';
 
   export let user;
   export let isSessionUserProfile;
   export let contact;
   export let location;
-  export let portfolioElements;
-  export let interestElements;
-  export let registeredRelationships;
+  export let certificationsList;
   export let unregisteredRelationships;
+  export let productList;
 
   let company = user.company;
 
@@ -138,38 +130,24 @@
   }
 
   .UserProfile-content {
-    max-width: 800px;
+    max-width: 1400px;
     width: 100%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
   }
 
   @media screen and (min-width: 850px) {
     .UserProfile-content {
-      margin: 15px;
+      padding: 25px;
+      flex-direction: row;
     }
-  }
-
-  /* In all the components that grid is needed the @support 
-    styles are going to be at the bottom of the file */
-  @supports (display: grid) {
-    .UserProfile-content {
-      max-width: 1365px;
+    .UserProfile-sidebar {
+      width: 260px;
     }
-
-    @media screen and (min-width: 850px) {
-      .UserProfile-content {
-        display: grid;
-        grid-template:
-          105px auto minmax(auto, 230px) auto auto/minmax(300px, 360px)
-          minmax(65%, auto);
-        grid-template-areas:
-          'header dna'
-          'header dna'
-          'header portfolio'
-          'interests portfolio'
-          'interests relationships';
-        margin: 10px 40px;
-      }
+    .UserProfile-main {
+      padding: 0 30px;
+      width: calc(100% - 260px);
     }
   }
 </style>
@@ -182,20 +160,21 @@
 
 <div class="UserProfile">
   <div class="UserProfile-content">
-    <ProfileHeader
-      name={company.name}
-      industry={company.industry}
-      logo={company.logo}
-      {contact}
-      {location} />
+    <section class="UserProfile-sidebar">
+      <ProfileHeader
+        name={company.name}
+        industry={company.industry}
+        logo={company.logo}
+        {contact}
+        {location} />
+    </section>
+    <section class="UserProfile-main">
+      <CertificationsList {certificationsList} />
 
-    <CertificationsList />
+      <ProductList {productList} />
 
-    <Portfolio {portfolioElements} />
-
-    <Interests {interestElements} />
-
-    <Relationships {registeredRelationships} {unregisteredRelationships} />
+      <RelationshipsList {unregisteredRelationships} />
+    </section>
   </div>
 </div>
 

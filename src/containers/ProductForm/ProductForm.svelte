@@ -65,9 +65,10 @@
   let imagesToDelete = [];
 
   let formErrorMessage = null;
-  let nameFeedback;
-  let minimumPriceFeedback;
-  let maximumPriceFeedback;
+  let nameFeedback = '';
+  let minimumPriceFeedback = '';
+  let maximumPriceFeedback = '';
+  let minimumPurchaseFeedback = '';
 
   function validateName() {
     if (name && name.length >= 2) {
@@ -78,7 +79,7 @@
 
       nameFeedback = '';
       return true;
-    } else if (name && name.length > 0 && name.length < 2) {
+    } else if (name && name.length > 0 && name.length <= 2) {
       nameFeedback = 'Mínimo 2 caracteres';
       return false;
     } else {
@@ -88,43 +89,48 @@
   }
 
   function validateMinPrice() {
-    if (minimum_price && minimum_price.length >= 2) {
-      if (minimum_price.length > 50) {
-        minimumPriceFeedback = `${minimum_price.length} caracteres - Máximo 50`;
+    if (minimum_price && minimum_price.toLocaleString().length >= 1) {
+      if (minimum_price.length > 10) {
+        minimumPriceFeedback = `${minimum_price.length} caracteres - Máximo 10`;
         return false;
       }
-    } else if (
-      minimum_price &&
-      minimum_price.length > 0 &&
-      minimum_price.length < 2
-    ) {
-      minimumPriceFeedback = 'Mínimo 2 caracteres';
+      
+      minimumPriceFeedback = '';
+      return true;
+    } else {
+      minimumPriceFeedback = 'El precio mínimo es obligatorio';
       return false;
     }
-    minimumPriceFeedback = '';
-    return true;
   }
   function validateMaxPrice() {
-    if (maximum_price && maximum_price.length >= 2) {
-      if (maximum_price.length > 50) {
-        maximumPriceFeedback = `${maximum_price.length} caracteres - Máximo 50`;
+    if (maximum_price && maximum_price.length >= 1) {
+      if (maximum_price.length > 10) {
+        maximumPriceFeedback = `${maximum_price.length} caracteres - Máximo 10`;
         return false;
       }
-    } else if (
-      maximum_price &&
-      maximum_price.length > 0 &&
-      maximum_price.length < 2
-    ) {
-      maximumPriceFeedback = 'Mínimo 2 caracteres';
-      return false;
     }
 
     maximumPriceFeedback = '';
     return true;
   }
 
+  function validateMinimumPurchase() {
+    if(minimum_purchase && minimum_purchase.length >= 1) {
+      if (minimum_purchase.length > 20) {
+        minimumPurchaseFeedback = `${minimum_purchase.length} caracteres - Máximo 20`;
+        return false;
+      }
+
+      minimumPriceFeedback = '';
+      return true;
+    } else {
+      minimumPurchaseFeedback = 'La compra mínima es obligatoria';
+      return false;
+    }
+  }
+
   function validateProductForm() {
-    if (!validateName() && !validateMinPrice() && !validateMaxPrice()) {
+    if (!(validateName() && validateMinPrice() && validateMaxPrice() && validateMinimumPurchase())) {
       formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
@@ -144,12 +150,14 @@
           category: category,
           name: name,
           minimum_price: minimum_price,
-          maximum_price: maximum_price,
           tariff_heading: tariff_heading,
           minimum_purchase: minimum_purchase,
           description: description,
           currency_id: currency_id,
         };
+
+        if( maximum_price ) dataToSubmit.maximum_price = maximum_price;
+
         let productResult;
         if (ProductElement && ProductElement.id)
           productResult = await submitUpdate(dataToSubmit);
@@ -157,7 +165,6 @@
         afterSubmit(productResult);
       }
     } catch (e) {
-      console.error('submit -> e', e);
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
@@ -363,12 +370,12 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={name}
-        label="Nombre del Producto"
+        label="Nombre del Producto*"
         input$aria-controls="product-name"
         input$aria-describedby="product-name"
         input$maxlength="50"
         on:input={validateName} />
-      <HelperText id="product-name">Máximo 50 caracteres</HelperText>
+      <HelperText id="product-name">{nameFeedback}</HelperText>
     </div>
     <div class="form-group">
       <Select
@@ -390,9 +397,9 @@
           variant="outlined"
           type="number"
           bind:value={minimum_price}
-          label="Precio mínimo"
-          input$aria-controls="product-name"
-          input$aria-describedby="product-name"
+          label="Precio mínimo*"
+          input$aria-controls="product-min-price"
+          input$aria-describedby="product-min-price"
           input$maxlength="50"
           on:input={validateMinPrice} />
         <Textfield
@@ -401,8 +408,8 @@
           type="number"
           bind:value={maximum_price}
           label="Precio máximo"
-          input$aria-controls="product-name"
-          input$aria-describedby="product-name"
+          input$aria-controls="product-max-price"
+          input$aria-describedby="product-max-price"
           input$maxlength="50"
           on:input={validateMaxPrice} />
       </div>
@@ -413,21 +420,22 @@
         variant="outlined"
         bind:value={tariff_heading}
         label="Partida arancelaria"
-        input$aria-controls="product-name"
-        input$aria-describedby="product-name"
+        input$aria-controls="product-tariff-heading"
+        input$aria-describedby="product-tariff-heading"
         input$maxlength="50" />
-      <HelperText id="product-name">Máximo 50 caracteres</HelperText>
+      <HelperText id="product-tariff-heading">Máximo 50 caracteres</HelperText>
     </div>
     <div class="form-group">
       <Textfield
         style="width: 100%;"
         variant="outlined"
         bind:value={minimum_purchase}
-        label="Compra mínima"
-        input$aria-controls="product-name"
-        input$aria-describedby="product-name"
-        input$maxlength="50" />
-      <HelperText id="product-name">Máximo 50 caracteres</HelperText>
+        label="Compra mínima*"
+        input$aria-controls="product-min-purchase"
+        input$aria-describedby="product-min-purchase"
+        input$maxlength="50"
+        on:input={validateMinimumPurchase} />
+      <HelperText id="product-min-purchase">{minimumPurchaseFeedback}</HelperText>
     </div>
     <div class="form-group">
       <Textfield
@@ -458,7 +466,7 @@
       on:click|preventDefault={submit}
       class="ProductForm-button button button--secondary">
       <PlusCircleOutline size={15} />
-      Añadir Producto
+      {ProductElement ? 'Actualizar producto' : 'Añadir producto'}
     </button>
   </form>
 </div>

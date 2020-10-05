@@ -30,7 +30,7 @@
     ? INDUSTRIES[0]
     : '';
   let otherIndustry = '';
-  let country = editMode ? unregistered.country : '';
+  let country = editMode && unregistered.country ? unregistered.country : '';
   let relationshipType = type ? type : '';
 
   $: industryIsOther = industry.includes('OTROS');
@@ -118,7 +118,7 @@
   }
 
   function validateUnregisteredRelationshipForm() {
-    if (!(validateName() && validateOtherIndustry())) {
+    if (!(validateName() && validateOtherIndustry() && validateCountry() && validateRelationshipType())) {
       formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
@@ -139,6 +139,7 @@
             relationshipID,
             relationshipType
           );
+          
           afterSubmit(unregisteredRelationshipData);
         } else {
           validateUnregisteredRelationshipForm();
@@ -158,8 +159,6 @@
         }
       }
     } catch (e) {
-      console.error('submit -> e', e);
-
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
@@ -298,7 +297,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={relationshipType}
-        label="Tipo relación"
+        label="Tipo relación*"
         input$aria-controls="company-relation"
         input$aria-describedby="company-relation"
         input$maxlength="40"

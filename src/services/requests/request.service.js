@@ -47,7 +47,10 @@ export default class RequestService {
       headers: headers,
       body: JSON.stringify(data),
     }).then(async (response) => {
+      console.log("Response 1: ", response);
       return response.json().then((data) => {
+        console.log("Response: ", response);
+        console.log("Data: ", data);
         if (response.ok) return data;
         else
           throw new RequestError({

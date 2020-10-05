@@ -66,12 +66,32 @@
     width: 100%;
   }
 
+  .ProductList-empty-message {
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    text-align: center;
+    color: var(--secondary-text-color);
+  }
+
   .ProdusctShowMore {
     display: flex;
     justify-content: center;
   }
 
   @media screen and (min-width: 850px) {
+    .ProductsList-headline {
+      margin-bottom: 15px;
+      padding: 15px;
+    }
+
+    .ProductsList {
+      margin: 25px 20px;
+      padding: unset;
+    }
+
     .ProdusctShowMoreText {
       color: var(--principal-color);
       cursor: pointer;
@@ -89,10 +109,10 @@
     </Modal>
   {/if}
   {#if isSessionUserProfile}
-    <div
-      class="ProductList-card--create-container"
-      on:click={toggleEditableMode}>
-      <CreateButton size={25} />
+    <div class="ProductList-card--create-container">
+      <div on:click={toggleEditableMode}>
+        <CreateButton size={25} />
+      </div>
     </div>
   {/if}
   {#if productList && productList.length <= 0}

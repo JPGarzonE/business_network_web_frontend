@@ -1,5 +1,4 @@
 <script context="module">
-  import { API_URL } from '../../store/store.js';
   import UserService from '../../services/users/user.service.js';
   import ContactService from '../../services/companies/contact.service.js';
   import LocationService from '../../services/companies/location.service.js';
@@ -60,13 +59,10 @@
       page: 0,
       pageLength: 4,
     });
+
     const products = productsData.results;
 
-    const serviceService = new ServiceService();
-    const servicesData = await serviceService.getUserServices(username);
-    const services = servicesData.results;
-
-    return products.concat(services);
+    return products;
   }
 
   async function loadCertifications(username) {

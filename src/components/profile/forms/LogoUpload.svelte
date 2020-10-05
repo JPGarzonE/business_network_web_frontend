@@ -42,6 +42,7 @@
           newLogoFile,
           $session.accessToken
         );
+        console.log("Actualización del logo: ", Company);
 
         afterSubmit(Company);
       }
@@ -49,6 +50,7 @@
       event.target.style.opacity = 1;
       event.target.style.cursor = 'pointer';
     } catch (e) {
+      console.log("Error: ", e);
       event.target.style.opacity = 1;
       event.target.style.cursor = 'pointer';
     }

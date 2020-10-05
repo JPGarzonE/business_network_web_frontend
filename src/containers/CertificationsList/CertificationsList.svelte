@@ -71,7 +71,7 @@
     }
 
     .CertificationsList {
-      padding: 0;
+      padding: unset;
     }
   }
 </style>
@@ -88,8 +88,10 @@
   <h3 class="CertificationsList-headline">Certificaciones</h3>
 
   {#if isSessionUserProfile}
-    <div class="CertificationsList-card--create" on:click={toggleEditableMode}>
-      <CreateButton size={25} />
+    <div class="CertificationsList-card--create">
+      <div on:click={toggleEditableMode}>
+        <CreateButton size={25} />
+      </div>
     </div>
   {/if}
   <HorizontalScrollList
@@ -104,7 +106,7 @@
         onDelete={onDeleteCertification} />
     {:else}
       <div class="CertificationsList-empty-message">
-        <p>La compañia todavía no ha certificaciones que la identifiquen</p>
+        <p>La compañia todavía no tiene certificaciones que la identifiquen</p>
       </div>
     {/each}
   </HorizontalScrollList>

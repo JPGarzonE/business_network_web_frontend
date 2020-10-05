@@ -39,7 +39,8 @@ export default class CompanyService extends RequestService {
         const Data = {
             "logo_id": Logo.id
         }
-
+        console.log("Logo: ", Logo);
+        console.log("Logo id: ", Data);
         const Company = await this.patch( this.getCompaniesPath(username), headers, Data );
         return Company;
     }

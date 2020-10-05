@@ -1,6 +1,5 @@
 <script>
   import LocationService from '../../../services/companies/location.service.js';
-  import ContactService from '../../../services/companies/contact.service.js';
   import GoogleTranslate from 'svelte-material-icons/GoogleTranslate.svelte';
   import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
   import { stores } from '@sapper/app';
@@ -9,41 +8,21 @@
   export let afterSubmit;
   export let name;
   export let industry = '';
-  export let contact;
   export let location;
   const { session } = stores();
   const isSessionUserProfile = getContext('isSessionUserProfile');
 
   const countries = ['Colombia', 'Estados unidos'];
-  const fields = ['city', 'country', 'address', 'ext', 'phone', 'email'];
+  const fields = ['city', 'country', 'address'];
 
   let city = location && location.city ? location.city : '';
   let country;
   let address = location && location.address ? location.address : '';
-  let ext = contact && contact.ext_phone ? contact.ext_phone : '';
-  let phone = contact && contact.phone ? contact.phone : '';
-  let email = contact && contact.email ? contact.email : '';
 
   let formErrorMessage = '';
 
   let cityFeedback;
   let addressFeedback;
-  let extFeedback;
-  let phoneFeedback;
-  let emailFeedback;
-
-  function validateEmailPattern() {
-    let emailMatch = email.match(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-    if (emailMatch) {
-      emailFeedback = '';
-      return true;
-    } else {
-      emailFeedback = 'Correo inválido';
-      return false;
-    }
-  }
 
   function validateCity() {
     if (city && city.length >= 1) {
@@ -73,34 +52,8 @@
     return true;
   }
 
-  function validateExt() {
-    if (ext.length > 5) {
-      extFeedback = 'Máximo 5 caracteres';
-      return false;
-    }
-
-    extFeedback = '';
-    return true;
-  }
-
-  function validatePhone() {
-    if (phone.length > 0 && phone.length < 6) {
-      phoneFeedback = 'Mínimo 6 caracteres';
-      return false;
-    } else if (phone.length > 15) {
-      phoneFeedback = 'Máximo 15 caracteres';
-      return false;
-    }
-
-    phoneFeedback = '';
-    return true;
-  }
-
   function validateHeaderForm() {
     if (!(validateCity() && validateAddress())) {
-      formErrorMessage = 'Los datos no son válidos';
-      throw new Error();
-    } else if (!(validateExt() && validatePhone() && validateEmailPattern())) {
       formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
@@ -116,11 +69,8 @@
     try {
       if (isSessionUserProfile) {
         validateHeaderForm();
-
-        const contactData = await submitContact();
         const locationData = await submitLocation();
-
-        afterSubmit(contactData, locationData);
+        afterSubmit(locationData);
       }
     } catch (e) {
       const error = e.message;
@@ -134,48 +84,6 @@
     } finally {
       Target.style.opacity = 1;
       Target.style.cursor = 'pointer';
-    }
-  }
-
-  async function submitContact() {
-    const contactService = new ContactService();
-    let dataToSubmit = {};
-
-    if (contact) {
-      contact.ext_phone = contact.ext_phone ? contact.ext_phone : '';
-      contact.phone = contact.phone ? contact.phone : '';
-      contact.email = contact.email ? contact.email : '';
-
-      if (ext != contact.ext_phone) dataToSubmit.ext_phone = ext;
-      if (phone != contact.phone) dataToSubmit.phone = phone;
-      if (email != contact.email) dataToSubmit.email = email;
-
-      const dataToSubmitIsEmpty = Object.keys(dataToSubmit).length === 0;
-      if (!dataToSubmitIsEmpty) {
-        const contactData = await contactService.updateUserContact(
-          $session.username,
-          contact.id,
-          dataToSubmit,
-          $session.accessToken
-        );
-
-        return contactData;
-      }
-    } else {
-      if (ext != '') dataToSubmit.ext_phone = ext;
-      if (phone != '') dataToSubmit.phone = phone;
-      if (email != '') dataToSubmit.email = email;
-
-      const dataToSubmitIsEmpty = Object.keys(dataToSubmit).length === 0;
-      if (!dataToSubmitIsEmpty) {
-        const contactData = await contactService.createUserContact(
-          $session.username,
-          dataToSubmit,
-          $session.accessToken
-        );
-
-        return contactData;
-      }
     }
   }
 

@@ -94,6 +94,7 @@
   .RelationshipCard-wrapper {
     position: relative;
     width: 210px;
+    margin-right: 1%;
   }
 
   .selectable:hover {
@@ -150,6 +151,12 @@
   .RelationshipCard-link {
     text-decoration: none;
     color: inherit;
+  }
+
+  @media screen and (min-width: 1250px) {
+    .RelationshipCard-wrapper {
+      margin-right: 1%;
+    }
   }
 </style>
 

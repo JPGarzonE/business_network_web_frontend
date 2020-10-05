@@ -31,10 +31,12 @@
   }
 
   function reloadComponentData(unregisteredRelationshipData) {
+    console.log("Reload component data");
     unregisteredRelationships = [
       ...unregisteredRelationships,
       unregisteredRelationshipData,
     ];
+    console.log("Reload component data 2");
     displayUnregisteredCreateForm = false;
   }
   function onDeleteUnregisteredRelationship(id) {
@@ -86,7 +88,7 @@
 
   @media screen and (min-width: 850px) {
     .ProfileRelationships {
-      margin: 20px;
+      margin: 25px 20px;
       padding: unset;
     }
 
@@ -115,10 +117,10 @@
 
   <h3 class="ProfileRelationships-headline">Con que empresas trabaja</h3>
   {#if isSessionUserProfile}
-    <div
-      class="ProfileRelationships-card--create"
-      on:click={toggleUnregisteredCreateForm}>
-      <CreateButton size={25} />
+    <div class="ProfileRelationships-card--create">
+      <div on:click={toggleUnregisteredCreateForm}>
+        <CreateButton size={25} />
+      </div>
     </div>
   {/if}
   <HorizontalScrollList
@@ -130,7 +132,7 @@
         onDelete={onDeleteUnregisteredRelationship} />
     {:else}
       <div class="ProfileRelationships-empty-message">
-        <p>La compañia todavía no ha las empresas con las que trabaja</p>
+        <p>La compañia todavía no ha agregado las empresas con las que trabaja</p>
       </div>
     {/each}
   </HorizontalScrollList>

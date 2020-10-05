@@ -122,6 +122,13 @@
       margin: 0;
     }
   }
+
+  @media screen and (min-width: 1030px) {
+    .ProductCard {
+      width: 40%;
+    }
+  }
+
   @media screen and (min-width: 1260px) {
     .ProductCard {
       width: 25%;
@@ -176,9 +183,10 @@
   {#if productElement.category}
     <p class="ProductCard-story">{productElement.category}</p>
   {/if}
-  {#if productElement.minimum_price != null && productElement.maximum_price != null}
+  {#if productElement.minimum_price != null}
     <p class="ProductCard-price">
-      {productElement.minimum_price} - {productElement.maximum_price}
+      {productElement.minimum_price} 
+      {productElement.maximum_price != null ? ` - ${productElement.maximum_price}` : ""}
       {productElement.currency.code}
     </p>
   {/if}

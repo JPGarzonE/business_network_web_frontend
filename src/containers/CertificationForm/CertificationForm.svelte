@@ -38,7 +38,7 @@
 
       nameFeedback = '';
       return true;
-    } else if (name && name.length > 0 && name.length < 2) {
+    } else if (name && name.length > 0 && name.length <= 2) {
       nameFeedback = 'Mínimo 2 caracteres';
       return false;
     } else {

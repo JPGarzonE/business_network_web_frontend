@@ -9,11 +9,14 @@
 
 <style>
   .CreateButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--principal-color);
+    border-radius: 100%;
+    padding: 3px;
     cursor: pointer;
     background-color: unset;
-    border: 2px solid var(--principal-color);
-    padding: 1px 3px;
-    border-radius: 100%;
   }
   .CreateButton-gray {
     cursor: pointer;

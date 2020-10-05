@@ -14,7 +14,6 @@
   export let name;
   export let industry;
   export let logo;
-  export let contact;
   export let location;
   const { session } = stores();
   const isSessionUserProfile = getContext("isSessionUserProfile");
@@ -23,8 +22,6 @@
 
   let locationSubtitle;
   let address;
-  let contactPhone;
-  let contactEmail;
 
   $: {
     if (location) {
@@ -36,23 +33,11 @@
     }
   }
 
-  $: {
-    if (contact) {
-      if (contact.phone)
-        contactPhone = `${contact.ext_phone ? contact.ext_phone : ""} ${
-          contact.phone
-        }`;
-
-      if (contact.email) contactEmail = contact.email;
-    }
-  }
-
   function toggleEditableMode() {
     editableMode = !editableMode;
   }
 
-  function reloadComponentData(contactData, locationData) {
-    contact = contactData;
+  function reloadComponentData(locationData) {
     location = locationData;
     editableMode = false;
   }
@@ -155,7 +140,6 @@
       <HeaderForm
         {name}
         {industry}
-        {contact}
         {location}
         on:click={toggleEditableMode}
         afterSubmit={reloadComponentData} />
@@ -187,11 +171,11 @@
       </p>
       <p class="ProfileHeader-data">
         <i class="icon-wrapper"><GoogleTranslate /></i>
-        {locationSubtitle ? locationSubtitle : 'Medellin'}
+        {locationSubtitle ? locationSubtitle : 'No tiene aún'}
       </p>
       <p class="ProfileHeader-data">
         <i class="icon-wrapper"><Web /></i>
-        {locationSubtitle ? locationSubtitle : 'Colombia, Chile, Peru'}
+        {locationSubtitle ? locationSubtitle : 'No tiene aún'}
       </p>
       <ButtonChat />
     </div>

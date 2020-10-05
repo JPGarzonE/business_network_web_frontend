@@ -20,6 +20,10 @@
     align-items: center;
   }
 
+  .ConfirmationModal-title {
+    text-align: center;
+  }
+
   .ConfirmationModal-overlay {
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;

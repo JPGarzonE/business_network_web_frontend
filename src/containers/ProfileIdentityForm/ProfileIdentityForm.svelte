@@ -1,5 +1,5 @@
 <script>
-  import LocationService from '../../../services/companies/location.service.js';
+  import LocationService from '../../services/companies/location.service.js';
   import GoogleTranslate from 'svelte-material-icons/GoogleTranslate.svelte';
   import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
   import { stores } from '@sapper/app';
@@ -52,7 +52,7 @@
     return true;
   }
 
-  function validateHeaderForm() {
+  function validateProfileIdentityForm() {
     if (!(validateCity() && validateAddress())) {
       formErrorMessage = 'Los datos no son válidos';
       throw new Error();
@@ -68,7 +68,7 @@
 
     try {
       if (isSessionUserProfile) {
-        validateHeaderForm();
+        validateProfileIdentityForm();
         const locationData = await submitLocation();
         afterSubmit(locationData);
       }
@@ -133,7 +133,7 @@
 <style>
   @import '/styles/form.css';
 
-  .HeaderForm-headline {
+  .ProfileIdentityForm-headline {
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -142,7 +142,7 @@
     margin-bottom: 5px;
   }
 
-  .HeaderForm-name {
+  .ProfileIdentityForm-name {
     margin: 0;
     margin-top: 25px;
     font-size: 1.3em;
@@ -151,7 +151,7 @@
     text-transform: capitalize;
   }
 
-  .HeaderForm-industry {
+  .ProfileIdentityForm-industry {
     width: 400px;
     margin-bottom: 15px;
     font-size: 0.9em;
@@ -159,31 +159,31 @@
     color: var(--secondary-text-color);
   }
 
-  .HeaderForm-message {
+  .ProfileIdentityForm-message {
     margin: 40px 0px 10px;
     font-size: 0.95em;
     text-align: center;
     color: var(--secondary-text-color);
   }
 
-  .HeaderForm-country,
-  .HeaderForm-city,
-  .HeaderForm-address {
+  .ProfileIdentityForm-country,
+  .ProfileIdentityForm-city,
+  .ProfileIdentityForm-address {
     border: none;
     border-bottom: 1px solid var(--secondary-text-color);
   }
 
-  .HeaderForm-country {
+  .ProfileIdentityForm-country {
     width: 45%;
     margin-right: 15px;
   }
 
-  .HeaderForm-city,
-  .HeaderForm-address {
+  .ProfileIdentityForm-city,
+  .ProfileIdentityForm-address {
     width: 100%;
   }
 
-  .HeaderForm-button {
+  .ProfileIdentityForm-button {
     margin-top: 3.5em;
   }
 
@@ -197,17 +197,17 @@
   }
 </style>
 
-<div class="HeaderForm ProfileForm">
-  <button class="HeaderForm-close-button ProfileForm-close-button" on:click>
+<div class="ProfileIdentityForm ProfileForm">
+  <button class="ProfileIdentityForm-close-button ProfileForm-close-button" on:click>
     <span>X</span>
   </button>
 
-  <div class="HeaderForm-headline">
-    <h2 class="HeaderForm-name">{name}</h2>
-    <span class="HeaderForm-industry">{industry}</span>
+  <div class="ProfileIdentityForm-headline">
+    <h2 class="ProfileIdentityForm-name">{name}</h2>
+    <span class="ProfileIdentityForm-industry">{industry}</span>
   </div>
 
-  <form class="HeaderForm-form ProfileForm-form">
+  <form class="ProfileIdentityForm-form ProfileForm-form">
     {#if formErrorMessage}
       <div class="form-banner--invalid">
         <p>{formErrorMessage}</p>
@@ -216,7 +216,7 @@
 
     <div class="form-group">
       <div class="ProfileForm-group">
-        <select name="country" bind:value={country} class="HeaderForm-country">
+        <select name="country" bind:value={country} class="ProfileIdentityForm-country">
           {#each countries as country}
             <option
               value={country}
@@ -230,7 +230,7 @@
           type="text"
           name="city"
           placeholder="Ciudad"
-          class="HeaderForm-city"
+          class="ProfileIdentityForm-city"
           on:input={validateCity}
           bind:value={city} />
       </div>
@@ -242,7 +242,7 @@
       {/if}
     </div>
 
-    <p class="HeaderForm-message">Cambia tus datos principales</p>
+    <p class="ProfileIdentityForm-message">Cambia tus datos principales</p>
 
     <div class="form-group">
       <div class="ProfileForm-group">
@@ -253,7 +253,7 @@
           type="text"
           name="city"
           placeholder="Ciudad"
-          class="HeaderForm-city"
+          class="ProfileIdentityForm-city"
           on:input={validateCity}
           bind:value={city} />
       </div>
@@ -267,7 +267,7 @@
             type="text"
             name="address"
             placeholder="Dirección"
-            class="HeaderForm-address"
+            class="ProfileIdentityForm-address"
             bind:value={address}
             on:input={validateAddress} />
         </div>
@@ -281,7 +281,7 @@
 
       <button
         on:click|preventDefault={submit}
-        class="HeaderForm-button button button--principal">
+        class="ProfileIdentityForm-button button button--principal">
         Aceptar y mostrar
       </button>
     </div>

@@ -1,6 +1,6 @@
 <script>
   import Modal from '../Modal.svelte';
-  import LogoUpload from './forms/LogoUpload.svelte';
+  import LogoUpload from '../../containers/ProfileLogoUpload/ProfileLogoUpload.svelte';
   import { getContext } from 'svelte';
   import EditButton from '../EditButton/EditButton.svelte';
   export let logo;

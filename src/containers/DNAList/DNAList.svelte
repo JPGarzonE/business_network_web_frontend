@@ -1,8 +1,8 @@
 <script>
-  import HorizontalScrollList from '../componentLists/HorizontalScrollList.svelte';
-  import DNACard from '../DNA/DNACard.svelte';
-  import Modal from '../Modal.svelte';
-  import DNAForm from './forms/DNAForm.svelte';
+  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
+  import DNACard from '../../components/DNA/DNACard.svelte';
+  import Modal from '../../components/Modal.svelte';
+  import DNAForm from '../DNAForm/DNAForm.svelte';
   import { getContext, onMount } from 'svelte';
   import DNAService from '../../services/companies/dna.service.js';
 
@@ -29,7 +29,7 @@
 </script>
 
 <style>
-  .ProfileDNA {
+  .DNAList {
     position: relative;
     margin: 0 20px;
     padding: 40px 20px 30px;
@@ -37,7 +37,7 @@
     border-radius: 5px;
   }
 
-  .ProfileDNA-headline {
+  .DNAList-headline {
     margin: 0 0 30px;
     color: var(--principal-text-color);
     font-size: 1.1em;
@@ -47,7 +47,7 @@
     letter-spacing: 0.1em;
   }
 
-  .ProfileDNA-empty-card {
+  .DNAList-empty-card {
     width: 260px;
     height: auto;
     display: flex;
@@ -61,13 +61,13 @@
     cursor: pointer;
   }
 
-  .ProfileDNA-empty-card-image {
+  .DNAList-empty-card-image {
     width: 140px;
     padding: 15px 20px;
     transform: rotate(270deg);
   }
 
-  .ProfileDNA-card--create {
+  .DNAList-card--create {
     width: auto;
     min-width: 80%;
     height: 200px;
@@ -84,16 +84,16 @@
     cursor: pointer;
   }
 
-  .ProfileDNA-card--create span {
+  .DNAList-card--create span {
     margin-bottom: 10px;
   }
 
-  .ProfileDNA-card--create p {
+  .DNAList-card--create p {
     font-size: 15px;
     color: var(--principal-color);
   }
 
-  .ProfileDNA-empty-message {
+  .DNAList-empty-message {
     max-width: 200px;
     display: flex;
     justify-content: center;
@@ -104,33 +104,33 @@
   }
 
   @media screen and (min-width: 420px) {
-    .ProfileDNA-card--create {
+    .DNAList-card--create {
       min-width: 65%;
     }
   }
 
   @media screen and (min-width: 480px) {
-    .ProfileDNA-card--create {
+    .DNAList-card--create {
       min-width: 280px;
       margin-right: 40px;
     }
   }
 
   @media screen and (min-width: 850px) {
-    .ProfileDNA-headline {
+    .DNAList-headline {
       margin-bottom: 15px;
       padding: 15px;
       border-bottom: 0.05em solid var(--light-color);
     }
 
-    .ProfileDNA {
+    .DNAList {
       border: none;
       padding: unset;
     }
   }
 </style>
 
-<div class="ProfileDNA">
+<div class="DNAList">
   {#if editableMode && isSessionUserProfile}
     <Modal on:click={toggleEditableMode}>
       <DNAForm
@@ -139,24 +139,24 @@
     </Modal>
   {/if}
 
-  <h3 class="ProfileDNA-headline">ADN de la compañia</h3>
+  <h3 class="DNAList-headline">ADN de la compañia</h3>
 
   <HorizontalScrollList
     id="DNA-list"
     beginningItemsNumber={DNAElements ? DNAElements.length : 0}>
     {#if isSessionUserProfile}
-      <div class="ProfileDNA-card--create" on:click={toggleEditableMode}>
+      <div class="DNAList-card--create" on:click={toggleEditableMode}>
         <span> <i class="icon icon-add icon-add--medium" /> </span>
         <p>Crear ADN</p>
       </div>
     {:else if DNAElements && DNAElements.length <= 0}
-      <div class="ProfileDNA-empty-card">
+      <div class="DNAList-empty-card">
         <img
-          class="ProfileDNA-empty-card-image"
+          class="DNAList-empty-card-image"
           src="/static/images/profile_icon.svg"
           alt="icon_default" />
       </div>
-      <div class="ProfileDNA-empty-message">
+      <div class="DNAList-empty-message">
         La compañia todavía no ha agregado elementos que la identifiquen
       </div>
     {/if}

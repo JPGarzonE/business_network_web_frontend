@@ -106,8 +106,7 @@
   }
 </style>
 
-<div
-  class="Dropzone"
+<div class="Dropzone"
   style={imagePath || uploadedImage ? `background-image: url(${uploadedImage ? uploadedImage : imagePath})` : ''}>
   {#if allowDelete}
     <div class="delete-button" on:click={deleteFile}>

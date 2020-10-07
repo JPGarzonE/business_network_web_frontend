@@ -1,6 +1,5 @@
 <script>
     import LoginService from "../../services/authentication/login.service.js";
-    import { goto } from "@sapper/app";
 
     const loginService = new LoginService();
 
@@ -47,6 +46,9 @@
             const data = await loginService.login( userData );
             setCookie("JPGE", data.access_token, 1);
             setCookie("access_username", data.user.username, 1);
+            
+            // Here we not use goto because the server has to render an authenticated content after login
+            // With goto this not happen because the render acts only on the client
             location.href = `/profile/${data.user.username}`;
         }
         catch(e){
@@ -159,7 +161,7 @@
         </div>
 
         <div class="form-button-group">
-            <input disabled={!isValidBeforeSumbit} type="button" id="submit-login-form" class="button form-button button--principal" 
+            <input disabled={!isValidBeforeSumbit} type="button" class="button form-button button--principal" 
                 name="submit" on:click={submitLogin} value="Ingresar" />
         </div>
 

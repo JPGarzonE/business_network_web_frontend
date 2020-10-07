@@ -1,7 +1,7 @@
 <script>
     import MainBanner from "../components/MainBanner.svelte";
     import AuthContainer from "../components/authentication/AuthContainer.svelte";
-    import LoginForm from "../components/authentication/LoginForm.svelte";
+    import LoginForm from "../containers/LoginForm/LoginForm.svelte";
 </script>
 
 <style>

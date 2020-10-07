@@ -1,7 +1,6 @@
 <script>
   import { getContext } from 'svelte';
   import { stores } from '@sapper/app';
-  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
   import Modal from '../Modal.svelte';
   import EditButton from '../EditButton/EditButton.svelte';
   import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';

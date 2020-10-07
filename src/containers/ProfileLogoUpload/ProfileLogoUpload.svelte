@@ -1,5 +1,5 @@
 <script>
-  import CompanyService from '../../../services/companies/companies.service.js';
+  import CompanyService from '../../services/companies/companies.service.js';
   import { stores } from '@sapper/app';
   import { getContext } from 'svelte';
 
@@ -12,9 +12,9 @@
   let imageUploaded = false;
   let newLogoFile;
 
-  function handleLogoUploadChange(event) {
-    const LogoUploadInput = event.target;
-    newLogoFile = LogoUploadInput.files[0];
+  function handleProfileLogoUploadChange(event) {
+    const ProfileLogoUploadInput = event.target;
+    newLogoFile = ProfileLogoUploadInput.files[0];
 
     const Reader = new FileReader();
     Reader.onload = (e) => {
@@ -26,8 +26,8 @@
   }
 
   function updateLogoImagePreview(imgValue) {
-    const LogoUploadImage = document.getElementById('LogoUpload-image');
-    LogoUploadImage.src = imgValue;
+    const ProfileLogoUploadImage = document.getElementById('ProfileLogoUpload-image');
+    ProfileLogoUploadImage.src = imgValue;
   }
 
   async function submit(event) {
@@ -42,7 +42,6 @@
           newLogoFile,
           $session.accessToken
         );
-        console.log("Actualización del logo: ", Company);
 
         afterSubmit(Company);
       }
@@ -50,7 +49,6 @@
       event.target.style.opacity = 1;
       event.target.style.cursor = 'pointer';
     } catch (e) {
-      console.log("Error: ", e);
       event.target.style.opacity = 1;
       event.target.style.cursor = 'pointer';
     }
@@ -60,7 +58,7 @@
 <style>
   @import '/styles/button.css';
 
-  .LogoUpload {
+  .ProfileLogoUpload {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -69,7 +67,7 @@
     background-color: white;
   }
 
-  .LogoUpload-close-button {
+  .ProfileLogoUpload-close-button {
     width: 40px;
     height: 40px;
     position: absolute;
@@ -80,23 +78,23 @@
     cursor: pointer;
   }
 
-  .LogoUpload-close-button span {
+  .ProfileLogoUpload-close-button span {
     font-size: 2em;
   }
 
-  .LogoUpload-header {
+  .ProfileLogoUpload-header {
     padding: 1.1em 1.5em;
     border-bottom: 1px solid var(--light-color);
   }
 
-  .LogoUpload-title {
+  .ProfileLogoUpload-title {
     font-size: 1.2em;
     font-weight: 100;
     font-family: var(--title-font);
     letter-spacing: 0.035em;
   }
 
-  .LogoUpload-content {
+  .ProfileLogoUpload-content {
     height: 80%;
     display: flex;
     flex-direction: column;
@@ -105,7 +103,7 @@
     padding: 50px 30px 40px;
   }
 
-  .LogoUpload-logo-container {
+  .ProfileLogoUpload-logo-container {
     width: auto;
     max-width: 150px;
     border-radius: 15px;
@@ -120,21 +118,21 @@
     cursor: pointer;
   }
 
-  .LogoUpload-logo-container > span {
+  .ProfileLogoUpload-logo-container > span {
     position: absolute;
     bottom: 25%;
     visibility: hidden;
   }
 
-  .LogoUpload-logo-container:hover img {
+  .ProfileLogoUpload-logo-container:hover img {
     opacity: 0.7;
   }
 
-  .LogoUpload-logo-container:hover > span {
+  .ProfileLogoUpload-logo-container:hover > span {
     visibility: visible;
   }
 
-  .LogoUpload-logo-image {
+  .ProfileLogoUpload-logo-image {
     width: 100%;
     min-width: 130px;
     max-height: 130px;
@@ -143,7 +141,7 @@
     object-fit: cover;
   }
 
-  .LogoUpload-button {
+  .ProfileLogoUpload-button {
     max-width: 170px;
     display: flex;
     justify-content: center;
@@ -152,20 +150,20 @@
     font-size: 0.95em;
   }
 
-  .LogoUpload-button-label {
+  .ProfileLogoUpload-button-label {
     width: 100%;
     max-width: 170px;
     margin: 20px 0 35px 0px;
   }
 
-  .LogoUpload-message {
+  .ProfileLogoUpload-message {
     text-align: center;
     font-size: 0.9em;
     max-width: 440px;
     color: var(--secondary-text-color);
   }
 
-  .LogoUpload-footer {
+  .ProfileLogoUpload-footer {
     display: flex;
     justify-content: flex-end;
     padding: 1.1em 1.5em;
@@ -173,70 +171,70 @@
   }
 
   @media screen and (min-width: 650px) {
-    .LogoUpload {
+    .ProfileLogoUpload {
       width: auto;
       min-width: 600px;
       height: auto;
       border-radius: 5px;
     }
 
-    .LogoUpload-content {
+    .ProfileLogoUpload-content {
       height: auto;
     }
   }
 </style>
 
-<div class="LogoUpload">
-  <button class="LogoUpload-close-button" on:click> <span>X</span> </button>
+<div class="ProfileLogoUpload">
+  <button class="ProfileLogoUpload-close-button" on:click> <span>X</span> </button>
 
-  <div class="LogoUpload-header">
-    <h4 class="LogoUpload-title">Agregar logo</h4>
+  <div class="ProfileLogoUpload-header">
+    <h4 class="ProfileLogoUpload-title">Agregar logo</h4>
   </div>
-  <div class="LogoUpload-content">
-    <label for="LogoUpload">
+  <div class="ProfileLogoUpload-content">
+    <label for="ProfileLogoUpload">
       <figure
-        class="LogoUpload-logo-container {actualLogo && actualLogo.path ? '' : 'ProfileLogo-container--default'}">
+        class="ProfileLogoUpload-logo-container {actualLogo && actualLogo.path ? '' : 'ProfileLogo-container--default'}">
         <img
-          id="LogoUpload-image"
+          id="ProfileLogoUpload-image"
           src={actualLogo && actualLogo.path ? actualLogo.path : '/images/profile_icon.svg'}
           alt={profileUsername}
-          class="LogoUpload-logo-image {actualLogo && actualLogo.path ? '' : 'ProfileLogo-image--default'}" />
+          class="ProfileLogoUpload-logo-image {actualLogo && actualLogo.path ? '' : 'ProfileLogo-image--default'}" />
         <span>
           <i style="width:40px;height:40px;" class="icon icon-upload" />
         </span>
       </figure>
     </label>
 
-    <label for="LogoUpload" class="LogoUpload-button-label">
-      <span class="LogoUpload-button button button--principal">
+    <label for="ProfileLogoUpload" class="ProfileLogoUpload-button-label">
+      <span class="ProfileLogoUpload-button button button--principal">
         {imageUploaded ? 'Cambiar imagen' : 'Subir imagen'}
       </span>
     </label>
 
     <input
-      on:change={handleLogoUploadChange}
+      on:change={handleProfileLogoUploadChange}
       type="file"
-      id="LogoUpload"
+      id="ProfileLogoUpload"
       accept="images/*"
       style="display: none;" />
 
     {#if imageUploaded}
-      <p class="LogoUpload-message">
+      <p class="ProfileLogoUpload-message">
         ¡Así va a quedar la imagen de perfil de tu empresa!
       </p>
     {:else}
-      <p class="LogoUpload-message">
+      <p class="ProfileLogoUpload-message">
         ¡Sube el logo o una imagen que represente a tu empresa! <br /> Tendrás más
         oportunidades de atraer nuevos aliados y cerrar negocios.
       </p>
     {/if}
   </div>
-  <div class="LogoUpload-footer">
+  <div class="ProfileLogoUpload-footer">
     {#if imageUploaded}
       <button
         type="button"
         on:click|preventDefault={submit}
-        class="LogoUpload-button button button--principal">Guardar logo</button>
+        class="ProfileLogoUpload-button button button--principal">Guardar logo</button>
     {/if}
   </div>
 </div>

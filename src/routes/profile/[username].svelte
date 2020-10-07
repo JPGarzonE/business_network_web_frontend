@@ -97,7 +97,7 @@
 
   import Header from '../../components/Header.svelte';
   import Footer from '../../components/Footer.svelte';
-  import ProfileHeader from '../../components/profile/ProfileHeader.svelte';
+  import ProfileIdentity from '../../containers/ProfileIdentity/ProfileIdentity.svelte';
   import RelationshipsList from '../../containers/RelationshipsList/RelationshipsList.svelte';
   import CertificationsList from '../../containers/CertificationsList/CertificationsList.svelte';
   import ProductList from '../../containers/ProductList/ProductList.svelte';
@@ -157,7 +157,7 @@
 <div class="UserProfile">
   <div class="UserProfile-content">
     <section class="UserProfile-sidebar">
-      <ProfileHeader
+      <ProfileIdentity
         name={company.name}
         industry={company.industry}
         logo={company.logo}

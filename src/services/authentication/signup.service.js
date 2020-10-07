@@ -4,9 +4,6 @@ import UserVerificationService from "../verifications/user.verification.service.
 
 export default class SignupService extends RequestService {
 
-    _fileService; // class FileService
-    _userVerificationService; // class UserVerificationService
-
     constructor(){
         super();
         this._fileService = new FileService();

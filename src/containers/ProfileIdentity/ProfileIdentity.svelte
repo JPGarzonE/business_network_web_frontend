@@ -1,10 +1,10 @@
 <script>
-  import ProfileLogo from "./ProfileLogo.svelte";
-  import Verification from "./Verification.svelte";
-  import HeaderForm from "./forms/HeaderForm.svelte";
-  import Modal from "../Modal.svelte";
-  import ButtonChat from "../ButtonChat/ButtonChat.svelte";
-  import EditButton from "../EditButton/EditButton.svelte";
+  import ProfileLogo from "../../components/ProfileLogo/ProfileLogo.svelte";
+  import Verification from "../../components/ProfileVerification/ProfileVerification.svelte";
+  import ProfileIdentityForm from "../ProfileIdentityForm/ProfileIdentityForm.svelte";
+  import Modal from "../../components/Modal.svelte";
+  import ButtonChat from "../../components/ButtonChat/ButtonChat.svelte";
+  import EditButton from "../../components/EditButton/EditButton.svelte";
   import { stores } from "@sapper/app";
   import { getContext } from "svelte";
   import Web from "svelte-material-icons/Web.svelte";
@@ -46,7 +46,7 @@
 <style>
   @import "/styles/form.css";
 
-  .ProfileHeader-container {
+  .ProfileIdentity-container {
     position: relative;
     width: auto;
     height: auto;
@@ -61,13 +61,13 @@
     border: 1px solid var(--principal-color);
     margin: 90px auto 20px;
   }
-  .ProfileHeader-NameContainer {
+  .ProfileIdentity-NameContainer {
     display: flex;
     flex-direction: row;
     justify-content: center;
   }
 
-  .ProfileHeader-content {
+  .ProfileIdentity-content {
     width: 100%;
     min-width: 210px;
     position: relative;
@@ -75,7 +75,7 @@
     margin-bottom: 20px;
   }
 
-  .ProfileHeader-name {
+  .ProfileIdentity-name {
     max-width: 200px;
     text-align: center;
     text-transform: capitalize;
@@ -83,11 +83,11 @@
     font-weight: 100;
     color: var(--secondary-text-color);
   }
-  .ProfileHeader-NameEditor {
+  .ProfileIdentity-NameEditor {
     margin: auto 0;
   }
 
-  .ProfileHeader-subheadline {
+  .ProfileIdentity-subheadline {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -101,13 +101,13 @@
     text-transform: capitalize;
   }
 
-  .ProfileHeader-industry,
-  .ProfileHeader-location,
-  .ProfileHeader-address {
+  .ProfileIdentity-industry,
+  .ProfileIdentity-location,
+  .ProfileIdentity-address {
     text-align: center;
   }
 
-  .ProfileHeader-data {
+  .ProfileIdentity-data {
     width: 75%;
     display: flex;
     justify-content: flex-start;
@@ -128,16 +128,16 @@
   }
 
   @media screen and (min-width: 1024px) {
-    .ProfileHeader-name {
+    .ProfileIdentity-name {
       font-size: 1.3em;
     }
   }
 </style>
 
-<div class="ProfileHeader">
+<div class="ProfileIdentity">
   {#if editableMode && isSessionUserProfile}
     <Modal on:click={toggleEditableMode}>
-      <HeaderForm
+      <ProfileIdentityForm
         {name}
         {industry}
         {location}
@@ -146,34 +146,34 @@
     </Modal>
   {/if}
 
-  <div class="ProfileHeader-container">
-    <div class="ProfileHeader-content">
+  <div class="ProfileIdentity-container">
+    <div class="ProfileIdentity-content">
       <ProfileLogo {logo} />
       <Verification />
-      <div class="ProfileHeader-NameContainer">
-        <p class="ProfileHeader-name">{name}</p>
+      <div class="ProfileIdentity-NameContainer">
+        <p class="ProfileIdentity-name">{name}</p>
         {#if isSessionUserProfile}
-          <div class="ProfileHeader-NameEditor">
+          <div class="ProfileIdentity-NameEditor">
             <EditButton size={17} color="gray" onEdit={toggleEditableMode} />
           </div>
         {/if}
       </div>
-      <div class="ProfileHeader-subheadline">
-        <p class="ProfileHeader-industry">{industry}</p>
+      <div class="ProfileIdentity-subheadline">
+        <p class="ProfileIdentity-industry">{industry}</p>
         {#if locationSubtitle}
-          <p class="ProfileHeader-location">{locationSubtitle}</p>
+          <p class="ProfileIdentity-location">{locationSubtitle}</p>
         {/if}
       </div>
-      <p class="ProfileHeader-data">
+      <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><MapMarkerOutline /></i>
         <span
-          class="ProfileHeader-address">{address ? address : 'No tiene aún'}</span>
+          class="ProfileIdentity-address">{address ? address : 'No tiene aún'}</span>
       </p>
-      <p class="ProfileHeader-data">
+      <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><GoogleTranslate /></i>
         {locationSubtitle ? locationSubtitle : 'No tiene aún'}
       </p>
-      <p class="ProfileHeader-data">
+      <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><Web /></i>
         {locationSubtitle ? locationSubtitle : 'No tiene aún'}
       </p>

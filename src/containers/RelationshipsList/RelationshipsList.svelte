@@ -47,7 +47,7 @@
 </script>
 
 <style>
-  .ProfileRelationships {
+  .RelationshipsList {
     position: relative;
     margin: 0 20px;
     margin-bottom: 0px;
@@ -59,7 +59,7 @@
     border-bottom-right-radius: 0px;
   }
 
-  .ProfileRelationships-headline {
+  .RelationshipsList-headline {
     border-bottom: 0.05em solid var(--light-color);
     padding: 15px;
     margin: 0 0 30px;
@@ -71,12 +71,12 @@
     letter-spacing: 0.1em;
   }
 
-  .ProfileRelationships-card--create {
+  .RelationshipsList-card--create {
     width: 100%;
     display: flex;
     justify-content: flex-end;
   }
-  .ProfileRelationships-empty-message {
+  .RelationshipsList-empty-message {
     max-width: 200px;
     display: flex;
     justify-content: center;
@@ -87,18 +87,18 @@
   }
 
   @media screen and (min-width: 850px) {
-    .ProfileRelationships {
+    .RelationshipsList {
       margin: 25px 20px;
       padding: unset;
     }
 
-    .ProfileRelationships-headline {
+    .RelationshipsList-headline {
       margin-bottom: 15px;
     }
   }
 </style>
 
-<div class="ProfileRelationships">
+<div class="RelationshipsList">
   {#if displayAddRelationship && isSessionUserProfile}
     <Modal on:click={toggleAddRelationshipDisplay}>
       <RelationshipForm
@@ -115,9 +115,9 @@
     </Modal>
   {/if}
 
-  <h3 class="ProfileRelationships-headline">Con que empresas trabaja</h3>
+  <h3 class="RelationshipsList-headline">Con que empresas trabaja</h3>
   {#if isSessionUserProfile}
-    <div class="ProfileRelationships-card--create">
+    <div class="RelationshipsList-card--create">
       <div on:click={toggleUnregisteredCreateForm}>
         <CreateButton size={25} />
       </div>
@@ -131,7 +131,7 @@
         {relationshipData}
         onDelete={onDeleteUnregisteredRelationship} />
     {:else}
-      <div class="ProfileRelationships-empty-message">
+      <div class="RelationshipsList-empty-message">
         <p>La compañia todavía no ha agregado las empresas con las que trabaja</p>
       </div>
     {/each}

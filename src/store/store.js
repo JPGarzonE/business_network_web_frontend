@@ -1,5 +1,6 @@
 export const API_URL = "https://api.joinconecty.com";
-export const INDUSTRIES = ["AGREMIACIONES Y CAMARAS DE COMERCIO",
+export const INDUSTRIES = [
+  "AGREMIACIONES Y CAMARAS DE COMERCIO",
   "AGROINDUSTRIA",
   "ARQUITECTURA Y DISEÑO",
   "ASEO",

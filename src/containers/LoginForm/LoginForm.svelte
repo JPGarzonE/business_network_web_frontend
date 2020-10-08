@@ -1,4 +1,5 @@
 <script>
+    import { goto } from "@sapper/app";
     import LoginService from "../../services/authentication/login.service.js";
 
     const loginService = new LoginService();
@@ -106,11 +107,6 @@
         margin-top: 35px;
     }
 
-    .LoginForm-register-link {
-        width: 100%;
-        margin-top: 5px;
-    }
-
     .LoginForm-register hr{
         width: 100%;
         height: 2px;
@@ -125,10 +121,12 @@
         font-size: 15px;
     }
 
-    .LoginForm-register p a{
-        font-size: 15px;
+    .LoginForm-register input{
+        margin-top: 11px;
+        font-size: 14px;
         color: var(--principal-color);
         text-decoration: none;
+        letter-spacing: 0.22px;
     }
 </style>
 
@@ -168,9 +166,8 @@
         <div class="LoginForm-register">
             <hr />
             <p>Olvidé mi contraseña</p>
-            <a href="signup" class="LoginForm-register-link">
-                <input type="button" class="button button--secondary" value="Crea cuenta" />
-            </a>
+            <input type="button" class="button button--secondary" 
+                value="Crea cuenta" on:click={async ()=> await goto('/signup')} />
         </div>
     </form>
 </div>

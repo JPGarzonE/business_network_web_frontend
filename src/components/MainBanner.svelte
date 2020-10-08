@@ -1,7 +1,7 @@
 <style>
     .MainBanner {
         width: 60%;
-        height: 100%;
+        height: 820px;
         background-position: center;
         background-size: cover;
         display: none;

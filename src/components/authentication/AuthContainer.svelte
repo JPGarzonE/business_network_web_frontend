@@ -9,10 +9,10 @@
         right: 0;
         left: 0;
         bottom: auto;
-        margin: 1.5rem;
+        margin: 40px 52px;
         padding: 4em 2.5em 5em;
-        border: 1.5px solid var(--principal-color);
-        border-radius: 5px;
+        border: 2px solid var(--principal-color);
+        border-radius: 10px;
     }
 
     .AuthContainer-logo-container{
@@ -20,12 +20,19 @@
         position: absolute;
         top: 0;
         left: 0;
-        margin: 0 auto;
+        margin: -1px auto;
     }
 
     .AuthContainer-logo-container figure{
-        width: 140px;
+        width: 180px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin: 0 auto;
+        margin-bottom: 30px;
+        background-color: var(--principal-color);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     .AuthContainer-logo {
@@ -35,19 +42,19 @@
     }
 
     .AuthContainer-footer{
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		margin-bottom: 10px;
-		text-transform: uppercase;
-		color: var(--light-color);
-		font-size: 15px;
-	}
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        color: var(--light-color);
+        font-size: 15px;
+    }
 
-	@media screen and (min-width: 1000px){
+    @media screen and (min-width: 1000px){
         .AuthContainer{
             position: relative;
             width: 35%;
@@ -65,7 +72,7 @@
 <div class="AuthContainer">
     <div class="AuthContainer-logo-container">
         <figure>
-            <img src="/images/logo.png" class="AuthContainer-logo" alt="logo" />
+            <img src="/images/wordmark.png" class="AuthContainer-logo" alt="logo" />
         </figure>
     </div>
     <slot />

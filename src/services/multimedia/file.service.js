@@ -1,4 +1,5 @@
 import RequestService from "../requests/request.service.js";
+import RequestError from '../requests/requestError.js';
 
 export default class FileService extends RequestService {
 
@@ -13,7 +14,7 @@ export default class FileService extends RequestService {
     get filesURL(){
         const RequestURL = this.URL;
         const filesPath = this.filesPath;
-        requestURL.pathname = filesPath.startsWith("/") ? filesPath : "/" + filesPath;
+        RequestURL.pathname = filesPath.startsWith("/") ? filesPath : "/" + filesPath;
         return RequestURL;
     }
 
@@ -26,6 +27,7 @@ export default class FileService extends RequestService {
 
         let data = new FormData();
         data.append('file', file);
+        data.append('purpose', 'Company comercial certificate');
 
         const headers = {
             'Authorization': 'Token ' + accessToken

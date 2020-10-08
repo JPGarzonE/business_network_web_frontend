@@ -12,8 +12,8 @@
 
     $: isValidBeforeSumbit = emailIsValid && password;
 
-    function validateEmailPattern() {
-        let emailMatch = email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    function validateEmailPattern(emailP) {
+        let emailMatch = emailP.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
         if( emailMatch ){
             emailIsValid = true;
             return true;
@@ -35,7 +35,11 @@
         }
     }
     
-    async function submitLogin() {
+    async function submitLogin(event) {
+        const Target = event.target;
+        Target.style.opacity = 0.4;
+        Target.style.cursor = 'not-allowed';
+
         try{
             validateLoginForm();
 
@@ -58,6 +62,9 @@
                 formIsValid = false;
                 formErrorMessage = "Credenciales inválidas";
             }
+        } finally {
+            Target.style.opacity = 1;
+            Target.style.cursor = 'pointer';
         }
     }
 
@@ -142,7 +149,7 @@
             <input type="email" name="email" placeholder="Correo" class="form-control" bind:value={email}
                 class:form-control--valid={emailIsValid}
                 class:form-control--invalid={emailIsValid === false}
-                on:input={validateEmailPattern}
+                on:input={validateEmailPattern(email)}
             />
             <p class="form-message"
                 class:form-message--valid={emailIsValid}

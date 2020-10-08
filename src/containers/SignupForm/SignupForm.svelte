@@ -8,15 +8,18 @@
     import Select, {Option} from "@smui/select";
     import CheckBox from "@smui/checkbox";
     import FileUploadInput from "../../components/FileUploadInput/FIleUploadInput.svelte";
+    import { 
+        validateName, validateEmailPattern,  validatePassword, validatePasswordConfirmation, validateNIT
+    } from "../../validators/formValidators.js";
 
     const signupService = new SignupService();
 
-    let steps = {
-        1: null,
-        2: null
-    }
+    const fields = ['full_name', 'email', 'name', 'nit', 
+        'industry', 'password', 'password_confirmation'];
+    let steps = { 1: null, 2: null }
     let actualStep = 1;
     let termsAndConditionsSelected = false;
+    let submitErrorMessage = "";
 
     let fullName = '';
     let email = '';  
@@ -27,47 +30,130 @@
     let industry = '';
     let certificate = null; // File
 
-    let fullNameFeedback = 'Full name feedback';
-    let emailFeedback = '';  
+    let fullNameFeedback = '';
+    let emailFeedback = '';
     let passwordFeedback = '';
     let passwordConfirmationFeedback = '';
     let companyNameFeedback = '';
     let nitFeedback = '';
     let industryFeedback = '';
 
-    $: firstStepValid = validateFullName() && validateEmail() && validatePassword() && validatePasswordConfirmation();
-    $: validBeforeSubmit = firstStepValid && validateCompanyName() && validateNit() && validateIndustry();
+    let fullNameIsValid = null;
+    let emailIsValid = null;
+    let passwordIsValid = null;
+    let passwordConfirmationIsValid = null;
+    let companyNameIsValid = null;
+    let nitIsValid = null;
+    let industryIsValid = null;
 
-    function validateFullName() {
+    $: firstStepValid = fullNameIsValid && emailIsValid && passwordIsValid && passwordConfirmationIsValid;
+    $: validBeforeSubmit = firstStepValid && companyNameIsValid && nitIsValid 
+        && industryIsValid && termsAndConditionsSelected;
 
+    $: {
+        let { message, isValid } = validateName(fullName);
+        fullNameFeedback = message;
+        fullNameIsValid = isValid;
     }
 
-    function validateEmail() {
-
+    $: {
+        let { message, isValid } = validateEmailPattern(email);
+        emailFeedback = message;
+        emailIsValid = isValid;
     }
 
-    function validatePassword() {
-
+    $: {
+        let { message, isValid } = validatePassword(password);
+        passwordFeedback = message;
+        passwordIsValid = isValid;
     }
 
-    function validatePasswordConfirmation() {
-
+    $: {
+        let{ message, isValid } = validatePasswordConfirmation( password, passwordConfirmation);
+        passwordConfirmationFeedback = message;
+        passwordConfirmationIsValid = isValid;
     }
 
-    function validateCompanyName() {
-
+    $: {
+        let { message, isValid } = validateName(companyName);
+        companyNameFeedback = message;
+        companyNameIsValid = isValid;
     }
 
-    function validateNit() {
-
+    $: {
+        let { message, isValid } = validateNIT( nit );
+        nitFeedback = message;
+        nitIsValid = isValid;
     }
 
-    function validateIndustry() {
-
+    $: {
+        let { message, isValid } = validateName( industry );
+        industryFeedback = message;
+        industryIsValid = isValid;
     }
 
-    function submitSignup() {
+    
+    async function submitSignup( event ) {
+        const Target = event.target;
+        Target.style.opacity = 0.4;
+        Target.style.cursor = 'not-allowed';
 
+        try {
+            if( !termsAndConditionsSelected ) throw new Error("Acepta los terminos y condiciones");
+            else if( !validBeforeSubmit ) throw new Error();
+
+            let userData = {
+                email: email, full_name: fullName,
+                password: password, password_confirmation: passwordConfirmation,
+                company: {
+                    name: companyName, nit: nit, industry: industry
+                }
+            }
+
+            let data;
+            if( certificate ) data = await signupService.signupWithCertificate( userData, certificate );
+            else data = await signupService.signup( userData );
+
+            setCookie("JPGE", data.access_token, 1);
+            setCookie("access_username", data.user.username, 1);
+            
+            // Here we not use goto because the server has to render an authenticated content after login
+            // With goto this not happen because the render acts only on the client
+            location.href = `/profile/${data.user.username}`;
+        }
+        catch(e) {
+            const error = e.message;
+            console.log("Error: ", error);
+            submitErrorMessage = "";
+            let existErrorField = false;
+            fields.map((field) => {
+                let errorField = error[field];
+                if( field == "nit" || field == "name" || field == "industry" )
+                    errorField = error["company"] ? error["company"][field] : null;
+
+                if(errorField) {
+                    existErrorField = true;
+                    submitErrorMessage += `${submitErrorMessage ? `\n` : ''}-${field}: ${
+                        errorField
+                    }`;
+                }
+            });
+
+            if( !existErrorField && !error ) submitErrorMessage = "Los datos no son válidos";
+            else if( !existErrorField ) submitErrorMessage = error;
+
+        } finally {
+            Target.style.opacity = 1;
+            Target.style.cursor = 'pointer';
+        }
+    }
+
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 </script>
 
@@ -151,6 +237,14 @@
         letter-spacing: 0.22px;
     }
 
+    .SignupForm-control-helper {
+        margin-top: 0.3em;
+        font-size: 0.9em;
+        text-align: center;
+        letter-spacing: 0.22px;
+        color: var(--secondary-text-color);
+    }
+
     .SignupForm-certificate-helper {
         width: 100%;
         margin-left: 1em;
@@ -193,6 +287,12 @@
     <StepsCarousel 
         steps={steps}
         selectedStep={actualStep} />
+
+    {#if submitErrorMessage }
+        <div class="form-banner--invalid">
+            <p>{submitErrorMessage}</p>
+        </div>
+    {/if}
         
     <form class="SignupForm-form">
     {#if actualStep === 1}
@@ -202,8 +302,7 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Nombre completo*" input$aria-controls="full-name"
                 input$aria-describedby="full-name"
-                input$maxlength="50" bind:value={fullName}
-                on:input={validateFullName} />
+                input$maxlength="50" bind:value={fullName} />
             <HelperText id="full-name">{fullNameFeedback}</HelperText>
         </div>
 
@@ -211,26 +310,23 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Correo*" input$aria-controls="email"
                 input$aria-describedby="email"
-                input$maxlength="50" bind:value={email}
-                on:input={validateEmail} />
+                input$maxlength="50" bind:value={email} />
             <HelperText id="email">{emailFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Contraseña*" input$aria-controls="password"
-                input$aria-describedby="password"
-                input$maxlength="50" bind:value={password}
-                on:input={validatePassword} />
+                input$aria-describedby="password" input$type="password"
+                input$maxlength="50" bind:value={password} />
             <HelperText id="password">{passwordFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Confirmar contraseña*" input$aria-controls="password-confirmation"
-                input$aria-describedby="password-confirmation"
-                input$maxlength="50" bind:value={passwordConfirmation}
-                on:input={validatePasswordConfirmation} />
+                input$aria-describedby="password-confirmation" input$type="password"
+                input$maxlength="50" bind:value={passwordConfirmation} />
             <HelperText id="password-confirmation">{passwordConfirmationFeedback}</HelperText>
         </div>
 
@@ -253,8 +349,7 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Nombre de la empresa*" input$aria-controls="company-name"
                 input$aria-describedby="company-name"
-                input$maxlength="50" bind:value={companyName}
-                on:input={validateCompanyName} />
+                input$maxlength="50" bind:value={companyName} />
             <HelperText id="company-name">{companyNameFeedback}</HelperText>
         </div>
 
@@ -262,18 +357,20 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="NIT*" input$aria-controls="nit"
                 input$aria-describedby="nit"
-                input$maxlength="50" bind:value={nit}
-                on:input={validateNit} />
+                input$maxlength="50" bind:value={nit} />
             <HelperText id="nit">{nitFeedback}</HelperText>
         </div>
 
         <div class="form-group">
-            <Select bind:value={industry} label="Industria" variant="outlined">
+            <Select bind:value={industry} label="Industria*" variant="outlined">
                 <Option value=""></Option>
                 {#each INDUSTRIES as industryOption}
                     <Option value={industryOption} selected={industry == industryOption}>{industryOption}</Option>
                 {/each}
             </Select>
+            {#if industryFeedback && industryIsValid === false} 
+                <p class="SignupForm-control-helper">{industryFeedback.replace("El nombre", "La industria")}</p> 
+            {/if}
         </div>
 
         <div class="form-group" style="margin-top:1.6em;">

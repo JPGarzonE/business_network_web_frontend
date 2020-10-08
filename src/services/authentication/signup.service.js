@@ -33,7 +33,7 @@ export default class SignupService extends RequestService {
         const SignupData = await this.signup( userData );
         const AccessToken = await SignupData.access_token;
 
-        const Verification = await this._userVerificationService.uploadUserCertificate( AccessToken, certificateFile );
-        return Verification;
+        await this._userVerificationService.uploadUserCertificate( AccessToken, certificateFile );
+        return SignupData;
     }
 }

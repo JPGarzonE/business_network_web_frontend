@@ -2,24 +2,29 @@
   "name": "business_network_main_frontend",
   "version": "1.0.0",
   "description": "Conecty frontend web app",
-  "main": "index.js",
-  "scripts": {
-    "dev": "sapper dev",
-    "build": "sapper build",
-    "export": "sapper export",
-    "start": "node __sapper__/build"
+  "engines": {
+    "node": "12.6.0"
   },
-  "author": "Conecty",
-  "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "polka": "^0.5.2",
+    "sapper": "^0.27.16",
     "sirv": "^1.0.1",
     "svelte-file-dropzone": "0.0.10",
     "svelte-material-icons": "^1.0.3"
   },
+  "main": "index.js",
+  "scripts": {
+    "dev": "sapper dev",
+    "build": "sapper build",
+    "export": "sapper export",
+    "start": "node __sapper__/build",
+    "start:eb": "npm build && npm start"
+  },
+  "author": "Conecty",
+  "license": "ISC",
   "devDependencies": {
     "@smui/checkbox": "^1.0.0",
     "@smui/menu": "^1.0.0",
@@ -28,7 +33,6 @@
     "css-loader": "^4.2.2",
     "mini-css-extract-plugin": "^0.11.0",
     "postcss-loader": "^3.0.0",
-    "sapper": "^0.27.16",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.1",
     "style-loader": "^1.2.1",

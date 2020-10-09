@@ -1,7 +1,5 @@
-<svelte:head>
-    <title>Conecty</title>
-</svelte:head>
-
-<main>
-    <h1>Hello world Index</h1>
-</main>
+<script context="module">
+    export async function preload(page, session) {
+        return this.redirect(301, 'login')
+    }
+</script>

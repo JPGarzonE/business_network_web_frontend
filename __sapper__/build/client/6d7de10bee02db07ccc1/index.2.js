@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{116:function(n,t,e){"use strict";e.r(t),e.d(t,"preload",(function(){return s}));var r=e(0);async function s(n,t){return this.redirect(301,"login")}class c extends r.a{constructor(n){super(),Object(r.H)(this,n,null,null,r.T,{})}}t.default=c}}]);

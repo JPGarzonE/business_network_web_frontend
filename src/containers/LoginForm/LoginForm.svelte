@@ -27,7 +27,7 @@
         Target.style.cursor = 'not-allowed';
 
         try{
-            if( !isValidBeforeSumbit ) throw new Error();
+            if( !isValidBeforeSumbit ) throw new Error("Invalid");
 
             let userData = {
                 email: email,
@@ -48,8 +48,11 @@
                 formIsValid = false;
                 submitErrorMessage = "Credenciales inválidas";
             }
-            else {
+            else if(errors == "Invalid"){
                 submitErrorMessage = "Los datos no son válidos";
+            }
+            else {
+                submitErrorMessage = "Hubo un error en la aplicación intente más tarde";
             }
         } finally {
             Target.style.opacity = 1;

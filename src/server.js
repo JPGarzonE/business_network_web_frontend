@@ -6,7 +6,8 @@ import * as sapper from '@sapper/server';
 import { API_URL } from './store/store.js';
 import axios from 'axios';
 
-const { PORT, NODE_ENV } = process.env;
+const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV;
 const dev = NODE_ENV === 'development';
 
 polka()

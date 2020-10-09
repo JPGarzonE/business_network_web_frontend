@@ -111,3 +111,4 @@ temp/
 
 # Sapper
 src/node_modules
+__sapper__/dev

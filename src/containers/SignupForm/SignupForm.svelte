@@ -123,7 +123,6 @@
         }
         catch(e) {
             const error = e.message;
-            console.log("Error: ", error);
             submitErrorMessage = "";
             let existErrorField = false;
             fields.map((field) => {

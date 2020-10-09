@@ -1,38 +1,24 @@
 <script>
     import { goto } from "@sapper/app";
     import LoginService from "../../services/authentication/login.service.js";
+    import Textfield from "@smui/textfield";
+    import HelperText from "@smui/textfield/helper-text";
+    import { validateEmailPattern } from "../../validators/formValidators.js";
 
     const loginService = new LoginService();
 
     let email = '';
     let password = '';
-    let emailIsValid;
-    let formIsValid;
-    let formErrorMessage;
+    let emailFeedback = '';
+    let emailIsValid = null;
+    let submitErrorMessage;
 
     $: isValidBeforeSumbit = emailIsValid && password;
 
-    function validateEmailPattern(emailP) {
-        let emailMatch = emailP.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-        if( emailMatch ){
-            emailIsValid = true;
-            return true;
-        }else{
-            emailIsValid = false;
-            return false;
-        }
-    }
-
-    function validateLoginForm() {
-        if( !validateEmailPattern() || !password ){
-            formIsValid = false;
-            formErrorMessage = "Los datos no son válidos";
-            throw new Error();
-        }
-        else{
-            formErrorMessage = "";
-            formIsValid = true;
-        }
+    $: {
+        let { message, isValid } = validateEmailPattern(email);
+        emailFeedback = message;
+        emailIsValid = isValid;
     }
     
     async function submitLogin(event) {
@@ -41,7 +27,7 @@
         Target.style.cursor = 'not-allowed';
 
         try{
-            validateLoginForm();
+            if( !isValidBeforeSumbit ) throw new Error();
 
             let userData = {
                 email: email,
@@ -60,7 +46,10 @@
             const errors = e.message;
             if( errors.non_field_errors || errors.password ){
                 formIsValid = false;
-                formErrorMessage = "Credenciales inválidas";
+                submitErrorMessage = "Credenciales inválidas";
+            }
+            else {
+                submitErrorMessage = "Los datos no son válidos";
             }
         } finally {
             Target.style.opacity = 1;
@@ -141,28 +130,23 @@
     <form class="LoginForm-form">
         <h2 class="LoginForm-title">¡Nos encanta verte de nuevo!</h2>
 
-        {#if formIsValid === false}
-            <div class="form-banner--invalid">{formErrorMessage}</div>
+        {#if submitErrorMessage}
+            <div class="form-banner--invalid">{submitErrorMessage}</div>
         {/if}
 
         <div class="form-group">
-            <input type="email" name="email" placeholder="Correo" class="form-control" bind:value={email}
-                class:form-control--valid={emailIsValid}
-                class:form-control--invalid={emailIsValid === false}
-                on:input={validateEmailPattern(email)}
-            />
-            <p class="form-message"
-                class:form-message--valid={emailIsValid}
-                class:form-message--invalid={emailIsValid === false}
-            >
-                {emailIsValid === false ? "Agrega un correo válido" : ""}
-            </p>
+            <Textfield style="width: 100%;height:50px" variant="outlined"
+                label="Correo*" input$aria-controls="email"
+                input$aria-describedby="email"
+                input$maxlength="50" bind:value={email} />
+            <HelperText id="email">{emailFeedback}</HelperText>
         </div>
 
         <div class="form-group">
-            <input type="password" name="password" placeholder="Contraseña" class="form-control" bind:value={password}
-                class:form-control--valid={password}
-            />
+            <Textfield style="width: 100%;height:50px" variant="outlined"
+                label="Contraseña*" input$aria-controls="password"
+                input$aria-describedby="password" input$type="password"
+                input$maxlength="50" bind:value={password} />
         </div>
 
         <div class="form-button-group">

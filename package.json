@@ -2,12 +2,16 @@
   "name": "business_network_main_frontend",
   "version": "1.0.0",
   "description": "Conecty frontend web app",
+  "engines": {
+    "node": "12.6.0"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build",
     "export": "sapper export",
-    "start": "node __sapper__/build"
+    "start": "node __sapper__/build",
+    "start:eb": "npm build && npm start"
   },
   "author": "Conecty",
   "license": "ISC",

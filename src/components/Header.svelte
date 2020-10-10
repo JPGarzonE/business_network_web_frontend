@@ -1,3 +1,10 @@
+<script>
+    import ButtonChat from "./ButtonChat/ButtonChat.svelte";
+    import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
+
+    // export let userLogoSrc;
+</script>
+
 <style>
     Header{
         height: 40px;
@@ -9,9 +16,12 @@
     }
 
     .Header-container {
+        width: 100%;
         display: flex;
+        /* justify-content: space-between; */
         justify-content: center;
         align-items: center;
+        padding: 0px 15em;
         font-size: .85em;
         color: white;
     }
@@ -21,12 +31,24 @@
         height: 20px;
         margin: 0px 10px;
     }
+
+    .Header-wordmark {
+        display: flex;
+    }
 </style>
 
 <header class="Header">
     <div class="Header-container">
-        Stay <a href="/" style="display:flex;">
-            <img class="Header-logo" src="/images/wordmark_white_logo.png" alt="Conecty" />
-        </a>
+        <div class="Header-wordmark">
+            Stay <a href="/" style="display:flex;">
+                <img class="Header-logo" src="/images/wordmark_white_logo.png" alt="Conecty" />
+            </a>
+        </div>
+        <!-- <div class="Header-user-data">
+            <div class="Header-user-data-mychat">
+                <ButtonChat title="Mi chat" />
+            </div>
+            <ProfileIconMenu logoSrc={userLogoSrc} />
+        </div> -->
     </div>
 </header>

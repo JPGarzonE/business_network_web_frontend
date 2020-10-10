@@ -1,6 +1,10 @@
 <script>
-  export let buttonAction = () => alert('Life has never Svelte better');
   import Headphones from 'svelte-material-icons/Headphones.svelte';
+import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
+  import WhatsApp from  'svelte-material-icons/Whatsapp.svelte';
+
+  export let title = "¡Chatea ahora mismo!";
+  export let buttonAction = () => alert('Life has never Svelte better');
 </script>
 
 <style>
@@ -10,7 +14,7 @@
     border-radius: 5px;
     padding: 11px 8px;
     border: none;
-    width: 90%;
+    width: 100%;
     margin: 0 5%;
     display: flex;
     flex-direction: row;
@@ -28,6 +32,6 @@
 </style>
 
 <button on:click={buttonAction}>
-  <span class="iconButton-Chat-icon"><Headphones size={18} /></span>
-  <span class="icon-button-chat-text">Chatea con un vendedor </span>
+  <span class="iconButton-Chat-icon"><Whatsapp size={18} /></span>
+  <span class="icon-button-chat-text">{title}</span>
 </button>

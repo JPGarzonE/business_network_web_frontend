@@ -152,7 +152,7 @@
   <title>{company.name} - Conecty</title>
 </svelte:head>
 
-<Header />
+<Header userLogoSr={company.logo.path} />
 
 <div class="UserProfile">
   <div class="UserProfile-content">

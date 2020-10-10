@@ -177,7 +177,9 @@
         <i class="icon-wrapper"><Web /></i>
         {locationSubtitle ? locationSubtitle : 'No tiene aún'}
       </p>
-      <ButtonChat />
+      <div style="width:90%">
+        <ButtonChat title="Chatea con un vendedor" />
+      </div>
     </div>
   </div>
 </div>

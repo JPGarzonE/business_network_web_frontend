@@ -35,6 +35,7 @@
             };
 
             const data = await loginService.login( userData );
+            console.log("Data login: data");
             setCookie("JPGE", data.access_token, 1);
             setCookie("access_username", data.user.username, 1);
             
@@ -44,16 +45,13 @@
         }
         catch(e){
             const errors = e.message;
-            if( errors.non_field_errors || errors.password ){
-                formIsValid = false;
+            if( errors.non_field_errors || errors.password )
                 submitErrorMessage = "Credenciales inválidas";
-            }
-            else if(errors == "Invalid"){
+            else if(errors == "Invalid")
                 submitErrorMessage = "Los datos no son válidos";
-            }
-            else {
-                submitErrorMessage = "Hubo un error en la aplicación intente más tarde";
-            }
+            else
+                submitErrorMessage = "Hubo un error en la aplicación, intente más tarde";
+
         } finally {
             Target.style.opacity = 1;
             Target.style.cursor = 'pointer';

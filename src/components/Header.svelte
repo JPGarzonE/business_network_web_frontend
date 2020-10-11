@@ -1,6 +1,25 @@
+<script>
+    import { stores } from "@sapper/app";
+    import ButtonChat from "./ButtonChat/ButtonChat.svelte";
+    import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
+
+    const { session } = stores();
+
+    let userIsAuthenticated = false;
+    let company;
+    session.subscribe(session => {
+        userIsAuthenticated = session.authenticated;
+        company = session.company;
+    });
+
+    let logoSrc = company && company.logo ? company.logo.path : null;
+</script>
+
 <style>
+    @import "/styles/button.css";
+
     Header{
-        height: 40px;
+        height: 80px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -9,9 +28,11 @@
     }
 
     .Header-container {
+        width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+        padding: 0px 5em;
         font-size: .85em;
         color: white;
     }
@@ -21,12 +42,51 @@
         height: 20px;
         margin: 0px 10px;
     }
+
+    .Header-wordmark {
+        display: flex;
+    }
+
+    .Header-user-data {
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .Header-user-data-mychat {
+        width: 138px;
+        display: flex;
+        align-items: center;
+        margin-right: 36px;
+    }
+
+    @media screen and (min-width: 1445px) {
+        .Header-container {
+            padding: 0 10em;
+        }
+    }
 </style>
 
 <header class="Header">
     <div class="Header-container">
-        Stay <a href="/" style="display:flex;">
-            <img class="Header-logo" src="/images/wordmark_white_logo.png" alt="Conecty" />
-        </a>
+        <div class="Header-wordmark">
+            Stay <a href="/" style="display:flex;">
+                <img class="Header-logo" src="/images/wordmark_white_logo.png" alt="Conecty" />
+            </a>
+        </div>
+        {#if userIsAuthenticated}
+            <div class="Header-user-data">
+                <div class="Header-user-data-mychat">
+                    <ButtonChat title="Mi chat" />
+                </div>
+                <ProfileIconMenu {logoSrc} />
+            </div>
+        <!-- {:else}
+            <div class="Header-user-authenticate">
+                <button class="button button--secondary">Unete ahora</button>
+                <button class="button button--variant">Inicia sesión</button>
+            </div> -->
+        {/if}
     </div>
 </header>

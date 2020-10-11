@@ -127,6 +127,12 @@
     padding: 2px;
   }
 
+  .ProfileIdentity-contact-me {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 15%;
+  }
+
   @media screen and (min-width: 1024px) {
     .ProfileIdentity-name {
       font-size: 1.3em;
@@ -177,7 +183,9 @@
         <i class="icon-wrapper"><Web /></i>
         {locationSubtitle ? locationSubtitle : 'No tiene aún'}
       </p>
-      <ButtonChat />
+      <div class="ProfileIdentity-contact-me">
+        <ButtonChat title="Chatea con un vendedor" />
+      </div>
     </div>
   </div>
 </div>

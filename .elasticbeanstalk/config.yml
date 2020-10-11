@@ -1,10 +1,10 @@
 branch-defaults:
-  dev:
+  master:
     environment: business-network-webapp-env
     group_suffix: null
 global:
   application_name: business-network-webapp
-  branch: null
+  branch: master
   default_ec2_keyname: aws-eb
   default_platform: Node.js 12 running on 64bit Amazon Linux 2
   default_region: us-west-1

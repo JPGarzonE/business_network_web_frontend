@@ -19,8 +19,7 @@
     "dev": "sapper dev",
     "build": "sapper build",
     "export": "sapper export",
-    "start": "node __sapper__/build",
-    "start:eb": "npm build && npm start"
+    "start": "node __sapper__/build"
   },
   "author": "Conecty",
   "license": "ISC",

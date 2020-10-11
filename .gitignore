@@ -112,7 +112,3 @@ temp/
 # Sapper
 src/node_modules
 __sapper__/dev
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml

@@ -1,3 +1,10 @@
+<script context="module">
+    export async function preload(page, session) {
+        if( session.authenticated )
+            return this.redirect(301, `profile/${session.username}`);
+    }
+</script>
+
 <script>
     import MainBanner from "../components/MainBanner.svelte";
     import AuthContainer from "../components/authentication/AuthContainer.svelte";

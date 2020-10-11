@@ -4,7 +4,6 @@
   import LocationService from '../../services/companies/location.service.js';
   import CertificationsService from '../../services/companies/certifications.service.js';
   import ProductService from '../../services/companies/product.service.js';
-  import ServiceService from '../../services/companies/service.service.js';
   import RelationshipService from '../../services/relationships/relationship.service.js';
   import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
 
@@ -152,7 +151,7 @@
   <title>{company.name} - Conecty</title>
 </svelte:head>
 
-<Header userLogoSr={company.logo.path} />
+<Header />
 
 <div class="UserProfile">
   <div class="UserProfile-content">

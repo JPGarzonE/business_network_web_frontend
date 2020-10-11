@@ -36,6 +36,7 @@ polka()
               authenticated: true,
               isVerified: data.is_verified,
               username: data.username,
+              company: data.company
             };
           } else {
             return {

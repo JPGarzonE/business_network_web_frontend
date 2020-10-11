@@ -4,6 +4,7 @@
     import Textfield from "@smui/textfield";
     import HelperText from "@smui/textfield/helper-text";
     import { validateEmailPattern } from "../../validators/formValidators.js";
+    import { setCookie } from "../../utils/cookie.js";
 
     const loginService = new LoginService();
 
@@ -35,7 +36,6 @@
             };
 
             const data = await loginService.login( userData );
-            console.log("Data login: data");
             setCookie("JPGE", data.access_token, 1);
             setCookie("access_username", data.user.username, 1);
             
@@ -56,13 +56,6 @@
             Target.style.opacity = 1;
             Target.style.cursor = 'pointer';
         }
-    }
-
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 </script>
 

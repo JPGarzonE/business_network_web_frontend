@@ -1,4 +1,5 @@
 <script>
+    import { goto } from '@sapper/app';
     import { stores } from "@sapper/app";
     import ButtonChat from "./ButtonChat/ButtonChat.svelte";
     import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
@@ -32,7 +33,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0px 5em;
+        padding: 0px 2em;
         font-size: .85em;
         color: white;
     }
@@ -61,6 +62,61 @@
         margin-right: 36px;
     }
 
+    .Header-user-authenticate {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 220px;
+    }
+
+    .Header-user-authenticate-signup, .Header-user-authenticate-login {
+        text-transform: capitalize;
+        font-size: 1.3em;
+        letter-spacing: 0.22px;
+        color: white;
+    }
+
+    .Header-user-authenticate-signup {
+        display: none;
+        margin-right: 15px;
+    }
+
+    .Header-user-authenticate-login {
+        border: 1px solid white;
+    }
+
+    .Header-user-authenticate-signup:hover {
+        background-color: var(--lightest-gray);
+    }
+
+    .Header-user-authenticate-login:hover {
+        border: 2px solid white;
+        background-color: var(--lightest-gray);
+    }
+
+    @media screen and (min-width: 360px) {
+        .Header-user-authenticate {
+            display: flex;
+        }
+    }
+
+    @media screen and (min-width: 525px) {
+        .Header-user-authenticate {
+            width: 300px;
+            flex-direction: row;
+        }
+
+        .Header-user-authenticate-signup {
+            display: flex;
+        }
+    }
+
+    @media screen and (min-width: 625px) {
+        .Header-container {
+            padding: 0 5em;
+        }
+    }
+
     @media screen and (min-width: 1445px) {
         .Header-container {
             padding: 0 10em;
@@ -82,11 +138,17 @@
                 </div>
                 <ProfileIconMenu {logoSrc} />
             </div>
-        <!-- {:else}
+        {:else}
             <div class="Header-user-authenticate">
-                <button class="button button--secondary">Unete ahora</button>
-                <button class="button button--variant">Inicia sesión</button>
-            </div> -->
+                <button class="button button--variant Header-user-authenticate-signup"
+                    on:click={async ()=> await goto("/signup")}>
+                    Unete ahora
+                </button>
+                <button class="button button--variant Header-user-authenticate-login"
+                    on:click={async ()=> await goto("/login")}>
+                    Inicia sesión
+                </button>
+            </div>
         {/if}
     </div>
 </header>

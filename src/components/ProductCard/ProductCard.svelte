@@ -1,21 +1,22 @@
 <script>
   import { getContext, onMount } from 'svelte';
   import { stores } from '@sapper/app';
-  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
   import Modal from '../Modal.svelte';
   import EditButton from '../EditButton/EditButton.svelte';
+  import ElementDetailOverlay from "../ElementDetailOverlay/ElementDetailOverlay.svelte";
   import ProductForm from '../../containers/ProductForm/ProductForm.svelte';
   import ProductService from '../../services/companies/product.service.js';
   import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
+
   export let productElement;
   export let onDelete;
 
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isSessionUserProfile = getContext('isSessionUserProfile') ? getContext('isSessionUserProfile') : false;
 
   let editableMode = false;
-  let displayStory = false;
   let confirmationMode = false;
+  let displayDetailOverlay = false;
 
   function toggleEditableMode() {
     editableMode = !editableMode;
@@ -24,14 +25,11 @@
     confirmationMode = !confirmationMode;
   }
 
-  function toggleStoryDisplay() {
-    displayStory = !displayStory;
-  }
-
   function reloadComponentData(productElementData) {
     productElement = productElementData;
     editableMode = false;
   }
+
   async function onDeleteProduct() {
     toggleConfirmation;
     try {
@@ -52,18 +50,30 @@
   .ProductCard {
     position: relative;
     width: 100%;
+    min-width: 220px;
     padding: 15px 2%;
     margin: 15px 0;
+    margin-right: 2%;
     height: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
+  }
+  .ProductCard-detail-overlay {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+  }
+  .ProductCard:hover > .ProductCard-detail-overlay {
+    display: flex;
   }
   .ProductCard-edit-button {
     position: absolute;
     top: 0;
     right: 0;
+    z-index: 18;
     padding: 5px;
   }
   .ProductCard-media-container {
@@ -74,10 +84,6 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-  }
-
-  .ProductCard:hover {
-    background: rgba(83, 132, 201, 0.71);
   }
 
   .ProductCard-media-image {
@@ -109,7 +115,7 @@
     font-size: 1em;
   }
 
-  .ProductCard-story {
+  .ProductCard-subname {
     margin-bottom: 10px;
     padding: 0px 15px;
     color: var(--light-color);
@@ -120,18 +126,20 @@
     .ProductCard {
       width: 50%;
       margin: 0;
+      margin-bottom: 2%;
     }
   }
 
   @media screen and (min-width: 1030px) {
     .ProductCard {
       width: 40%;
+      margin-right: 2%;
     }
   }
 
   @media screen and (min-width: 1260px) {
     .ProductCard {
-      width: 25%;
+      width: 23%;
       padding: 2% 2%;
     }
   }
@@ -152,7 +160,12 @@
       ProductElement={productElement} />
   </Modal>
 {/if}
+
 <div class="ProductCard">
+  <div class="ProductCard-detail-overlay">
+    <ElementDetailOverlay />
+  </div>
+
   <figure
     class="ProductCard-media-container {productElement.images[0] && productElement.images[0].path ? '' : 'ProductCard-media-container--empty'}">
     {#if productElement.images[0] && productElement.images[0].path}
@@ -167,6 +180,7 @@
         class="ProductCard-media-image--default" />
     {/if}
   </figure>
+
   {#if isSessionUserProfile}
     <div class="ProductCard-edit-button">
       <EditButton
@@ -181,8 +195,13 @@
   <h4 class="ProductCard-name">{productElement.name}</h4>
 
   {#if productElement.category}
-    <p class="ProductCard-story">{productElement.category}</p>
+    <p class="ProductCard-subname">{productElement.category}</p>
   {/if}
+
+  {#if productElement.company && productElement.company.name}
+    <p class="ProductCard-subname">{productElement.company.name}</p>
+  {/if}
+
   {#if productElement.minimum_price != null}
     <p class="ProductCard-price">
       {productElement.minimum_price} 

@@ -1,3 +1,7 @@
+<script>
+    import ConectyWhiteWordmark from "../Wordmarks/ConectyWhiteWordmark.svelte";
+</script>
+
 <style>
     .AuthContainer{
         max-width: 650px;
@@ -17,28 +21,30 @@
 
     .AuthContainer-logo-container{
         width: 100%;
+        display: flex;
+        justify-content: center;
         position: absolute;
         top: 0;
         left: 0;
-        margin: -1px auto;
+        margin: 0 auto;
+        margin-top: -1px;
+        margin-bottom: 30px;
     }
 
     .AuthContainer-logo-container figure{
         width: 180px;
+        height: 50px;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 auto;
-        margin-bottom: 30px;
         background-color: var(--principal-color);
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
     }
 
-    .AuthContainer-logo {
-        width: 100%;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
+    .AuthContainer-logo-wordmark {
+        width: 70%;
+        height: 52%;
     }
 
     .AuthContainer-footer{
@@ -72,7 +78,9 @@
 <div class="AuthContainer">
     <div class="AuthContainer-logo-container">
         <figure>
-            <img src="/images/wordmark.png" class="AuthContainer-logo" alt="logo" />
+            <div class="AuthContainer-logo-wordmark">
+                <ConectyWhiteWordmark />
+            </div>
         </figure>
     </div>
     <slot />

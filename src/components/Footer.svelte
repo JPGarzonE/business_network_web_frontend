@@ -1,3 +1,7 @@
+<script>
+    import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
+</script>
+
 <style>
     .Footer {
         display: flex;
@@ -26,7 +30,7 @@
 
     .Footer-wordmark {
         width: 90px;
-        height: 20px;
+        height: 19px;
         margin: 0px 10px;
     }
 
@@ -63,7 +67,9 @@
     <div class="Footer-content">
         <div class="Footer-slogan">
             <a href="/" style="display:flex;">
-                <img class="Footer-wordmark" src="/images/wordmark_white_logo.png" alt="Stay Conecty" /> 
+                <div class="Footer-wordmark">
+                    <ConectyWhiteWordmark />
+                </div>
             </a>
             con nosotros
         </div>

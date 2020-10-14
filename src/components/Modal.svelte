@@ -1,7 +1,7 @@
 <style>
     .Modal {
         position: relative;
-        z-index: 15;
+        z-index: 20;
         position: fixed;
         width: 100%;
         height: 100%;

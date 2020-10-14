@@ -2,7 +2,7 @@
   import { stores } from '@sapper/app';
   import { getContext, onMount } from 'svelte';
   import UserVerificationService from '../../services/verifications/user.verification.service.js';
-  import CheckCircleOutline from 'svelte-material-icons/CheckCircleOutline.svelte';
+  import CheckDecagram from 'svelte-material-icons/CheckDecagram.svelte';
 
   const { session } = stores();
   const userVerificationService = new UserVerificationService();
@@ -68,7 +68,7 @@
 <div class="ProfileVerification">
   {#if true}
     <div class="ProfileVerification-card ProfileVerification-card--verified">
-      <span class="icon-check"><CheckCircleOutline /></span>
+      <span class="icon-check"><CheckDecagram size=22 /></span>
       <span class="ProfileVerification-title">Empresa verificada</span>
     </div>
   {:else if isSessionUserProfile}

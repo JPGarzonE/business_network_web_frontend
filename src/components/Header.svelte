@@ -3,6 +3,7 @@
     import { stores } from "@sapper/app";
     import ButtonChat from "./ButtonChat/ButtonChat.svelte";
     import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
+    import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
 
     const { session } = stores();
 
@@ -40,8 +41,8 @@
 
     .Header-logo{
         width: 90px;
-        height: 20px;
-        margin: 0px 10px;
+        height: 19px;
+        margin: 0px 5px;
     }
 
     .Header-wordmark {
@@ -57,7 +58,7 @@
 
     .Header-user-data-mychat {
         width: 138px;
-        display: flex;
+        display: none;
         align-items: center;
         margin-right: 36px;
     }
@@ -115,6 +116,10 @@
         .Header-container {
             padding: 0 5em;
         }
+
+        .Header-user-data-mychat {
+            display: flex;
+        }
     }
 
     @media screen and (min-width: 1445px) {
@@ -128,7 +133,9 @@
     <div class="Header-container">
         <div class="Header-wordmark">
             Stay <a href="/" style="display:flex;">
-                <img class="Header-logo" src="/images/wordmark_white_logo.png" alt="Conecty" />
+                <div class="Header-logo">
+                    <ConectyWhiteWordmark />
+                </div>
             </a>
         </div>
         {#if userIsAuthenticated}

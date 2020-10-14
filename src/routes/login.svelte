@@ -6,7 +6,7 @@
 </script>
 
 <script>
-    import MainBanner from "../components/MainBanner.svelte";
+    import LandingBanner from "../components/MainBanners/LandingBanner.svelte";
     import AuthContainer from "../components/authentication/AuthContainer.svelte";
     import LoginForm from "../containers/LoginForm/LoginForm.svelte";
 </script>
@@ -29,7 +29,7 @@
 </svelte:head>
 
 <div class="login">
-    <MainBanner />
+    <LandingBanner name="Login" />
     <AuthContainer>
         <LoginForm />
     </AuthContainer>

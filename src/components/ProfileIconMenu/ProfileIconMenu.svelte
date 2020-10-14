@@ -1,14 +1,33 @@
 <script>
+    import { goto } from '@sapper/app';
+    import { stores } from "@sapper/app";
     import ProfileIcon from "../ProfileIcon/ProfileIcon.svelte";
     import ArrowCollapseRight from "svelte-material-icons/ArrowCollapseRight.svelte";
     import ChevronDown from "svelte-material-icons/ChevronDown.svelte";
     import ChevronUp from "svelte-material-icons/ChevronUp.svelte";
+    import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
     import { deleteCookie } from "../../utils/cookie.js";
 
     export let logoSrc;
 
-    let displayMenu = false;
+    const { session, page } = stores();
 
+    let displayMenu = false;
+    let actualPath = null;
+    let sessionUsername = null;
+    let sessionIsAuthenticated = false;
+
+    session.subscribe(session => {
+        sessionIsAuthenticated = session.authenticated;
+        if( sessionIsAuthenticated )
+            sessionUsername = session.username;
+    });
+    page.subscribe(page => {
+        actualPath = page.path;
+    });
+
+    let sessionProfilePath = `/profile/${sessionUsername}`;
+    
     async function closeSession() {
         deleteCookie("JPGE");
         deleteCookie("access_username");
@@ -80,9 +99,18 @@
         {/if}
     </div>
     <div class="ProfileIconMenu-dropdown" class:hide={!displayMenu} >
+        {#if actualPath !== sessionProfilePath}
+        <div class="ProfileIconMenu-option" on:click={async () => await goto(sessionProfilePath)}>
+            <span>Editar mi perfil</span>
+            <PencilOutline size=16 color="var(--secondary-text-color)" />
+        </div>    
+        {/if}
+
+        {#if sessionIsAuthenticated}
         <div class="ProfileIconMenu-option" on:click={closeSession}>
             <span>Salir</span>
             <ArrowCollapseRight size=16 color="var(--secondary-text-color)" />
         </div>
+        {/if}
     </div>
 </div>

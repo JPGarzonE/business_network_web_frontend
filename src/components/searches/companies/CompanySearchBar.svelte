@@ -1,11 +1,11 @@
 <script>
-    import CompanySearchService from "../../../services/search/company.search.service.js";
+    import CompaniesSearchService from "../../../services/search/companies.search.service.js";
     import { stores } from "@sapper/app";
     import { getContext } from 'svelte';
 
     const { session } = stores();
     const isSessionUserProfile = getContext("isSessionUserProfile");
-    const companySearchService = new CompanySearchService();
+    const companiesSearchService = new CompaniesSearchService();
 
     let searchQuery;
     let companiesSearchResults = [];
@@ -17,8 +17,8 @@
     }
 
     async function search( query ) {
-        companiesSearchResults = await companySearchService.searchCompanies( searchQuery );
-        unregisteredCompaniesSearchResults = await companySearchService.searchUnregisteredCompanies( searchQuery );
+        companiesSearchResults = await companiesSearchService.searchCompanies( searchQuery );
+        unregisteredCompaniesSearchResults = await companiesSearchService.searchUnregisteredCompanies( searchQuery );
     }
 </script>
 

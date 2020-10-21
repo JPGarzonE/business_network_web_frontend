@@ -401,6 +401,7 @@
           input$aria-controls="product-min-price"
           input$aria-describedby="product-min-price"
           input$maxlength="50"
+          input$step="any"
           on:input={validateMinPrice} />
         <Textfield
           style="width: 45%;"
@@ -411,6 +412,7 @@
           input$aria-controls="product-max-price"
           input$aria-describedby="product-max-price"
           input$maxlength="50"
+          input$step="any"
           on:input={validateMaxPrice} />
       </div>
     </div>

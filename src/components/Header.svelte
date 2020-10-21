@@ -15,6 +15,24 @@
     });
 
     let logoSrc = company && company.logo ? company.logo.path : null;
+
+    let gotoSignup = async () => {
+        document.body.style.cursor = "wait";
+        await goto("/signup");
+        document.body.style.cursor = "auto";
+    }
+
+    let gotoLogin = async () => {
+        document.body.style.cursor = "wait";
+        await goto("/login");
+        document.body.style.cursor = "auto";
+    }
+
+    let gotoRoot = async () => {
+        document.body.style.cursor = "wait";
+        await goto("/");
+        document.body.style.cursor = "auto";
+    }
 </script>
 
 <style>
@@ -132,11 +150,11 @@
 <header class="Header">
     <div class="Header-container">
         <div class="Header-wordmark">
-            Stay <a href="/" style="display:flex;">
+            Stay <span on:click={gotoRoot} style="cursor:pointer;display:flex;">
                 <div class="Header-logo">
                     <ConectyWhiteWordmark />
                 </div>
-            </a>
+            </span>
         </div>
         {#if userIsAuthenticated}
             <div class="Header-user-data">
@@ -148,11 +166,11 @@
         {:else}
             <div class="Header-user-authenticate">
                 <button class="button button--variant Header-user-authenticate-signup"
-                    on:click={async ()=> await goto("/signup")}>
+                    on:click={gotoSignup}>
                     Unete ahora
                 </button>
                 <button class="button button--variant Header-user-authenticate-login"
-                    on:click={async ()=> await goto("/login")}>
+                    on:click={gotoLogin}>
                     Inicia sesión
                 </button>
             </div>

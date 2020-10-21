@@ -27,6 +27,13 @@
     });
 
     let sessionProfilePath = `/profile/${sessionUsername}`;
+
+    let gotoProfile = async () => {
+        console.log("GOTO profile")
+        document.body.style.cursor = "wait";
+        await goto(sessionProfilePath);
+        document.body.style.cursor = "auto";
+    }
     
     async function closeSession() {
         deleteCookie("JPGE");
@@ -100,7 +107,7 @@
     </div>
     <div class="ProfileIconMenu-dropdown" class:hide={!displayMenu} >
         {#if actualPath !== sessionProfilePath}
-        <div class="ProfileIconMenu-option" on:click={async () => await goto(sessionProfilePath)}>
+        <div class="ProfileIconMenu-option" on:click={gotoProfile}>
             <span>Editar mi perfil</span>
             <PencilOutline size=16 color="var(--secondary-text-color)" />
         </div>    

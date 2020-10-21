@@ -1,132 +1,22 @@
 <script>
     import Magnify from "svelte-material-icons/Magnify.svelte";
+    import ProductsSearchService from "../../../services/search/products.search.service.js";
     
     export let searchResults = [];
+    export let searchQuery = '';
 
-    searchResults = [
-        {
-            "category": "Aguacates",
-            "elements": [
-                {
-                    "name": "Aguacate Pinkerton",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/151/151.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=6NbHmVfXtXxRgeIoZO5yTZBec1U%3D&Expires=1602709216"
-                        }
-                    ],
-                    "company": {
-                        "name": "JGB"
-                    }
-                },
-                {
-                    "name": "Aguacate Criollo",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/152/152.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=L1L0c7XcVfhGVhtRc%2Frjf286oqI%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Chippy"
-                    }
-                },
-                {
-                    "name": "Aguacate Hass",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/149/149.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=V9KXL7FUCI4fhcxwlFEiCX8RHB4%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Agroaguacate"
-                    }
-                },
-                {
-                    "name": "Aguacate Pinkerton",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/150/150.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=2%2BLUX42Nea7UJnkC3d2kqw9RoUw%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Agroaguacate"
-                    }
-                },
-                {
-                    "name": "Aguacate Criollo",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/152/152.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=L1L0c7XcVfhGVhtRc%2Frjf286oqI%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Chippy"
-                    }
-                },
-            ]
-        },
-        {
-            "category": "Aguacates 2",
-            "elements": [
-                {
-                    "name": "Aguacate Pinkerton",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/151/151.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=6NbHmVfXtXxRgeIoZO5yTZBec1U%3D&Expires=1602709216"
-                        }
-                    ],
-                    "company": {
-                        "name": "JGB"
-                    }
-                },
-                {
-                    "name": "Aguacate Criollo",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/152/152.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=L1L0c7XcVfhGVhtRc%2Frjf286oqI%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Chippy"
-                    }
-                },
-                {
-                    "name": "Aguacate Hass",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/149/149.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=V9KXL7FUCI4fhcxwlFEiCX8RHB4%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Agroaguacate"
-                    }
-                },
-                {
-                    "name": "Aguacate Pinkerton",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/150/150.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=2%2BLUX42Nea7UJnkC3d2kqw9RoUw%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Agroaguacate"
-                    }
-                },
-                {
-                    "name": "Aguacate Criollo",
-                    "images": [
-                        {
-                            "path": "https://business-network-profile-images.s3.amazonaws.com/procelas/152/152.png?AWSAccessKeyId=AKIA4BR2HNWAP3TUWE6C&Signature=L1L0c7XcVfhGVhtRc%2Frjf286oqI%3D&Expires=1602709217"
-                        }
-                    ],
-                    "company": {
-                        "name": "Chippy"
-                    }
-                },
+    const productsSearchService = new ProductsSearchService();
+
+    let searchProducts = async () => {
+        console.log("Search: ", searchQuery);
+        if( searchQuery ) {
+            let productsData = await productsSearchService.searchProducts(searchQuery, {"query_params": "tariff_heading"});
+            console.log(productsData)
+            searchResults = [
+                {"name": "results", "section_elements": productsData.results}
             ]
         }
-    ]
-
-    let searchQuery = '';
+    }
 </script>
 
 <style>
@@ -153,6 +43,9 @@
     .ProductSearch-input {
         width: 100%;
         border-left: unset;
+        font-size: 1em;
+        font-weight: bold;
+        letter-spacing: 0.22px;
     }
 
     @media screen and (min-width: 480px) {
@@ -179,5 +72,5 @@
         <Magnify size="70%" color="#999999" />
     </div>
     <input type="text" name="ProductSearch-input" class="ProductSearch-input" 
-        bind:value={searchQuery} />
+        bind:value={searchQuery} on:input={searchProducts} />
 </div>

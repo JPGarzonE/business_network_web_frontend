@@ -1,7 +1,15 @@
 <script context="module">
+    import ShowcaseService from "../services/market/showcase.service.js";
+
     export async function preload(page, session) {
         if( session.authenticated ) {
             // return this.redirect(301, `profile/${session.username}`);
+            const showcaseService = new ShowcaseService();
+
+            const data = await showcaseService.getShowcase(session.accessToken);
+            return {
+                showcase: data
+            }
         }else {
             return this.redirect(301, 'login');
         }
@@ -14,11 +22,14 @@
     import ProductSearch from "../containers/Search/ProductSearch/ProductSearch.svelte";
     import MarketCategoryList from "../containers/MarketCategoryList/MarketCategoryList.svelte";
     import Footer from "../components/Footer.svelte";
+    
+    export let showcase;
 
-    let searchResults = [];
-
+    let showcaseResults = [];
+    let searchQuery = '';
     $: {
-        console.log("Search results: ", searchResults);
+        if( !searchQuery )
+            showcaseResults = showcase ? showcase.results : [];
     }
 </script>
 
@@ -64,16 +75,16 @@
         <h5 class="Market-search-title">
             Ingresa la subpartida arancelaria
         </h5>
-        <ProductSearch bind:searchResults />
+        <ProductSearch bind:searchResults={showcaseResults} bind:searchQuery />
     </div>
 
     <div class="Market-showcase">
-        {#each searchResults as section}
+        {#each showcaseResults as section}
             <MarketCategoryList
-                categoryName={section.category}
-                bind:categoryElements={section.elements} />
+                categoryName={section.name}
+                bind:categoryElements={section.section_elements} />
         {:else}
-            <p>No hay contenido para esa categoria</p>
+            <p>No hay contenido para mostrar</p>
         {/each}
     </div>
 </div>

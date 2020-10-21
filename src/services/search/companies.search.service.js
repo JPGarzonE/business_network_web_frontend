@@ -1,6 +1,6 @@
 import SearchService from "./search.service.js";
 
-export default class CompanySearchService extends SearchService {
+export default class CompaniesSearchService extends SearchService {
 
     constructor(){
         super();
@@ -26,9 +26,10 @@ export default class CompanySearchService extends SearchService {
         return this.customSearch( this.companiesSearchPath, {nit: nit} );
     }
 
+    /* params must be an object with key: value */
     searchCompanies( query, params ){
         if( !query )
-            throw new Error("Query is required in CompanySearchService.searchCompanies");
+            throw new Error("query is required in CompanySearchService.searchCompanies");
 
         const QueryParams = Object.assign({
             q: query
@@ -37,6 +38,7 @@ export default class CompanySearchService extends SearchService {
         return this.customSearch(this.searchPath, QueryParams );
     }
 
+    /* params must be an object with key: value */
     searchUnregisteredCompanies( query, params ){
         if( !query )
             throw new Error("Query is required in CompanySearchService.searchUnregisteredCompanies");

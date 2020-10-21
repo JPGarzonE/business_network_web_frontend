@@ -1,12 +1,11 @@
 <script>
-  import { element } from 'svelte/internal';
-  import { getContext, onMount } from 'svelte';
+  import { getContext } from 'svelte';
   import ProductService from '../../services/companies/product.service.js';
-  import VerticalList from '../../components/componentLists/VerticalList.svelte';
-  import ProductCard from '../../components/ProductCard/ProductCard.svelte';
+  import ProfileProductCard from '../../components/ProfileProductCard/ProfileProductCard.svelte';
   import Modal from '../../components/Modal.svelte';
   import CreateButton from '../../components/CreateButton/CreateButton.svelte';
   import ProductForm from '../ProductForm/ProductForm.svelte';
+
   export let productList = [];
 
   const isSessionUserProfile = getContext('isSessionUserProfile');
@@ -122,7 +121,7 @@
   {/if}
   <div class="Products">
     {#each productList as element}
-      <ProductCard productElement={element} onDelete={onDeleteProduct} />
+      <ProfileProductCard productElement={element} onDelete={onDeleteProduct} />
     {:else}
       {#if productList.length >= 1}
         <p>Loading...</p>

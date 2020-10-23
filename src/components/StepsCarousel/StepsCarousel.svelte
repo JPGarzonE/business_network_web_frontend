@@ -14,7 +14,7 @@
         max-width: 400px;
         justify-content: center;
         align-items: center;
-        margin: 30px auto;
+        margin: 0px auto 30px auto;
     }
 
     .StepsCarousel-step {
@@ -48,12 +48,6 @@
         .StepsCarousel {
             margin: 0px auto;
             margin-bottom: 30px;
-        }
-    }
-
-    @media screen and (min-width: 1270px) {
-        .StepsCarousel {
-            margin-top: 20px;
         }
     }
 </style>

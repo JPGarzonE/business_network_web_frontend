@@ -13,6 +13,7 @@
     } from "../../validators/formValidators.js";
     import { setCookie } from "../../utils/cookie.js";
 
+    export let loginRedirectionAction = async () => await goto('/login');
     const signupService = new SignupService();
 
     const fields = ['full_name', 'email', 'name', 'nit', 
@@ -188,7 +189,7 @@
     }
 
     .SignupForm-title {
-        margin: 14px 0px;
+        margin-bottom: 14px;
         text-align: center;
         line-height: 16px;
         letter-spacing: 0.22px;
@@ -225,6 +226,7 @@
         margin-top: 11px;
         font-size: 14px;
         color: var(--principal-color);
+        background-color: transparent;
         text-decoration: none;
         letter-spacing: 0.22px;
     }
@@ -331,7 +333,7 @@
             <hr />
             <p>Si ya tienes cuenta</p>
             <input type="button" name="login-redirect" class="button button--secondary" 
-                value="Ingresar" on:click={async () => await goto('/login')} />
+                value="Ingresar" on:click={loginRedirectionAction} />
         </div>
 
     {:else if actualStep === 2}

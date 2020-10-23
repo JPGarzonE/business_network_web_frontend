@@ -1,8 +1,15 @@
 @import './icons.css';
 
 @font-face {
-  font-family: 'Helvetica 45 Light';
-  src: url('/fonts/Helvetica45Light_22437.otf');
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Regular.ttf');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Bold.ttf');
+  font-weight: bold;
 }
 
 @font-face {
@@ -27,8 +34,8 @@
   --white: #ffffff;
   --light-orange: #ffe3c9;
 
-  --title-font: 'Metropolis', sans-serif;
-  --body-font: 'Helvetica 45 Light', sans-serif;
+  --title-font: 'Roboto', sans-serif;
+  --body-font: 'Roboto', sans-serif;
 }
 
 * {

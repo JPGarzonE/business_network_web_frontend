@@ -6,6 +6,7 @@
     import { validateEmailPattern } from "../../validators/formValidators.js";
     import { setCookie } from "../../utils/cookie.js";
 
+    export let signupRedirectionAction = async ()=> await goto('/signup');
     const loginService = new LoginService();
 
     let email = '';
@@ -62,6 +63,11 @@
 <style>
     @import "/styles/form.css";
 
+    .form-group {
+        max-width: 400px;
+        margin-top: 0.4em;
+    }
+
     .LoginForm {
         width: 100%;
         display: flex;
@@ -81,7 +87,7 @@
     }
 
     .LoginForm-title {
-        margin: 35px 0 15px;
+        margin-bottom: 15px;
         font-size: 16px;
         font-weight: 300;
         color: #666666;
@@ -115,6 +121,7 @@
         margin-top: 11px;
         font-size: 14px;
         color: var(--principal-color);
+        background-color: transparent;
         text-decoration: none;
         letter-spacing: 0.22px;
     }
@@ -152,7 +159,7 @@
             <hr />
             <p>Olvidé mi contraseña</p>
             <input type="button" class="button button--secondary" 
-                value="Crea cuenta" on:click={async ()=> await goto('/signup')} />
+                value="Crea cuenta" on:click={signupRedirectionAction} />
         </div>
     </form>
 </div>

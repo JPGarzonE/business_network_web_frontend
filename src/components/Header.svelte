@@ -5,17 +5,6 @@
     import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
     import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
 
-    const { session } = stores();
-
-    let userIsAuthenticated = false;
-    let company;
-    session.subscribe(session => {
-        userIsAuthenticated = session.authenticated;
-        company = session.company;
-    });
-
-    let logoSrc = company && company.logo ? company.logo.path : null;
-
     let gotoSignup = async () => {
         document.body.style.cursor = "wait";
         await goto("/signup");
@@ -27,6 +16,20 @@
         await goto("/login");
         document.body.style.cursor = "auto";
     }
+
+    export let signupActionButton = gotoSignup;
+    export let loginActionButton = gotoLogin;
+
+    const { session } = stores();
+
+    let userIsAuthenticated = false;
+    let company;
+    session.subscribe(session => {
+        userIsAuthenticated = session.authenticated;
+        company = session.company;
+    });
+
+    let logoSrc = company && company.logo ? company.logo.path : null;
 
     let gotoRoot = async () => {
         document.body.style.cursor = "wait";
@@ -92,6 +95,7 @@
         text-transform: capitalize;
         font-size: 1.3em;
         letter-spacing: 0.22px;
+        padding: 1.05em;
         color: white;
     }
 
@@ -166,11 +170,11 @@
         {:else}
             <div class="Header-user-authenticate">
                 <button class="button button--variant Header-user-authenticate-signup"
-                    on:click={gotoSignup}>
+                    on:click={signupActionButton}>
                     Unete ahora
                 </button>
                 <button class="button button--variant Header-user-authenticate-login"
-                    on:click={gotoLogin}>
+                    on:click={loginActionButton}>
                     Inicia sesión
                 </button>
             </div>

@@ -3,23 +3,26 @@
     import ConectyWhiteWordmark from '../Wordmarks/ConectyWhiteWordmark.svelte';
 
     export let name = '1';
-    export let imageSrc = '/images/landing-main-banner.jpg';
+    export let imageSrc = '/images/landing-main-banner.png';
 
     let landingBannerElementName = `LandingBanner-${name}`;
+    let backgroundGradient = 'linear-gradient(270deg, rgba(83, 123, 201, 0.7) 0%, rgba(3, 165, 235, 0.7) 97.79%)';
 
     onMount(async () => {
         let landingBannerElement = document.getElementById(landingBannerElementName);
-        landingBannerElement.style.backgroundImage = `url(${imageSrc})`;
+        landingBannerElement.style.backgroundImage = `${backgroundGradient}, url(${imageSrc})`;
     });
 </script>
 
 <style>
     .LandingBanner {
-        width: 60%;
-        height: 820px;
+        width: 100%;
+        max-width: 1600px;
+        height: 100%;
+        min-height: 560px;
         background-position: center;
         background-size: cover;
-        display: none;
+        display: flex;
         flex-direction: column;
         justify-content: flex-end;
         padding: 140px;
@@ -29,30 +32,24 @@
         width: 220px;
         height: 45px;
         margin: 0;
-        margin-bottom: 1.5em;
+        margin-bottom: 1.7em;
     }
 
     .LandingBanner-title{
-        width: 100%;
-        max-width: 500px;
-        margin: 0;
-        font-size: 1.65em;
+        width: 55%;
+        margin: .8em 0;
+        font-size: 1.9em;
         line-height: 30px;
         letter-spacing: 0.22px;
         font-weight: 100;
         color: white;
     }
 
-    @media screen and (min-width: 1000px) {
-        .LandingBanner{
-            display: flex;
-        }
-    }
-
-    @media screen and (min-width: 1150px) {
-        .LandingBanner{
-            width: 70%;
-        }
+    .LandingBanner-subtitle {
+        width: 40%;
+        font-size: 1.13em;
+        letter-spacing: 0.216px;
+        color: white;
     }
 </style>
 
@@ -60,5 +57,9 @@
     <div class="LandingBanner-Conecty-wordmark">
         <ConectyWhiteWordmark />
     </div>
-    <h1 class="LandingBanner-title">La nueva forma de conocer clientes, proveedores y aliados.</h1>
+    <h1 class="LandingBanner-title">Conecta con compradores y vendedores calificados alrededor del mundo.</h1>
+    <p class="LandingBanner-subtitle">
+        Se parte de la red que está conectando las ofertas más competitivas 
+        del mercado con compradores previamente verificados.
+    </p>
 </div>

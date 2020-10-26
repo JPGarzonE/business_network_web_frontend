@@ -28,10 +28,9 @@
 
     let sessionProfilePath = `/profile/${sessionUsername}`;
 
-    let gotoProfile = async () => {
-        console.log("GOTO profile")
+    let gotoProfile = () => {
         document.body.style.cursor = "wait";
-        await goto(sessionProfilePath);
+        location.href = sessionProfilePath;
         document.body.style.cursor = "auto";
     }
     
@@ -40,7 +39,7 @@
         deleteCookie("access_username");
         /* goto isn't used because the session has to be 
         closed from the server and goto happens on the client */
-        location.href = '/login';
+        location.href = '/';
     }
 </script>
 
@@ -110,7 +109,7 @@
         <div class="ProfileIconMenu-option" on:click={gotoProfile}>
             <span>Editar mi perfil</span>
             <PencilOutline size=16 color="var(--secondary-text-color)" />
-        </div>    
+        </div>
         {/if}
 
         {#if sessionIsAuthenticated}

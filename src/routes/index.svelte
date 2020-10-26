@@ -1,5 +1,9 @@
 <script context="module">
-
+    export async function preload(page, session) {
+        if( session.authenticated ) {
+            return this.redirect(301, '/market');
+        }
+    }
 </script>
 
 <script>
@@ -49,7 +53,6 @@
 
     .Home-Authentication {
         width: 100vw;
-        min-width: 400px;
         height: 100vh;
         position: fixed;
         right: 0;
@@ -80,7 +83,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 100px 40px;
+        margin: 15% 10%;
+        margin-bottom: 0;
     }
 
     .Home-features-content {
@@ -92,6 +96,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 2.8em;
     }
 
     .Home-feature-description {
@@ -99,6 +104,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        margin-bottom: 2em;
     }
 
     .Home-feature-description h2 {
@@ -111,7 +117,7 @@
 
     .Home-feature-description p {
         width: 85%;
-        margin: 20px 0px;
+        margin: 20px 0;
         font-size: 1em;
         letter-spacing: 0.216px;
     }
@@ -121,9 +127,12 @@
     }
 
     .Home-feature-image {
+        width: 100vw;
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+        overflow: hidden;
     }
 
     .Home-feature-image figure {
@@ -138,7 +147,8 @@
     }
 
     .Home-feature-image-laptop {
-        max-width: 642px;
+        min-width: 488px;
+        left: 25%;
     }
 
     .Home-feature-image-device {
@@ -178,7 +188,37 @@
         margin: 0 .5em;
     }
 
+    @media screen and (min-width: 375px) {
+        .Home-feature-image-laptop {
+            min-width: 588px;
+        }
+    }
+
+    @media screen and (min-width: 525px) {
+        .Home-feature-image-laptop {
+            min-width: 688px;
+        }
+    }
+
+    @media screen and (min-width: 767px) {
+        .Home-feature-image {
+            width: 100%;
+            overflow: visible;
+        }
+        .Home-feature-image-laptop .Home-feature-image-device{
+            min-width: 485px;
+        }
+        .Home-feature-image-laptop {
+            max-width: 642px;
+            min-width: auto;
+            left: 0;
+        }
+    }
+
     @media screen and (min-width: 850px) {
+        .Home-features {
+            margin: 100px 40px;
+        }
         .Home-features-content {
             width: 88%;
             padding-left: 40px;
@@ -190,14 +230,17 @@
         .Home-feature-description {
             width: 50%;
         }
+        .Home-feature-description h2 {
+            font-size: 1.95em;
+        }
+        .Home-feature-description p {
+            font-size: 1.1em;
+        }
         .Home-feature-image {
             width: 55%;
         }
         .Home-feature-image-mobile {
             width: 70%;
-        }
-        .Home-feature-image-laptop .Home-feature-image-device{
-            min-width: 485px;
         }
         .Home-allies-content {
             flex-direction: row;
@@ -211,6 +254,7 @@
     @media screen and (min-width: 1000px) {
         .Home-Authentication {
             width: calc(34%);
+            min-width: 400px;
         }
         .Home-allies-content img {
             height: 175px;
@@ -281,13 +325,13 @@
                 </div>
             </div>
 
-            <div class="Home-feature">
-                <div class="Home-feature-description">
+            <div class="Home-feature" style="margin-bottom: 0;">
+                <div class="Home-feature-description" style="margin-bottom: 0;">
                     <h2>Exposición digital alrededor del mundo</h2>
                     <p>Crea tu perfil en Conecty, donde de forma fácil podrás tener una exposición digital con cientos de
                         compradores alrededor del mundo quienes han sido sometidos a verificaciones de seguridad previas.
                     </p>
-                    <p>
+                    <p style="margin-bottom: 0;">
                         <b>*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales</b>
                     </p>
                 </div>

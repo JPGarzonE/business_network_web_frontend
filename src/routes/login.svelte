@@ -1,7 +1,7 @@
 <script context="module">
     export async function preload(page, session) {
         if( session.authenticated )
-            return this.redirect(301, `profile/${session.username}`);
+            return this.redirect(301, '/market');
     }
 </script>
 
@@ -22,6 +22,27 @@
         align-items: flex-start;
         flex-direction: row;
     }
+
+    .login-banner {
+        display: none;
+        height: 725px;
+    }
+
+    .login-form {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .login-banner {
+            width: 60%;
+            display: flex;
+        }
+        .login-form {
+            width: 40%;
+        }
+    }
 </style>
 
 <svelte:head>
@@ -29,8 +50,12 @@
 </svelte:head>
 
 <div class="login">
-    <LandingBanner name="Login" />
-    <AuthContainer>
-        <LoginForm />
-    </AuthContainer>
+    <div class="login-banner">
+        <LandingBanner name="Login" />
+    </div>
+    <div class="login-form">
+        <AuthContainer>
+            <LoginForm />
+        </AuthContainer>
+    </div>
 </div>

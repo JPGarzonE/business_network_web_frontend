@@ -13,7 +13,7 @@
         right: 0;
         left: 0;
         bottom: auto;
-        margin: 40px 52px;
+        margin: 40px 20px;
         padding: 4em 2.5em 5em;
         border: 2px solid var(--principal-color);
         border-radius: 10px;
@@ -60,10 +60,15 @@
         font-size: 15px;
     }
 
+    @media screen and (min-width: 425px) {
+        .AuthContainer {
+            margin: 40px 52px;
+        }
+    }
+
     @media screen and (min-width: 1000px){
         .AuthContainer{
             position: relative;
-            width: 35%;
             padding: 5em 2.5em 5em;
         }
     }

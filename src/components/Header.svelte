@@ -85,7 +85,7 @@
     }
 
     .Header-user-authenticate {
-        display: none;
+        display: flex;
         flex-direction: column;
         justify-content: space-between;
         width: 220px;
@@ -93,7 +93,6 @@
 
     .Header-user-authenticate-signup, .Header-user-authenticate-login {
         text-transform: capitalize;
-        font-size: 1.3em;
         letter-spacing: 0.22px;
         padding: 1.05em;
         color: white;
@@ -105,7 +104,10 @@
     }
 
     .Header-user-authenticate-login {
-        border: 1px solid white;
+        display: flex;
+        justify-content: flex-end;
+        font-size: 1.1em;
+        font-weight: bold;
     }
 
     .Header-user-authenticate-signup:hover {
@@ -117,9 +119,9 @@
         background-color: var(--lightest-gray);
     }
 
-    @media screen and (min-width: 360px) {
-        .Header-user-authenticate {
-            display: flex;
+    @media screen and (min-width: 425px) {
+        .Header-user-authenticate-login {
+            font-size: 1.2em;
         }
     }
 
@@ -128,9 +130,15 @@
             width: 300px;
             flex-direction: row;
         }
-
+        .Header-user-authenticate-login {
+            justify-content: center;
+            border: 1px solid white;
+            font-weight: normal;
+            font-size: 1.3em;
+        }   
         .Header-user-authenticate-signup {
             display: flex;
+            font-size: 1.3em;
         }
     }
 

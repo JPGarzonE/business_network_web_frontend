@@ -42,6 +42,12 @@
         color: var(--principal-color);
     }
 
+    @media screen and (max-width: 425px) {
+        .AuthenticationContainer {
+            padding: 0 1em 2em;
+        }
+    }
+
     @media screen and (min-width: 1000px){
         .AuthenticationContainer{
             margin: 0;

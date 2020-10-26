@@ -3,7 +3,6 @@
 
     export async function preload(page, session) {
         if( session.authenticated ) {
-            // return this.redirect(301, `profile/${session.username}`);
             const showcaseService = new ShowcaseService();
 
             const data = await showcaseService.getShowcase(session.accessToken);
@@ -11,7 +10,7 @@
                 showcase: data
             }
         }else {
-            return this.redirect(301, 'login');
+            return this.redirect(301, '/');
         }
     }
 </script>

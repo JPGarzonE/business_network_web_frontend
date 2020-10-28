@@ -110,9 +110,9 @@
     <div class="LandingBanner-Conecty-wordmark">
         <ConectyWhiteWordmark />
     </div>
-    <h1 class="LandingBanner-title">Conecta con compradores y vendedores calificados alrededor del mundo.</h1>
+    <h1 class="LandingBanner-title">Conecta con compradores y proveedores internacionales alrededor del mundo.</h1>
     <p class="LandingBanner-subtitle">
-        Se parte de la red que está conectando las ofertas más competitivas 
+        Se parte de la red de comercio internacional que está conectando las ofertas más competitivas 
         del mercado con compradores previamente verificados.
     </p>
     <div class="LandingBanner-register">

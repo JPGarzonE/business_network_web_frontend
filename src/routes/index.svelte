@@ -309,9 +309,8 @@
             <div class="Home-feature">
                 <div class="Home-feature-description">
                     <h2>Busca tus productos de forma fácil</h2>
-                    <p>Encuentra de manera organizada, a información relevante acerca de los productos que requieres,
-                        con nuestra herramienta de busqueda y accede a la red de proveedores calificados de mayor
-                        crecimiento de America latina.
+                    <p>Encuentra de manera organizada, la información relevante acerca de los productos que requieres,
+                        con nuestra herramienta de busqueda y accede a una de las redes de proveedores calificados de de America latina.
                     </p>
                     <p>
                         <b>*Todos nuestros proveedores han sido verificados en diferentes listas de antecedentes internacionales</b>
@@ -327,9 +326,9 @@
 
             <div class="Home-feature" style="margin-bottom: 0;">
                 <div class="Home-feature-description" style="margin-bottom: 0;">
-                    <h2>Exposición digital alrededor del mundo</h2>
+                    <h2>Exposición digital con compradores internacionales</h2>
                     <p>Crea tu perfil en Conecty, donde de forma fácil podrás tener una exposición digital con cientos de
-                        compradores alrededor del mundo quienes han sido sometidos a verificaciones de seguridad previas.
+                        compradores internacionales quienes han sido sometidos a verificaciones de seguridad previas.
                     </p>
                     <p style="margin-bottom: 0;">
                         <b>*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales</b>

@@ -2,6 +2,8 @@
     import { onMount } from 'svelte';
     import ConectyWhiteWordmark from '../Wordmarks/ConectyWhiteWordmark.svelte';
 
+    export let title = '';
+    export let subtitle = '';
     export let name = '1';
     export let imageSrc = '/images/landing-main-banner.png';
 
@@ -110,11 +112,8 @@
     <div class="LandingBanner-Conecty-wordmark">
         <ConectyWhiteWordmark />
     </div>
-    <h1 class="LandingBanner-title">Conecta con compradores y proveedores internacionales alrededor del mundo.</h1>
-    <p class="LandingBanner-subtitle">
-        Se parte de la red de comercio internacional que está conectando las ofertas más competitivas 
-        del mercado con compradores previamente verificados.
-    </p>
+    <h1 class="LandingBanner-title">{title}</h1>
+    <p class="LandingBanner-subtitle">{subtitle}</p>
     <div class="LandingBanner-register">
         <button class="LandingBanner-register-button button button--secondary">Regístrate Gratis</button>
     </div>

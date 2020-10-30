@@ -15,17 +15,17 @@
     let authenticationContainerState = "signup";
 
     const content = {
-        "title": "Conecta con compradores y proveedores internacionales alrededor del mundo.",
+        "title": "Conéctate con compradores calificados del exterior y asegura tus pagos.",
         "subtitle": "Se parte de la red de comercio internacional que está conectando las ofertas más competitivas del mercado con compradores previamente verificados.",
         "features": [
             {
-                "title": "Busca tus productos de forma fácil",
-                "description": "Encuentra de manera organizada, la información relevante acerca de los productos que requieres, con nuestra herramienta de busqueda y accede a una de las redes de proveedores calificados de America latina.",
-                "advice": "*Todos nuestros proveedores han sido verificados en diferentes listas de antecedentes internacionales."
+                "title": "Visibiliza tus productos en el mundo digital",
+                "description": "El perfil gratuito de Conecty permite que muestres tu portafolio de productos a los compradores internacionales de nuestra red.",
+                "advice": "*Mantenemos segura tu información. Tú escoges que mostrar al comprador."
             },
             {
-                "title": "Exposición digital con compradore internacionales",
-                "description": "Crea tu perfil en Conecty, donde de forma fácil podrás tener una exposición digital con cientos de compradores internacionales quienes han sido sometidos a verificaciones de seguridad previas.",
+                "title": "Organiza la información de tu empresa",
+                "description": "En cuestion de minutos, organiza tu información y muéstrale a los compradores que estan interesados en tus productos.",
                 "advice": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales"
             }
         ]

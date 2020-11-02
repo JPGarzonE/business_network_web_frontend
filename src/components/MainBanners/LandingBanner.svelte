@@ -6,6 +6,7 @@
     export let subtitle = '';
     export let name = '1';
     export let imageSrc = '/images/landing-main-banner.png';
+    export let homeAuthenticationOpen = true;
 
     let landingBannerElementName = `LandingBanner-${name}`;
     let backgroundGradient = 'linear-gradient(270deg, rgba(83, 123, 201, 0.7) 0%, rgba(3, 165, 235, 0.7) 97.79%)';
@@ -115,6 +116,9 @@
     <h1 class="LandingBanner-title">{title}</h1>
     <p class="LandingBanner-subtitle">{subtitle}</p>
     <div class="LandingBanner-register">
-        <button class="LandingBanner-register-button button button--secondary">Regístrate Gratis</button>
+        <button class="LandingBanner-register-button button button--secondary"
+            on:click={()=>homeAuthenticationOpen = true}>
+            Regístrate Gratis
+        </button>
     </div>
 </div>

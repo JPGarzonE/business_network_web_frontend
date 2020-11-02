@@ -121,6 +121,17 @@
         font-size: 1.12em;
     }
 
+    .Home-register {
+        margin: 1.2em 0;
+    }
+
+    .Home-register-button {
+        width: 75%;
+        max-width: 250px;
+        height: 42px;
+        font-size: .75em;
+    }
+
     .Home-feature-image {
         width: 100vw;
         display: flex;
@@ -278,7 +289,7 @@
 
 <div class="Home">
     <LandingBanner
-        title={content.title} subtitle={content.subtitle} />
+        title={content.title} subtitle={content.subtitle} bind:homeAuthenticationOpen />
     
     <div class="Home-Authentication Home-Authentication--open {homeAuthenticationOpen ? "" : "Home-Authentication--closed"}"
         id="Home-Authentication">
@@ -298,6 +309,12 @@
                     <p> 
                         <b>{content.features[0].advice}</b> 
                     </p>
+                    <div class="Home-register">
+                        <button class="Home-register-button button button--secondary"
+                            on:click={()=>homeAuthenticationOpen = true}>
+                            Regístrate Gratis
+                        </button>
+                    </div>
                 </div>
                 <div class="Home-feature-image">
                     <figure class="Home-feature-image-mobile">
@@ -314,6 +331,12 @@
                     <p style="margin-bottom: 0;"> 
                         <b>{content.features[1].advice}</b> 
                     </p>
+                    <div class="Home-register">
+                        <button class="Home-register-button button button--secondary"
+                            on:click={()=>homeAuthenticationOpen = true}>
+                            Regístrate Gratis
+                        </button>
+                    </div>
                 </div>
                 <div class="Home-feature-image">
                     <figure class="Home-feature-image-laptop">

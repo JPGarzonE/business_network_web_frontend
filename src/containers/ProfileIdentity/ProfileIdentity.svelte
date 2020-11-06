@@ -10,6 +10,7 @@
   import Web from "svelte-material-icons/Web.svelte";
   import GoogleTranslate from "svelte-material-icons/GoogleTranslate.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
+  import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
 
   export let name;
   export let industry;
@@ -45,6 +46,11 @@
 
 <style>
   @import "/styles/form.css";
+
+  .ProfileIdentity {
+    position: sticky;
+    top: 100px;
+  }
 
   .ProfileIdentity-container {
     position: relative;
@@ -184,7 +190,11 @@
         {locationSubtitle ? locationSubtitle : 'No tiene aún'}
       </p>
       <div class="ProfileIdentity-contact-me">
-        <ButtonChat title="Chatea con un vendedor" />
+        <ButtonChat title="Chatea con un vendedor">
+          <span slot="button-icon" style="display: flex;">
+            <Whatsapp size={18} />
+          </span>
+        </ButtonChat>
       </div>
     </div>
   </div>

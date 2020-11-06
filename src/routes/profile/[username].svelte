@@ -132,6 +132,11 @@
     flex-direction: column;
   }
 
+  .UserProfile-sidebar {
+    position: relative;
+    z-index: 20;
+  }
+
   @media screen and (min-width: 850px) {
     .UserProfile-content {
       padding: 25px;

@@ -27,6 +27,11 @@
                 "title": "Organiza la información de tu empresa",
                 "description": "En cuestion de minutos, organiza tu información y muéstrale a los compradores que estan interesados en tus productos.",
                 "advice": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales"
+            },
+            {
+                "title": "Recibe tu pago de forma segura",
+                "description": "Evita procesos fraudulentos por medio de nuestro modelo fiduciario que nos permite asegurar tu pago y garantizar la transparencia de cualquier transacción.",
+                "advice": "Conoce más sobre este modelo contactando a nuestros asesores de venta."
             }
         ]
     }

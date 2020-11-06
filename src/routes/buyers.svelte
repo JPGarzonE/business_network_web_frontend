@@ -27,6 +27,11 @@
                 "title": "Conéctate fácilmente",
                 "description": "Establece un canal de comunicación directa a tráves del perfil del proveedor.",
                 "advice": ""
+            },
+            {
+                "title": "Realiza tus pagos de forma segura",
+                "description": "Evita procesos fraudulentos por medio de nuestro modelo fiduciario que nos permite asegurar tu pago y garantizar la transparencia de cualquier transacción.",
+                "advice": "Conoce más sobre este modelo contactando a nuestros asesores de venta."
             }
         ]
     }

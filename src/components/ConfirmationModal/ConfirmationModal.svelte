@@ -7,7 +7,7 @@
 <style>
   .ConfirmationModal {
     position: relative;
-    z-index: 15;
+    z-index: 25;
     position: fixed;
     width: 100%;
     height: 100%;

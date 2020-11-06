@@ -3,6 +3,8 @@
     import LandingBanner from "../../components/MainBanners/LandingBanner.svelte";
     import AuthenticationContainer from "../AuthenticationContainer/AuthenticationContainer.svelte";
     import Close from "svelte-material-icons/Close.svelte";
+    import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
+    import ContactUsButton from '../../components/ContactUsButton/ContactUsButton.svelte';
 
     export let content = { 
         "title": "", 
@@ -19,6 +21,7 @@
     export let homeAuthenticationOpen = false;
 
     let homeAuthenticationMediaQuery;
+    let contactLink = "https://wa.me/573133800223";
 
     onMount( async () => {
         homeAuthenticationMediaQuery = window.matchMedia("(min-width: 1000px)");
@@ -91,7 +94,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 2.8em;
+        margin-bottom: 4em;
     }
 
     .Home-feature-description {
@@ -122,6 +125,7 @@
     }
 
     .Home-register {
+        max-width: 475px;
         margin: 1.2em 0;
     }
 
@@ -155,6 +159,10 @@
     .Home-feature-image-laptop {
         min-width: 488px;
         left: 25%;
+    }
+
+    .Home-feature-image-security {
+        min-width: 330px
     }
 
     .Home-feature-image-device {
@@ -324,11 +332,11 @@
                 </div>
             </div>
 
-            <div class="Home-feature" style="margin-bottom: 0;">
+            <div class="Home-feature">
                 <div class="Home-feature-description" style="margin-bottom: 0;">
                     <h2>{content.features[1].title}</h2>
                     <p>{content.features[1].description}</p>
-                    <p style="margin-bottom: 0;"> 
+                    <p> 
                         <b>{content.features[1].advice}</b> 
                     </p>
                     <div class="Home-register">
@@ -342,6 +350,29 @@
                     <figure class="Home-feature-image-laptop">
                         <img class="Home-feature-image-device" src="images/feature-device-2.png" alt="Device">
                         <img class="Home-feature-image-screenshot" src="images/feature-ss-2.png" 
+                            alt="Screenshot" style="top:auto;" />
+                    </figure>
+                </div>
+            </div>
+
+            <div class="Home-feature">
+                <div class="Home-feature-description" style="margin-bottom: 0;">
+                    <h2>{content.features[2].title}</h2>
+                    <p>{content.features[2].description}</p>
+                    <p> 
+                        <b>{content.features[2].advice}</b> 
+                    </p>
+                    <div class="Home-register">
+                        <ContactUsButton title="Contáctanos" buttonAction={() => {window.open(contactLink, "_blank")}}>
+                            <span slot="main-icon">
+                                <Whatsapp size={18} color="var(--whatsapp-color)" />
+                            </span>
+                        </ContactUsButton>
+                    </div>
+                </div>
+                <div class="Home-feature-image">
+                    <figure>
+                        <img class="Home-feature-image-security" src="images/feature-security.png"
                             alt="Screenshot" style="top:auto;" />
                     </figure>
                 </div>

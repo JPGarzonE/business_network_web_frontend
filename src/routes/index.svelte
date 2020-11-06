@@ -24,9 +24,14 @@
                 "advice": "*Todos nuestros proveedores han sido verificados en diferentes listas de antecedentes internacionales."
             },
             {
-                "title": "Exposición digital con compradore internacionales",
+                "title": "Exposición digital con compradores internacionales",
                 "description": "Crea tu perfil en Conecty, donde de forma fácil podrás tener una exposición digital con cientos de compradores internacionales quienes han sido sometidos a verificaciones de seguridad previas.",
                 "advice": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales"
+            },
+            {
+                "title": "Asegura tus pagos con nosotros",
+                "description": "Evita procesos fraudulentos por medio de nuestro modelo fiduciario que nos permite asegurar tu pago y garantizar la transparencia de cualquier transacción.",
+                "advice": "Conoce más sobre este modelo contactando a nuestros asesores de venta."
             }
         ]
     }

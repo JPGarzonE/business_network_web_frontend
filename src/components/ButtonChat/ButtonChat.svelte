@@ -1,7 +1,5 @@
 <script>
-  import Headphones from 'svelte-material-icons/Headphones.svelte';
-import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
-  import WhatsApp from  'svelte-material-icons/Whatsapp.svelte';
+  import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
 
   export let title = "¡Chatea ahora mismo!";
   export let buttonAction = () => alert('Life has never Svelte better');
@@ -32,6 +30,10 @@ import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
 </style>
 
 <button on:click={buttonAction}>
-  <span class="iconButton-Chat-icon"><Whatsapp size={18} /></span>
+  <span class="iconButton-Chat-icon">
+      <slot name="button-icon">
+        <Whatsapp size={18} />
+      </slot>
+  </span>
   <span class="icon-button-chat-text">{title}</span>
 </button>

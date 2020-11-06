@@ -4,6 +4,7 @@
     import ButtonChat from "./ButtonChat/ButtonChat.svelte";
     import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
     import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
+    import HomeOutline from "svelte-material-icons/HomeOutline.svelte";
 
     let gotoSignup = async () => {
         document.body.style.cursor = "wait";
@@ -20,13 +21,19 @@
     export let signupActionButton = gotoSignup;
     export let loginActionButton = gotoLogin;
 
-    const { session } = stores();
+    const { session, page } = stores();
 
     let userIsAuthenticated = false;
+    let actualPath = null;
     let company;
+
     session.subscribe(session => {
         userIsAuthenticated = session.authenticated;
         company = session.company;
+    });
+
+    page.subscribe(page => {
+        actualPath = page.path;
     });
 
     let logoSrc = company && company.logo ? company.logo.path : null;
@@ -34,6 +41,12 @@
     let gotoRoot = async () => {
         document.body.style.cursor = "wait";
         await goto("/");
+        document.body.style.cursor = "auto";
+    }
+
+    let gotoMarket = async () => {
+        document.body.style.cursor = "wait";
+        await goto("/market");
         document.body.style.cursor = "auto";
     }
 </script>
@@ -77,7 +90,7 @@
         justify-content: space-between;
     }
 
-    .Header-user-data-mychat {
+    .Header-user-data-market {
         width: 138px;
         display: none;
         align-items: center;
@@ -147,7 +160,7 @@
             padding: 0 5em;
         }
 
-        .Header-user-data-mychat {
+        .Header-user-data-market {
             display: flex;
         }
     }
@@ -170,9 +183,15 @@
         </div>
         {#if userIsAuthenticated}
             <div class="Header-user-data">
-                <div class="Header-user-data-mychat">
-                    <ButtonChat title="Mi chat" />
+                {#if actualPath !== `/market`}
+                <div class="Header-user-data-market">
+                    <ButtonChat title="Ir al mercado" buttonAction={gotoMarket}>
+                        <span slot="button-icon" style="display: flex">
+                            <HomeOutline size={20} />
+                        </span>
+                    </ButtonChat>
                 </div>
+                {/if}
                 <ProfileIconMenu {logoSrc} />
             </div>
         {:else}

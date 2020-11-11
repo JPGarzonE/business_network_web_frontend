@@ -16,21 +16,21 @@
 
     const content = {
         "title": "Conéctate con compradores calificados del exterior y asegura tus pagos.",
-        "subtitle": "Se parte de la red de comercio internacional que está conectando las ofertas más competitivas del mercado con compradores previamente verificados.",
+        "subtitle": "Cuéntanos qué tipo de cliente estás buscando y nosotros lo encontramos por ti. Conecty es tu área comercial GRATIS.",
         "features": [
             {
-                "title": "Visibiliza tus productos en el mundo digital",
-                "description": "El perfil gratuito de Conecty permite que muestres tu portafolio de productos a los compradores internacionales de nuestra red.",
+                "title": "Organiza la información de tu empresa.",
+                "description": "Sube a la plataforma tu oferta de productos exportables y las certificaciones que te respaldan.",
                 "advice": "*Mantenemos segura tu información. Tú escoges que mostrar al comprador."
             },
             {
-                "title": "Organiza la información de tu empresa",
-                "description": "En cuestion de minutos, organiza tu información y muéstrale a los compradores que estan interesados en tus productos.",
+                "title": "Te conectamos con las empresas que te interesan.",
+                "description": "Buscaremos la oferta comercial que se ajuste a tu modelo de negocio y te ayudaremos a construir esa relación comercial.",
                 "advice": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales"
             },
             {
                 "title": "Recibe tu pago de forma segura",
-                "description": "Evita procesos fraudulentos por medio de nuestro modelo fiduciario que nos permite asegurar tu pago y garantizar la transparencia de cualquier transacción.",
+                "description": "En Conecty mantenemos a salvo tu pago mientras se completa exitosamente la negociación.",
                 "advice": "Conoce más sobre este modelo contactando a nuestros asesores de venta."
             }
         ]

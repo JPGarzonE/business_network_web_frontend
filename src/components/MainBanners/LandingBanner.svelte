@@ -100,7 +100,7 @@
         }
         .LandingBanner-subtitle {
             width: 40%;
-            font-size: 1.37em;
+            font-size: 1.45em;
             line-height: 25px;
         }
         .LandingBanner-register-button {

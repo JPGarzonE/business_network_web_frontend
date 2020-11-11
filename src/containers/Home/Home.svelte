@@ -250,7 +250,7 @@
             font-size: 1.95em;
         }
         .Home-feature-description p {
-            font-size: 1.1em;
+            font-size: 1.2em;
         }
         .Home-feature-image {
             width: 55%;

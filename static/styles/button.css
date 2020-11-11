@@ -38,7 +38,7 @@
 
 .button--secondary {
   border: 2px solid var(--principal-color);
-  background-color: var(--secondary-color);
+  background-color: transparent;
   color: var(--principal-color);
   cursor: pointer;
   font-weight: bold;

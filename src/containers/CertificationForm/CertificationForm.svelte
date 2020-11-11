@@ -184,10 +184,20 @@
     color: var(--secondary-text-color);
   }
 
+  .CertificationForm-advice {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1em;
+    font-size: 0.88em;
+    letter-spacing: 0.22px;
+    color: var(--principal-color);
+  }
+
   .CertificationForm-preview {
     width: 100%;
     height: 300px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     margin: 25px 0px 15px;
   }
@@ -229,7 +239,11 @@
       id="CertificationForm"
       bind:imageFile={newMediaFile}
       imagePath={media ? media.path : null} />
-  </div>
+    </div>
+
+    <p class="CertificationForm-advice">
+      * Debe ser la imagen de la entidad que emite el certificado. No la del documento.
+    </p>
 
   <form class="CertificationForm-form ProfileForm-form">
     <div class="form-group">

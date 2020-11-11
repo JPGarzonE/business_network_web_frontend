@@ -134,6 +134,8 @@
         max-width: 250px;
         height: 42px;
         font-size: .75em;
+        color: #fff;
+        background-color: var(--button-color);
     }
 
     .Home-feature-image {
@@ -318,7 +320,7 @@
                         <b>{content.features[0].advice}</b> 
                     </p>
                     <div class="Home-register">
-                        <button class="Home-register-button button button--secondary"
+                        <button class="button Home-register-button"
                             on:click={()=>homeAuthenticationOpen = true}>
                             Regístrate Gratis
                         </button>
@@ -340,7 +342,7 @@
                         <b>{content.features[1].advice}</b> 
                     </p>
                     <div class="Home-register">
-                        <button class="Home-register-button button button--secondary"
+                        <button class="button Home-register-button"
                             on:click={()=>homeAuthenticationOpen = true}>
                             Regístrate Gratis
                         </button>

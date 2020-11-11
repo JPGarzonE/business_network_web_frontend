@@ -294,25 +294,28 @@
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="Nombre completo*" input$aria-controls="full-name"
-                input$aria-describedby="full-name"
-                input$maxlength="50" bind:value={fullName} />
+                label="Nombre completo*" input$aria-controls="full-name" input$aria-describedby="full-name"
+                input$maxlength="50" bind:value={fullName}
+                invalid={fullName ? !fullNameIsValid : false} />
+
             <HelperText id="full-name">{fullNameFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="Correo*" input$aria-controls="email"
-                input$aria-describedby="email"
-                input$maxlength="50" bind:value={email} />
+                label="Correo*" input$aria-controls="email" input$aria-describedby="email"
+                input$maxlength="50" bind:value={email} 
+                invalid={email ? !emailIsValid : false} />
+
             <HelperText id="email">{emailFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="Contraseña*" input$aria-controls="password"
-                input$aria-describedby="password" input$type="password"
-                input$maxlength="50" bind:value={password} />
+                label="Contraseña*" input$aria-controls="password" input$aria-describedby="password" 
+                input$type="password" input$maxlength="50" bind:value={password} 
+                invalid={password ? !passwordIsValid : false} />
+
             <HelperText id="password">{passwordFeedback}</HelperText>
         </div>
 
@@ -320,7 +323,9 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Confirmar contraseña*" input$aria-controls="password-confirmation"
                 input$aria-describedby="password-confirmation" input$type="password"
-                input$maxlength="50" bind:value={passwordConfirmation} />
+                input$maxlength="50" bind:value={passwordConfirmation} 
+                invalid={passwordConfirmation ? !passwordConfirmationIsValid : false} />
+
             <HelperText id="password-confirmation">{passwordConfirmationFeedback}</HelperText>
         </div>
 
@@ -342,16 +347,18 @@
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Nombre de la empresa*" input$aria-controls="company-name"
-                input$aria-describedby="company-name"
-                input$maxlength="50" bind:value={companyName} />
+                input$aria-describedby="company-name" input$maxlength="50" 
+                bind:value={companyName} invalid={companyName ? !companyNameIsValid : false} />
+
             <HelperText id="company-name">{companyNameFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="NIT*" input$aria-controls="nit"
-                input$aria-describedby="nit"
-                input$maxlength="50" bind:value={nit} />
+                label="NIT*" input$aria-controls="nit" input$aria-describedby="nit"
+                input$maxlength="50" bind:value={nit} 
+                invalid={nit ? !nitIsValid : false} />
+
             <HelperText id="nit">{nitFeedback}</HelperText>
         </div>
 

@@ -43,6 +43,7 @@
       username,
       accessToken
     );
+    console.log("data: ", data);
     return data.results[0];
   }
 
@@ -164,6 +165,7 @@
       <ProfileIdentity
         name={company.name}
         industry={company.industry}
+        webUrl={company.web_url}
         logo={company.logo}
         {contact}
         {location} />

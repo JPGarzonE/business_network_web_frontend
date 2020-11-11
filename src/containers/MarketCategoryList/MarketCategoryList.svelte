@@ -5,6 +5,10 @@
 
     export let categoryName = "";
     export let categoryElements = [];
+    export let search = false;
+
+    console.log("Search");
+    console.log(search);
 
     let productButtonDetailAction = async (company_username) => {
         document.body.style.cursor = "wait";
@@ -65,13 +69,14 @@
   }
 </style>
 
+{#if categoryElements.length > 0 && !search}
 <div class="MarketCategoryList">
     <h3 class="MarketCategory-title">{categoryName}</h3>
     <HorizontalScrollList>
         {#each categoryElements as element}
         <div class="MarketCategoryList-product">
             <ProductCard  principalImage={element.principal_image}
-                name={element.name}
+                name={element.name} withDetail={true}
                 subname={element.company_name}
                 buttonDetailAction={async () => productButtonDetailAction(element.company_username)}
             />
@@ -81,3 +86,4 @@
         {/each}
     </HorizontalScrollList>
 </div>
+{/if}

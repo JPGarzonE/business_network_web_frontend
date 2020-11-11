@@ -11,14 +11,15 @@
 
   let verification;
 
-  onMount(async () => {
-    if (isSessionUserProfile) {
-      const data = userVerificationService.getUserVerification(
-        $session.accessToken
-      );
-      verification = data;
-    }
-  });
+  // onMount(async () => {
+  //   if (isSessionUserProfile) {
+  //     const data = await userVerificationService.getUserVerification(
+  //       $session.accessToken
+  //     );
+  //     verification = data;
+  //     console.log("Verification: ", verification);
+  //   }
+  // });
 </script>
 
 <style>
@@ -66,12 +67,12 @@
 </style>
 
 <div class="ProfileVerification">
-  {#if true}
+  {#if profileIsVerified}
     <div class="ProfileVerification-card ProfileVerification-card--verified">
       <span class="icon-check"><CheckDecagram size=22 /></span>
       <span class="ProfileVerification-title">Empresa verificada</span>
     </div>
-  {:else if isSessionUserProfile}
+  {:else if false}
     {#if verification && verification.state.toLowerCase() == 'inprogress'}
       <div
         class="ProfileVerification-card ProfileVerification-card--inprogress">

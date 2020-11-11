@@ -13,11 +13,22 @@ export default class CompanyService extends RequestService {
         return `/companies/${username}/`;
     }
 
+    getCompanySummaryPath( username ){
+        return this.getCompaniesPath( username ) + "summary/"
+    }
+
     getCompany( username ){
         if( !username )
             throw new Error("Username is required in CompanyService.getCompany");
 
         return this.get( this.getCompaniesPath(username), {'Content-Type': 'application/json'}, null );
+    }
+
+    getCompanySummary( username ){
+        if( !username )
+            throw new Error("Username is required in CompanyService.getCompanySummary");
+
+        return this.get( this.getCompanySummary(username), {'Content-Type': 'application/json'}, null );
     }
 
     async updateCompanyLogo( username, logo, accessToken ){
@@ -39,10 +50,28 @@ export default class CompanyService extends RequestService {
         const Data = {
             "logo_id": Logo.id
         }
-        console.log("Logo: ", Logo);
-        console.log("Logo id: ", Data);
+
         const Company = await this.patch( this.getCompaniesPath(username), headers, Data );
         return Company;
+    }
+
+    async updateCompanySummary( username, summaryData, accessToken ){
+        if( !username )
+            throw new Error("Username is required in CompanyService.updateCompanySummary");
+
+        if( !summaryData )
+            throw new Error("summaryData is required in CompanyService.updateCompanySummary");
+
+        if( !accessToken )
+            throw new Error("accessToken is required in CompanyService.updateCompanySummary");
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + accessToken
+        }
+
+        const CompanySummary = await this.patch( this.getCompanySummaryPath(username), headers, summaryData );
+        return CompanySummary;
     }
 
 }

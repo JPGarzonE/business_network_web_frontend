@@ -8,6 +8,8 @@
     export let maximum_price;
     export let currency;
     export let buttonDetailAction;
+
+    export let withDetail = true;
 </script>
 
 <style>
@@ -79,9 +81,11 @@
 </style>
 
 <div class="ProductCard">
+    {#if withDetail}
     <div class="ProductCard-detail-overlay">
         <ElementDetailOverlay {buttonDetailAction} />
     </div>
+    {/if}
 
     <figure
         class="ProductCard-media-container {principalImage && principalImage.path ? '' : 'ProductCard-media-container--empty'}">

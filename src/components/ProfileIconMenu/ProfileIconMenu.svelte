@@ -114,7 +114,7 @@
 
         {#if sessionIsAuthenticated}
         <div class="ProfileIconMenu-option" on:click={closeSession}>
-            <span>Salir</span>
+            <span>Cerrar sesión</span>
             <ArrowCollapseRight size=16 color="var(--secondary-text-color)" />
         </div>
         {/if}

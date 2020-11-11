@@ -1,12 +1,14 @@
 <script>
   import ProfileLogo from "../../components/ProfileLogo/ProfileLogo.svelte";
-  import Verification from "../../components/ProfileVerification/ProfileVerification.svelte";
+  import ProfileVerification from "../../components/ProfileVerification/ProfileVerification.svelte";
   import ProfileIdentityForm from "../ProfileIdentityForm/ProfileIdentityForm.svelte";
   import Modal from "../../components/Modal.svelte";
   import ButtonChat from "../../components/ButtonChat/ButtonChat.svelte";
+  import ContactUsButton from "../../components/ContactUsButton/ContactUsButton.svelte";
   import EditButton from "../../components/EditButton/EditButton.svelte";
-  import { stores } from "@sapper/app";
+  import { stores } from '@sapper/app';
   import { getContext } from "svelte";
+  import { goto } from '@sapper/app';
   import Web from "svelte-material-icons/Web.svelte";
   import GoogleTranslate from "svelte-material-icons/GoogleTranslate.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
@@ -14,8 +16,11 @@
 
   export let name;
   export let industry;
+  export let webUrl;
   export let logo;
   export let location;
+  export let contact;
+
   const { session } = stores();
   const isSessionUserProfile = getContext("isSessionUserProfile");
 
@@ -23,6 +28,8 @@
 
   let locationSubtitle;
   let address;
+  let companyContactLink = contact && contact.phone ? 
+    `https://wa.me/57${contact.phone}` : 'https://wa.me/573133800223';
 
   $: {
     if (location) {
@@ -38,8 +45,12 @@
     editableMode = !editableMode;
   }
 
-  function reloadComponentData(locationData) {
-    location = locationData;
+  function reloadComponentData(companySummary) {
+    name = companySummary.name;
+    industry = companySummary.industry;
+    location = companySummary.principal_location;
+    webUrl = companySummary.web_url;
+    contact = companySummary.contact_channel;
     editableMode = false;
   }
 </script>
@@ -133,10 +144,22 @@
     padding: 2px;
   }
 
+  .ProfileIdentity-webUrl {
+    word-break: break-word;
+  }
+
   .ProfileIdentity-contact-me {
     width: 90%;
     margin: 0 auto;
     margin-top: 15%;
+  }
+
+  .ProfileIdentity-advice {
+    width: 100%;
+    margin-bottom: 1em;
+    font-size: 0.88em;
+    letter-spacing: 0.22px;
+    color: var(--principal-color);
   }
 
   @media screen and (min-width: 1024px) {
@@ -147,12 +170,12 @@
 </style>
 
 <div class="ProfileIdentity">
+
   {#if editableMode && isSessionUserProfile}
     <Modal on:click={toggleEditableMode}>
       <ProfileIdentityForm
-        {name}
-        {industry}
-        {location}
+        {name} {industry} {webUrl} 
+        {location} {contact}
         on:click={toggleEditableMode}
         afterSubmit={reloadComponentData} />
     </Modal>
@@ -161,7 +184,8 @@
   <div class="ProfileIdentity-container">
     <div class="ProfileIdentity-content">
       <ProfileLogo {logo} />
-      <Verification />
+      <ProfileVerification />
+
       <div class="ProfileIdentity-NameContainer">
         <p class="ProfileIdentity-name">{name}</p>
         {#if isSessionUserProfile}
@@ -170,32 +194,62 @@
           </div>
         {/if}
       </div>
+  
       <div class="ProfileIdentity-subheadline">
         <p class="ProfileIdentity-industry">{industry}</p>
         {#if locationSubtitle}
           <p class="ProfileIdentity-location">{locationSubtitle}</p>
         {/if}
       </div>
+
       <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><MapMarkerOutline /></i>
         <span
           class="ProfileIdentity-address">{address ? address : 'No tiene aún'}</span>
       </p>
-      <p class="ProfileIdentity-data">
+      <!-- <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><GoogleTranslate /></i>
-        {locationSubtitle ? locationSubtitle : 'No tiene aún'}
-      </p>
+        No tiene aún
+      </p> -->
       <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><Web /></i>
-        {locationSubtitle ? locationSubtitle : 'No tiene aún'}
+        <a class="ProfileIdentity-webUrl" href={webUrl} 
+          target="_blank">{webUrl ? webUrl : 'No tiene aún'}</a>
       </p>
+
       <div class="ProfileIdentity-contact-me">
-        <ButtonChat title="Chatea con un vendedor">
-          <span slot="button-icon" style="display: flex;">
-            <Whatsapp size={18} />
-          </span>
-        </ButtonChat>
+        {#if !$session.authenticated}
+          <ButtonChat title="Registrate para contactar"
+            buttonAction={async ()=>{await goto('')}}>
+            <span slot="button-icon" style="display: flex;">
+              <Whatsapp size={18} />
+            </span>
+          </ButtonChat>
+        {:else if !isSessionUserProfile && contact && contact.phone}
+          <ButtonChat title="Chatea con el vendedor"
+            buttonAction={() => {window.open(companyContactLink, "_blank")}}>
+            <span slot="button-icon" style="display: flex;">
+              <Whatsapp size={18} />
+            </span>
+          </ButtonChat>
+        {:else if !isSessionUserProfile}
+          {#if $session.isVerified}
+            <p class="ProfileIdentity-advice">
+              Este usuario no tiene asignado un número de contacto.<br/>
+              Hable con nuestros asesores de venta y lo contactaremos por usted.
+            </p>
+          {:else}
+            <p class="ProfileIdentity-advice">
+              No puede contactar directamente hasta estar verificado.<br/>
+              Hable con nuestros asesores de venta y lo contactaremos por usted.
+            </p>
+          {/if}
+          <ContactUsButton title="Contáctanos"
+            buttonAction={()=>{window.open(companyContactLink, "_blank")}}>
+          </ContactUsButton>
+        {/if}
       </div>
+
     </div>
   </div>
 </div>

@@ -198,7 +198,9 @@
 
     {#if description}
       <span on:click={toggleStoryDisplay}>
-        <a class="CertificationCard-story-link" id="story-link">Ver más</a>
+        <a class="CertificationCard-story-link" id="story-link">
+          {displayStory ? "Ver menos" : "Ver más"}
+        </a>
       </span>
     {/if}
   </div>

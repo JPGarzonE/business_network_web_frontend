@@ -1,64 +1,87 @@
 <script>
-  import LocationService from '../../services/companies/location.service.js';
-  import GoogleTranslate from 'svelte-material-icons/GoogleTranslate.svelte';
+  import CompanyService from '../../services/companies/companies.service.js';
+  import Textfield from "@smui/textfield";
+  import HelperText from "@smui/textfield/helper-text";
+  import Select, {Option} from "@smui/select";
+  import SelectHelperText from "@smui/select/helper-text";
+  import Cellphone from 'svelte-material-icons/Cellphone.svelte';
   import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
+  import Web from "svelte-material-icons/Web.svelte";
+  import { validateAddress, validateCity, validateName, validateInternationalPhoneNumber, 
+    validateWebURL } from '../../validators/formValidators.js';
   import { stores } from '@sapper/app';
   import { getContext } from 'svelte';
 
   export let afterSubmit;
-  export let name;
+  export let name = '';
   export let industry = '';
-  export let location;
+  export let webUrl = '';
+  export let location = null;
+  export let contact = null;
   const { session } = stores();
   const isSessionUserProfile = getContext('isSessionUserProfile');
 
   const countries = ['Colombia', 'Estados unidos'];
   const fields = ['city', 'country', 'address'];
 
+  webUrl = webUrl ? webUrl : '';
   let city = location && location.city ? location.city : '';
-  let country;
+  let country = countries[0];
   let address = location && location.address ? location.address : '';
+  let contactNumber = contact && contact.phone ? contact.phone : '';
 
-  let formErrorMessage = '';
+  let submitErrorMessage = '';
+  let nameFeedback = '';
+  let industryFeedback = '';
+  let cityFeedback = '';
+  let addressFeedback = '';
+  let webUrlFeedback = '';
+  let contactNumberFeedback = '';
 
-  let cityFeedback;
-  let addressFeedback;
+  let nameIsValid = null;
+  let industryIsValid = null;
+  let cityIsValid = null;
+  let addressIsValid = null;
+  let webUrlIsValid = null;
+  let contactNumberIsValid = null;
 
-  function validateCity() {
-    if (city && city.length >= 1) {
-      if (city.length > 40) {
-        cityFeedback = 'Máximo 40 caracteres';
-        return false;
-      }
+  $: validBeforeSubmit = nameIsValid && industryIsValid && cityIsValid && addressIsValid && 
+    webUrlIsValid && contactNumberIsValid;
 
-      cityFeedback = '';
-      return true;
-    } else {
-      cityFeedback = 'La ciudad es obligatoria';
-      return false;
-    }
+  $: {
+    let { message, isValid } = validateName(name ? name : '');
+    nameFeedback = message;
+    nameIsValid = isValid;
   }
 
-  function validateAddress() {
-    if (address.length > 0 && address.length < 2) {
-      addressFeedback = 'Mínimo 2 caracteres';
-      return false;
-    } else if (address.length > 40) {
-      addressFeedback = 'Máximo 40 caracteres';
-      return false;
-    }
-
-    addressFeedback = '';
-    return true;
+  $: {
+    let { message, isValid } = validateName(industry ? industry : '');
+    industryFeedback = message;
+    industryIsValid = isValid;
   }
 
-  function validateProfileIdentityForm() {
-    if (!(validateCity() && validateAddress())) {
-      formErrorMessage = 'Los datos no son válidos';
-      throw new Error();
-    } else {
-      formErrorMessage = '';
-    }
+  $: {
+    let { message, isValid } = validateCity(city);
+    cityFeedback = message;
+    cityIsValid = isValid;
+  }
+
+  $: {
+    let { message, isValid } = validateAddress(address);
+    addressFeedback = message;
+    addressIsValid = address.length > 0 ? isValid : true;
+  }
+
+  $: {
+    let { message, isValid } = validateInternationalPhoneNumber(contactNumber);
+    contactNumberFeedback = message;
+    contactNumberIsValid = contactNumber.length > 0 ? isValid : true;
+  }
+
+  $: {
+    let { message, isValid } = validateWebURL(webUrl ? webUrl : '');
+    webUrlFeedback = message;
+    webUrlIsValid = webUrl.length > 0 ? isValid : true;
   }
 
   async function submit(event) {
@@ -68,70 +91,75 @@
 
     try {
       if (isSessionUserProfile) {
-        validateProfileIdentityForm();
-        const locationData = await submitLocation();
-        afterSubmit(locationData);
+        if( !validBeforeSubmit ) throw new Error();
+        const companySummary = await submitProfileIdentity();
+        console.log("Funciona")
+        console.log(companySummary);
+        afterSubmit(companySummary);
       }
-    } catch (e) {
+    } catch (e) { 
       const error = e.message;
+      submitErrorMessage = "";
+      let existErrorField = false;
       fields.map((field) => {
-        if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
-            error[field]
-          }`;
-        }
+          let errorField = error[field];
+          if( field == "nit" || field == "name" || field == "industry" )
+              errorField = error["company"] ? error["company"][field] : null;
+
+          if(errorField) {
+              existErrorField = true;
+              submitErrorMessage += `${submitErrorMessage ? `\n` : ''}-${field}: ${
+                  errorField
+              }`;
+          }
       });
+
+      if( !existErrorField && !error ) submitErrorMessage = "Los datos no son válidos";
+      else if( !existErrorField ) submitErrorMessage = error;
+
     } finally {
       Target.style.opacity = 1;
       Target.style.cursor = 'pointer';
     }
   }
 
-  async function submitLocation() {
-    const locationService = new LocationService();
+  async function submitProfileIdentity() {
+    const companyService = new CompanyService();
     let dataToSubmit = {};
 
-    if (location) {
-      location.city = location.city ? location.city : '';
-      location.country = location.country ? location.country : '';
-      location.address = location.address ? location.address : '';
+    if( country && country != '' ) 
+      if(!dataToSubmit.principal_location) dataToSubmit.principal_location = {country: country};
+      else dataToSubmit.principal_location.country = country;
+    if( city && city != '' )
+      if(!dataToSubmit.principal_location) dataToSubmit.principal_location = {city: city};
+      else dataToSubmit.principal_location.city = city;
+    if( address && address != '' )
+      if(!dataToSubmit.principal_location) dataToSubmit.principal_location = {address: address};
+      else dataToSubmit.principal_location.address = address;
 
-      if (city != location.city) dataToSubmit.city = city;
-      if (country != location.country) dataToSubmit.country = country;
-      if (address != location.address) dataToSubmit.address = address;
+    if( contactNumber && contactNumber != '' ) dataToSubmit.contact_channel = {phone: contactNumber};
+    if( webUrl && webUrl != '' ) dataToSubmit.web_url = webUrl;
 
-      const dataToSubmitIsEmpty = Object.keys(dataToSubmit).length === 0;
-      if (!dataToSubmitIsEmpty) {
-        const locationData = await locationService.updateUserLocation(
-          $session.username,
-          location.id,
-          dataToSubmit,
-          $session.accessToken
-        );
+    const CompanySummary = await companyService.updateCompanySummary( 
+      $session.username, dataToSubmit, $session.accessToken );
 
-        return locationData;
-      }
-    } else {
-      if (city != '') dataToSubmit.city = city;
-      if (country != '') dataToSubmit.country = country;
-      if (address != '') dataToSubmit.address = address;
-
-      const dataToSubmitIsEmpty = Object.keys(dataToSubmit).length === 0;
-      if (!dataToSubmitIsEmpty) {
-        const locationData = await locationService.createUserLocation(
-          $session.username,
-          dataToSubmit,
-          $session.accessToken
-        );
-
-        return locationData;
-      }
-    }
+    return CompanySummary;
   }
 </script>
 
 <style>
   @import '/styles/form.css';
+
+  .form-group {
+    margin-top: 0;
+  }
+
+  .input-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
 
   .ProfileIdentityForm-headline {
     width: 80%;
@@ -160,31 +188,23 @@
   }
 
   .ProfileIdentityForm-message {
-    margin: 40px 0px 10px;
+    margin: 15px 0px 10px;
     font-size: 0.95em;
     text-align: center;
     color: var(--secondary-text-color);
   }
 
-  .ProfileIdentityForm-country,
-  .ProfileIdentityForm-city,
-  .ProfileIdentityForm-address {
-    border: none;
-    border-bottom: 1px solid var(--secondary-text-color);
-  }
-
-  .ProfileIdentityForm-country {
-    width: 45%;
-    margin-right: 15px;
-  }
-
-  .ProfileIdentityForm-city,
-  .ProfileIdentityForm-address {
+  .ProfileIdentity-advice {
     width: 100%;
+    margin-left: 1em;
+    margin-top: 0.5em;
+    font-size: 0.8em;
+    letter-spacing: 0.22px;
+    color: var(--principal-color);
   }
 
   .ProfileIdentityForm-button {
-    margin-top: 3.5em;
+    margin-top: 2em;
   }
 
   .icon-wrapper {
@@ -208,79 +228,92 @@
   </div>
 
   <form class="ProfileIdentityForm-form ProfileForm-form">
-    {#if formErrorMessage}
+    {#if submitErrorMessage}
       <div class="form-banner--invalid">
-        <p>{formErrorMessage}</p>
+        <p>{submitErrorMessage}</p>
       </div>
     {/if}
 
-    <div class="form-group">
-      <div class="ProfileForm-group">
-        <select name="country" bind:value={country} class="ProfileIdentityForm-country">
+    <div class="ProfileForm-group">
+      <div class="form-group" >
+        <Select style="width:100%;height:45px;" input$style="width: 100%;height:100%"
+          bind:value={country} label="País*" variant="standard">
           {#each countries as country}
-            <option
-              value={country}
-              selected={location && location.country && country && country.toLowerCase() === location.country.toLowerCase()}>
-              {country}
-            </option>
+              <Option value={country} 
+                selected={location && location.country && country.toLowerCase() === location.country.toLowerCase()}>
+                {country}
+              </Option>
           {/each}
-        </select>
-
-        <input
-          type="text"
-          name="city"
-          placeholder="Ciudad"
-          class="ProfileIdentityForm-city"
-          on:input={validateCity}
-          bind:value={city} />
+        </Select>
+        
+        <SelectHelperText>El país es obligatorio</SelectHelperText>
       </div>
 
-      {#if cityFeedback}
-        <p class="form-control-feedback form-control-feedback--invalid">
-          {cityFeedback}
-        </p>
-      {/if}
+      <div class="form-group" style="margin-left:18px">
+        <Textfield style="width: 100%;height:45px" variant="standard"
+          label="Ciudad*" input$aria-controls="city" input$aria-describedby="city"
+          input$maxlength="50" bind:value={city}
+          invalid={city ? !cityIsValid : false} />
+          
+        <HelperText>{cityFeedback}</HelperText>
+      </div>
     </div>
 
     <p class="ProfileIdentityForm-message">Cambia tus datos principales</p>
 
     <div class="form-group">
       <div class="ProfileForm-group">
-        <p class="ProfileHeader-data">
-          <i class="icon-wrapper"><GoogleTranslate /></i>
+        <p class="input-icon">
+          <i class="icon-wrapper"><MapMarkerOutline /></i>
         </p>
-        <input
-          type="text"
-          name="city"
-          placeholder="Ciudad"
-          class="ProfileIdentityForm-city"
-          on:input={validateCity}
-          bind:value={city} />
-      </div>
-
-      <div class="form-group">
-        <div class="ProfileForm-group">
-          <p class="ProfileHeader-data">
-            <i class="icon-wrapper"><MapMarkerOutline /></i>
-          </p>
-          <input
-            type="text"
-            name="address"
-            placeholder="Dirección"
-            class="ProfileIdentityForm-address"
-            bind:value={address}
-            on:input={validateAddress} />
+        
+        <div class="form-group">
+          <Textfield style="width: 100%;height:45px" variant="standard"
+            label="Dirección" input$aria-controls="address" input$aria-describedby="address"
+            input$maxlength="50" bind:value={address}
+            invalid={address ? !addressIsValid : false} />
+            
+          <HelperText id="address">{addressFeedback}</HelperText>
         </div>
-
-        {#if addressFeedback}
-          <p class="form-control-feedback form-control-feedback--invalid">
-            {addressFeedback}
-          </p>
-        {/if}
       </div>
 
-      <button
-        on:click|preventDefault={submit}
+      <div class="ProfileForm-group">
+        <p class="input-icon">
+          <i class="icon-wrapper"><Web /></i>
+        </p>
+        
+        <div class="form-group">
+          <Textfield style="width: 100%;height:45px" variant="standard"
+            label="Página web" input$aria-controls="web-url" input$aria-describedby="web-url"
+            input$maxlength="50" bind:value={webUrl}
+            invalid={webUrl ? !webUrlIsValid : false} />
+          
+          <HelperText id="web-url">{webUrlFeedback}</HelperText>
+        </div>
+      </div>
+
+      <div class="ProfileForm-group">
+        <p class="input-icon">
+          <i class="icon-wrapper"><Cellphone /></i>
+        </p>
+        
+        <div class="form-group">
+          <Textfield style="width: 100%;height:45px" variant="standard"
+            label="Celular de contacto" input$aria-controls="contact-number" input$aria-describedby="contact-number"
+            input$maxlength="50" bind:value={contactNumber}
+            invalid={contactNumber ? !contactNumberIsValid : false} />
+          
+          <HelperText id="contact-number">{contactNumberFeedback}</HelperText>
+        </div>
+      </div>
+
+      <p class="ProfileIdentity-advice">
+        * Por medio de este numero los compradores verificados de Conecty te van a poder contactar. <br />
+        Con un click lo conectamos directamente a whatsapp para que contactarte ¡sea cuestión de segundos!.
+      </p>
+
+      <button on:click|preventDefault={submit}
+        disabled={!validBeforeSubmit}
         class="ProfileIdentityForm-button button button--principal">
         Aceptar y mostrar
       </button>

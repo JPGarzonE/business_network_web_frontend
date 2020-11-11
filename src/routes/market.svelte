@@ -80,7 +80,7 @@
     <div class="Market-showcase">
         {#each showcaseResults as section}
             <MarketCategoryList
-                categoryName={section.name}
+                categoryName={section.name} search={searchQuery.length > 0}
                 bind:categoryElements={section.section_elements} />
         {:else}
             <p>No hay contenido para mostrar</p>

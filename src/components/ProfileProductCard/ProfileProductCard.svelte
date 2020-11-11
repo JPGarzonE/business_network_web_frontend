@@ -120,7 +120,7 @@
   {/if}
 
   <ProductCard  principalImage={productPrincipalImage}
-    name={productElement.name}
+    name={productElement.name} withDetail={false}
     subname={productElement.category}
     minimum_price={productElement.minimum_price}
     maximum_price={productElement.maximum_price}

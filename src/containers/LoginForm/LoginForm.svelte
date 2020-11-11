@@ -157,7 +157,8 @@
 
         <div class="LoginForm-register">
             <hr />
-            <p>Olvidé mi contraseña</p>
+            <!-- <p>Olvidé mi contraseña</p><br/> -->
+            <p>Si no tienes cuenta</p>
             <input type="button" class="button button--secondary" 
                 value="Crea cuenta" on:click={signupRedirectionAction} />
         </div>

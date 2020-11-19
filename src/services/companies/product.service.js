@@ -78,65 +78,51 @@ export default class ProductService extends RequestService {
     return this.post(this.getUserProductsPath(username), headers, productData);
   }
 
-  async createUserProductWithImage({
-    username,
-    images,
-    productData,
-    accessToken,
-  }) {
+  async createUserProductWithImage({ username, principalImage, secondaryImages, productData, accessToken }) {
     if (!username)
-      throw new Error(
-        'Username is required in ProductService.createUserProductWithImage'
-      );
+      throw new Error('Username is required in ProductService.createUserProductWithImage');
 
-    if (!images)
-      throw new Error(
-        'images is required in ProductService.createUserProductWithImage'
-      );
+    if (!principalImage || !secondaryImages)
+      throw new Error('at least an image is required in ProductService.createUserProductWithImage');
 
     if (!accessToken)
-      throw new Error(
-        'accessToken is required in ProductService.createUserProductWithImage'
-      );
+      throw new Error('accessToken is required in ProductService.createUserProductWithImage');
 
     const headers = {
       'Content-Type': 'application/json',
       Authorization: 'Token ' + accessToken,
     };
-    let filteredAgainImageList = [];
-    let filteredImageList = images.filter((item) => item);
-    for (let i = 0; i < filteredImageList.length; i++) {
-      const Image = await this._imageService.uploadUserImage(
-        filteredImageList[i],
-        accessToken
+
+    if( principalImage ) {
+      const principalImageUploaded = await this._imageService.uploadUserImage(
+        principalImage, accessToken
       );
-      filteredAgainImageList = [...filteredAgainImageList, Image.id];
+      productData.principal_image_id = principalImageUploaded.id;
     }
-    productData.images = filteredAgainImageList;
+    
+    if(secondaryImages) productData.secondary_images = [];
+    for (let i = 0; i < secondaryImages.length; i++) {
+      if( secondaryImages[i] ) {
+        const Image = await this._imageService.uploadUserImage(
+          secondaryImages[i],
+          accessToken
+        );
+        productData.secondary_images = [...productData.secondary_images, Image.id];
+      }
+    }
+
     return this.post(this.getUserProductsPath(username), headers, productData);
   }
 
-  async updateUserProduct({
-    username,
-    productID,
-    imagesToDelete,
-    productData,
-    accessToken,
-  }) {
+  async updateUserProduct({ username, productID, imagesToDelete, productData, accessToken }) {
     if (!username)
-      throw new Error(
-        'Username is required in ProductService.updateUserProduct'
-      );
+      throw new Error('Username is required in ProductService.updateUserProduct');
 
     if (!productID)
-      throw new Error(
-        'productID is required in ProductService.updateUserProduct'
-      );
+      throw new Error('productID is required in ProductService.updateUserProduct');
 
     if (!accessToken)
-      throw new Error(
-        'accessToken is required in ProductService.updateUserProduct'
-      );
+      throw new Error('accessToken is required in ProductService.updateUserProduct');
 
     const headers = {
       'Content-Type': 'application/json',
@@ -156,34 +142,20 @@ export default class ProductService extends RequestService {
     return this.patch(RequestUrl, headers, productData);
   }
 
-  async updateUserProductWithImage({
-    username,
-    productID,
-    images,
-    imagesToDelete,
-    productData,
-    accessToken,
-  }) {
-    console.log('imagesToDelete', imagesToDelete);
-    if (!username)
-      throw new Error(
-        'Username is required in ProductService.updateUserProductWithImage'
-      );
+  async updateUserProductWithImage({ username, productID, principalImage, secondaryImages, 
+    imagesToDelete, productData, accessToken }) {
+    
+      if (!username)
+      throw new Error('Username is required in ProductService.updateUserProductWithImage');
 
     if (!productID)
-      throw new Error(
-        'productID is required in ProductService.updateUserProductWithImage'
-      );
+      throw new Error('productID is required in ProductService.updateUserProductWithImage');
 
-    if (!images)
-      throw new Error(
-        'images is required in ProductService.updateUserProductWithImage'
-      );
+    if (!principalImage || !secondaryImages)
+      throw new Error('at least an image is required in ProductService.createUserProductWithImage');
 
     if (!accessToken)
-      throw new Error(
-        'accessToken is required in ProductService.updateUserProductWithImage'
-      );
+      throw new Error('accessToken is required in ProductService.updateUserProductWithImage');
 
     const headers = {
       'Content-Type': 'application/json',
@@ -200,17 +172,23 @@ export default class ProductService extends RequestService {
       );
     }
 
-    let filteredAgainImageList = [];
-    let filteredImageList = images.filter((item) => item !== undefined);
-    for (let i = 0; i < filteredImageList.length; i++) {
-      const Image = await this._imageService.uploadUserImage(
-        filteredImageList[i],
-        accessToken
+    if( principalImage ) {
+      const principalImageUploaded = await this._imageService.uploadUserImage(
+        principalImage, accessToken
       );
-      filteredAgainImageList = [...filteredAgainImageList, Image.id];
+      productData.principal_image_id = principalImageUploaded.id;
     }
-
-    productData.images = filteredAgainImageList;
+    
+    if(secondaryImages) productData.secondary_images = [];
+    for (let i = 0; i < secondaryImages.length; i++) {
+      if( secondaryImages[i] ) {
+        const Image = await this._imageService.uploadUserImage(
+          secondaryImages[i],
+          accessToken
+        );
+        productData.secondary_images = [...productData.secondary_images, Image.id];
+      }
+    }
 
     return this.patch(RequestUrl, headers, productData);
   }

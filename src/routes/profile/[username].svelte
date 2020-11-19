@@ -1,94 +1,24 @@
 <script context="module">
-  import UserService from '../../services/users/user.service.js';
-  import ContactService from '../../services/companies/contact.service.js';
-  import LocationService from '../../services/companies/location.service.js';
-  import CertificationsService from '../../services/companies/certifications.service.js';
-  import ProductService from '../../services/companies/product.service.js';
-  import RelationshipService from '../../services/relationships/relationship.service.js';
-  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
+  import ProfilesService from '../../services/companies/profiles.service.js';
 
   export async function preload(page, session) {
-    const userService = new UserService();
+    const profilesService = new ProfilesService();
     const { username } = page.params;
 
-    const data = await userService.getUser(username, session.accessToken);
-    const user = data.user;
-    const isSessionUserProfile = data.is_owner;
-
-    const principalContact =
-      session.authenticated && (session.isVerified || isSessionUserProfile)
-        ? await loadCompanyPrincipalContact(username, session.accessToken)
-        : null;
-
-    const principalLocation = await loadCompanyPrincipalLocation(username);
-    const productList = await loadPortfolio(username);
-    const certificationsList = await loadCertifications(username);
-    const unregisteredRelationships = await loadUnregisteredRelationships(
-      username
+    const profileData = await profilesService.getSupplierProfile(
+      username, session.accessToken
     );
+
     return {
-      user,
-      isSessionUserProfile,
-      contact: principalContact,
-      location: principalLocation,
-      productList,
-      certificationsList,
-      unregisteredRelationships,
-    };
-  }
-
-  async function loadCompanyPrincipalContact(username, accessToken) {
-    const contactService = new ContactService();
-    const data = await contactService.getUserPrincipalContact(
-      username,
-      accessToken
-    );
-    console.log("data: ", data);
-    return data.results[0];
-  }
-
-  async function loadCompanyPrincipalLocation(username) {
-    const locationService = new LocationService();
-    const data = await locationService.getUserPrincipalLocation(username);
-    return data.results[0];
-  }
-
-  async function loadPortfolio(username) {
-    const productService = new ProductService();
-    const productsData = await productService.getUserProducts(username, {
-      page: 0,
-      pageLength: 4,
-    });
-
-    const products = productsData.results;
-
-    return products;
-  }
-
-  async function loadCertifications(username) {
-    const certificationsService = new CertificationsService();
-    const data = await certificationsService.getUserCertifications(username);
-    return data.results;
-  }
-
-  async function loadRelationships(userID) {
-    const relationshipService = new RelationshipService();
-    const relationshipData = await relationshipService.getUserRelationships(
-      userID
-    );
-    const relationships = relationshipData.results;
-
-    return relationships;
-  }
-
-  async function loadUnregisteredRelationships(username) {
-    const unregisteredRelationshipService = new UnregisteredRelationshipService();
-    const unregisteredRelationshipData = await unregisteredRelationshipService.getCompanyUnregisteredRelationships(
-      username
-    );
-    const unregisteredRelationships = unregisteredRelationshipData.results;
-
-    return unregisteredRelationships;
+      editable: profileData.editable,
+      company: profileData.company,
+      principalContact: profileData.principal_contact,
+      principalLocation: profileData.principal_location,
+      saleLocations: profileData.sale_locations,
+      products: profileData.products,
+      certifications: profileData.certificates,
+      unregisteredRelationships: profileData.unregistered_relationships
+    }
   }
 </script>
 
@@ -102,19 +32,18 @@
   import CertificationsList from '../../containers/CertificationsList/CertificationsList.svelte';
   import ProductList from '../../containers/ProductList/ProductList.svelte';
 
-  export let user;
-  export let isSessionUserProfile;
-  export let contact;
-  export let location;
-  export let certificationsList;
+  export let editable;
+  export let company;
+  export let principalContact;
+  export let principalLocation;
+  // export let saleLocations;
+  export let products;
+  export let certifications;
   export let unregisteredRelationships;
-  export let productList;
 
-  let company = user.company;
-
-  setContext('profileUsername', user.username);
-  setContext('profileIsVerified', user.is_verified);
-  setContext('isSessionUserProfile', isSessionUserProfile);
+  setContext('profileUsername', company.username);
+  setContext('profileIsVerified', company.is_verified);
+  setContext('isSessionUserProfile', editable);
 </script>
 
 <style>
@@ -167,13 +96,13 @@
         industry={company.industry}
         webUrl={company.web_url}
         logo={company.logo}
-        {contact}
-        {location} />
+        contact={principalContact}
+        location={principalLocation} />
     </section>
     <section class="UserProfile-main">
-      <CertificationsList {certificationsList} />
+      <CertificationsList certificationsList={certifications} />
 
-      <ProductList {productList} />
+      <ProductList productList={products} />
 
       <RelationshipsList {unregisteredRelationships} />
     </section>

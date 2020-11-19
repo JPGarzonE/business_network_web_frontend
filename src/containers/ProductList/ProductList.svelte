@@ -121,7 +121,7 @@
   {/if}
   <div class="Products">
     {#each productList as element}
-      <ProfileProductCard productElement={element} onDelete={onDeleteProduct} />
+      <ProfileProductCard productElementOverview={element} onDelete={onDeleteProduct} />
     {:else}
       {#if productList.length >= 1}
         <p>Loading...</p>

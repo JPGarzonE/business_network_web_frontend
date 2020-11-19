@@ -6,6 +6,7 @@
     import Textfield from "@smui/textfield";
     import HelperText from "@smui/textfield/helper-text";
     import Select, {Option} from "@smui/select";
+    import SelectHelperText from "@smui/select/helper-text";
     import CheckBox from "@smui/checkbox";
     import FileUploadInput from "../../components/FileUploadInput/FIleUploadInput.svelte";
     import { 
@@ -231,14 +232,6 @@
         letter-spacing: 0.22px;
     }
 
-    .SignupForm-control-helper {
-        margin-top: 0.3em;
-        font-size: 0.9em;
-        text-align: center;
-        letter-spacing: 0.22px;
-        color: var(--secondary-text-color);
-    }
-
     .SignupForm-certificate-helper {
         width: 100%;
         margin-left: 1em;
@@ -267,6 +260,10 @@
         font-size: 14px;
         letter-spacing: 0.22px;
     }
+
+    /* .prueba {
+        color: green;
+    } */
 </style>
 
 <div class="SignupForm">
@@ -296,27 +293,30 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Nombre completo*" input$aria-controls="full-name" input$aria-describedby="full-name"
                 input$maxlength="50" bind:value={fullName}
-                invalid={fullName ? !fullNameIsValid : false} />
+                invalid={fullName && !fullNameIsValid} />
 
-            <HelperText id="full-name">{fullNameFeedback}</HelperText>
+            <HelperText id="full-name" persistent={fullName && !fullNameIsValid}>
+                {fullNameFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Correo*" input$aria-controls="email" input$aria-describedby="email"
                 input$maxlength="50" bind:value={email} 
-                invalid={email ? !emailIsValid : false} />
+                invalid={email && !emailIsValid} />
 
-            <HelperText id="email">{emailFeedback}</HelperText>
+            <HelperText id="email" persistent={email && !emailIsValid}>
+                {emailFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="Contraseña*" input$aria-controls="password" input$aria-describedby="password" 
-                input$type="password" input$maxlength="50" bind:value={password} 
-                invalid={password ? !passwordIsValid : false} />
+                bind:value={password} label="Contraseña*" input$aria-controls="password" 
+                input$aria-describedby="password" input$type="password" input$maxlength="50" 
+                invalid={password && !passwordIsValid} />
 
-            <HelperText id="password">{passwordFeedback}</HelperText>
+            <HelperText id="password" persistent={password && !passwordIsValid}>
+                {passwordFeedback}</HelperText>
         </div>
 
         <div class="form-group">
@@ -324,9 +324,10 @@
                 label="Confirmar contraseña*" input$aria-controls="password-confirmation"
                 input$aria-describedby="password-confirmation" input$type="password"
                 input$maxlength="50" bind:value={passwordConfirmation} 
-                invalid={passwordConfirmation ? !passwordConfirmationIsValid : false} />
+                invalid={passwordConfirmation && !passwordConfirmationIsValid} />
 
-            <HelperText id="password-confirmation">{passwordConfirmationFeedback}</HelperText>
+            <HelperText persistent={passwordConfirmation && !passwordConfirmationIsValid} 
+                id="password-confirmation" >{passwordConfirmationFeedback}</HelperText>
         </div>
 
         <div class="form-button-group" style="margin-top:0.8em;">
@@ -348,18 +349,20 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Nombre de la empresa*" input$aria-controls="company-name"
                 input$aria-describedby="company-name" input$maxlength="50" 
-                bind:value={companyName} invalid={companyName ? !companyNameIsValid : false} />
+                bind:value={companyName} invalid={companyName && !companyNameIsValid} />
 
-            <HelperText id="company-name">{companyNameFeedback}</HelperText>
+            <HelperText id="company-name" persistent={companyName && !companyNameIsValid}>
+                {companyNameFeedback}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="NIT*" input$aria-controls="nit" input$aria-describedby="nit"
                 input$maxlength="50" bind:value={nit} 
-                invalid={nit ? !nitIsValid : false} />
+                invalid={nit && !nitIsValid} />
 
-            <HelperText id="nit">{nitFeedback}</HelperText>
+            <HelperText id="nit" persistent={nit && !nitIsValid}>
+                {nitFeedback}</HelperText>
         </div>
 
         <div class="form-group">
@@ -369,9 +372,10 @@
                     <Option value={industryOption} selected={industry == industryOption}>{industryOption}</Option>
                 {/each}
             </Select>
-            {#if industryFeedback && industryIsValid === false} 
-                <p class="SignupForm-control-helper">{industryFeedback.replace("El nombre", "La industria")}</p> 
-            {/if}
+
+            <SelectHelperText>
+                {industryFeedback.replace("El nombre", "La industria").replace("obligatorio", "obligatoria")}
+            </SelectHelperText>
         </div>
 
         <div class="form-group" style="margin-top:1.6em;">

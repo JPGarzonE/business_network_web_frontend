@@ -38,15 +38,13 @@
     ? productEditData.description
     : '';
 
-  let media = productEditData.media ? productEditData.media : {};
-
   let minimum_price = productEditData.minimum_price
     ? productEditData.minimum_price
     : '';
   let maximum_price = productEditData.maximum_price
     ? productEditData.maximum_price
     : '';
-  let currency_id = productEditData.currency ? productEditData.currency.id : 1;
+  let currency_id = productEditData.price_currency ? productEditData.price_currency.id : 1;
   let certificates = productEditData.certificates
     ? productEditData.certificates
     : '';
@@ -157,7 +155,6 @@
         };
 
         if( maximum_price ) dataToSubmit.maximum_price = maximum_price;
-
         let productResult;
         if (ProductElement && ProductElement.id)
           productResult = await submitUpdate(dataToSubmit);
@@ -182,11 +179,15 @@
   async function submitCreate(dataToSubmit) {
     const productService = new ProductService();
 
-    if (newMediaFiles.main) {
-      const imagesList = Object.values(newMediaFiles);
+    if (newMediaFiles.main ||
+      newMediaFiles.secondary1 ||
+      newMediaFiles.secondary2 ||
+      newMediaFiles.secondary3) {
+      
       const productData = await productService.createUserProductWithImage({
         username: $session.username,
-        images: imagesList,
+        principalImage: newMediaFiles.main,
+        secondaryImages: [newMediaFiles.secondary1, newMediaFiles.secondary2, newMediaFiles.secondary3],
         productData: dataToSubmit,
         accessToken: $session.accessToken,
       });
@@ -205,22 +206,16 @@
 
   async function submitUpdate(dataToSubmit) {
     const productService = new ProductService();
-    const imagesToDeleteList = imagesToDelete.map(
-      (item) => ProductElement.images[item]
-    );
 
-    if (
-      newMediaFiles.main ||
-      newMediaFiles.secondary1 ||
-      newMediaFiles.secondary2 ||
-      newMediaFiles.secondary3
-    ) {
-      const imagesList = Object.values(newMediaFiles);
+    if ( newMediaFiles.main || newMediaFiles.secondary1 ||
+      newMediaFiles.secondary2 || newMediaFiles.secondary3 ) {
+  
       const productData = await productService.updateUserProductWithImage({
         username: $session.username,
         productID: ProductElement.id,
-        images: imagesList,
-        imagesToDelete: imagesToDeleteList,
+        principalImage: newMediaFiles.main,
+        secondaryImages: [newMediaFiles.secondary1, newMediaFiles.secondary2, newMediaFiles.secondary3],
+        imagesToDelete: imagesToDelete,
         productData: dataToSubmit,
         accessToken: $session.accessToken,
       });
@@ -229,7 +224,7 @@
       const productData = await productService.updateUserProduct({
         username: $session.username,
         productID: ProductElement.id,
-        imagesToDelete: imagesToDeleteList,
+        imagesToDelete: imagesToDelete,
         productData: dataToSubmit,
         accessToken: $session.accessToken,
       });
@@ -238,7 +233,8 @@
     }
   }
   function deleteImage(id) {
-    imagesToDelete = [...imagesToDelete, id];
+    if( !imagesToDelete.includes(id) )
+      imagesToDelete = [...imagesToDelete, id];
   }
 </script>
 
@@ -322,43 +318,47 @@
     <Dropzone
       id="ProductForm"
       bind:imageFile={newMediaFiles.main}
-      imagePath={editMode && ProductElement.images[0] && !imagesToDelete.includes(0) ? ProductElement.images[0].path : null}
+      imagePath={editMode && ProductElement.principal_image && 
+        !imagesToDelete.includes(ProductElement.principal_image.id) ? ProductElement.principal_image.path : null}
       allowDelete
       onDelete={() => {
-        editMode && ProductElement.images[0] && !imagesToDelete.includes(0) ? deleteImage(0) : '';
+        editMode && ProductElement.principal_image ? deleteImage(ProductElement.principal_image.id) : '';
       }} />
     <div class="productform-previewMini">
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary1}
-          imagePath={editMode && ProductElement.images[1] && !imagesToDelete.includes(1) ? ProductElement.images[1].path : null}
+          imagePath={editMode && ProductElement.secondary_images[0] && 
+            !imagesToDelete.includes(ProductElement.secondary_images[0].id) ? ProductElement.secondary_images[0].path : null}
           small="true"
           allowDelete
           onDelete={() => {
-            editMode && ProductElement.images[1] && !imagesToDelete.includes(1) ? deleteImage(1) : '';
+            editMode && ProductElement.secondary_images[0] ? deleteImage(ProductElement.secondary_images[0].id) : '';
           }} />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary2}
-          imagePath={editMode && ProductElement.images[2] && !imagesToDelete.includes(2) ? ProductElement.images[2].path : null}
+          imagePath={editMode && ProductElement.secondary_images[1] && 
+            !imagesToDelete.includes(ProductElement.secondary_images[1].id) ? ProductElement.secondary_images[1].path : null}
           small="true"
           allowDelete
           onDelete={() => {
-            editMode && ProductElement.images[2] && !imagesToDelete.includes(2) ? deleteImage(2) : '';
+            editMode && ProductElement.secondary_images[1] ? deleteImage(ProductElement.secondary_images[1].id) : '';
           }} />
       </div>
       <div>
         <Dropzone
           id="ProductForm"
           bind:imageFile={newMediaFiles.secondary3}
-          imagePath={editMode && ProductElement.images[3] && !imagesToDelete.includes(3) ? ProductElement.images[3].path : null}
+          imagePath={editMode && ProductElement.secondary_images[2] && 
+            !imagesToDelete.includes(ProductElement.secondary_images[2].id) ? ProductElement.secondary_images[2].path : null}
           small="true"
           allowDelete
           onDelete={() => {
-            editMode && ProductElement.images[3] && !imagesToDelete.includes(3) ? deleteImage(3) : '';
+            editMode && ProductElement.secondary_images[2] ? deleteImage(ProductElement.secondary_images[2].id) : '';
           }} />
       </div>
     </div>

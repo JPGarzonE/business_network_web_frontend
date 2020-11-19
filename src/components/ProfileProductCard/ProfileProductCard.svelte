@@ -8,17 +8,22 @@
   import ProductService from '../../services/companies/product.service.js';
   import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
-  export let productElement;
+  export let productElementOverview;
   export let onDelete;
 
   const { session } = stores();
   const isSessionUserProfile = getContext('isSessionUserProfile') ? getContext('isSessionUserProfile') : false;
 
+  let productElementDetail = null;
   let editableMode = false;
   let confirmationMode = false;
-  let productPrincipalImage = productElement.images ? productElement.images[0] : null;
+  let productPrincipalImage = productElementOverview ? productElementOverview.principal_image : null;
 
-  function toggleEditableMode() {
+  async function toggleEditableMode() {
+    if( isSessionUserProfile && productElementDetail == null ) {
+      await retrieveProductDetail(productElementOverview.id);
+    }
+
     editableMode = !editableMode;
   }
   function toggleConfirmation() {
@@ -26,7 +31,8 @@
   }
 
   function reloadComponentData(productElementData) {
-    productElement = productElementData;
+    productElementOverview = productElementData;
+    productElementDetail = productElementData;
     editableMode = false;
   }
 
@@ -36,10 +42,20 @@
       const productService = new ProductService();
       await productService.deleteUserProduct(
         $session.username,
-        productElement.id,
+        productElementOverview.id,
         $session.accessToken
       );
-      onDelete(productElement.id);
+      onDelete(productElementOverview.id);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function retrieveProductDetail(productID) {
+    try {
+      const productService = new ProductService();
+      productElementDetail = await productService.getProductById(productID, $session.accessToken);
+      console.log("ProductElementDetail: ", productElementDetail)
     } catch (e) {
       console.error(e);
     }
@@ -93,7 +109,7 @@
 
 {#if confirmationMode && isSessionUserProfile}
   <ConfirmationModal
-    title="Desea eliminar el producto {productElement.name}"
+    title="Desea eliminar el producto {productElementOverview.name}"
     onAccept={onDeleteProduct}
     onDecline={toggleConfirmation} />
 {/if}
@@ -103,7 +119,7 @@
     <ProductForm
       on:click={toggleEditableMode}
       afterSubmit={reloadComponentData}
-      ProductElement={productElement} />
+      ProductElement={productElementDetail} />
   </Modal>
 {/if}
 
@@ -120,10 +136,10 @@
   {/if}
 
   <ProductCard  principalImage={productPrincipalImage}
-    name={productElement.name} withDetail={false}
-    subname={productElement.category}
-    minimum_price={productElement.minimum_price}
-    maximum_price={productElement.maximum_price}
-    currency={productElement.price_currency} 
+    name={productElementOverview.name} withDetail={false}
+    subname={productElementOverview.category}
+    minimum_price={productElementOverview.minimum_price}
+    maximum_price={productElementOverview.maximum_price}
+    currency={productElementOverview.price_currency} 
   />
 </div>

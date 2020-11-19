@@ -17,7 +17,7 @@ export function validateName( name ) {
             }
 
         return { 
-            message: "Nombre correcto", 
+            message: "nombre correcto", 
             isValid: true 
         }
     } else if (name && name.length > 0 && name.length <= 2){

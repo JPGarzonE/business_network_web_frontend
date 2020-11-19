@@ -50,7 +50,7 @@
     industry = companySummary.industry;
     location = companySummary.principal_location;
     webUrl = companySummary.web_url;
-    contact = companySummary.contact_channel;
+    contact = companySummary.principal_contact;
     editableMode = false;
   }
 </script>

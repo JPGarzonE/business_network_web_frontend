@@ -93,8 +93,6 @@
       if (isSessionUserProfile) {
         if( !validBeforeSubmit ) throw new Error();
         const companySummary = await submitProfileIdentity();
-        console.log("Funciona")
-        console.log(companySummary);
         afterSubmit(companySummary);
       }
     } catch (e) { 
@@ -137,7 +135,7 @@
       if(!dataToSubmit.principal_location) dataToSubmit.principal_location = {address: address};
       else dataToSubmit.principal_location.address = address;
 
-    if( contactNumber && contactNumber != '' ) dataToSubmit.contact_channel = {phone: contactNumber};
+    if( contactNumber && contactNumber != '' ) dataToSubmit.principal_contact = {phone: contactNumber};
     if( webUrl && webUrl != '' ) dataToSubmit.web_url = webUrl;
 
     const CompanySummary = await companyService.updateCompanySummary( 

@@ -37,6 +37,7 @@
     export let company;
 
     const { session } = stores();
+    let sessionUsername = $session.authenticated ? $session.username : null;
     
     const CompanyProfilePath = company.username ? `profile/${company.username}` : "";
     let purchaseQuantity = 1000;
@@ -269,7 +270,7 @@
                     images={productImages}
                 />
             </div>
-            {#if $session.username !== company.username}
+            {#if sessionUsername !== company.username}
             <div class="ProductDetail-buttons">
                 <span>¿Estás interesado en este producto?</span>
                 <div class="ProductDetail-buttons-contact">

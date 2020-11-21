@@ -44,15 +44,12 @@ export default class ProductService extends RequestService {
     if (!productID)
       throw new Error('productID is required in ProductService.getProductById');
 
-    if (!accessToken)
-      throw new Error(
-        'accessToken is required in ProductService.getProductById'
-      );
-
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
     };
+
+    if( accessToken )
+      headers['Authorization'] = 'Token ' + accessToken;
 
     const RequestUrl = this.productsPath + productID + '/';
 

@@ -26,6 +26,6 @@
 
 <div class="ElementDetailOverlay">
     <div class="ElementDetailOverlay-button">
-        <DetailButton message="Ver perfil proveedor" on:click={buttonDetailAction} />
+        <DetailButton message="Ver detalle" on:click={buttonDetailAction} />
     </div>
 </div>

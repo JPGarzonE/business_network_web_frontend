@@ -84,12 +84,22 @@ export function validateAddress( address ) {
 
 
 export function validateInternationalPhoneNumber( phoneNumber ) {
-    let phoneNumberMatch = phoneNumber.match(/^([0|\+[0-9]{1,4})?([0-9]{6,10})$/);
+    let phoneNumberMatch = phoneNumber.match(/^([0-9]{6,15})$/);
 
     if( phoneNumberMatch )
         return { message: "Numero válido", isValid: true }
     else
         return { message: "El numero no es válido", isValid: false }
+}
+
+
+export function validateAreaCodePhoneNumber( areaCode ) {
+    let areaCodeMatch = areaCode.match(/^([0|\+[0-9]{1,4})$/);
+
+    if( areaCodeMatch )
+        return { message: "Válido", isValid: true }
+    else
+        return { message: "Inválido", isValid: false }
 }
 
 

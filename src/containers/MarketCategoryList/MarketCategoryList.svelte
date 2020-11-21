@@ -7,12 +7,9 @@
     export let categoryElements = [];
     export let search = false;
 
-    console.log("Search");
-    console.log(search);
-
-    let productButtonDetailAction = async (company_username) => {
+    async function productButtonDetailAction(productID){
         document.body.style.cursor = "wait";
-        await goto(`profile/${company_username}`);
+        await goto(`product/${productID}`);
         document.body.style.cursor = "auto";
     }
 </script>
@@ -76,9 +73,9 @@
         {#each categoryElements as element}
         <div class="MarketCategoryList-product">
             <ProductCard  principalImage={element.principal_image}
-                name={element.name} withDetail={true}
+                name={element.name} withDetail
                 subname={element.company_name}
-                buttonDetailAction={async () => productButtonDetailAction(element.company_username)}
+                buttonDetailAction={async () => productButtonDetailAction(element.product)}
             />
         </div>
         {:else}

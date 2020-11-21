@@ -24,6 +24,9 @@
   .ProfileLogo-container {
     width: auto;
     max-width: 150px;
+    min-width: 130px;
+    max-height: 135px;
+    min-height: 120px;
     border-radius: 15px;
     display: flex;
     justify-content: center;
@@ -51,10 +54,8 @@
 
   .ProfileLogo-image {
     width: 100%;
-    max-height: 130px;
-    min-height: 100px;
     border-radius: inherit;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .ProfileLogo-image--default {

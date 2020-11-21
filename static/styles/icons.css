@@ -78,6 +78,12 @@
     background-image: url('/images/previous_icon.svg');
 }
 
+.icon-previous-nav {
+    background-image: url('/images/previous_nav_icon.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
 .icon-profile{
     background-image: url('/images/profile_icon.svg');
 }

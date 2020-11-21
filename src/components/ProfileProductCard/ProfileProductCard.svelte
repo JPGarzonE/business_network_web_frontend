@@ -1,6 +1,6 @@
 <script>
   import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
+  import { stores, goto } from '@sapper/app';
   import Modal from '../Modal.svelte';
   import EditButton from '../EditButton/EditButton.svelte';
   import ProductCard from '../ProductCard/ProductCard.svelte';
@@ -13,6 +13,8 @@
 
   const { session } = stores();
   const isSessionUserProfile = getContext('isSessionUserProfile') ? getContext('isSessionUserProfile') : false;
+  const ProductID = productElementOverview ? productElementOverview.id : null;
+  const ProductDetailPath = ProductID ? `product/${ProductID}` : null;
 
   let productElementDetail = null;
   let editableMode = false;
@@ -55,11 +57,16 @@
     try {
       const productService = new ProductService();
       productElementDetail = await productService.getProductById(productID, $session.accessToken);
-      console.log("ProductElementDetail: ", productElementDetail)
     } catch (e) {
       console.error(e);
     }
   }
+
+  async function productButtonDetailAction(){
+        document.body.style.cursor = "wait";
+        await goto(ProductDetailPath)
+        document.body.style.cursor = "auto";
+    }
 </script>
 
 <style>
@@ -136,7 +143,8 @@
   {/if}
 
   <ProductCard  principalImage={productPrincipalImage}
-    name={productElementOverview.name} withDetail={false}
+    name={productElementOverview.name} withDetail
+    buttonDetailAction={ProductDetailPath ? productButtonDetailAction : ''}
     subname={productElementOverview.category}
     minimum_price={productElementOverview.minimum_price}
     maximum_price={productElementOverview.maximum_price}

@@ -138,7 +138,7 @@
     max-height: 130px;
     min-height: 100px;
     border-radius: inherit;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .ProfileLogoUpload-button {

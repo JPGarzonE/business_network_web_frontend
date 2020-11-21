@@ -8,7 +8,7 @@
   import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
   import Web from "svelte-material-icons/Web.svelte";
   import { validateAddress, validateCity, validateName, validateInternationalPhoneNumber, 
-    validateWebURL } from '../../validators/formValidators.js';
+    validateAreaCodePhoneNumber, validateWebURL } from '../../validators/formValidators.js';
   import { stores } from '@sapper/app';
   import { getContext } from 'svelte';
 
@@ -28,6 +28,7 @@
   let city = location && location.city ? location.city : '';
   let country = countries[0];
   let address = location && location.address ? location.address : '';
+  let contactAreaCode = contact && contact.area_code ? contact.area_code : '';
   let contactNumber = contact && contact.phone ? contact.phone : '';
 
   let submitErrorMessage = '';
@@ -36,6 +37,7 @@
   let cityFeedback = '';
   let addressFeedback = '';
   let webUrlFeedback = '';
+  let contactAreaCodeFeedback = '';
   let contactNumberFeedback = '';
 
   let nameIsValid = null;
@@ -44,9 +46,10 @@
   let addressIsValid = null;
   let webUrlIsValid = null;
   let contactNumberIsValid = null;
+  let contactAreaCodeIsValid = null;
 
   $: validBeforeSubmit = nameIsValid && industryIsValid && cityIsValid && addressIsValid && 
-    webUrlIsValid && contactNumberIsValid;
+    webUrlIsValid && contactNumberIsValid && contactAreaCodeIsValid;
 
   $: {
     let { message, isValid } = validateName(name ? name : '');
@@ -82,6 +85,12 @@
     let { message, isValid } = validateWebURL(webUrl ? webUrl : '');
     webUrlFeedback = message;
     webUrlIsValid = webUrl.length > 0 ? isValid : true;
+  }
+
+  $: {
+    let { message, isValid } = validateAreaCodePhoneNumber(contactAreaCode ? contactAreaCode : '');
+    contactAreaCodeFeedback = message;
+    contactAreaCodeIsValid = isValid;
   }
 
   async function submit(event) {
@@ -126,16 +135,17 @@
     let dataToSubmit = {};
 
     if( country && country != '' ) 
-      if(!dataToSubmit.principal_location) dataToSubmit.principal_location = {country: country};
-      else dataToSubmit.principal_location.country = country;
-    if( city && city != '' )
-      if(!dataToSubmit.principal_location) dataToSubmit.principal_location = {city: city};
-      else dataToSubmit.principal_location.city = city;
-    if( address && address != '' )
-      if(!dataToSubmit.principal_location) dataToSubmit.principal_location = {address: address};
-      else dataToSubmit.principal_location.address = address;
+      dataToSubmit.principal_location = {...dataToSubmit.principal_location, country: country};
+    if( city && city != '' ) 
+      dataToSubmit.principal_location = {...dataToSubmit.principal_location, city: city};
+    if( address && address != '' ) 
+      dataToSubmit.principal_location = {...dataToSubmit.principal_location, address: address};
 
-    if( contactNumber && contactNumber != '' ) dataToSubmit.principal_contact = {phone: contactNumber};
+    if( contactNumber && contactNumber != '' )
+      dataToSubmit.principal_contact = {...dataToSubmit.principal_contact, phone: contactNumber};
+    if( contactAreaCode && contactAreaCode != '' ) 
+      dataToSubmit.principal_contact = {...dataToSubmit.principal_contact, area_code: contactAreaCode};
+
     if( webUrl && webUrl != '' ) dataToSubmit.web_url = webUrl;
 
     const CompanySummary = await companyService.updateCompanySummary( 
@@ -295,8 +305,17 @@
           <i class="icon-wrapper"><Cellphone /></i>
         </p>
         
-        <div class="form-group">
-          <Textfield style="width: 100%;height:45px" variant="standard"
+        <div class="form-group" style="width:20%;margin-right:15px;">
+          <Textfield style="width:100%;height:45px" variant="standard"
+            label="Código" input$aria-controls="contact-area-code" input$aria-describedby="contact-area-code"
+            input$maxlength="5" bind:value={contactAreaCode}
+            invalid={contactAreaCode ? !contactAreaCodeIsValid : false} />
+
+          <HelperText id="contact-area-code">{contactAreaCodeFeedback}</HelperText>
+        </div>
+
+        <div class="form-group" style="width:80%;">
+          <Textfield style="width:100%;height:45px" variant="standard"
             label="Celular de contacto" input$aria-controls="contact-number" input$aria-describedby="contact-number"
             input$maxlength="50" bind:value={contactNumber}
             invalid={contactNumber ? !contactNumberIsValid : false} />

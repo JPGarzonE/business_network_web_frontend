@@ -25,11 +25,11 @@ export default class ProductService extends RequestService {
     let qSP;
     if (
       pageSettings.pageLength !== undefined &&
-      pageSettings.page !== undefined
+      pageSettings.page !== undefined && pageSettings.page > 0
     ) {
       qSP = {
         limit: pageSettings.pageLength,
-        offset: pageSettings.page * pageSettings.pageLength,
+        offset: (pageSettings.page-1) * pageSettings.pageLength,
       };
     }
     let requestURL = this.getUserProductsPath(username);

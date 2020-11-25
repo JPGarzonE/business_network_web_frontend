@@ -14,7 +14,11 @@
 
   const productsPerLine = 4;
   const productPagination = {
+<<<<<<< HEAD
+    pageLength: 40, 
+=======
     pageLength: 6, 
+>>>>>>> fef873ae2de5445dde0940ad0b5ece765028b343
     page: 1
   };
 
@@ -41,33 +45,29 @@
   const showLessGondola = () => {
     loadedProducts = [
       ...loadedProducts,
-      ...displayedProducts.slice(-productsPerLine)]
+      ...displayedProducts.slice(productsPerLine)];
 
-    displayedProducts = displayedProducts.slice(0, -productsPerLine);
+    displayedProducts = displayedProducts.slice(0, productsPerLine);
   };
 
   const showMoreGondola = async () => {
-    console.log("Show more gondola load: ", loadedAll);
     if( !loadedAll )
       await loadMore();
     
-    displayedProducts = [
-      ...displayedProducts, 
-      ...loadedProducts.slice(0, productsPerLine)];
+    displayedProducts = [...displayedProducts, ...loadedProducts];
     
-    loadedProducts = loadedProducts.slice(productsPerLine);
+    loadedProducts = [];
   };
 
   const loadMore = async () => {
-    productPagination.page += 1;
-
     const productsData = await productService.getUserProducts(
       profileUsername, productPagination);
 
-    loadedProducts = [...loadedProducts,  ...productsData.results];
+    displayedProducts = productPagination.page > 1 ? displayedProducts : [];
+    productPagination.page += 1;
+
+    loadedProducts = productsData.results;
     loadedAll = productsData.next == null;
-    console.log(productsData.next);
-    console.log("Loaded all? ", loadedAll);
   };
 </script>
 
@@ -75,6 +75,7 @@
   .Products {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
   }
   .ProductsList {
     position: relative;

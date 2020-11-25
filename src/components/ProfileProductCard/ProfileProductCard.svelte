@@ -39,7 +39,6 @@
   }
 
   async function onDeleteProduct() {
-    toggleConfirmation;
     try {
       const productService = new ProductService();
       await productService.deleteUserProduct(
@@ -50,6 +49,9 @@
       onDelete(productElementOverview.id);
     } catch (e) {
       console.error(e);
+    }
+    finally {
+      toggleConfirmation();
     }
   }
 

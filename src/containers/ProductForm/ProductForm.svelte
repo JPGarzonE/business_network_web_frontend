@@ -4,56 +4,42 @@
   import Textfield from '@smui/textfield';
   import Select, { Option } from '@smui/select';
   import HelperText from '@smui/textfield/helper-text';
+  import SelectHelperText from "@smui/select/helper-text";
   import CharacterCounter from '@smui/textfield/character-counter/index';
   import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
   import Dropzone from '../../components/Dropzone/Dropzone.svelte';
   import ProductService from '../../services/companies/product.service.js';
+  import { validateString, validatePrice } from '../../validators/formValidators.js';
   import { CATEGORY } from '../../store/store.js';
+
   export let afterSubmit;
   export let ProductElement; // Pass if is an update form
   const { session } = stores();
   const isSessionUserProfile = getContext('isSessionUserProfile');
 
-  const fields = [
-    'name',
-    'description',
-    'certificates',
-    'minimum_purchase',
-    'tariff_heading',
-    'maximum_price',
-    'minimum_price',
-    'category',
-  ];
-
+  const fields = [ 'name', 'description', 'certificates', 'minimum_purchase', 'tariff_heading', 
+    'maximum_price', 'minimum_price', 'category', 'measurement_unit' ];
   const productEditData = ProductElement ? ProductElement : {};
   const editMode = ProductElement !== undefined;
 
   let name = productEditData.name ? productEditData.name : '';
-  let category = ProductElement
-    ? ProductElement.category
-    : CATEGORY
-    ? CATEGORY[0]
-    : '';
-  let description = productEditData.description
-    ? productEditData.description
-    : '';
+  let category = ProductElement ? ProductElement.category : (CATEGORY ? CATEGORY[0] : '');
+  let description = productEditData.description ? productEditData.description : '';
 
-  let minimum_price = productEditData.minimum_price
-    ? productEditData.minimum_price
-    : '';
-  let maximum_price = productEditData.maximum_price
-    ? productEditData.maximum_price
-    : '';
+  let minimum_price = productEditData.minimum_price ? productEditData.minimum_price : '';
+  let maximum_price = productEditData.maximum_price ? productEditData.maximum_price : '';
+  let measurement_unit = productEditData.measurement_unit ? productEditData.measurement_unit : '';
+  
   let currency_id = productEditData.price_currency ? productEditData.price_currency.id : 1;
-  let certificates = productEditData.certificates
-    ? productEditData.certificates
-    : '';
-  let minimum_purchase = productEditData.minimum_purchase
-    ? productEditData.minimum_purchase
-    : '';
-  let tariff_heading = productEditData.tariff_heading
-    ? productEditData.tariff_heading
-    : '';
+  let certificates = productEditData.certificates ? productEditData.certificates : '';
+  let minimum_purchase = productEditData.minimum_purchase ? productEditData.minimum_purchase : '';
+  let tariff_heading = productEditData.tariff_heading ? productEditData.tariff_heading : '';
+
+  $: minimum_price = typeof(minimum_price) === 'number' 
+    ? minimum_price.toFixed(2) : minimum_price;
+  $: maximum_price = typeof(maximum_price) === 'number' 
+    ? maximum_price.toFixed(2) : maximum_price;
+
   let newMediaFiles = {
     main: undefined,
     secondary1: undefined,
@@ -62,79 +48,27 @@
   };
   let imagesToDelete = [];
 
-  let formErrorMessage = null;
-  let nameFeedback = '';
-  let minimumPriceFeedback = '';
-  let maximumPriceFeedback = '';
-  let minimumPurchaseFeedback = '';
+  let submitErrorMessage = '';
 
-  function validateName() {
-    if (name && name.length >= 2) {
-      if (name.length > 50) {
-        nameFeedback = 'Máximo 50 caracteres';
-        return false;
-      }
+  $: nameValidation = validateString( name, 2, 50, true, "Nombre válido" );
+  
+  $: categoryValidation = validateString( category, 3, 60, true, "Categoria válida" );
+  
+  $: descriptionValidation = validateString( description, 0, 155, false, "Descripción válida" );
+  
+  $: minimumPriceValidation = validatePrice( minimum_price, true, "Precio mínimo válido" );
+  
+  $: maximumPriceValidation = validatePrice( maximum_price, false, "Precio máximo válido" );
 
-      nameFeedback = '';
-      return true;
-    } else if (name && name.length > 0 && name.length <= 2) {
-      nameFeedback = 'Mínimo 2 caracteres';
-      return false;
-    } else {
-      nameFeedback = 'El nombre es obligatorio';
-      return false;
-    }
-  }
+  $: measurementUnitValidation = validateString( measurement_unit, 0, 30, false, "Unidad de medida válida" );
+  
+  $: minimumPurchaseValidation = validateString( minimum_purchase, 0, 30, true, "Compra mínima válida" );
 
-  function validateMinPrice() {
-    if (minimum_price && minimum_price.toLocaleString().length >= 1) {
-      if (minimum_price.length > 10) {
-        minimumPriceFeedback = `${minimum_price.length} caracteres - Máximo 10`;
-        return false;
-      }
-      
-      minimumPriceFeedback = '';
-      return true;
-    } else {
-      minimumPriceFeedback = 'El precio mínimo es obligatorio';
-      return false;
-    }
-  }
-  function validateMaxPrice() {
-    if (maximum_price && maximum_price.length >= 1) {
-      if (maximum_price.length > 10) {
-        maximumPriceFeedback = `${maximum_price.length} caracteres - Máximo 10`;
-        return false;
-      }
-    }
+  $: tariffHeadingValidation = validateString( tariff_heading, 0, 20, false, "Partida arancelaria válida" );
 
-    maximumPriceFeedback = '';
-    return true;
-  }
-
-  function validateMinimumPurchase() {
-    if(minimum_purchase && minimum_purchase.length >= 1) {
-      if (minimum_purchase.length > 20) {
-        minimumPurchaseFeedback = `${minimum_purchase.length} caracteres - Máximo 20`;
-        return false;
-      }
-
-      minimumPriceFeedback = '';
-      return true;
-    } else {
-      minimumPurchaseFeedback = 'La compra mínima es obligatoria';
-      return false;
-    }
-  }
-
-  function validateProductForm() {
-    if (!(validateName() && validateMinPrice() && validateMaxPrice() && validateMinimumPurchase())) {
-      formErrorMessage = 'Los datos no son válidos';
-      throw new Error();
-    } else {
-      formErrorMessage = '';
-    }
-  }
+  $: validBeforeSubmit = nameValidation.isValid && categoryValidation.isValid && 
+    minimumPriceValidation.isValid && maximumPriceValidation.isValid && measurementUnitValidation &&
+    minimumPurchaseValidation.isValid && tariffHeadingValidation.isValid && descriptionValidation.isValid;
 
   async function submit(event) {
     const Target = event.target;
@@ -143,7 +77,8 @@
 
     try {
       if (isSessionUserProfile) {
-        validateProductForm();
+        if( !validBeforeSubmit ) throw new Error();
+
         let dataToSubmit = {
           category: category,
           name: name,
@@ -155,6 +90,8 @@
         };
 
         if( maximum_price ) dataToSubmit.maximum_price = maximum_price;
+        if( measurement_unit ) dataToSubmit.measurement_unit = measurement_unit;
+
         let productResult;
         if (ProductElement && ProductElement.id)
           productResult = await submitUpdate(dataToSubmit);
@@ -163,13 +100,22 @@
       }
     } catch (e) {
       const error = e.message;
+      submitErrorMessage = "";
+      let existErrorField = false;
+
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
+          submitErrorMessage += `${submitErrorMessage ? '\n' : ''}${field}: ${
             error[field]
           }`;
         }
       });
+
+      if( !existErrorField && !error ) submitErrorMessage = "Los datos no son válidos";
+      else if( !existErrorField ) submitErrorMessage = error;
+      
+      document.getElementById("ProductForm").scroll(0,1);
+
     } finally {
       Target.style.opacity = 1;
       Target.style.cursor = 'pointer';
@@ -295,7 +241,7 @@
   }
 </style>
 
-<div class="ProductForm ProfileForm">
+<div class="ProductForm ProfileForm" id="ProductForm">
   <button class="ProductForm-close-button ProfileForm-close-button" on:click>
     <span>X</span>
   </button>
@@ -305,11 +251,11 @@
       {ProductElement ? 'Actualiza tu producto' : 'Añadir producto'}
     </h3>
 
-    {#if formErrorMessage}
+    {#if submitErrorMessage}
       <div class="form-banner--invalid">
-        <p>{formErrorMessage}</p>
+        <p>{submitErrorMessage}</p>
       </div>
-    {:else if !ProductElement}
+    {:else if !editMode}
       <p class="ProductForm-subtitle">Sube la imagen de tu producto</p>
     {/if}
   </div>
@@ -366,100 +312,105 @@
 
   <form class="ProductForm-form ProfileForm-form">
     <div class="form-group">
-      <Textfield
-        style="width: 100%;"
-        variant="outlined"
-        bind:value={name}
-        label="Nombre del Producto*"
+      <Textfield style="width: 100%;" variant="outlined"
+        bind:value={name} label="Nombre del Producto*"
         input$aria-controls="product-name"
         input$aria-describedby="product-name"
         input$maxlength="50"
-        on:input={validateName} />
-      <HelperText id="product-name">{nameFeedback}</HelperText>
+        invalid={name && !nameValidation.isValid} />
+        
+      <HelperText id="product-name" persistent={name && !nameValidation.isValid}>
+        {nameValidation.message}</HelperText>
     </div>
+
     <div class="form-group">
-      <Select
-        style="width: 100%;"
-        variant="outlined"
-        bind:value={category}
-        label="Categoria del producto*">
+      <Select style="width: 100%;" variant="outlined" bind:value={category} 
+        label="Categoria del producto*" invalid={category && !categoryValidation.isValid}>
+
+        <Option value=""></Option>
         {#each CATEGORY as cat}
           <Option value={cat} selected={category === cat.toLowerCase()}>
             {cat}
           </Option>
         {/each}
       </Select>
+
+      <SelectHelperText persistent={category && !categoryValidation.isValid}>
+        {categoryValidation.message}</SelectHelperText>
     </div>
+
     <div class="form-group">
       <div class="form-group-two">
-        <Textfield
-          style="width: 45%;"
-          variant="outlined"
-          type="number"
-          bind:value={minimum_price}
-          label="Precio mínimo*"
+        <Textfield style="width: 45%;" variant="outlined" type="number"
+          bind:value={minimum_price} label="Precio mínimo*"
           input$aria-controls="product-min-price"
           input$aria-describedby="product-min-price"
-          input$maxlength="50"
-          input$step="any"
-          on:input={validateMinPrice} />
-        <Textfield
-          style="width: 45%;"
-          variant="outlined"
-          type="number"
-          bind:value={maximum_price}
-          label="Precio máximo"
+          input$maxlength="50" input$step="any"
+          invalid={minimum_price && !minimumPriceValidation.isValid} />
+
+        <Textfield style="width: 45%;" variant="outlined" type="number"
+          bind:value={maximum_price} label="Precio máximo"
           input$aria-controls="product-max-price"
           input$aria-describedby="product-max-price"
-          input$maxlength="50"
-          input$step="any"
-          on:input={validateMaxPrice} />
+          input$maxlength="50" input$step="any"
+          invalid={maximum_price && !maximumPriceValidation.isValid} />
       </div>
     </div>
+
     <div class="form-group">
-      <Textfield
-        style="width: 100%;"
-        variant="outlined"
-        bind:value={tariff_heading}
-        label="Partida arancelaria"
+      <Textfield style="width: 100%;" variant="outlined"
+        bind:value={tariff_heading} label="Partida arancelaria"
         input$aria-controls="product-tariff-heading"
         input$aria-describedby="product-tariff-heading"
-        input$maxlength="50" />
-      <HelperText id="product-tariff-heading">Máximo 50 caracteres</HelperText>
+        input$maxlength="50"
+        invalid={tariff_heading && !tariffHeadingValidation.isValid} />
+
+      <HelperText persistent={tariff_heading && !tariffHeadingValidation.isValid}>
+        {tariffHeadingValidation.message}</HelperText>
     </div>
+
     <div class="form-group">
-      <Textfield
-        style="width: 100%;"
-        variant="outlined"
-        bind:value={minimum_purchase}
-        label="Compra mínima*"
+      <Textfield style="width: 100%;" variant="outlined"
+        bind:value={measurement_unit} label="Unidad de medida"
+        input$aria-controls="product-measurement-unit"
+        input$aria-describedby="product-measurement-unit"
+        input$maxlength="30"
+        invalid={measurement_unit && !measurementUnitValidation.isValid} />
+
+      <HelperText persistent={measurement_unit && !measurementUnitValidation.isValid}>
+        {measurementUnitValidation.message}</HelperText>
+    </div>
+
+    <div class="form-group">
+      <Textfield style="width: 100%;" variant="outlined"
+        bind:value={minimum_purchase} label="Compra mínima*"
         input$aria-controls="product-min-purchase"
         input$aria-describedby="product-min-purchase"
         input$maxlength="50"
-        on:input={validateMinimumPurchase} />
-      <HelperText id="product-min-purchase">{minimumPurchaseFeedback}</HelperText>
+        invalid={minimum_purchase && !minimumPurchaseValidation.isValid} />
+
+      <HelperText persistent={minimum_purchase && !minimumPurchaseValidation.isValid}>
+        {minimumPurchaseValidation.message}</HelperText>
     </div>
+
     <div class="form-group">
-      <Textfield
-        style="width: 100%;"
-        variant="outlined"
-        bind:value={certificates}
-        label="Certificaciones"
+      <Textfield style="width: 100%;" variant="outlined"
+        bind:value={certificates} label="Certificaciones"
         input$aria-controls="product-name"
         input$aria-describedby="product-name"
         input$maxlength="50" />
+
       <HelperText id="product-name">Máximo 50 caracteres</HelperText>
     </div>
+
     <div class="form-group">
-      <Textfield
-        fullwidth
-        textarea
-        variant="outlined"
-        bind:value={description}
-        label="Añadir descripción"
+      <Textfield fullwidth textarea variant="outlined"
+        bind:value={description} label="Añadir descripción"
         input$aria-controls="product-description"
         input$aria-describedby="product-description"
-        input$maxlength="155">
+        input$maxlength="155"
+        invalid={description && !descriptionValidation.isValid}>
+
         <CharacterCounter>0 / 50</CharacterCounter>
       </Textfield>
     </div>

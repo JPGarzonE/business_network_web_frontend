@@ -7,7 +7,7 @@
   import Cellphone from 'svelte-material-icons/Cellphone.svelte';
   import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
   import Web from "svelte-material-icons/Web.svelte";
-  import { validateAddress, validateCity, validateName, validateInternationalPhoneNumber, 
+  import { validateString, validateInternationalPhoneNumber, 
     validateAreaCodePhoneNumber, validateWebURL } from '../../validators/formValidators.js';
   import { stores } from '@sapper/app';
   import { getContext } from 'svelte';
@@ -22,7 +22,7 @@
   const isSessionUserProfile = getContext('isSessionUserProfile');
 
   const countries = ['Colombia', 'Estados unidos'];
-  const fields = ['city', 'country', 'address'];
+  const fields = ['city', 'country', 'address', 'web_url'];
 
   webUrl = webUrl ? webUrl : '';
   let city = location && location.city ? location.city : '';
@@ -32,66 +32,27 @@
   let contactNumber = contact && contact.phone ? contact.phone : '';
 
   let submitErrorMessage = '';
-  let nameFeedback = '';
-  let industryFeedback = '';
-  let cityFeedback = '';
-  let addressFeedback = '';
-  let webUrlFeedback = '';
-  let contactAreaCodeFeedback = '';
-  let contactNumberFeedback = '';
 
-  let nameIsValid = null;
-  let industryIsValid = null;
-  let cityIsValid = null;
-  let addressIsValid = null;
-  let webUrlIsValid = null;
-  let contactNumberIsValid = null;
-  let contactAreaCodeIsValid = null;
+  $: nameValidation = validateString(name, 3, 50, true, "Nombre de la empresa válido");
 
-  $: validBeforeSubmit = nameIsValid && industryIsValid && cityIsValid && addressIsValid && 
-    webUrlIsValid && contactNumberIsValid && contactAreaCodeIsValid;
+  $: industryValidation = validateString(industry, 3, 50, true, "Industria válida");
 
-  $: {
-    let { message, isValid } = validateName(name ? name : '');
-    nameFeedback = message;
-    nameIsValid = isValid;
-  }
+  $: countryValidation = validateString(country, 2, 40, true, "País de origen válido");
 
-  $: {
-    let { message, isValid } = validateName(industry ? industry : '');
-    industryFeedback = message;
-    industryIsValid = isValid;
-  }
+  $: cityValidation = validateString(city, 1, 40, false, "Ciudad válida");
 
-  $: {
-    let { message, isValid } = validateCity(city);
-    cityFeedback = message;
-    cityIsValid = isValid;
-  }
+  $: addressValidation = validateString(address, 2, 40, false, "Dirección válida");
 
-  $: {
-    let { message, isValid } = validateAddress(address);
-    addressFeedback = message;
-    addressIsValid = address.length > 0 ? isValid : true;
-  }
+  $: webUrlValidation = validateString(webUrl, 0, 70, false, "Página web válida");
 
-  $: {
-    let { message, isValid } = validateInternationalPhoneNumber(contactNumber);
-    contactNumberFeedback = message;
-    contactNumberIsValid = contactNumber.length > 0 ? isValid : true;
-  }
+  $: contactAreaCodeValidation = validateAreaCodePhoneNumber(contactAreaCode);
 
-  $: {
-    let { message, isValid } = validateWebURL(webUrl ? webUrl : '');
-    webUrlFeedback = message;
-    webUrlIsValid = webUrl.length > 0 ? isValid : true;
-  }
+  $: contactNumberValidation = validateInternationalPhoneNumber(contactNumber);
 
-  $: {
-    let { message, isValid } = validateAreaCodePhoneNumber(contactAreaCode ? contactAreaCode : '');
-    contactAreaCodeFeedback = message;
-    contactAreaCodeIsValid = isValid;
-  }
+  $: validBeforeSubmit = nameValidation.isValid && industryValidation.isValid && cityValidation.isValid 
+    && addressValidation.isValid && webUrlValidation.isValid && contactNumberValidation.isValid 
+    && contactAreaCodeValidation.isValid;
+
 
   async function submit(event) {
     const Target = event.target;
@@ -244,8 +205,11 @@
 
     <div class="ProfileForm-group">
       <div class="form-group" >
-        <Select style="width:100%;height:45px;" input$style="width: 100%;height:100%"
-          bind:value={country} label="País*" variant="standard">
+        <Select style="width:100%;height:45px;" bind:value={country} variant="standard"
+          label="País*" input$style="width: 100%;height:100%"
+          invalid={country && !countryValidation.isValid} >
+
+          <Option value=""></Option>
           {#each countries as country}
               <Option value={country} 
                 selected={location && location.country && country.toLowerCase() === location.country.toLowerCase()}>
@@ -254,16 +218,18 @@
           {/each}
         </Select>
         
-        <SelectHelperText>El país es obligatorio</SelectHelperText>
+        <SelectHelperText persistent={country && !countryValidation.isValid}>
+          {countryValidation.message}</SelectHelperText>
       </div>
 
       <div class="form-group" style="margin-left:18px">
         <Textfield style="width: 100%;height:45px" variant="standard"
           label="Ciudad*" input$aria-controls="city" input$aria-describedby="city"
           input$maxlength="50" bind:value={city}
-          invalid={city ? !cityIsValid : false} />
+          invalid={city && !cityValidation.isValid} />
           
-        <HelperText>{cityFeedback}</HelperText>
+        <HelperText persistent={city && !cityValidation.isValid}>
+          {cityValidation.message}</HelperText>
       </div>
     </div>
 
@@ -279,9 +245,10 @@
           <Textfield style="width: 100%;height:45px" variant="standard"
             label="Dirección" input$aria-controls="address" input$aria-describedby="address"
             input$maxlength="50" bind:value={address}
-            invalid={address ? !addressIsValid : false} />
+            invalid={address && !addressValidation.isValid} />
             
-          <HelperText id="address">{addressFeedback}</HelperText>
+          <HelperText persistent={address && !addressValidation.isValid}>
+            {addressValidation.message}</HelperText>
         </div>
       </div>
 
@@ -294,9 +261,10 @@
           <Textfield style="width: 100%;height:45px" variant="standard"
             label="Página web" input$aria-controls="web-url" input$aria-describedby="web-url"
             input$maxlength="50" bind:value={webUrl}
-            invalid={webUrl ? !webUrlIsValid : false} />
+            invalid={webUrl && !webUrlValidation.isValid} />
           
-          <HelperText id="web-url">{webUrlFeedback}</HelperText>
+          <HelperText persistent={webUrl && !webUrlValidation.isValid}>
+            {webUrlValidation.message}</HelperText>
         </div>
       </div>
 
@@ -309,18 +277,20 @@
           <Textfield style="width:100%;height:45px" variant="standard"
             label="Código" input$aria-controls="contact-area-code" input$aria-describedby="contact-area-code"
             input$maxlength="5" bind:value={contactAreaCode}
-            invalid={contactAreaCode ? !contactAreaCodeIsValid : false} />
+            invalid={contactAreaCode && !contactAreaCodeValidation.isValid} />
 
-          <HelperText id="contact-area-code">{contactAreaCodeFeedback}</HelperText>
+          <HelperText persistent={contactAreaCode && !contactAreaCodeValidation.isValid}>
+            {contactAreaCodeValidation.message}</HelperText>
         </div>
 
         <div class="form-group" style="width:80%;">
           <Textfield style="width:100%;height:45px" variant="standard"
             label="Celular de contacto" input$aria-controls="contact-number" input$aria-describedby="contact-number"
             input$maxlength="50" bind:value={contactNumber}
-            invalid={contactNumber ? !contactNumberIsValid : false} />
+            invalid={contactNumber && !contactNumberValidation.isValid} />
           
-          <HelperText id="contact-number">{contactNumberFeedback}</HelperText>
+          <HelperText persistent={contactNumber && !contactNumberValidation.isValid}>
+            {contactNumberValidation.message}</HelperText>
         </div>
       </div>
 

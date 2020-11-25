@@ -72,6 +72,7 @@
         max-width: 250px;
         height: 42px;
         font-size: .75em;
+        background-color: white;
     }
 
     @media screen and (min-width: 625px) {

@@ -8,29 +8,31 @@ export function validateEmailPattern( email ) {
 }
 
 
-export function validateName( name ) {
-    if (name && name.length >= 2) {
-        if (name.length > 50)
+export function validateString( value, minLength = 3, maxLength = 50, 
+    required = false, successMessage = "valor válido") {
+
+    if( value && value.length > 0 ) {
+        if( value.length < minLength )
             return { 
-                message: "Máximo 50 caracteres", 
+                message: `Mínimo ${minLength} caracteres`, 
+                isValid: false 
+            }
+        else if( value.length > maxLength )
+            return { 
+                message: `Máximo ${maxLength} caracteres`, 
                 isValid: false 
             }
 
         return { 
-            message: "nombre correcto", 
-            isValid: true 
-        }
-    } else if (name && name.length > 0 && name.length <= 2){
-        return { 
-            message: "Mínimo 2 caracteres", 
-            isValid: false 
-        } 
-    } else {
-        return {
-            message: "El nombre es obligatorio",
-            isValid: false
+            message: successMessage,
+            isValid: true
         }
     }
+    
+    return required ? 
+        { message: "Este valor es obligatorio", isValid: false }
+        :
+        { message: successMessage, isValid: true }
 }
 
 
@@ -62,27 +64,6 @@ export function validateNIT( nit ) {
 }
 
 
-export function validateCity( city ) {
-    if (city && city.length >= 1) {
-        if (city.length > 40)
-            return { message: "Máximo 40 caracteres", isValid: false }
-
-        return { message: "La ciudad es correcta", isValid: true }
-    } else
-        return { message: "La ciudad es obligatoria", isValid: false };
-}
-
-
-export function validateAddress( address ) {
-    if (address.length > 0 && address.length < 2)
-        return { message: "Mínimo 2 caracteres", isValid: false }
-    else if (address.length > 40)
-        return { message: "Máximo 40 caracteres", isValid: false }
-
-    return { message: "La dirección es correcta", isValid: true }
-}
-
-
 export function validateInternationalPhoneNumber( phoneNumber ) {
     let phoneNumberMatch = phoneNumber.match(/^([0-9]{6,15})$/);
 
@@ -110,4 +91,24 @@ export function validateWebURL( webURL ) {
         return { message: "Página web válida", isValid: true }
     else
         return { message: "La página web no es válida", isValid: false }
+}
+
+
+export function validatePrice( price, required = false, successMessage = "Precio válido" ) {
+    price = typeof(price) === 'number' ? price.toFixed(2) : price;
+
+    if( price && typeof(price) === 'number' ) {
+        if( price <= 0 ) 
+            return { message: "Numero debe ser positivo", isValid: false }
+
+        if( price.toString().length <= 13 )
+            return { message: successMessage, isValid: true }
+        else
+            return { message: "Máximo 15 dígitos", isValid: false }
+    }
+
+    return required ?
+        { message: "Precio requerido", isValid: false }
+        :
+        { message: successMessage, isValid: true }
 }

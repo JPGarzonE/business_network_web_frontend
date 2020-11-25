@@ -10,7 +10,7 @@
     import CheckBox from "@smui/checkbox";
     import FileUploadInput from "../../components/FileUploadInput/FIleUploadInput.svelte";
     import { 
-        validateName, validateEmailPattern,  validatePassword, validatePasswordConfirmation, validateNIT
+        validateString, validateEmailPattern,  validatePassword, validatePasswordConfirmation, validateNIT
     } from "../../validators/formValidators.js";
     import { setCookie } from "../../utils/cookie.js";
 
@@ -33,67 +33,18 @@
     let industry = '';
     let certificate = null; // File
 
-    let fullNameFeedback = '';
-    let emailFeedback = '';
-    let passwordFeedback = '';
-    let passwordConfirmationFeedback = '';
-    let companyNameFeedback = '';
-    let nitFeedback = '';
-    let industryFeedback = '';
+    $: fullNameValidation = validateString(fullName, 3, 50, true, "Nombre completo válido");
+    $: emailValidation = validateEmailPattern( email );
+    $: passwordValidation = validatePassword( password );
+    $: passwordConfirmationValidation = validatePasswordConfirmation( password, passwordConfirmation );
+    $: companyNameValidation = validateString(companyName, 3, 50, true, "Nombre de la empresa válido");
+    $: nitValidation = validateNIT( nit );
+    $: industryValidation = validateString(industry, 3, 50, true, "La industria es válida");
 
-    let fullNameIsValid = null;
-    let emailIsValid = null;
-    let passwordIsValid = null;
-    let passwordConfirmationIsValid = null;
-    let companyNameIsValid = null;
-    let nitIsValid = null;
-    let industryIsValid = null;
-
-    $: firstStepValid = fullNameIsValid && emailIsValid && passwordIsValid && passwordConfirmationIsValid;
-    $: validBeforeSubmit = firstStepValid && companyNameIsValid && nitIsValid 
-        && industryIsValid && termsAndConditionsSelected;
-
-    $: {
-        let { message, isValid } = validateName(fullName);
-        fullNameFeedback = message;
-        fullNameIsValid = isValid;
-    }
-
-    $: {
-        let { message, isValid } = validateEmailPattern(email);
-        emailFeedback = message;
-        emailIsValid = isValid;
-    }
-
-    $: {
-        let { message, isValid } = validatePassword(password);
-        passwordFeedback = message;
-        passwordIsValid = isValid;
-    }
-
-    $: {
-        let{ message, isValid } = validatePasswordConfirmation( password, passwordConfirmation);
-        passwordConfirmationFeedback = message;
-        passwordConfirmationIsValid = isValid;
-    }
-
-    $: {
-        let { message, isValid } = validateName(companyName);
-        companyNameFeedback = message;
-        companyNameIsValid = isValid;
-    }
-
-    $: {
-        let { message, isValid } = validateNIT( nit );
-        nitFeedback = message;
-        nitIsValid = isValid;
-    }
-
-    $: {
-        let { message, isValid } = validateName( industry );
-        industryFeedback = message;
-        industryIsValid = isValid;
-    }
+    $: firstStepValid = fullNameValidation.isValid && emailValidation.isValid 
+        && passwordValidation.isValid && passwordConfirmationValidation.isValid;
+    $: validBeforeSubmit = firstStepValid && companyNameValidation.isValid && nitValidation.isValid 
+        && industryValidation.isValid && termsAndConditionsSelected;
 
     
     async function submitSignup( event ) {
@@ -260,10 +211,6 @@
         font-size: 14px;
         letter-spacing: 0.22px;
     }
-
-    /* .prueba {
-        color: green;
-    } */
 </style>
 
 <div class="SignupForm">
@@ -293,30 +240,30 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Nombre completo*" input$aria-controls="full-name" input$aria-describedby="full-name"
                 input$maxlength="50" bind:value={fullName}
-                invalid={fullName && !fullNameIsValid} />
+                invalid={fullName && !fullNameValidation.isValid} />
 
-            <HelperText id="full-name" persistent={fullName && !fullNameIsValid}>
-                {fullNameFeedback}</HelperText>
+            <HelperText id="full-name" persistent={fullName && !fullNameValidation.isValid}>
+                {fullNameValidation.message}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Correo*" input$aria-controls="email" input$aria-describedby="email"
                 input$maxlength="50" bind:value={email} 
-                invalid={email && !emailIsValid} />
+                invalid={email && !emailValidation.isValid} />
 
-            <HelperText id="email" persistent={email && !emailIsValid}>
-                {emailFeedback}</HelperText>
+            <HelperText id="email" persistent={email && !emailValidation.isValid}>
+                {emailValidation.message}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 bind:value={password} label="Contraseña*" input$aria-controls="password" 
                 input$aria-describedby="password" input$type="password" input$maxlength="50" 
-                invalid={password && !passwordIsValid} />
+                invalid={password && !passwordValidation.isValid} />
 
-            <HelperText id="password" persistent={password && !passwordIsValid}>
-                {passwordFeedback}</HelperText>
+            <HelperText id="password" persistent={password && !passwordValidation.isValid}>
+                {passwordValidation.message}</HelperText>
         </div>
 
         <div class="form-group">
@@ -324,10 +271,10 @@
                 label="Confirmar contraseña*" input$aria-controls="password-confirmation"
                 input$aria-describedby="password-confirmation" input$type="password"
                 input$maxlength="50" bind:value={passwordConfirmation} 
-                invalid={passwordConfirmation && !passwordConfirmationIsValid} />
+                invalid={passwordConfirmation && !passwordConfirmationValidation.isValid} />
 
-            <HelperText persistent={passwordConfirmation && !passwordConfirmationIsValid} 
-                id="password-confirmation" >{passwordConfirmationFeedback}</HelperText>
+            <HelperText persistent={passwordConfirmation && !passwordConfirmationValidation.isValid}>
+                {passwordConfirmationValidation.message}</HelperText>
         </div>
 
         <div class="form-button-group" style="margin-top:0.8em;">
@@ -349,20 +296,20 @@
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="Nombre de la empresa*" input$aria-controls="company-name"
                 input$aria-describedby="company-name" input$maxlength="50" 
-                bind:value={companyName} invalid={companyName && !companyNameIsValid} />
+                bind:value={companyName} invalid={companyName && !companyNameValidation.isValid} />
 
-            <HelperText id="company-name" persistent={companyName && !companyNameIsValid}>
-                {companyNameFeedback}</HelperText>
+            <HelperText id="company-name" persistent={companyName && !companyNameValidation.isValid}>
+                {companyNameValidation.message}</HelperText>
         </div>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
                 label="NIT*" input$aria-controls="nit" input$aria-describedby="nit"
                 input$maxlength="50" bind:value={nit} 
-                invalid={nit && !nitIsValid} />
+                invalid={nit && !nitValidation.isValid} />
 
-            <HelperText id="nit" persistent={nit && !nitIsValid}>
-                {nitFeedback}</HelperText>
+            <HelperText id="nit" persistent={nit && !nitValidation.isValid}>
+                {nitValidation.message}</HelperText>
         </div>
 
         <div class="form-group">
@@ -373,9 +320,7 @@
                 {/each}
             </Select>
 
-            <SelectHelperText>
-                {industryFeedback.replace("El nombre", "La industria").replace("obligatorio", "obligatoria")}
-            </SelectHelperText>
+            <SelectHelperText>{industryValidation.message}</SelectHelperText>
         </div>
 
         <div class="form-group" style="margin-top:1.6em;">

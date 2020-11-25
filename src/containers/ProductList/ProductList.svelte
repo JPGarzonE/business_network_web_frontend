@@ -14,7 +14,11 @@
 
   const productsPerLine = 4;
   const productPagination = {
+<<<<<<< HEAD
     pageLength: 40, 
+=======
+    pageLength: 6, 
+>>>>>>> fef873ae2de5445dde0940ad0b5ece765028b343
     page: 1
   };
 

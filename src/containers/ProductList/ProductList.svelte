@@ -12,8 +12,19 @@
   const profileUsername = getContext('profileUsername');
   const productService = new ProductService();
 
+  const productsPerLine = 4;
+  const productPagination = {
+    pageLength: 40, 
+    page: 1
+  };
+
+  /* loadedProducts ∩ (intersection) displayedProducts = ∅ (null) */
+  let loadedProducts = productList ? productList.slice(productsPerLine) : [];
+  let displayedProducts = productList ? productList.slice(0, productsPerLine) : [];
+
   let editableMode = false;
-  let showedAll = false;
+  let loadedAll = productList <= 6;
+  $: displayedAll = loadedProducts.length <= 0 && loadedAll;
 
   function toggleEditableMode() {
     editableMode = !editableMode;
@@ -26,10 +37,33 @@
   function onDeleteProduct(id) {
     productList = productList.filter((item) => item.id !== id);
   }
+
+  const showLessGondola = () => {
+    loadedProducts = [
+      ...loadedProducts,
+      ...displayedProducts.slice(productsPerLine)];
+
+    displayedProducts = displayedProducts.slice(0, productsPerLine);
+  };
+
+  const showMoreGondola = async () => {
+    if( !loadedAll )
+      await loadMore();
+    
+    displayedProducts = [...displayedProducts, ...loadedProducts];
+    
+    loadedProducts = [];
+  };
+
   const loadMore = async () => {
-    const productsData = await productService.getUserProducts(profileUsername);
-    productList = productsData.results;
-    showedAll = true;
+    const productsData = await productService.getUserProducts(
+      profileUsername, productPagination);
+
+    displayedProducts = productPagination.page > 1 ? displayedProducts : [];
+    productPagination.page += 1;
+
+    loadedProducts = productsData.results;
+    loadedAll = productsData.next == null;
   };
 </script>
 
@@ -37,6 +71,7 @@
   .Products {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
   }
   .ProductsList {
     position: relative;
@@ -75,9 +110,27 @@
     color: var(--secondary-text-color);
   }
 
-  .ProdusctShowMore {
+  .ProductShowMoreOrLess {
     display: flex;
     justify-content: center;
+  }
+
+  .ProductShowLink-less i, .ProductShowLink-more i {
+      width: 19px;
+      height: 19px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0px;
+      margin-right: 5px;
+  }
+
+  .ProductShowLink-more i {
+    transform: rotate(90deg);
+  }
+  
+  .ProductShowLink-less i {
+    transform: rotate(-90deg);
   }
 
   @media screen and (min-width: 850px) {
@@ -91,9 +144,16 @@
       padding: unset;
     }
 
-    .ProdusctShowMoreText {
+    .ProductShowLink {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: var(--principal-color);
       cursor: pointer;
+    }
+
+    .ProductShowLink + .ProductShowLink {
+      margin-left: 90px;
     }
   }
 </style>
@@ -120,17 +180,29 @@
     </div>
   {/if}
   <div class="Products">
-    {#each productList as element}
+    {#each displayedProducts as element}
       <ProfileProductCard productElementOverview={element} onDelete={onDeleteProduct} />
     {:else}
-      {#if productList.length >= 1}
+      {#if displayedProducts.length >= 1}
         <p>Loading...</p>
       {/if}
     {/each}
   </div>
-  {#if productList.length >= 4 && !showedAll}
-    <div class="ProdusctShowMore" on:click={loadMore}>
-      <span class="ProdusctShowMoreText">Ver más productos</span>
+  {#if productList.length >= 4}
+    <div class="ProductShowMoreOrLess">
+      {#if displayedProducts.length > 4}
+      <span class="ProductShowLink ProductShowLink-less" on:click={showLessGondola}>
+        <i class="icon-next" />
+        Ver menos productos
+      </span>
+      {/if}
+
+      {#if !displayedAll}
+      <span class="ProductShowLink ProductShowLink-more" on:click={showMoreGondola}>
+        <i class="icon-next" />
+        Ver más productos
+      </span>
+      {/if}
     </div>
   {/if}
 </div>

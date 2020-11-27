@@ -95,7 +95,7 @@ export function validateWebURL( webURL ) {
 
 
 export function validatePrice( price, required = false, successMessage = "Precio válido" ) {
-    price = typeof(price) === 'number' ? price.toFixed(2) : price;
+    price = typeof(price) === 'number' ? parseFloat(price.toFixed(2)) : price;
 
     if( price && typeof(price) === 'number' ) {
         if( price <= 0 ) 

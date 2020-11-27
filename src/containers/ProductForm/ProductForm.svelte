@@ -36,9 +36,9 @@
   let tariff_heading = productEditData.tariff_heading ? productEditData.tariff_heading : '';
 
   $: minimum_price = typeof(minimum_price) === 'number' 
-    ? minimum_price.toFixed(2) : minimum_price;
+    ? parseFloat(minimum_price.toFixed(2)) : minimum_price;
   $: maximum_price = typeof(maximum_price) === 'number' 
-    ? maximum_price.toFixed(2) : maximum_price;
+    ? parseFloat(maximum_price.toFixed(2)) : maximum_price;
 
   let newMediaFiles = {
     main: undefined,

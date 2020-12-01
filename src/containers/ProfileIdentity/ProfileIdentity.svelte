@@ -52,7 +52,7 @@
 
   .ProfileIdentity {
     position: sticky;
-    top: 100px;
+    top: 90px;
   }
 
   .ProfileIdentity-container {
@@ -60,7 +60,7 @@
     width: auto;
     height: auto;
     max-width: 300px;
-    min-height: 430px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,7 +68,7 @@
     padding: 0px;
     border-radius: 7px;
     border: 1px solid var(--principal-color);
-    margin: 90px auto 20px;
+    margin: 70px auto 20px;
   }
   .ProfileIdentity-NameContainer {
     display: flex;
@@ -80,8 +80,8 @@
     width: 100%;
     min-width: 210px;
     position: relative;
-    margin-top: -100px;
-    margin-bottom: 20px;
+    margin-top: -80px;
+    margin-bottom: 10px;
   }
 
   .ProfileIdentity-name {

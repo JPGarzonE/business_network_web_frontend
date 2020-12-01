@@ -26,8 +26,8 @@
   let category = ProductElement ? ProductElement.category : (CATEGORY ? CATEGORY[0] : '');
   let description = productEditData.description ? productEditData.description : '';
 
-  let minimum_price = productEditData.minimum_price ? productEditData.minimum_price : '';
-  let maximum_price = productEditData.maximum_price ? productEditData.maximum_price : '';
+  let minimum_price = productEditData.minimum_price ? parseFloat(productEditData.minimum_price) : '';
+  let maximum_price = productEditData.maximum_price ? parseFloat(productEditData.maximum_price) : '';
   let measurement_unit = productEditData.measurement_unit ? productEditData.measurement_unit : '';
   
   let currency_id = productEditData.price_currency ? productEditData.price_currency.id : 1;
@@ -67,7 +67,7 @@
   $: tariffHeadingValidation = validateString( tariff_heading, 0, 20, false, "Partida arancelaria válida" );
 
   $: validBeforeSubmit = nameValidation.isValid && categoryValidation.isValid && 
-    minimumPriceValidation.isValid && maximumPriceValidation.isValid && measurementUnitValidation &&
+    minimumPriceValidation.isValid && maximumPriceValidation.isValid && measurementUnitValidation.isValid &&
     minimumPurchaseValidation.isValid && tariffHeadingValidation.isValid && descriptionValidation.isValid;
 
   async function submit(event) {

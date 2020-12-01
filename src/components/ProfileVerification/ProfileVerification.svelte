@@ -91,7 +91,7 @@
         </span>
       </div>
     {/if}
-  {:else}
+  {:else if isSessionUserProfile}
     <div class="ProfileVerification-card ProfileVerification-card--none">
       <span class="ProfileVerification-title"> Empresa no verificada </span>
     </div>

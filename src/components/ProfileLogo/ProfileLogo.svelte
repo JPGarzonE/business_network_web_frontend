@@ -24,7 +24,7 @@
   .ProfileLogo-container {
     width: auto;
     max-width: 150px;
-    min-width: 130px;
+    min-width: 134px;
     max-height: 135px;
     min-height: 120px;
     border-radius: 15px;

@@ -7,8 +7,7 @@
   import Cellphone from 'svelte-material-icons/Cellphone.svelte';
   import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
   import Web from "svelte-material-icons/Web.svelte";
-  import { validateString, validateInternationalPhoneNumber, 
-    validateAreaCodePhoneNumber, validateWebURL } from '../../validators/formValidators.js';
+  import { validateString, validateInternationalPhoneNumber, validateAreaCodePhoneNumber } from '../../validators/formValidators.js';
   import { stores } from '@sapper/app';
   import { getContext } from 'svelte';
 

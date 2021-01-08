@@ -1,6 +1,6 @@
 <script>
   import { getContext } from 'svelte';
-  import ProductService from '../../services/companies/product.service.js';
+  import ProductService from '../../services/suppliers/product.service.js';
   import ProfileProductCard from '../../components/ProfileProductCard/ProfileProductCard.svelte';
   import Modal from '../../components/Modal.svelte';
   import CreateButton from '../../components/CreateButton/CreateButton.svelte';

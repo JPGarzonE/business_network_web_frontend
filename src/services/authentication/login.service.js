@@ -10,16 +10,18 @@ export default class LoginService extends RequestService{
         return 'users/login/';
     }
 
-    login( userData ){
-        if( !userData )
-            throw new Error("userData is required in LoginService.login");
-        
-        if( !userData.email )
-            throw new Error("userData.email is required in LoginService.login");
+    login( email, password ){
+        if( !email )
+            throw new Error("email is required in LoginService.login");
 
-        if( !userData.password )
-            throw new Error("userData.password is required in LoginService.login");
+        if( !password )
+            throw new Error("password is required in LoginService.login");
 
-        return this.post( this.loginPath, {'Content-Type': 'application/json'}, userData);
+        let loginData = {
+            email: email,
+            password: password
+        }
+
+        return this.post( this.loginPath, {'Content-Type': 'application/json'}, loginData );
     }
 }

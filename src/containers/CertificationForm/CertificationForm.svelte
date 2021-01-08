@@ -6,7 +6,7 @@
   import CharacterCounter from '@smui/textfield/character-counter/index';
   import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
   import Dropzone from '../../components/Dropzone/Dropzone.svelte';
-  import CertificationsService from '../../services/companies/certifications.service.js';
+  import CertificationsService from '../../services/suppliers/certifications.service.js';
 
   export let afterSubmit;
   export let CertificationElement; // Pass if is an update form

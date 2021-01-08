@@ -1,39 +1,53 @@
 import RequestService from "../requests/request.service.js";
 import FileService from "../multimedia/file.service.js";
-import UserVerificationService from "../verifications/user.verification.service.js";
+import CompanyVerificationService from "../verifications/company.verification.service.js";
 
 export default class SignupService extends RequestService {
 
     constructor(){
         super();
         this._fileService = new FileService();
-        this._userVerificationService = new UserVerificationService();
+        this._companyVerificationService = new CompanyVerificationService();
     }
 
-    get signupPath(){
-        return "users/signup/";
+    get signupSupplierPath(){
+        return "suppliers/signup/";
     }
 
-    async signup( userData ){
+    get signupBuyerPath(){
+        return "buyers/signup/";
+    }
+
+    async signupSupplier( userData ){
 
         if( !userData )
-            throw new Error("user data is required in SignupService.signup");
+            throw new Error("user data is required in SignupService.signupSupplier");
 
-        return this.post( this.signupPath, {'Content-Type': 'application/json'}, userData);
+        return this.post( this.signupSupplierPath, {'Content-Type': 'application/json'}, userData);
     }
 
-    async signupWithCertificate( userData, certificateFile ){
+    async signupBuyer( userData ){
 
         if( !userData )
-            throw new Error("user data is required in SignupService.signupWithCertificate");
+            throw new Error("user data is required in SignupService.signupBuyer");
+
+        return this.post( this.signupBuyerPath, {'Content-Type': 'application/json'}, userData);
+    }
+
+    async signupSupplierWithCertificate( userData, certificateFile ){
+
+        if( !userData )
+            throw new Error("user data is required in SignupService.signupSupplierWithCertificate");
 
         if( !certificateFile )
-            throw new Error("CertificateFile is required in SignupService.signupWithCertificate");
+            throw new Error("CertificateFile is required in SignupService.signupSupplierWithCertificate");
 
         const SignupData = await this.signup( userData );
         const AccessToken = await SignupData.access_token;
 
-        await this._userVerificationService.uploadUserCertificate( AccessToken, certificateFile );
+        await this._companyVerificationService.uploadCompanyCertificate( 
+            SignupData.company.accountname, AccessToken, certificateFile 
+        );
         return SignupData;
     }
 }

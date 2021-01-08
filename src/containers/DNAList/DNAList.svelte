@@ -4,7 +4,7 @@
   import Modal from '../../components/Modal.svelte';
   import DNAForm from '../DNAForm/DNAForm.svelte';
   import { getContext, onMount } from 'svelte';
-  import DNAService from '../../services/companies/dna.service.js';
+  import DNAService from '../../services/suppliers/dna.service.js';
 
   const isSessionUserProfile = getContext('isSessionUserProfile');
   const profileUsername = getContext('profileUsername');

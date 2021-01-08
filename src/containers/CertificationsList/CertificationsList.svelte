@@ -1,6 +1,6 @@
 <script>
   import { getContext, onMount } from 'svelte';
-  import CertificationsService from '../../services/companies/certifications.service.js';
+  import CertificationsService from '../../services/suppliers/certifications.service.js';
   import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
   import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
   import Modal from '../../components/Modal.svelte';

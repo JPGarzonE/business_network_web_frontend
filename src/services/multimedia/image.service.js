@@ -17,7 +17,7 @@ export default class ImageService extends RequestService {
         return RequestURL;
     }
 
-    async uploadUserImage( image, accessToken ){
+    async uploadImage( image, accessToken ){
         if( !image )
             throw new Error("Image is required in ImageService.uploadUserImage");
 

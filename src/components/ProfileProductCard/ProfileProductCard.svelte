@@ -5,7 +5,7 @@
   import EditButton from '../EditButton/EditButton.svelte';
   import ProductCard from '../ProductCard/ProductCard.svelte';
   import ProductForm from '../../containers/ProductForm/ProductForm.svelte';
-  import ProductService from '../../services/companies/product.service.js';
+  import ProductService from '../../services/suppliers/product.service.js';
   import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
   export let productElementOverview;

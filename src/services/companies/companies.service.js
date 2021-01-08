@@ -9,26 +9,19 @@ export default class CompanyService extends RequestService {
         this._imageService = new ImageService();
     }
 
-    getCompaniesPath( username ){
-        return `/companies/${username}/`;
+    getCompaniesPath( accountname ){
+        return `/companies/${accountname}/`;
     }
 
-    getCompanySummaryPath( username ){
-        return this.getCompaniesPath( username ) + "summary/"
+    getCompanySummaryPath( accountname ){
+        return this.getCompaniesPath( accountname ) + "summary/"
     }
 
-    getCompany( username ){
-        if( !username )
+    getCompany( accountname ){
+        if( !accountname )
             throw new Error("Username is required in CompanyService.getCompany");
 
-        return this.get( this.getCompaniesPath(username), {'Content-Type': 'application/json'}, null );
-    }
-
-    getCompanySummary( username ){
-        if( !username )
-            throw new Error("Username is required in CompanyService.getCompanySummary");
-
-        return this.get( this.getCompanySummary(username), {'Content-Type': 'application/json'}, null );
+        return this.get( this.getCompaniesPath(accountname), {'Content-Type': 'application/json'}, null );
     }
 
     async updateCompanyLogo( username, logo, accessToken ){
@@ -53,25 +46,6 @@ export default class CompanyService extends RequestService {
 
         const Company = await this.patch( this.getCompaniesPath(username), headers, Data );
         return Company;
-    }
-
-    async updateCompanySummary( username, summaryData, accessToken ){
-        if( !username )
-            throw new Error("Username is required in CompanyService.updateCompanySummary");
-
-        if( !summaryData )
-            throw new Error("summaryData is required in CompanyService.updateCompanySummary");
-
-        if( !accessToken )
-            throw new Error("accessToken is required in CompanyService.updateCompanySummary");
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
-
-        const CompanySummary = await this.patch( this.getCompanySummaryPath(username), headers, summaryData );
-        return CompanySummary;
     }
 
 }

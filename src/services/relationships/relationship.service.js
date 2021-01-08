@@ -6,77 +6,78 @@ export default class RelationshipService extends RequestService{
         super();
     }
 
-    getUserRelationshipsPath( userID ){
-        return `/users/${userID}/relationships/`;
+    getCompanyRelationshipsPath( accountname ){
+        return `/companies/${accountname}/relationships/`;
     }
 
-    getUserRelationships( userID ){
-        if( !userID )
-            throw new Error("User ID is required in RelationshipService.getUserRelationships");
+    getCompanyRelationships( accountname ){
+        if( !accountname )
+            throw new Error("accountname is required in RelationshipService.getCompanyRelationships");
 
-        return this.get( this.getUserRelationshipsPath(userID), {'Content-Type': 'application/json'}, null );
+        return this.get( this.getCompanyRelationshipsPath(accountname), {'Content-Type': 'application/json'}, null );
     }
 
-    getUserRelationship( userID, relationshipID ){
-        if( !userID )
-            throw new Error("User ID is required in RelationshipService.getUserRelationshipByIdandUserId");
+    getCompanyRelationship( accountname, relationshipID ){
+        if( !accountname )
+            throw new Error("accountname is required in RelationshipService.getCompanyRelationship");
         
         if( !relationshipID )
-            throw new Error("Relationship ID is required in RelationshipService.getUserRelationshipByIdandUserId");
+            throw new Error("Relationship ID is required in RelationshipService.getCompanyRelationship");
 
-        const RequestUrl = this.getUserRelationshipsPath(userID) + relationshipID + "/";
+        const RequestUrl = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
 
         return this.get( RequestUrl, {'Content-Type': 'application/json'}, null );
     }
 
-    getUserRelationshipByAddressedUser( userID, addressedUserID ){
-        if( !userID )
-            throw new Error("User ID is required in RelationshipService.getUserRelationshipByAddressedUser");
+    getCompanyRelationshipFilteredByAddressedCompany( accountname, addressedCompanyID ){
+        if( !accountname )
+            throw new Error("accountname is required in RelationshipService.getCompanyRelationshipFilteredByAddressedCompany");
     
-        if( !addressedUserID )
-            throw new Error("Addressed User ID is required in RelationshipService.getUserRelationshipByAddressedUser");
+        if( !addressedCompanyID )
+            throw new Error("addressedCompanyID is required in RelationshipService.getCompanyRelationshipFilteredByAddressedCompany");
 
-        return this.get( this.getUserRelationshipsPath(userID), 
-            {'Content-Type': 'application/json'}, {'addressed_id': addressedUserID} );
+        return this.get( this.getCompanyRelationshipsPath(accountname), 
+            {'Content-Type': 'application/json'}, {'addressed_id': addressedCompanyID} );
     }
 
-    createUserRelationship( userID, relationshipData, accessToken ){
-        if( !userID )
-            throw new Error("User ID is required in RelationshipService.createUserRelationship");
-
-        if( !accessToken )
-            throw new Error("accessToken is required in RelationshipService.createUserRelationship");
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
-
-        return this.post( this.getUserRelationshipsPath(userID), headers, relationshipData );
-    }
-
-    updateUserRelationship( userID, relationshipID, relationshipData, accessToken ){
-        if( !userID )
-            throw new Error("User ID is required in RelationshipService.updateUserRelationship");
+    updateCompanyRelationship( accountname, relationshipID, relationshipData, accessToken ){
+        if( !accountname )
+            throw new Error("accountname is required in RelationshipService.updateCompanyRelationship");
 
         if( !relationshipID )
-            throw new Error("Relationship ID is required in RelationshipService.updateUserRelationship");
+            throw new Error("Relationship ID is required in RelationshipService.updateCompanyRelationship");
 
         if( !accessToken )
-            throw new Error("accessToken is required in RelationshipService.updateUserRelationship");
+            throw new Error("accessToken is required in RelationshipService.updateCompanyRelationship");
 
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Token ' + accessToken
         }
 
-        const RequestUrl = this.getUserRelationshipsPath(userID) + relationshipID + "/";
+        const RequestUrl = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
 
         return this.patch( RequestUrl, headers, relationshipData );
     }
 
-    deleteUserRelationship(){
+    deleteCompanyRelationship( accountname, relationshipID, accessToken ){
+        if( !accountname )
+            throw new Error("accountname is required in RelationshipService.updateCompanyRelationship");
+
+        if( !relationshipID )
+            throw new Error("relationshipID is required in RelationshipService.updateCompanyRelationship");
         
+        if( !accessToken )
+            throw new Error("accessToken is required in RelationshipService.updateCompanyRelationship");
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + accessToken
+        }
+
+        const RequestUrl = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
+
+        return this.delete( RequestUrl, headers );
     }
 
 }

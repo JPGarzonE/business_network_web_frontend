@@ -17,7 +17,7 @@
     export let loginRedirectionAction = async () => await goto('/login');
     const signupService = new SignupService();
 
-    const fields = ['full_name', 'email', 'name', 'nit', 
+    const fields = ['full_name', 'email', 'name', 'legalIdentifier', 
         'industry', 'password', 'password_confirmation'];
     let steps = { 1: null, 2: null }
     let actualStep = 1;
@@ -29,7 +29,7 @@
     let password = '';
     let passwordConfirmation = '';
     let companyName = '';
-    let nit = '';
+    let legalIdentifier = '';
     let industry = '';
     let certificate = null; // File
 
@@ -38,12 +38,12 @@
     $: passwordValidation = validatePassword( password );
     $: passwordConfirmationValidation = validatePasswordConfirmation( password, passwordConfirmation );
     $: companyNameValidation = validateString(companyName, 3, 50, true, "Nombre de la empresa válido");
-    $: nitValidation = validateNIT( nit );
+    $: legalIdentifierValidation = validateNIT( legalIdentifier );
     $: industryValidation = validateString(industry, 3, 50, true, "La industria es válida");
 
     $: firstStepValid = fullNameValidation.isValid && emailValidation.isValid 
         && passwordValidation.isValid && passwordConfirmationValidation.isValid;
-    $: validBeforeSubmit = firstStepValid && companyNameValidation.isValid && nitValidation.isValid 
+    $: validBeforeSubmit = firstStepValid && companyNameValidation.isValid && legalIdentifierValidation.isValid 
         && industryValidation.isValid && termsAndConditionsSelected;
 
     
@@ -59,29 +59,30 @@
             let userData = {
                 email: email, full_name: fullName,
                 password: password, password_confirmation: passwordConfirmation,
-                company: {
-                    name: companyName, nit: nit, industry: industry
-                }
+                name: companyName, legal_identifier: legalIdentifier, industry: industry
             }
 
             let data;
-            if( certificate ) data = await signupService.signupWithCertificate( userData, certificate );
-            else data = await signupService.signup( userData );
+            if( certificate ) data = await signupService.signupSupplierWithCertificate( userData, certificate );
+            else data = await signupService.signupSupplier( userData );
+
+            let accountname = data.company.accountname;
 
             setCookie("JPGE", data.access_token, 1);
-            setCookie("access_username", data.user.username, 1);
+            setCookie("access_username", accountname, 1);
             
             // Here we not use goto because the server has to render an authenticated content after login
             // With goto this not happen because the render acts only on the client
-            location.href = `/profile/${data.user.username}`;
+            location.href = `/profile/${accountname}`;
         }
         catch(e) {
+            console.log("error: ", e);
             const error = e.message;
             submitErrorMessage = "";
             let existErrorField = false;
             fields.map((field) => {
                 let errorField = error[field];
-                if( field == "nit" || field == "name" || field == "industry" )
+                if( field == "legalIdentifier" || field == "name" || field == "industry" )
                     errorField = error["company"] ? error["company"][field] : null;
 
                 if(errorField) {
@@ -304,12 +305,12 @@
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="NIT*" input$aria-controls="nit" input$aria-describedby="nit"
-                input$maxlength="50" bind:value={nit} 
-                invalid={nit && !nitValidation.isValid} />
+                label="NIT*" input$aria-controls="legalIdentifier" input$aria-describedby="legalIdentifier"
+                input$maxlength="50" bind:value={legalIdentifier} 
+                invalid={legalIdentifier && !legalIdentifierValidation.isValid} />
 
-            <HelperText id="nit" persistent={nit && !nitValidation.isValid}>
-                {nitValidation.message}</HelperText>
+            <HelperText id="legalIdentifier" persistent={legalIdentifier && !legalIdentifierValidation.isValid}>
+                {legalIdentifierValidation.message}</HelperText>
         </div>
 
         <div class="form-group">

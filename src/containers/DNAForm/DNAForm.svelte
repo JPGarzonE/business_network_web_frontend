@@ -1,5 +1,5 @@
 <script>
-  import DNAService from '../../services/companies/dna.service.js';
+  import DNAService from '../../services/suppliers/dna.service.js';
   import { stores } from '@sapper/app';
   import { getContext } from 'svelte';
 

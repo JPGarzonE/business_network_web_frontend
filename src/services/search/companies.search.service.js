@@ -22,8 +22,10 @@ export default class CompaniesSearchService extends SearchService {
         return this.customSearch( this.companiesSearchPath, {name: name} );
     }
 
-    getCompanyByNIT( nit ){
-        return this.customSearch( this.companiesSearchPath, {nit: nit} );
+    getCompanyByLegalIdentifier( legalIdentifier ){
+        return this.customSearch( this.companiesSearchPath, 
+            {legal_identifier: legalIdentifier} 
+        );
     }
 
     /* params must be an object with key: value */

@@ -1,11 +1,11 @@
 <script>
   import { stores } from '@sapper/app';
   import { getContext, onMount } from 'svelte';
-  import UserVerificationService from '../../services/verifications/user.verification.service.js';
+  import CompanyVerificationService from '../../services/verifications/company.verification.service.js';
   import CheckDecagram from 'svelte-material-icons/CheckDecagram.svelte';
 
   const { session } = stores();
-  const userVerificationService = new UserVerificationService();
+  const companyVerificationService = new CompanyVerificationService();
   let profileIsVerified = getContext('profileIsVerified');
   const isSessionUserProfile = getContext('isSessionUserProfile');
 

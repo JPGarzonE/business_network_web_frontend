@@ -1,17 +1,17 @@
 <script context="module">
-  import ProfilesService from '../../services/companies/profiles.service.js';
+  import ProfilesService from '../../services/suppliers/profiles.service.js';
 
   export async function preload(page, session) {
     const profilesService = new ProfilesService();
-    const { username } = page.params;
+    const { accountname } = page.params;
 
     const profileData = await profilesService.getSupplierProfile(
-      username, session.accessToken
+      accountname, session.accessToken
     );
 
     return {
       editable: profileData.editable,
-      company: profileData.company,
+      supplier: profileData.supplier,
       principalContact: profileData.principal_contact,
       principalLocation: profileData.principal_location,
       saleLocations: profileData.sale_locations,
@@ -33,7 +33,7 @@
   import ProductList from '../../containers/ProductList/ProductList.svelte';
 
   export let editable;
-  export let company;
+  export let supplier;
   export let principalContact;
   export let principalLocation;
   // export let saleLocations;
@@ -41,8 +41,8 @@
   export let certifications;
   export let unregisteredRelationships;
 
-  setContext('profileUsername', company.username);
-  setContext('profileIsVerified', company.is_verified);
+  setContext('profileAccountname', supplier.accountname);
+  setContext('profileIsVerified', supplier.is_verified);
   setContext('isSessionUserProfile', editable);
 </script>
 
@@ -83,7 +83,7 @@
 </style>
 
 <svelte:head>
-  <title>{company.name} - Conecty</title>
+  <title>{supplier.name} - Conecty</title>
 </svelte:head>
 
 <Header />
@@ -92,10 +92,10 @@
   <div class="UserProfile-content">
     <section class="UserProfile-sidebar">
       <ProfileIdentity
-        name={company.name}
-        industry={company.industry}
-        webUrl={company.web_url}
-        logo={company.logo}
+        name={supplier.name}
+        industry={supplier.industry}
+        webUrl={supplier.web_url}
+        logo={supplier.logo}
         contact={principalContact}
         location={principalLocation} />
     </section>

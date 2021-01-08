@@ -8,7 +8,7 @@
   import CharacterCounter from '@smui/textfield/character-counter/index';
   import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
   import Dropzone from '../../components/Dropzone/Dropzone.svelte';
-  import ProductService from '../../services/companies/product.service.js';
+  import ProductService from '../../services/suppliers/product.service.js';
   import { validateString, validatePrice } from '../../validators/formValidators.js';
   import { CATEGORY } from '../../store/store.js';
 

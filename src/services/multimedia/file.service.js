@@ -18,7 +18,7 @@ export default class FileService extends RequestService {
         return RequestURL;
     }
 
-    async uploadUserFile( file, accessToken ){
+    async uploadFile( file, accessToken ){
         if( !file )
             throw new Error("File is required in FileService.uploadUserFile");
 

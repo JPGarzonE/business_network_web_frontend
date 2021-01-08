@@ -34,9 +34,10 @@ polka()
             return {
               accessToken: AUTH_TOKEN,
               authenticated: true,
-              isVerified: data.is_verified,
-              username: data.username,
-              company: data.company
+              isVerified: data.user.is_verified,
+              username: data.user.username,
+              accountname: data.default_company.accountname,
+              company: data.default_company
             };
           } else {
             return {

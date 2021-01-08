@@ -4,7 +4,7 @@
   import Modal from '../Modal.svelte';
   import EditButton from '../EditButton/EditButton.svelte';
   import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';
-  import CertificationsService from '../../services/companies/certifications.service.js';
+  import CertificationsService from '../../services/suppliers/certifications.service.js';
   import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
   export let id;

@@ -5,8 +5,8 @@ export default class UnregisteredRelationshipService extends RequestService {
     super();
   }
 
-  getCompanyUnregisteredRelationshipsPath(username) {
-    return `/companies/${username}/relationships/unregistered/`;
+  getCompanyUnregisteredRelationshipsPath(accountname) {
+    return `/companies/${accountname}/relationships/unregistered/`;
   }
 
   get unregisteredRelationshipsPath() {
@@ -17,36 +17,43 @@ export default class UnregisteredRelationshipService extends RequestService {
     return '/companies/unregistered/';
   }
 
-  getCompanyUnregisteredRelationships(username) {
-    if (!username)
+  getCompanyUnregisteredRelationships( accountname ) {
+    if ( !accountname )
       throw new Error(
-        'username is required in UnregisteredRelationshipService.getCompanyUnregisteredRelationships'
+        'accountname is required in UnregisteredRelationshipService.getCompanyUnregisteredRelationships'
       );
 
     return this.get(
-      this.getCompanyUnregisteredRelationshipsPath(username),
+      this.getCompanyUnregisteredRelationshipsPath( accountname ),
       { 'Content-Type': 'application/json' },
       null
     );
   }
 
-  getUnregisteredRelationshipByID(unregisteredRelationshipID) {
-    if (!unregisteredRelationshipID)
+  getCompanyUnregisteredRelationshipByID( accountname, unregisteredRelationshipID ) {
+    if(!accountname)
       throw new Error(
-        'unregisteredRelationshipID is required in UnregisteredRelationshipService.getUnregisteredRelationshipByID'
+        'accountname is required in UnregisteredRelationshipService.getCompanyUnregisteredRelationshipByID'
       );
 
-    const RequestUrl =
-      this.unregisteredRelationshipsPath + unregisteredRelationshipID + '/';
+    if (!unregisteredRelationshipID)
+      throw new Error(
+        'unregisteredRelationshipID is required in UnregisteredRelationshipService.getCompanyUnregisteredRelationshipByID'
+      );
 
-    return this.get(RequestUrl, { 'Content-Type': 'application/json' }, null);
+    const RequestUrl = this.getCompanyUnregisteredRelationshipsPath( accountname ) 
+      + unregisteredRelationshipID + '/';
+
+    return this.get( RequestUrl, { 'Content-Type': 'application/json' }, null );
   }
 
-  createUnregisteredRelationship(
-    accessToken,
-    unregisteredCompanyData,
-    relationshipType
-  ) {
+  createUnregisteredRelationship( accountname, accessToken, unregisteredCompanyData, relationshipType ) {
+
+    if (!accountname)
+      throw new Error(
+        'accessToken is required in UnregisteredRelationshipService.createUnregisteredRelationship'
+      );
+
     if (!accessToken)
       throw new Error(
         'accessToken is required in UnregisteredRelationshipService.createUnregisteredRelationship'
@@ -75,50 +82,23 @@ export default class UnregisteredRelationshipService extends RequestService {
     };
 
     return this.post(
-      this.unregisteredRelationshipsPath,
+      this.getCompanyUnregisteredRelationshipsPath( accountname ) ,
       headers,
       RelationshipData
     );
   }
 
-  async createUnregisteredRelationshipWithNestedCompany(
-    accessToken,
-    unregisteredCompanyData,
-    relationshipType
-  ) {
-    if (!accessToken)
-      throw new Error(
-        'accessToken is required in UnregisteredRelationshipService.createUnregisteredRelationshipWithNestedCompany'
-      );
-
-    if (!unregisteredCompanyData)
-      throw new Error(
-        'unregisteredCompanyData is required in UnregisteredRelationshipService.createUnregisteredRelationshipWithNestedCompany'
-      );
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
-    };
-
-    const UnregisteredCompany = await this.post(
-      this.unregisteredCompaniesPath,
-      headers,
-      unregisteredCompanyData
-    );
-
-    return this.createUnregisteredRelationship(
-      accessToken,
-      UnregisteredCompany.id,
-      relationshipType
-    );
-  }
-
   updateUnregisteredRelationshipType(
+    accountname,
     accessToken,
     relationshipID,
     relationshipType
   ) {
+    if (!accountname)
+      throw new Error(
+        'accountname is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
+      );
+
     if (!accessToken)
       throw new Error(
         'accessToken is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
@@ -134,8 +114,7 @@ export default class UnregisteredRelationshipService extends RequestService {
         'relationshipType is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
       );
 
-    const RequestUrl =
-      this.unregisteredRelationshipsPath + relationshipID + '/';
+    const RequestUrl = this.getCompanyUnregisteredRelationshipsPath( accountname ) + relationshipID + '/';
 
     const headers = {
       'Content-Type': 'application/json',
@@ -149,15 +128,20 @@ export default class UnregisteredRelationshipService extends RequestService {
     return this.patch(RequestUrl, headers, RelationshipData);
   }
 
-  deleteUnregisteredRelationship(relationshipID, accessToken) {
+  deleteUnregisteredRelationship(accountname, relationshipID, accessToken) {
+    if (!accountname)
+      throw new Error(
+        'accountname is required in UnregisteredRelationshipService.deleteUnregisteredRelationship'
+      );
+    
     if (!relationshipID)
       throw new Error(
-        'relationshipID is required in CertificationsService.updateUserCertificationElementWithImage'
+        'relationshipID is required in UnregisteredRelationshipService.deleteUnregisteredRelationship'
       );
 
     if (!accessToken)
       throw new Error(
-        'accessToken is required in CertificationsService.updateUserCertificationElementWithImage'
+        'accessToken is required in UnregisteredRelationshipService.deleteUnregisteredRelationship'
       );
 
     const headers = {
@@ -166,7 +150,7 @@ export default class UnregisteredRelationshipService extends RequestService {
     };
 
     return this.delete(
-      this.unregisteredRelationshipsPath + '/' + relationshipID,
+      this.getCompanyUnregisteredRelationshipsPath(accountname) + '/' + relationshipID,
       headers
     );
   }

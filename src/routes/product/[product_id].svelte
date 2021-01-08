@@ -1,5 +1,5 @@
 <script context="module">
-    import ProductService from '../../services/companies/product.service.js';
+    import ProductService from '../../services/suppliers/product.service.js';
 
     export async function preload(page, session) {
         const productService = new ProductService();

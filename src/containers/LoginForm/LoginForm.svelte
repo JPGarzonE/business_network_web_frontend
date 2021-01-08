@@ -30,19 +30,16 @@
 
         try{
             if( !isValidBeforeSumbit ) throw new Error("Invalid");
+            
+            const data = await loginService.login( email, password );
+            let accountname = data.access_user.default_company.accountname;
 
-            let userData = {
-                email: email,
-                password: password
-            };
-
-            const data = await loginService.login( userData );
             setCookie("JPGE", data.access_token, 1);
-            setCookie("access_username", data.user.username, 1);
+            setCookie("access_accountname", accountname, 1);
             
             // Here we not use goto because the server has to render an authenticated content after login
             // With goto this not happen because the render acts only on the client
-            location.href = `/profile/${data.user.username}`;
+            location.href = `/profile/${accountname}`;
         }
         catch(e){
             const errors = e.message;

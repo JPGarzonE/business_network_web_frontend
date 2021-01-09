@@ -16,7 +16,7 @@
 
   const fields = ['name', 'industry', 'country', 'type'];
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
   const unregisteredRelationshipService = new UnregisteredRelationshipService();
 
   const { unregistered = {}, type = '', id: relationshipID } = editMode
@@ -132,9 +132,10 @@
     Target.style.cursor = 'not-allowed';
 
     try {
-      if (isSessionUserProfile) {
+      if (isEditableProfile) {
         if (editMode) {
           const unregisteredRelationshipData = await unregisteredRelationshipService.updateUnregisteredRelationshipType(
+            $session.company_accountname,
             $session.accessToken,
             relationshipID,
             relationshipType
@@ -150,6 +151,7 @@
           };
 
           const unregisteredRelationshipData = await unregisteredRelationshipService.createUnregisteredRelationship(
+            $session.company_accountname,
             $session.accessToken,
             dataToSubmit,
             relationshipType

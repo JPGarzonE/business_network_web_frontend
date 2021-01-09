@@ -16,7 +16,7 @@
   export let location;
   export let contact;
 
-  const isSessionUserProfile = getContext("isSessionUserProfile");
+  const isEditableProfile = getContext("isEditableProfile");
 
   let editableMode = false;
 
@@ -155,7 +155,7 @@
 
 <div class="ProfileIdentity">
 
-  {#if editableMode && isSessionUserProfile}
+  {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <ProfileIdentityForm
         {name} {industry} {webUrl} 
@@ -172,7 +172,7 @@
 
       <div class="ProfileIdentity-NameContainer">
         <p class="ProfileIdentity-name">{name}</p>
-        {#if isSessionUserProfile}
+        {#if isEditableProfile}
           <div class="ProfileIdentity-NameEditor">
             <EditButton size={17} color="gray" onEdit={toggleEditableMode} />
           </div>
@@ -202,7 +202,7 @@
       </p>
 
       <div class="ProfileIdentity-contact-me">
-        {#if !isSessionUserProfile}
+        {#if !isEditableProfile}
           <CompanyContact {contact} />
         {/if}
       </div>

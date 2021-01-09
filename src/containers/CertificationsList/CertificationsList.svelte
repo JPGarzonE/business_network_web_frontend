@@ -1,15 +1,13 @@
 <script>
-  import { getContext, onMount } from 'svelte';
-  import CertificationsService from '../../services/suppliers/certifications.service.js';
+  import { getContext } from 'svelte';
   import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
   import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
   import Modal from '../../components/Modal.svelte';
   import CreateButton from '../../components/CreateButton/CreateButton.svelte';
   import CertificationForm from '../CertificationForm/CertificationForm.svelte';
 
-  const isSessionUserProfile = getContext('isSessionUserProfile');
-  const profileUsername = getContext('profileUsername');
-  const certificationsService = new CertificationsService();
+  const isEditableProfile = getContext('isEditableProfile');
+
   export let certificationsList = [];
 
   let editableMode = false;
@@ -77,7 +75,7 @@
 </style>
 
 <div class="CertificationsList">
-  {#if editableMode && isSessionUserProfile}
+  {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <CertificationForm
         on:click={toggleEditableMode}
@@ -87,7 +85,7 @@
 
   <h3 class="CertificationsList-headline">Certificaciones</h3>
 
-  {#if isSessionUserProfile}
+  {#if isEditableProfile}
     <div class="CertificationsList-card--create">
       <div on:click={toggleEditableMode}>
         <CreateButton size={25} />

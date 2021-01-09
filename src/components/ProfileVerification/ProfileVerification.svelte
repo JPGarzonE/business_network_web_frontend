@@ -6,18 +6,18 @@
 
   const { session } = stores();
   const companyVerificationService = new CompanyVerificationService();
-  let profileIsVerified = getContext('profileIsVerified');
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  let isVerifiedProfile = getContext('isVerifiedProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   let verification;
 
   // onMount(async () => {
-  //   if (isSessionUserProfile) {
-  //     const data = await userVerificationService.getUserVerification(
+  //   if (isEditableProfile) {
+  //     const data = await companyVerificationService.getCompanyVerification(
+  //       $session.company_accountname,
   //       $session.accessToken
   //     );
   //     verification = data;
-  //     console.log("Verification: ", verification);
   //   }
   // });
 </script>
@@ -67,7 +67,7 @@
 </style>
 
 <div class="ProfileVerification">
-  {#if profileIsVerified}
+  {#if isVerifiedProfile}
     <div class="ProfileVerification-card ProfileVerification-card--verified">
       <span class="icon-check"><CheckDecagram size=22 /></span>
       <span class="ProfileVerification-title">Empresa verificada</span>

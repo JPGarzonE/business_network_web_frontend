@@ -15,7 +15,7 @@
   export let afterSubmit;
   export let ProductElement; // Pass if is an update form
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   const fields = [ 'name', 'description', 'certificates', 'minimum_purchase', 'tariff_heading', 
     'maximum_price', 'minimum_price', 'category', 'measurement_unit' ];
@@ -76,7 +76,7 @@
     Target.style.cursor = 'not-allowed';
 
     try {
-      if (isSessionUserProfile) {
+      if (isEditableProfile) {
         if( !validBeforeSubmit ) throw new Error();
 
         let dataToSubmit = {
@@ -130,8 +130,8 @@
       newMediaFiles.secondary2 ||
       newMediaFiles.secondary3) {
       
-      const productData = await productService.createUserProductWithImage({
-        username: $session.username,
+      const productData = await productService.createSupplierProductWithImage({
+        accountname: $session.company_accountname,
         principalImage: newMediaFiles.main,
         secondaryImages: [newMediaFiles.secondary1, newMediaFiles.secondary2, newMediaFiles.secondary3],
         productData: dataToSubmit,
@@ -140,8 +140,8 @@
 
       return productData;
     } else {
-      const productData = await productService.createUserProduct({
-        username: $session.username,
+      const productData = await productService.createSupplierProduct({
+        accountname: $session.company_accountname,
         productData: dataToSubmit,
         accessToken: $session.accessToken,
       });
@@ -156,8 +156,8 @@
     if ( newMediaFiles.main || newMediaFiles.secondary1 ||
       newMediaFiles.secondary2 || newMediaFiles.secondary3 ) {
   
-      const productData = await productService.updateUserProductWithImage({
-        username: $session.username,
+      const productData = await productService.updateSupplierProductWithImage({
+        accountname: $session.company_accountname,
         productID: ProductElement.id,
         principalImage: newMediaFiles.main,
         secondaryImages: [newMediaFiles.secondary1, newMediaFiles.secondary2, newMediaFiles.secondary3],
@@ -167,8 +167,8 @@
       });
       return productData;
     } else {
-      const productData = await productService.updateUserProduct({
-        username: $session.username,
+      const productData = await productService.updateSupplierProduct({
+        accountname: $session.company_accountname,
         productID: ProductElement.id,
         imagesToDelete: imagesToDelete,
         productData: dataToSubmit,

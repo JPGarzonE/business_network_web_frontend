@@ -12,7 +12,6 @@
     return {
       editable: profileData.editable,
       supplier: profileData.supplier,
-      principalContact: profileData.principal_contact,
       principalLocation: profileData.principal_location,
       saleLocations: profileData.sale_locations,
       products: profileData.products,
@@ -34,7 +33,6 @@
 
   export let editable;
   export let supplier;
-  export let principalContact;
   export let principalLocation;
   // export let saleLocations;
   export let products;
@@ -42,19 +40,19 @@
   export let unregisteredRelationships;
 
   setContext('profileAccountname', supplier.accountname);
-  setContext('profileIsVerified', supplier.is_verified);
-  setContext('isSessionUserProfile', editable);
+  setContext('isVerifiedProfile', supplier.is_verified);
+  setContext('isEditableProfile', editable);
 </script>
 
 <style>
-  .UserProfile {
+  .SupplierProfile {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .UserProfile-content {
+  .SupplierProfile-content {
     max-width: 1400px;
     width: 100%;
     margin: 0 auto;
@@ -62,20 +60,20 @@
     flex-direction: column;
   }
 
-  .UserProfile-sidebar {
+  .SupplierProfile-sidebar {
     position: relative;
     z-index: 20;
   }
 
   @media screen and (min-width: 850px) {
-    .UserProfile-content {
+    .SupplierProfile-content {
       padding: 25px;
       flex-direction: row;
     }
-    .UserProfile-sidebar {
+    .SupplierProfile-sidebar {
       width: 260px;
     }
-    .UserProfile-main {
+    .SupplierProfile-main {
       padding: 0 30px;
       width: calc(100% - 260px);
     }
@@ -88,18 +86,18 @@
 
 <Header />
 
-<div class="UserProfile">
-  <div class="UserProfile-content">
-    <section class="UserProfile-sidebar">
+<div class="SupplierProfile">
+  <div class="SupplierProfile-content">
+    <section class="SupplierProfile-sidebar">
       <ProfileIdentity
-        name={supplier.name}
+        name={supplier.display_name}
         industry={supplier.industry}
         webUrl={supplier.web_url}
         logo={supplier.logo}
-        contact={principalContact}
+        contact={null}
         location={principalLocation} />
     </section>
-    <section class="UserProfile-main">
+    <section class="SupplierProfile-main">
       <CertificationsList certificationsList={certifications} />
 
       <ProductList productList={products} />

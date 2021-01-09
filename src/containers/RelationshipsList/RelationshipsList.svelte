@@ -5,13 +5,10 @@
   import RelationshipForm from '../RelationshipForm/RelationshipForm.svelte';
   import UnregisteredRelationshipForm from '../RelationshipForm/UnregisteredRelationshipForm.svelte';
   import CreateButton from '../../components/CreateButton/CreateButton.svelte';
-  import CompanyService from '../../services/companies/companies.service.js';
-  import { getContext, onMount } from 'svelte';
+  import { getContext } from 'svelte';
 
   export let unregisteredRelationships = [];
-  const profileUsername = getContext('profileUsername');
-  const isSessionUserProfile = getContext('isSessionUserProfile');
-  const companyService = new CompanyService();
+  const isEditableProfile = getContext('isEditableProfile');
 
   let displayUnregisteredCreateForm = false;
 
@@ -31,12 +28,10 @@
   }
 
   function reloadComponentData(unregisteredRelationshipData) {
-    console.log("Reload component data");
     unregisteredRelationships = [
       ...unregisteredRelationships,
       unregisteredRelationshipData,
     ];
-    console.log("Reload component data 2");
     displayUnregisteredCreateForm = false;
   }
   function onDeleteUnregisteredRelationship(id) {
@@ -99,7 +94,7 @@
 </style>
 
 <div class="RelationshipsList">
-  {#if displayAddRelationship && isSessionUserProfile}
+  {#if displayAddRelationship && isEditableProfile}
     <Modal on:click={toggleAddRelationshipDisplay}>
       <RelationshipForm
         on:click={toggleAddRelationshipDisplay}
@@ -107,7 +102,7 @@
     </Modal>
   {/if}
 
-  {#if displayUnregisteredCreateForm && isSessionUserProfile}
+  {#if displayUnregisteredCreateForm && isEditableProfile}
     <Modal on:click={toggleUnregisteredCreateForm}>
       <UnregisteredRelationshipForm
         on:click={toggleUnregisteredCreateForm}
@@ -116,7 +111,7 @@
   {/if}
 
   <h3 class="RelationshipsList-headline">Con que empresas trabaja</h3>
-  {#if isSessionUserProfile}
+  {#if isEditableProfile}
     <div class="RelationshipsList-card--create">
       <div on:click={toggleUnregisteredCreateForm}>
         <CreateButton size={25} />

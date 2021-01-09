@@ -1,10 +1,7 @@
 <script>
     import CompaniesSearchService from "../../../services/search/companies.search.service.js";
     import { stores } from "@sapper/app";
-    import { getContext } from 'svelte';
 
-    const { session } = stores();
-    const isSessionUserProfile = getContext("isSessionUserProfile");
     const companiesSearchService = new CompaniesSearchService();
 
     let searchQuery;

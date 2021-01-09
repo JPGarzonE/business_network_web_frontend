@@ -5,8 +5,8 @@
   import EditButton from '../EditButton/EditButton.svelte';
   export let logo;
 
-  const profileUsername = getContext('profileUsername');
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const profileAccountname = getContext('profileAccountname');
+  const isEditableProfile = getContext('isEditableProfile');
 
   let editableMode = false;
 
@@ -76,7 +76,7 @@
 </style>
 
 <div class="ProfileLogo">
-  {#if editableMode && isSessionUserProfile}
+  {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <LogoUpload
         actualLogo={logo}
@@ -89,9 +89,9 @@
     class="ProfileLogo-container {logo && logo.path ? '' : 'ProfileLogo-container--default'}">
     <img
       src={logo && logo.path ? logo.path : '/images/profile_icon.svg'}
-      alt={profileUsername}
+      alt={profileAccountname}
       class="ProfileLogo-image {logo && logo.path ? '' : 'ProfileLogo-image--default'}" />
-    {#if isSessionUserProfile}
+    {#if isEditableProfile}
       <div class="CertificationCard-edit-button">
         <EditButton
           size={20}

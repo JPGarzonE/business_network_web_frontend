@@ -13,20 +13,16 @@ export default class CompanyService extends RequestService {
         return `/companies/${accountname}/`;
     }
 
-    getCompanySummaryPath( accountname ){
-        return this.getCompaniesPath( accountname ) + "summary/"
-    }
-
     getCompany( accountname ){
         if( !accountname )
-            throw new Error("Username is required in CompanyService.getCompany");
+            throw new Error("accountname is required in CompanyService.getCompany");
 
         return this.get( this.getCompaniesPath(accountname), {'Content-Type': 'application/json'}, null );
     }
 
-    async updateCompanyLogo( username, logo, accessToken ){
-        if( !username )
-            throw new Error("Username is required in CompanyService.updateCompanyLogo");
+    async updateCompanyLogo( accountname, logo, accessToken ){
+        if( !accountname )
+            throw new Error("accountname is required in CompanyService.updateCompanyLogo");
 
         if( !logo )
             throw new Error("logo is required in CompanyService.updateCompanyLogo");
@@ -39,7 +35,7 @@ export default class CompanyService extends RequestService {
             'Authorization': 'Token ' + accessToken
         }
 
-        const Logo = await this._imageService.uploadUserImage( logo, accessToken );
+        const Logo = await this._imageService.uploadImage( logo, accessToken );
         const Data = {
             "logo_id": Logo.id
         }

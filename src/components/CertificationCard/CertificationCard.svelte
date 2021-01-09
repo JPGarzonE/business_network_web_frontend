@@ -13,7 +13,7 @@
   export let description;
   export let onDelete;
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   let editableMode = false;
   let displayStory = false;
@@ -36,7 +36,7 @@
     try {
       const certificationsService = new CertificationsService();
       const certificationData = await certificationsService.deleteCertificationElement(
-        $session.username,
+        $session.company_accountname,
         id,
         $session.accessToken
       );
@@ -145,14 +145,14 @@
   }
 </style>
 
-{#if confirmationMode && isSessionUserProfile}
+{#if confirmationMode && isEditableProfile}
   <ConfirmationModal
     title="Desea eliminar el Certificado {name}"
     onAccept={deleteCertification}
     onDecline={toggleConfirmation} />
 {/if}
 <div class="CertificationCard">
-  {#if editableMode && isSessionUserProfile}
+  {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <CertificationForm
         on:click={toggleEditableMode}
@@ -174,7 +174,7 @@
     {/if}
   </figure>
 
-  {#if isSessionUserProfile}
+  {#if isEditableProfile}
     <div class="CertificationCard-edit-button">
       <EditButton
         size={25}

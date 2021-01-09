@@ -6,15 +6,15 @@
   import { getContext, onMount } from 'svelte';
   import DNAService from '../../services/suppliers/dna.service.js';
 
-  const isSessionUserProfile = getContext('isSessionUserProfile');
-  const profileUsername = getContext('profileUsername');
+  const isEditableProfile = getContext('isEditableProfile');
+  const profileAccountname = getContext('profileAccountname');
   const dnaService = new DNAService();
   let DNAElements = [];
 
   let editableMode = false;
 
   onMount(async () => {
-    const data = await dnaService.getUserDNA(profileUsername);
+    const data = await dnaService.getSupplierDNA(profileAccountname);
     DNAElements = data.results;
   });
 
@@ -131,7 +131,7 @@
 </style>
 
 <div class="DNAList">
-  {#if editableMode && isSessionUserProfile}
+  {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <DNAForm
         on:click={toggleEditableMode}
@@ -144,7 +144,7 @@
   <HorizontalScrollList
     id="DNA-list"
     beginningItemsNumber={DNAElements ? DNAElements.length : 0}>
-    {#if isSessionUserProfile}
+    {#if isEditableProfile}
       <div class="DNAList-card--create" on:click={toggleEditableMode}>
         <span> <i class="icon icon-add icon-add--medium" /> </span>
         <p>Crear ADN</p>

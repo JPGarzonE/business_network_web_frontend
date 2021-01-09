@@ -1,15 +1,15 @@
 <script>
     import Modal from "../Modal.svelte";
-    import DNAForm from "../profile/forms/DNAForm.svelte";
+    import DNAForm from "../../containers/DNAForm/DNAForm.svelte";
     import { getContext } from 'svelte';
 
     export let id;
     export let media;
-    export let name;
+    export let title;
     export let category;
     export let description;
 
-    const isSessionUserProfile = getContext("isSessionUserProfile");
+    const isEditableProfile = getContext("isEditableProfile");
     
     let editableMode = false;
     let displayStory = false;
@@ -25,9 +25,9 @@
 
     
     function reloadComponentData( dnaElementData ) {
-        name = dnaElementData.name;
+        title = dnaElementData.title;
         category = dnaElementData.category ? dnaElementData.category : null;
-        media = dnaElementData.media ? dnaElementData.media : null;
+        media = dnaElementData.image ? dnaElementData.image : null;
         description = dnaElementData.description ? dnaElementData.description : null;
 
         editableMode = false;
@@ -106,7 +106,7 @@
         padding: 25px;
     }
 
-    .DNACard-name {
+    .DNACard-title {
         width: 100%;
         margin: 15px 0px 10px 0px;
         font-size: 1em;
@@ -154,12 +154,12 @@
 </style>
 
 <div class="DNACard">
-    {#if editableMode && isSessionUserProfile}
+    {#if editableMode && isEditableProfile}
         <Modal on:click={toggleEditableMode}>
             <DNAForm on:click={toggleEditableMode} 
                 afterSubmit={reloadComponentData} 
                 DNAElement={{
-                    id: id, name: name, category: category,
+                    id: id, title: title, category: category,
                     description: description, media: media
                 }} />
         </Modal>
@@ -167,22 +167,22 @@
 
     <figure class="DNACard-media-container {media && media.path ? "" : "DNACard-media-container--empty"}"
         on:click={toggleEditableMode}>
-        {#if isSessionUserProfile}
+        {#if isEditableProfile}
             <span class="DNACard-icon-container">
                 <i class="icon icon-edit icon-edit--medium"></i>
             </span>
         {/if}
 
         {#if media && media.path}
-            <img src={media.path} alt={name}
+            <img src={media.path} alt={title}
                 class="DNACard-media-image">
         {:else}
-            <img src="/images/profile_icon.svg" alt={name} 
+            <img src="/images/profile_icon.svg" alt={title} 
                 class="DNACard-media-image--default">
         {/if}
     </figure>
 
-    <h4 class="DNACard-name">{name}</h4>
+    <h4 class="DNACard-title">{title}</h4>
 
     {#if description}
         {#if displayStory}

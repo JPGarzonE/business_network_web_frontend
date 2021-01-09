@@ -7,7 +7,7 @@
   export let afterSubmit;
   const { session } = stores();
   const profileUsername = getContext('profileUsername');
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   let imageUploaded = false;
   let newLogoFile;
@@ -36,9 +36,9 @@
       event.target.style.cursor = 'not-allowed';
 
       const companyService = new CompanyService();
-      if (isSessionUserProfile && newLogoFile) {
+      if (isEditableProfile && newLogoFile) {
         const Company = await companyService.updateCompanyLogo(
-          $session.username,
+          $session.company_accountname,
           newLogoFile,
           $session.accessToken
         );

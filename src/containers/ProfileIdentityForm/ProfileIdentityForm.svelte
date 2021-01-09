@@ -19,7 +19,7 @@
   export let location = null;
   export let contact = null;
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   const countries = ['Colombia', 'Estados unidos'];
   const fields = ['city', 'country', 'address', 'web_url'];
@@ -60,7 +60,7 @@
     Target.style.cursor = 'not-allowed';
 
     try {
-      if (isSessionUserProfile) {
+      if (isEditableProfile) {
         if( !validBeforeSubmit ) throw new Error();
         const companySummary = await submitProfileIdentity();
         afterSubmit(companySummary);

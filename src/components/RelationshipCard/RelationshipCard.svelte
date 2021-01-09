@@ -43,7 +43,7 @@
 
   //export let isVerified;
   //export let unregistered;
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   let displayUnregisteredForm = false;
 
@@ -59,6 +59,7 @@
     try {
       const unregisteredServiceInstance = new UnregisteredRelationshipService();
       await unregisteredServiceInstance.deleteUnregisteredRelationship(
+        $session.company_accountname,
         relationshipData.id,
         $session.accessToken
       );
@@ -160,13 +161,13 @@
   }
 </style>
 
-{#if confirmationMode && isSessionUserProfile}
+{#if confirmationMode && isEditableProfile}
   <ConfirmationModal
     title="Desea eliminar la relacion con {name}"
     onAccept={deleteRelationship}
     onDecline={toggleConfirmation} />
 {/if}
-{#if displayUnregisteredForm && isSessionUserProfile}
+{#if displayUnregisteredForm && isEditableProfile}
   <Modal on:click={toggleEditableMode}>
     <UnregisteredRelationshipForm
       on:click={toggleEditableMode}
@@ -175,7 +176,7 @@
   </Modal>
 {/if}
 <div class="RelationshipCard-wrapper">
-  {#if isSessionUserProfile}
+  {#if isEditableProfile}
     <div class="RelationshipCard-edit-button">
       <EditButton
         size={25}

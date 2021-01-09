@@ -6,9 +6,9 @@
   export let afterSubmit;
   export let DNAElement; // Pass if is an update form
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
-  const fields = ['name', 'category', 'description'];
+  const fields = ['title', 'category', 'description'];
   const categories = [
     'Equipo',
     'Procesos',
@@ -20,7 +20,7 @@
   ];
   const OptionOther = categories[categories.length - 1];
 
-  let name = DNAElement ? DNAElement.name : null;
+  let title = DNAElement ? DNAElement.title : null;
   let category = DNAElement ? DNAElement.category : categories[0];
   let description = DNAElement ? DNAElement.description : null;
   let media = DNAElement ? DNAElement.media : null;
@@ -29,24 +29,24 @@
   let formErrorMessage = '';
   $: otherCategory = category !== OptionOther ? null : otherCategory;
 
-  let nameFeedback;
+  let titleFeedback;
   let otherCategoryFeedback;
   let descriptionFeedback;
 
-  function validateName() {
-    if (name && name.length >= 2) {
-      if (name.length > 50) {
-        nameFeedback = 'Máximo 50 caracteres';
+  function validateTitle() {
+    if (title && title.length >= 2) {
+      if (title.length > 50) {
+        titleFeedback = 'Máximo 50 caracteres';
         return false;
       }
 
-      nameFeedback = '';
+      titleFeedback = '';
       return true;
-    } else if (name && name.length > 0 && name.length < 2) {
-      nameFeedback = 'Mínimo 2 caracteres';
+    } else if (title && title.length > 0 && title.length < 2) {
+      titleFeedback = 'Mínimo 2 caracteres';
       return false;
     } else {
-      nameFeedback = 'El título es obligatorio';
+      titleFeedback = 'El título es obligatorio';
       return false;
     }
   }
@@ -98,7 +98,7 @@
   }
 
   function validateDNAForm() {
-    if (!(validateName() && validateOtherCategory() && validateDescription())) {
+    if (!(validateTitle() && validateOtherCategory() && validateDescription())) {
       formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
@@ -114,10 +114,10 @@
     Target.style.cursor = 'not-allowed';
 
     try {
-      if (isSessionUserProfile) {
+      if (isEditableProfile) {
         validateDNAForm();
         let dataToSubmit = {
-          name: name,
+          title: title,
           category: categoryToSubmit,
         };
 
@@ -149,8 +149,8 @@
     const dnaService = new DNAService();
 
     if (newMediaFile) {
-      const DnaElementData = await dnaService.createUserDnaelementWithImage(
-        $session.username,
+      const DnaElementData = await dnaService.createSupplierDnaelementWithImage(
+        $session.company_accountname,
         newMediaFile,
         dataToSubmit,
         $session.accessToken
@@ -158,8 +158,8 @@
 
       return DnaElementData;
     } else {
-      const DnaElementData = await dnaService.createUserDnaelement(
-        $session.username,
+      const DnaElementData = await dnaService.createSupplierDnaelement(
+        $session.company_accountname,
         dataToSubmit,
         $session.accessToken
       );
@@ -172,8 +172,8 @@
     const dnaService = new DNAService();
 
     if (newMediaFile) {
-      const DnaElementData = await dnaService.updateUserDnaelementWithImage(
-        $session.username,
+      const DnaElementData = await dnaService.updateSupplierDnaelementWithImage(
+        $session.company_accountname,
         DNAElement.id,
         newMediaFile,
         dataToSubmit,
@@ -182,8 +182,8 @@
 
       return DnaElementData;
     } else {
-      const DnaElementData = await dnaService.updateUserDnaelement(
-        $session.username,
+      const DnaElementData = await dnaService.updateSupplierDnaelement(
+        $session.company_accountname,
         DNAElement.id,
         dataToSubmit,
         $session.accessToken
@@ -260,7 +260,7 @@
     border-bottom-right-radius: unset;
   }
 
-  .DNAForm-preview-name {
+  .DNAForm-preview-title {
     width: 100%;
     margin: 15px 0px 10px 0px;
     font-size: 1em;
@@ -304,7 +304,7 @@
     letter-spacing: 0.04em;
   }
 
-  .DNAForm-name,
+  .DNAForm-title,
   .DNAForm-category,
   .DNAForm-category--other,
   .DNAForm-description {
@@ -364,7 +364,7 @@
     <div
       class="DNAForm-preview-card {newMediaFile || (media && media.path) ? '' : 'DNAForm-preview-card--without-image'}">
       <div class="DNAForm-preview-media" />
-      <h4 class="DNAForm-preview-name">{name ? name : 'Título'}</h4>
+      <h4 class="DNAForm-preview-title">{title ? title : 'Título'}</h4>
       <div class="DNAForm-preview-bottom">
         {#if category}
           {#if category === OptionOther}
@@ -384,15 +384,15 @@
     <div class="form-group">
       <input
         type="text"
-        name="name"
+        name="title"
         placeholder="Título"
-        class="DNAForm-name"
-        bind:value={name}
-        on:input={validateName} />
+        class="DNAForm-title"
+        bind:value={title}
+        on:input={validateTitle} />
 
-      {#if nameFeedback}
+      {#if titleFeedback}
         <p class="form-control-feedback form-control-feedback--invalid">
-          {nameFeedback}
+          {titleFeedback}
         </p>
       {:else}
         <p class="form-control-feedback">Máximo 50 caracteres</p>

@@ -12,7 +12,7 @@
   export let onDelete;
 
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile') ? getContext('isSessionUserProfile') : false;
+  const isEditableProfile = getContext('isEditableProfile') ? getContext('isEditableProfile') : false;
   const ProductID = productElementOverview ? productElementOverview.id : null;
   const ProductDetailPath = ProductID ? `product/${ProductID}` : null;
 
@@ -22,7 +22,7 @@
   let productPrincipalImage = productElementOverview ? productElementOverview.principal_image : null;
 
   async function toggleEditableMode() {
-    if( isSessionUserProfile && productElementDetail == null ) {
+    if( isEditableProfile && productElementDetail == null ) {
       await retrieveProductDetail(productElementOverview.id);
     }
 
@@ -41,8 +41,8 @@
   async function onDeleteProduct() {
     try {
       const productService = new ProductService();
-      await productService.deleteUserProduct(
-        $session.username,
+      await productService.deleteSupplierProduct(
+        $session.company_accountname,
         productElementOverview.id,
         $session.accessToken
       );
@@ -116,14 +116,14 @@
   }
 </style>
 
-{#if confirmationMode && isSessionUserProfile}
+{#if confirmationMode && isEditableProfile}
   <ConfirmationModal
     title="Desea eliminar el producto {productElementOverview.name}"
     onAccept={onDeleteProduct}
     onDecline={toggleConfirmation} />
 {/if}
 
-{#if editableMode && isSessionUserProfile}
+{#if editableMode && isEditableProfile}
   <Modal on:click={toggleEditableMode}>
     <ProductForm
       on:click={toggleEditableMode}
@@ -133,7 +133,7 @@
 {/if}
 
 <div class="ProfileProductCard">
-  {#if isSessionUserProfile}
+  {#if isEditableProfile}
     <div class="ProfileProductCard-edit-button">
       <EditButton
         size={25}

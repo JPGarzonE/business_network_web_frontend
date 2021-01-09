@@ -8,8 +8,8 @@
 
   export let productList = [];
 
-  const isSessionUserProfile = getContext('isSessionUserProfile');
-  const profileUsername = getContext('profileUsername');
+  const isEditableProfile = getContext('isEditableProfile');
+  const profileAccountname = getContext('profileAccountname');
   const productService = new ProductService();
 
   const productsPerLine = 4;
@@ -56,8 +56,8 @@
   };
 
   const loadMore = async () => {
-    const productsData = await productService.getUserProducts(
-      profileUsername, productPagination);
+    const productsData = await productService.getSupplierProducts(
+      profileAccountname, productPagination);
 
     displayedProducts = productPagination.page > 1 ? displayedProducts : [];
     productPagination.page += 1;
@@ -160,14 +160,14 @@
 
 <div class="ProductsList">
   <h3 class="ProductsList-headline">Portafolio de productos y servicios</h3>
-  {#if editableMode && isSessionUserProfile}
+  {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <ProductForm
         on:click={toggleEditableMode}
         afterSubmit={reloadComponentData} />
     </Modal>
   {/if}
-  {#if isSessionUserProfile}
+  {#if isEditableProfile}
     <div class="ProductList-card--create-container">
       <div on:click={toggleEditableMode}>
         <CreateButton size={25} />

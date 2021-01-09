@@ -11,7 +11,7 @@
   export let afterSubmit;
   export let CertificationElement; // Pass if is an update form
   const { session } = stores();
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   const fields = ['name', 'description'];
 
@@ -81,7 +81,7 @@
     Target.style.cursor = 'not-allowed';
 
     try {
-      if (isSessionUserProfile) {
+      if (isEditableProfile) {
         validateCertificationForm();
         let dataToSubmit = {
           name: name,
@@ -115,8 +115,8 @@
     const certificationsService = new CertificationsService();
 
     if (newMediaFile) {
-      const certificationData = await certificationsService.createUserCertificationElementWithImage(
-        $session.username,
+      const certificationData = await certificationsService.createSupplierCertificationElementWithImage(
+        $session.company_accountname,
         newMediaFile,
         dataToSubmit,
         $session.accessToken
@@ -124,8 +124,8 @@
 
       return certificationData;
     } else {
-      const certificationData = await certificationsService.createUserCertificationElement(
-        $session.username,
+      const certificationData = await certificationsService.createSupplierCertificationElement(
+        $session.company_accountname,
         dataToSubmit,
         $session.accessToken
       );
@@ -138,8 +138,8 @@
     const certificationsService = new CertificationsService();
 
     if (newMediaFile) {
-      const certificationData = await certificationsService.updateUserCertificationElementWithImage(
-        $session.username,
+      const certificationData = await certificationsService.updateSupplierCertificationElementWithImage(
+        $session.company_accountname,
         certificationEditData.id,
         newMediaFile,
         dataToSubmit,
@@ -148,8 +148,8 @@
 
       return certificationData;
     } else {
-      const certificationData = await certificationsService.updateUserCertificationElement(
-        $session.username,
+      const certificationData = await certificationsService.updateSupplierCertificationElement(
+        $session.company_accountname,
         certificationEditData.id,
         dataToSubmit,
         $session.accessToken

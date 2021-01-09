@@ -1,5 +1,4 @@
 <script>
-    import { goto } from '@sapper/app';
     import { stores } from "@sapper/app";
     import ProfileIcon from "../ProfileIcon/ProfileIcon.svelte";
     import ArrowCollapseRight from "svelte-material-icons/ArrowCollapseRight.svelte";
@@ -14,19 +13,19 @@
 
     let displayMenu = false;
     let actualPath = null;
-    let sessionUsername = null;
+    let sessionCompanyAccountname = null;
     let sessionIsAuthenticated = false;
 
     session.subscribe(session => {
         sessionIsAuthenticated = session.authenticated;
         if( sessionIsAuthenticated )
-            sessionUsername = session.username;
+            sessionCompanyAccountname = session.company_accountname;
     });
     page.subscribe(page => {
         actualPath = page.path;
     });
 
-    let sessionProfilePath = `/profile/${sessionUsername}`;
+    let sessionProfilePath = `/profile/${sessionCompanyAccountname}`;
 
     let gotoProfile = () => {
         document.body.style.cursor = "wait";
@@ -36,7 +35,7 @@
     
     async function closeSession() {
         deleteCookie("JPGE");
-        deleteCookie("access_username");
+        deleteCookie("access_accountname");
         /* goto isn't used because the session has to be 
         closed from the server and goto happens on the client */
         location.href = '/';

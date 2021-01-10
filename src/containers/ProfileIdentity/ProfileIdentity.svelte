@@ -8,6 +8,8 @@
   import { getContext } from "svelte";
   import Web from "svelte-material-icons/Web.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
+import Hoverable from "../../components/Hoverable/Hoverable.svelte";
+
 
   export let name;
   export let industry;
@@ -44,6 +46,29 @@
     webUrl = companySummary.web_url;
     contact = companySummary.principal_contact;
     editableMode = false;
+  }
+
+  let hoverOne=false;
+  let hoverTwo=false;
+  let hoverThree=false;
+
+  function HandleHoverOne(e){
+    hoverOne= true;
+  }
+  function handleOffOne(e){
+    hoverOne= false;
+  }
+  function HandleHoverTwo(e){
+    hoverTwo= true;
+  }
+  function handleOffTwo(e){
+    hoverTwo= false;
+  }
+  function HandleHoverThree(e){
+    hoverThree= true;
+  }
+  function handleOffThree(e){
+    hoverThree= false;
   }
 </script>
 
@@ -117,6 +142,7 @@
   }
 
   .ProfileIdentity-data {
+    position:relative;
     width: 75%;
     display: flex;
     justify-content: flex-start;
@@ -145,7 +171,6 @@
     margin: 0 auto;
     margin-top: 15%;
   }
-
   @media screen and (min-width: 1024px) {
     .ProfileIdentity-name {
       font-size: 1.3em;
@@ -186,19 +211,31 @@
         {/if}
       </div>
 
+      <!-- direccion -->
       <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><MapMarkerOutline /></i>
+        <i class="icon-wrapper" on:mouseover={HandleHoverOne} on:mouseout={handleOffOne}><MapMarkerOutline /></i>
         <span
           class="ProfileIdentity-address">{address ? address : 'No tiene aún'}</span>
+          {#if hoverOne}
+          <Hoverable message="Direccion"/>
+          {/if}
       </p>
       <!-- <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><GoogleTranslate /></i>
+        <i class="icon-wrapper" on:mouseover={HandleHoverTwo} on:mouseout={handleOffTwo}><GoogleTranslate /></i>
         No tiene aún
-      </p> -->
+      </p>
+      {#if hoverTwo}
+      <Hoverable message="Ciudad de Ubicacion"/>
+      {/if} -->
+      <!-- pagina web -->
       <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><Web /></i>
+
+        <i class="icon-wrapper" on:mouseover={HandleHoverThree} on:mouseout={handleOffThree}><Web /></i>
         <a class="ProfileIdentity-webUrl" href={webUrl} 
           target="_blank">{webUrl ? webUrl : 'No tiene aún'}</a>
+        {#if hoverThree}
+          <Hoverable message="Paises donde Exporta"/>
+        {/if}
       </p>
 
       <div class="ProfileIdentity-contact-me">

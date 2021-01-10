@@ -1,12 +1,13 @@
 <script>
-  import Modal from '../Modal.svelte';
-  import LogoUpload from '../../containers/ProfileLogoUpload/ProfileLogoUpload.svelte';
-  import { getContext } from 'svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
+  import Modal from "../Modal.svelte";
+  import LogoUpload from "../../containers/ProfileLogoUpload/ProfileLogoUpload.svelte";
+  import { getContext } from "svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
   export let logo;
+  export let blank = false;
 
-  const profileAccountname = getContext('profileAccountname');
-  const isEditableProfile = getContext('isEditableProfile');
+  const profileAccountname = getContext("profileAccountname");
+  const isEditableProfile = getContext("isEditableProfile");
 
   let editableMode = false;
 
@@ -87,13 +88,16 @@
 
   <figure
     class="ProfileLogo-container {logo && logo.path ? '' : 'ProfileLogo-container--default'}">
-    <img
-      src={logo && logo.path ? logo.path : '/images/profile_icon.svg'}
-      alt={profileAccountname}
-      class="ProfileLogo-image {logo && logo.path ? '' : 'ProfileLogo-image--default'}" />
+    {#if !blank}
+      <img
+        src={logo && logo.path ? logo.path : '/images/profile_icon.svg'}
+        alt={profileAccountname}
+        class="ProfileLogo-image {logo && logo.path ? '' : 'ProfileLogo-image--default'}" />
+    {/if}
     {#if isEditableProfile}
       <div class="CertificationCard-edit-button">
         <EditButton
+          disabled={blank}
           size={20}
           color="var(--light-color)"
           onEdit={toggleEditableMode} />

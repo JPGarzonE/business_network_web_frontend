@@ -1,14 +1,16 @@
 <script>
-  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
-  import RelationshipCard from '../../components/RelationshipCard/RelationshipCard.svelte';
-  import Modal from '../../components/Modal.svelte';
-  import RelationshipForm from '../RelationshipForm/RelationshipForm.svelte';
-  import UnregisteredRelationshipForm from '../RelationshipForm/UnregisteredRelationshipForm.svelte';
-  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
-  import { getContext } from 'svelte';
+  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
+  import RelationshipCard from "../../components/RelationshipCard/RelationshipCard.svelte";
+  import Modal from "../../components/Modal.svelte";
+  import RelationshipForm from "../RelationshipForm/RelationshipForm.svelte";
+  import UnregisteredRelationshipForm from "../RelationshipForm/UnregisteredRelationshipForm.svelte";
+  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
+  import { getContext } from "svelte";
 
   export let unregisteredRelationships = [];
-  const isEditableProfile = getContext('isEditableProfile');
+  export let onBoarding = false;
+
+  const isEditableProfile = getContext("isEditableProfile");
 
   let displayUnregisteredCreateForm = false;
 
@@ -40,6 +42,59 @@
     unregisteredRelationships = newArray;
   }
 </script>
+
+<div class="RelationshipsList" id="RelationshipsList">
+  {#if displayAddRelationship && isEditableProfile}
+    <Modal on:click={toggleAddRelationshipDisplay}>
+      <RelationshipForm
+        on:click={toggleAddRelationshipDisplay}
+        displayCreateCompany={hideAddRelationshipAndDisplayUnregisteredCreate}
+      />
+    </Modal>
+  {/if}
+
+  {#if displayUnregisteredCreateForm && isEditableProfile}
+    <Modal on:click={toggleUnregisteredCreateForm}>
+      <UnregisteredRelationshipForm
+        on:click={toggleUnregisteredCreateForm}
+        afterSubmit={reloadComponentData}
+      />
+    </Modal>
+  {/if}
+
+  <h3 class="RelationshipsList-headline">Con que empresas trabaja</h3>
+  {#if isEditableProfile}
+    <div class="RelationshipsList-card--create">
+      <div
+        on:click={!onBoarding && toggleAddRelationshipDisplay}
+        class={onBoarding ? "Productlist-card-create-button" : ""}
+      >
+        <CreateButton
+          size={25}
+          color={onBoarding ? "white" : "var(--principal-color)"}
+          id="RelationshipCreate"
+        />
+      </div>
+    </div>
+  {/if}
+  <HorizontalScrollList
+    id="relationships"
+    beginningItemsNumber={unregisteredRelationships.length}
+  >
+    {#each unregisteredRelationships as relationshipData}
+      <RelationshipCard
+        {relationshipData}
+        onDelete={onDeleteUnregisteredRelationship}
+      />
+    {:else}
+      <div class="RelationshipsList-empty-message">
+        <p>
+          La compañia todavía no ha agregado las empresas con las que trabaja
+        </p>
+      </div>
+    {/each}
+  </HorizontalScrollList>
+</div>
 
 <style>
   .RelationshipsList {
@@ -80,6 +135,10 @@
     text-align: center;
     color: var(--secondary-text-color);
   }
+  .Productlist-card-create-button {
+    z-index: 40;
+    border-color: white;
+  }
 
   @media screen and (min-width: 850px) {
     .RelationshipsList {
@@ -92,43 +151,3 @@
     }
   }
 </style>
-
-<div class="RelationshipsList">
-  {#if displayAddRelationship && isEditableProfile}
-    <Modal on:click={toggleAddRelationshipDisplay}>
-      <RelationshipForm
-        on:click={toggleAddRelationshipDisplay}
-        displayCreateCompany={hideAddRelationshipAndDisplayUnregisteredCreate} />
-    </Modal>
-  {/if}
-
-  {#if displayUnregisteredCreateForm && isEditableProfile}
-    <Modal on:click={toggleUnregisteredCreateForm}>
-      <UnregisteredRelationshipForm
-        on:click={toggleUnregisteredCreateForm}
-        afterSubmit={reloadComponentData} />
-    </Modal>
-  {/if}
-
-  <h3 class="RelationshipsList-headline">Con que empresas trabaja</h3>
-  {#if isEditableProfile}
-    <div class="RelationshipsList-card--create">
-      <div on:click={toggleUnregisteredCreateForm}>
-        <CreateButton size={25} />
-      </div>
-    </div>
-  {/if}
-  <HorizontalScrollList
-    id="relationships"
-    beginningItemsNumber={unregisteredRelationships.length}>
-    {#each unregisteredRelationships as relationshipData}
-      <RelationshipCard
-        {relationshipData}
-        onDelete={onDeleteUnregisteredRelationship} />
-    {:else}
-      <div class="RelationshipsList-empty-message">
-        <p>La compañia todavía no ha agregado las empresas con las que trabaja</p>
-      </div>
-    {/each}
-  </HorizontalScrollList>
-</div>

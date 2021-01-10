@@ -29,8 +29,10 @@
   background-color: var(--principal-color);
   color: var(--white);
 }
+
 .button--principal {
   margin: 0px;
+  border: 2px solid var(--principal-color);
   background-color: var(--principal-color);
   color: var(--secondary-color);
   cursor: pointer;
@@ -42,6 +44,13 @@
   color: var(--principal-color);
   cursor: pointer;
   font-weight: bold;
+}
+
+.button--orange {
+  margin: 0px;
+  background-color: var(--button-color);
+  color: var(--secondary-color);
+  cursor: pointer;
 }
 
 .button--variant {

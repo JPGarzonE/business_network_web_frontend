@@ -50,6 +50,9 @@
       flex-direction: row;
       max-width: 750px;
     }
+    .BuyerProfile {
+      padding: 75px;
+    }
   }
 </style>
 

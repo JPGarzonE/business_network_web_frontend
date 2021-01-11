@@ -69,10 +69,11 @@
   .ProfileVerification-card--call-to-action {
     color: var(--error-color);
     font-size: 0.7rem;
-    margin: 0 30px 10px;
+    margin: 0 20px 10px;
   }
   .ProfileVerification-card--call-to-action a {
     color: var(--error-color);
+    font-weight: bold;
   }
   .ProfileVerification-title {
     color: white;

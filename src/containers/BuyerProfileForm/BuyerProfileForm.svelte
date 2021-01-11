@@ -5,7 +5,6 @@
     import {
         validateString,
         validateEmailPattern,
-        validatePassword,
         validateNIT,
     } from "../../validators/formValidators.js";
 
@@ -18,7 +17,7 @@
         name: buyer.display_name || "",
         email: buyer.contact_email || "",
         phone: buyer.contact_phone || "",
-        newPassword: "",
+        description: "",
         companyID: buyer.company_legal_identifier || "",
     };
 
@@ -30,8 +29,10 @@
         statusMessage = "";
         const userData = {
             display_name: formFields.name,
-            contact_phone: formFields.phone,
             contact_email: formFields.email,
+            contact_phone: formFields.phone,
+            description: formFields.description,
+            company_legal_identifier: formFields.company_legal_identifier,
         };
 
         const profileData = await profilesService.updateBuyerProfile(
@@ -85,17 +86,17 @@
         <BuyerProfileField
             name="name"
             editMode={currentEdit === 'name'}
-            label="Nombre y apellidos:"
+            label="Nombre de la empresa:"
             bind:value={formFields.name}
             type="text"
             onEdit={changeCurrentEdit}
-            validationFunc={(value) => validateString(value, 3, 50, true, 'Nombre completo válido')}
+            validationFunc={(value) => validateString(value, 3, 50, true, 'Nombre válido')}
             maxLength={60} />
         <BuyerProfileField
             name="email"
             editMode={currentEdit === 'email'}
-            label="Email:"
-            value={formFields.email}
+            label="Email de contacto:"
+            bind:value={formFields.email}
             type="text"
             onEdit={changeCurrentEdit}
             validationFunc={validateEmailPattern}
@@ -104,29 +105,29 @@
             name="phone"
             editMode={currentEdit === 'phone'}
             label="Número de teléfono móvil:"
-            value={formFields.phone}
+            bind:value={formFields.phone}
             type="phone"
             onEdit={changeCurrentEdit}
-            validationFunc={validatePassword}
-            maxLength={20} />
+            validationFunc={(value) => validateString(value, 3, 15, true, 'teléfono válido')}
+            maxLength={15} />
         <BuyerProfileField
-            name="password"
-            editMode={currentEdit === 'password'}
-            label="Contraseña:"
-            value={formFields.newPassword}
-            type="password"
+            name="description"
+            editMode={currentEdit === 'description'}
+            label="Descripción de la empresa:"
+            bind:value={formFields.description}
+            type="text"
             onEdit={changeCurrentEdit}
-            validationFunc={validatePassword}
-            maxLength={20} />
+            validationFunc={(value) => validateString(value, 3, 150, true, 'Descripción válida')}
+            maxLength={150} />
         <BuyerProfileField
             name="companyID"
             editMode={currentEdit === 'companyID'}
-            label="Cédula o NIT:"
+            label="Identificador legal:"
             type="text"
-            value={formFields.companyID}
+            bind:value={formFields.companyID}
             onEdit={changeCurrentEdit}
             validationFunc={validateNIT}
-            maxLength={20} />
+            maxLength={15} />
     </div>
     {#if !successUpdate && statusMessage}
         <div class="form-banner--invalid">{statusMessage}</div>

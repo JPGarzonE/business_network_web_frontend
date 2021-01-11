@@ -38,6 +38,7 @@
     z-index: 20;
     bottom: auto;
     background-color: white;
+    padding: 0 1em;
   }
 
   .CertificateUploadForm-close-button {
@@ -58,7 +59,8 @@
   .CertificateUploadForm-header {
     display: flex;
     justify-content: center;
-    padding: 1.1em 1.5em;
+    padding-bottom: 1.1em;
+    padding-top: 2.5em;
   }
 
   .CertificateUploadForm-title {
@@ -74,7 +76,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 50px 30px 40px;
+    padding: 10px 0 5px;
   }
   .CertificateUploadForm-content .preview-image {
     width: 60%;
@@ -94,8 +96,8 @@
   .CertificateUploadForm-message {
     text-align: center;
     font-size: 0.9em;
-    max-width: 440px;
-    color: var(--secondary-text-color);
+    max-width: 400px;
+    color: var(--light-color);
   }
 
   .CertificateUploadForm-footer {
@@ -103,7 +105,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    padding: 1.1em 1.5em;
+    padding: 1.1em 0;
   }
   .CertificateUploadForm-footer--actions {
     width: 80%;
@@ -116,6 +118,10 @@
       min-width: 400px;
       height: auto;
       border-radius: 5px;
+      padding: 0 1.5em;
+    }
+    .CertificateUploadForm-content {
+      padding: 20px 30px 5px;
     }
 
     .CertificateUploadForm-content {

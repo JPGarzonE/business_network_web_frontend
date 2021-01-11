@@ -1,15 +1,27 @@
 <script>
-  import { stores } from '@sapper/app';
-  import { getContext, onMount } from 'svelte';
-  import CompanyVerificationService from '../../services/verifications/company.verification.service.js';
-  import CheckDecagram from 'svelte-material-icons/CheckDecagram.svelte';
+  import { stores } from "@sapper/app";
+  import { getContext, onMount } from "svelte";
+  import CheckDecagram from "svelte-material-icons/CheckDecagram.svelte";
+
+  import Modal from "../Modal.svelte";
+  import CompanyVerificationService from "../../services/verifications/company.verification.service.js";
+  import CertificateUpload from "../../containers/CertificateUploadForm/CertificateUploadForm.svelte";
 
   const { session } = stores();
   const companyVerificationService = new CompanyVerificationService();
-  let isVerifiedProfile = getContext('isVerifiedProfile');
-  const isEditableProfile = getContext('isEditableProfile');
+  let isVerifiedProfile = getContext("isVerifiedProfile");
+  const isEditableProfile = getContext("isEditableProfile");
 
   let verification;
+  let uploadCertificateForm = false;
+
+  function toggleCertificateForm() {
+    uploadCertificateForm = !uploadCertificateForm;
+  }
+  function profileVerified() {
+    isVerifiedProfile = true;
+    toggleCertificateForm();
+  }
 
   // onMount(async () => {
   //   if (isEditableProfile) {
@@ -54,6 +66,15 @@
     padding: 5px 40px;
   }
 
+  .ProfileVerification-card--call-to-action {
+    color: var(--error-color);
+    font-size: 0.7rem;
+    margin: 0 20px 10px;
+  }
+  .ProfileVerification-card--call-to-action a {
+    color: var(--error-color);
+    font-weight: bold;
+  }
   .ProfileVerification-title {
     color: white;
     text-align: center;
@@ -69,7 +90,7 @@
 <div class="ProfileVerification">
   {#if isVerifiedProfile}
     <div class="ProfileVerification-card ProfileVerification-card--verified">
-      <span class="icon-check"><CheckDecagram size=22 /></span>
+      <span class="icon-check"><CheckDecagram size="22" /></span>
       <span class="ProfileVerification-title">Empresa verificada</span>
     </div>
   {:else if false}
@@ -77,17 +98,22 @@
       <div
         class="ProfileVerification-card ProfileVerification-card--inprogress">
         <span class="ProfileVerification-title">
-          La empresa se encuentra en proceso de verificación.<br /> En las proximas
-          horas revisa <b style="color:#5387cc;text-decoration:underline;">el
-            correo que se encuentra en el certificado de cámara y comercio</b> para
-          finalizar el proceso.
+          La empresa se encuentra en proceso de verificación.<br />
+          En las proximas horas revisa
+          <b style="color:#5387cc;text-decoration:underline;">el correo que se
+            encuentra en el certificado de cámara y comercio</b>
+          para finalizar el proceso.
         </span>
       </div>
     {:else if verification && verification.state.toLowerCase() == 'none'}
       <div class="ProfileVerification-card ProfileVerification-card--none">
         <span class="ProfileVerification-title">
-          Tu empresa aún no esta verificada, sube tu certificado de <a id="profile-submit-certificate-link" class="ProfileVerification-submit-link"> camara
-            de comercio aquí </a>
+          Tu empresa aún no esta verificada, sube tu certificado de
+          <a
+            id="profile-submit-certificate-link"
+            class="ProfileVerification-submit-link">
+            camara de comercio aquí
+          </a>
         </span>
       </div>
     {/if}
@@ -95,5 +121,20 @@
     <div class="ProfileVerification-card ProfileVerification-card--none">
       <span class="ProfileVerification-title"> Empresa no verificada </span>
     </div>
+
+    <p class="ProfileVerification-card--call-to-action">
+      Haz
+      <a href="/" on:click|preventDefault={toggleCertificateForm}>clic aquí</a>
+      para subir el certificado de cámara y comercio, de lo contrario no podras
+      publicar tu perfil
+    </p>
+  {/if}
+  {#if uploadCertificateForm}
+    <Modal on:click={toggleCertificateForm}>
+      <CertificateUpload
+        on:click={toggleCertificateForm}
+        afterSubmit={profileVerified}
+        continueWithoutCertificate={toggleCertificateForm} />
+    </Modal>
   {/if}
 </div>

@@ -15,6 +15,9 @@
   export let logo;
   export let location;
   export let contact;
+  export { className as class };
+  let className = "";
+  let Onboarding = className == "Onboarding";
 
   const isEditableProfile = getContext("isEditableProfile");
 
@@ -46,6 +49,73 @@
     editableMode = false;
   }
 </script>
+
+<div class="ProfileIdentity">
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <ProfileIdentityForm
+        {name}
+        {industry}
+        {webUrl}
+        {location}
+        {contact}
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+      />
+    </Modal>
+  {/if}
+
+  <div class="ProfileIdentity-container {className}">
+    <div class="ProfileIdentity-content">
+      <ProfileLogo {logo} blank={Onboarding} />
+      <ProfileVerification />
+
+      <div class="ProfileIdentity-NameContainer">
+        <p class="ProfileIdentity-name">{name}</p>
+        {#if isEditableProfile}
+          <div class="ProfileIdentity-NameEditor">
+            <EditButton
+              size={17}
+              color="gray"
+              onEdit={toggleEditableMode}
+              disabled={Onboarding}
+            />
+          </div>
+        {/if}
+      </div>
+
+      <div class="ProfileIdentity-subheadline">
+        <p class="ProfileIdentity-industry">{industry}</p>
+        {#if locationSubtitle}
+          <p class="ProfileIdentity-location">{locationSubtitle}</p>
+        {/if}
+      </div>
+
+      <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><MapMarkerOutline /></i>
+        <span class="ProfileIdentity-address"
+          >{address ? address : "No tiene aún"}</span
+        >
+      </p>
+      <!-- <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><GoogleTranslate /></i>
+        No tiene aún
+      </p> -->
+      <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><Web /></i>
+        <a class="ProfileIdentity-webUrl" href={webUrl} target="_blank"
+          >{webUrl ? webUrl : "No tiene aún"}</a
+        >
+      </p>
+
+      <div class="ProfileIdentity-contact-me">
+        {#if !isEditableProfile || Onboarding}
+          <CompanyContact {contact} disabled={Onboarding} />
+        {/if}
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
   @import "/styles/form.css";
@@ -145,6 +215,9 @@
     margin: 0 auto;
     margin-top: 15%;
   }
+  .Onboarding {
+    background-color: white;
+  }
 
   @media screen and (min-width: 1024px) {
     .ProfileIdentity-name {
@@ -152,61 +225,3 @@
     }
   }
 </style>
-
-<div class="ProfileIdentity">
-
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <ProfileIdentityForm
-        {name} {industry} {webUrl} 
-        {location} {contact}
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData} />
-    </Modal>
-  {/if}
-
-  <div class="ProfileIdentity-container">
-    <div class="ProfileIdentity-content">
-      <ProfileLogo {logo} />
-      <ProfileVerification />
-
-      <div class="ProfileIdentity-NameContainer">
-        <p class="ProfileIdentity-name">{name}</p>
-        {#if isEditableProfile}
-          <div class="ProfileIdentity-NameEditor">
-            <EditButton size={17} color="gray" onEdit={toggleEditableMode} />
-          </div>
-        {/if}
-      </div>
-  
-      <div class="ProfileIdentity-subheadline">
-        <p class="ProfileIdentity-industry">{industry}</p>
-        {#if locationSubtitle}
-          <p class="ProfileIdentity-location">{locationSubtitle}</p>
-        {/if}
-      </div>
-
-      <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><MapMarkerOutline /></i>
-        <span
-          class="ProfileIdentity-address">{address ? address : 'No tiene aún'}</span>
-      </p>
-      <!-- <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><GoogleTranslate /></i>
-        No tiene aún
-      </p> -->
-      <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><Web /></i>
-        <a class="ProfileIdentity-webUrl" href={webUrl} 
-          target="_blank">{webUrl ? webUrl : 'No tiene aún'}</a>
-      </p>
-
-      <div class="ProfileIdentity-contact-me">
-        {#if !isEditableProfile}
-          <CompanyContact {contact} />
-        {/if}
-      </div>
-
-    </div>
-  </div>
-</div>

@@ -118,4 +118,9 @@
     margin-top: 10px;
     display: inline-block;
   }
+  @media screen and (max-height: 750px) {
+    .Text-Container {
+      margin-top: 0;
+    }
+  }
 </style>

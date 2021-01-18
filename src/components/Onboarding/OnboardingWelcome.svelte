@@ -4,6 +4,26 @@
   export let handleNext;
 </script>
 
+<div class="ModalOnboarding">
+  <button
+    class="ProductForm-close-button ProfileForm-close-button"
+    on:click={handleCancel}>
+    <span>X</span>
+  </button>
+  <span class="ModalTitle">¡Bienvenido a Contecty!</span>
+  <span class="ModalMessage"
+    >¿Quieres hacer un tour por nuestra plataforma?</span
+  >
+  <div class="ModalButtons">
+    <button class="button button--secondary" on:click={handleCancel}
+      >En otra ocasión</button
+    >
+    <button class="button button--principal" on:click={handleNext}
+      >Continuar</button
+    >
+  </div>
+</div>
+
 <style>
   @import "/styles/form.css";
   @import "/styles/button.css";
@@ -31,17 +51,19 @@
   .ModalMessage {
     text-align: center;
     color: gray;
-    font-weight: bold;
-    margin-bottom: 30px;
+    font-weight: 100;
+    margin-inline: 60px;
   }
   .ModalButtons {
-    margin-top: 50px;
+    margin-top: 30px;
     display: inline-flex;
     width: 100%;
   }
   .button {
     height: 50px;
+    font-weight: bold;
     margin: 0 50px;
+    text-transform: none;
   }
   .button--secondary {
     margin-right: 7px;
@@ -50,20 +72,3 @@
     margin-left: 7px;
   }
 </style>
-
-<div class="ModalOnboarding">
-  <button
-    class="ProductForm-close-button ProfileForm-close-button"
-    on:click={handleCancel}>
-    <span>X</span>
-  </button>
-  <span class="ModalTitle">¡Bienvenido a Contecty!</span>
-  <span class="ModalMessage">¿Quieres hacer un tour por nuestra plataforma?</span>
-  <div class="ModalButtons">
-    <button class="button button--secondary" on:click={handleCancel}>En otra
-      ocación</button>
-    <button
-      class="button button--principal"
-      on:click={handleNext}>Continuar</button>
-  </div>
-</div>

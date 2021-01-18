@@ -9,6 +9,26 @@
   });
 </script>
 
+<div class="ModalOnboarding" on:swipeleft={handleNext} on:swipeup={handleNext}>
+  <button
+    class="ProductForm-close-button ProfileForm-close-button"
+    on:click={handleCancel}>
+    <span>X</span>
+  </button>
+  <span class="ModalTitle">¡Bienvenido a Contecty!</span>
+  <span class="ModalMessage"
+    >¿Quieres hacer un tour por nuestra plataforma?</span
+  >
+  <div class="ModalButtons">
+    <button class="button button--secondary" on:click={handleCancel}
+      >En otra ocasión</button
+    >
+    <button class="button button--principal" on:click={handleNext}
+      >Continuar</button
+    >
+  </div>
+</div>
+
 <style>
   @import "/styles/form.css";
   @import "/styles/button.css";
@@ -38,7 +58,7 @@
   .ModalMessage {
     text-align: center;
     color: gray;
-    font-weight: bold;
+    font-weight: normal;
     margin-bottom: 30px;
   }
   .ModalButtons {
@@ -48,31 +68,12 @@
   }
   .button {
     height: 50px;
-
     margin: 0;
+    text-transform: none;
+    font-weight: bold;
+    font-size: 15px;
   }
   .button--secondary {
-    margin-right: 7px;
-    margin-right: 5px;
-  }
-  .button--principal {
-    margin-left: 7px;
+    margin-right: 4px;
   }
 </style>
-
-<div class="ModalOnboarding" on:swipeleft={handleNext}>
-  <button
-    class="ProductForm-close-button ProfileForm-close-button"
-    on:click={handleCancel}>
-    <span>X</span>
-  </button>
-  <span class="ModalTitle">¡Bienvenido a Contecty!</span>
-  <span class="ModalMessage">¿Quieres hacer un tour por nuestra plataforma?</span>
-  <div class="ModalButtons">
-    <button class="button button--secondary" on:click={handleCancel}>En otra
-      ocación</button>
-    <button
-      class="button button--principal"
-      on:click={handleNext}>Continuar</button>
-  </div>
-</div>

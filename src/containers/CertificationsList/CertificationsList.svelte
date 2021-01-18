@@ -1,12 +1,12 @@
 <script>
-  import { getContext } from 'svelte';
-  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
-  import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
-  import Modal from '../../components/Modal.svelte';
-  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
-  import CertificationForm from '../CertificationForm/CertificationForm.svelte';
+  import { getContext } from "svelte";
+  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
+  import CertificationCard from "../../components/CertificationCard/CertificationCard.svelte";
+  import Modal from "../../components/Modal.svelte";
+  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
+  import CertificationForm from "../CertificationForm/CertificationForm.svelte";
 
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
   export let certificationsList = [];
   export let onBoarding = false;
@@ -43,11 +43,11 @@
     <div class="CertificationsList-card--create">
       <div
         on:click={!onBoarding && toggleEditableMode}
-        class={onBoarding ? 'Certification-card-create-button' : ''}
+        class={onBoarding ? "Certification-card-create-button" : ""}
       >
         <CreateButton
           size={25}
-          color={onBoarding ? 'white' : 'var(--principal-color)'}
+          color={onBoarding ? "white" : "var(--principal-color)"}
           id="CertificationsCreate"
         />
       </div>

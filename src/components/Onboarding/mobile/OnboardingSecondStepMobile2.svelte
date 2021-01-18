@@ -175,4 +175,9 @@
     border-radius: 4px;
     margin-top: 20px;
   }
+  @media screen and (max-height: 750px) {
+    .Text-Container {
+      margin-top: 30px;
+    }
+  }
 </style>

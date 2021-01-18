@@ -6,6 +6,7 @@
   export let handlePrev;
   export let changeStep;
   export let onboardingStepMobile;
+  export let data;
   let width;
   import Modal from "../../components/Modal.svelte";
   import ProgressButtons from "../../components/ProgressButtons/ProgressButtons.svelte";
@@ -35,7 +36,7 @@
       </Modal>
     {:else if onboardingStep == 1}
       <Modal opacity={0.9}>
-        <OnboardingSecondStep {handleCancel} {handleNext} />
+        <OnboardingSecondStep {handleCancel} {handleNext} supplier={data} />
         <ProgressButtons numberOfButtons={4} active={0} {changeStep} />
       </Modal>
     {:else if onboardingStep == 2}

@@ -78,7 +78,7 @@
 <svelte:window bind:innerWidth={width} />
 <Header />
 
-{#if tutorial}
+{#if !tutorial}
   <Onboarding
     {onboardingOn}
     {onboardingStep}
@@ -87,6 +87,7 @@
     {handlePrev}
     {changeStep}
     {onboardingStepMobile}
+    data={{ ...supplier, location: principalLocation }}
   />
 {/if}
 <div class="SupplierProfile">
@@ -99,28 +100,26 @@
         logo={supplier.logo}
         contact={null}
         location={principalLocation}
+        onboarding={onboardingOn}
       />
     </section>
     <section class="SupplierProfile-main">
       <CertificationsList
         certificationsList={certifications}
-        onBoarding={onboardingOn && width > 850
-          ? onboardingStep == 2
-          : onboardingStepMobile == 3}
+        onBoarding={onboardingOn &&
+          (width > 850 ? onboardingStep == 2 : onboardingStepMobile == 3)}
       />
 
       <ProductList
         productList={products}
-        onBoarding={onboardingOn && width > 850
-          ? onboardingStep == 3
-          : onboardingStepMobile == 4}
+        onBoarding={onboardingOn &&
+          (width > 850 ? onboardingStep == 3 : onboardingStepMobile == 4)}
       />
 
       <RelationshipsList
         {unregisteredRelationships}
-        onBoarding={onboardingOn && width > 850
-          ? onboardingStep == 4
-          : onboardingStepMobile == 5}
+        onBoarding={onboardingOn &&
+          (width > 850 ? onboardingStep == 4 : onboardingStepMobile == 5)}
       />
     </section>
   </div>

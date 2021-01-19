@@ -71,15 +71,6 @@
     display: flex;
     justify-content: flex-end;
   }
-  .RelationshipsList-empty-message {
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-align: center;
-    color: var(--secondary-text-color);
-  }
 
   @media screen and (min-width: 850px) {
     .RelationshipsList {
@@ -126,9 +117,14 @@
         {relationshipData}
         onDelete={onDeleteUnregisteredRelationship} />
     {:else}
-      <div class="RelationshipsList-empty-message">
-        <p>La compañia todavía no ha agregado las empresas con las que trabaja</p>
-      </div>
+      <RelationshipCard
+        relationshipData={{
+          unregistered: {
+            name: "Logo de muestra", city: "Bog", 
+            country: "Colombia", industry: "Cervecería"
+          }
+        }}
+        isSample />
     {/each}
   </HorizontalScrollList>
 </div>

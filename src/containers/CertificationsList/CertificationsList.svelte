@@ -52,16 +52,6 @@
     justify-content: flex-end;
   }
 
-  .CertificationsList-empty-message {
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-align: center;
-    color: var(--secondary-text-color);
-  }
-
   @media screen and (min-width: 850px) {
     .CertificationsList-headline {
       margin-bottom: 15px;
@@ -103,9 +93,11 @@
         description={element.certificate.description}
         onDelete={onDeleteCertification} />
     {:else}
-      <div class="CertificationsList-empty-message">
-        <p>La compañia todavía no tiene certificaciones que la identifiquen</p>
-      </div>
+      <CertificationCard
+        name="Certificación de muestra"
+        description="Descripción de la certificación de muestra"
+        isSample
+      />
     {/each}
   </HorizontalScrollList>
 </div>

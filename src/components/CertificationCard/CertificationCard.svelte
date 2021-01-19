@@ -12,6 +12,8 @@
   export let name;
   export let description;
   export let onDelete;
+  export let isSample = false;
+
   const { session } = stores();
   const isEditableProfile = getContext('isEditableProfile');
 
@@ -33,21 +35,24 @@
 
   async function deleteCertification() {
     toggleConfirmation();
-    try {
-      const certificationsService = new CertificationsService();
-      const certificationData = await certificationsService.deleteCertificationElement(
-        $session.company_accountname,
-        id,
-        $session.accessToken
-      );
-      onDelete(id);
-    } catch (e) {
-      console.error(e);
+    if( !isSample ) {
+      try {
+        const certificationsService = new CertificationsService();
+        await certificationsService.deleteCertificationElement(
+          $session.company_accountname,
+          id,
+          $session.accessToken
+        );
+        onDelete(id);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
   function reloadComponentData(CertificationElementData) {
     const { certificate } = CertificationElementData;
+    id = certificate.id;
     name = certificate.name;
     media = certificate.logo ? certificate.logo : null;
     description = certificate.description ? certificate.description : null;
@@ -69,7 +74,7 @@
     margin: 0 30px 0 0;
     padding: 0;
     border: 1px solid var(--principal-color);
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
   }
   .CertificationCard-edit-button {
@@ -104,7 +109,7 @@
     font-size: 1em;
     padding: 0 5%;
     text-align: start;
-    font-weight: 100;
+    font-weight: bold;
     color: var(--principal-color);
     word-break: break-word;
   }
@@ -140,14 +145,17 @@
 
   @media screen and (min-width: 850px) {
     .CertificationCard {
-      min-width: 285px;
+      min-width: 270px;
     }
   }
 </style>
 
 {#if confirmationMode && isEditableProfile}
   <ConfirmationModal
-    title="Desea eliminar el Certificado {name}"
+    title={isSample ? 
+      "Crea un certificado y este desaparacerá" : 
+      `Desea eliminar el Certificado ${name}`
+    }
     onAccept={deleteCertification}
     onDecline={toggleConfirmation} />
 {/if}
@@ -157,7 +165,9 @@
       <CertificationForm
         on:click={toggleEditableMode}
         afterSubmit={reloadComponentData}
-        CertificationElement={{ id: id, name: name, description: description, media: media }} />
+        CertificationElement={isSample ? null :
+          { id: id, name: name, description: description, media: media }
+        } />
     </Modal>
   {/if}
 
@@ -168,7 +178,7 @@
       <img src={media.path} alt={name} class="CertificationCard-media-image" />
     {:else}
       <img
-        src="/images/profile_icon.svg"
+        src="/images/default_certification.png"
         alt={name}
         class="CertificationCard-media-image" />
     {/if}

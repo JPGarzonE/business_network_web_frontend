@@ -12,7 +12,7 @@
   export let afterSubmit;
   export let unregisteredRelationship; // Pass if is an update form
 
-  const editMode = unregisteredRelationship !== undefined;
+  const editMode = unregisteredRelationship != undefined;
 
   const fields = ['name', 'industry', 'country', 'type'];
   const { session } = stores();

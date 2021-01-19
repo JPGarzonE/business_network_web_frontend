@@ -47,6 +47,7 @@
     height: auto;
     display: flex;
     flex-direction: row;
+    justify-content: center;
     padding: 10px 0px 0px;
     overflow-y: hidden;
     overflow-x: auto;
@@ -90,9 +91,16 @@
   .HorizontalScrollList-previous {
     left: -5px;
   }
+
+  @media screen and (min-width: 850px) {
+    .HorizontalScrollList {
+      justify-content: flex-start;
+    }
+  }
 </style>
 
 <div class="HorizontalScrollList-wrapper">
+
   {#if beginningItemsNumber > 0}
     <span
       on:click={scrollLeft}
@@ -102,12 +110,11 @@
       <i class="icon-previous" />
     </span>
   {/if}
-  <div
-    class="HorizontalScrollList"
-    on:scroll={handleListScroll}
-    bind:this={scrollList}>
+
+  <div class="HorizontalScrollList" on:scroll={handleListScroll} bind:this={scrollList}>
     <slot />
   </div>
+
   {#if beginningItemsNumber > 0}
     <span
       on:click={scrollRight}
@@ -116,4 +123,5 @@
       <i class="icon-next" />
     </span>
   {/if}
+
 </div>

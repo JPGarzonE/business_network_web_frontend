@@ -9,12 +9,13 @@
   import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
   export let productElementOverview;
+  export let isSample = false;
   export let onDelete;
 
   const { session } = stores();
   const isEditableProfile = getContext('isEditableProfile') ? getContext('isEditableProfile') : false;
-  const ProductID = productElementOverview ? productElementOverview.id : null;
-  const ProductDetailPath = ProductID ? `product/${ProductID}` : null;
+  const ProductID = productElementOverview && !isSample ? productElementOverview.id : null;
+  const ProductDetailPath = ProductID && !isSample ? `product/${ProductID}` : null;
 
   let productElementDetail = null;
   let editableMode = false;
@@ -22,7 +23,7 @@
   let productPrincipalImage = productElementOverview ? productElementOverview.principal_image : null;
 
   async function toggleEditableMode() {
-    if( isEditableProfile && productElementDetail == null ) {
+    if( isEditableProfile && productElementDetail == null && !isSample ) {
       await retrieveProductDetail(productElementOverview.id);
     }
 
@@ -40,13 +41,15 @@
 
   async function onDeleteProduct() {
     try {
-      const productService = new ProductService();
-      await productService.deleteSupplierProduct(
-        $session.company_accountname,
-        productElementOverview.id,
-        $session.accessToken
-      );
-      onDelete(productElementOverview.id);
+      if( !isSample ) {
+        const productService = new ProductService();
+        await productService.deleteSupplierProduct(
+          $session.company_accountname,
+          productElementOverview.id,
+          $session.accessToken
+        );
+        onDelete(productElementOverview.id);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -56,11 +59,13 @@
   }
 
   async function retrieveProductDetail(productID) {
-    try {
-      const productService = new ProductService();
-      productElementDetail = await productService.getProductById(productID, $session.accessToken);
-    } catch (e) {
-      console.error(e);
+    if( !isSample ) {
+      try {
+        const productService = new ProductService();
+        productElementDetail = await productService.getProductById(productID, $session.accessToken);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -118,7 +123,10 @@
 
 {#if confirmationMode && isEditableProfile}
   <ConfirmationModal
-    title="Desea eliminar el producto {productElementOverview.name}"
+    title={isSample ? 
+      "Crea un producto y este desaparacerá" : 
+      `Desea eliminar el producto ${productElementOverview.name}`
+    }
     onAccept={onDeleteProduct}
     onDecline={toggleConfirmation} />
 {/if}
@@ -128,7 +136,7 @@
     <ProductForm
       on:click={toggleEditableMode}
       afterSubmit={reloadComponentData}
-      ProductElement={productElementDetail} />
+      ProductElement={isSample ? null : productElementDetail} />
   </Modal>
 {/if}
 

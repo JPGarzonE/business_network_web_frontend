@@ -12,16 +12,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid var(--principal-color);
+    border: 3.5px solid var(--principal-color);
     border-radius: 100%;
-    padding: 3px;
+    padding: 0px;
     cursor: pointer;
     background-color: unset;
   }
   .CreateButton-gray {
     cursor: pointer;
     background-color: unset;
-    border: 2px solid var(--extra-light-gray-transparent);
+    border: 3.5x solid var(--extra-light-gray-transparent);
     padding: 1px 3px;
     border-radius: 100%;
   }

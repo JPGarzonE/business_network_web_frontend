@@ -1,7 +1,8 @@
 <script>
-  import { getContext } from 'svelte';
+  import { getContext, onMount } from 'svelte';
   import ProductService from '../../services/suppliers/product.service.js';
   import ProfileProductCard from '../../components/ProfileProductCard/ProfileProductCard.svelte';
+  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
   import Modal from '../../components/Modal.svelte';
   import CreateButton from '../../components/CreateButton/CreateButton.svelte';
   import ProductForm from '../ProductForm/ProductForm.svelte';
@@ -25,6 +26,21 @@
   let editableMode = false;
   let loadedAll = productList <= 6;
   $: displayedAll = loadedProducts.length <= 0 && loadedAll;
+
+  let mobile = true;
+
+  onMount(() => {
+    let mediaQuery = window.matchMedia("(min-width: 850px)");
+
+    
+    mediaQuery.addEventListener("change", handleWindowChange);
+  });
+
+  const handleWindowChange = (e) => {
+    console.log("SS: ", e.matches);
+    mobile = !e.matches;
+    console.log("SSS: ", mobile);
+  }
 
   function toggleEditableMode() {
     editableMode = !editableMode;
@@ -71,7 +87,6 @@
   .Products {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
   }
   .ProductsList {
     position: relative;
@@ -98,16 +113,6 @@
     display: flex;
     justify-content: flex-end;
     width: 100%;
-  }
-
-  .ProductList-empty-message {
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-align: center;
-    color: var(--secondary-text-color);
   }
 
   .ProductShowMoreOrLess {
@@ -174,20 +179,46 @@
       </div>
     </div>
   {/if}
-  {#if productList && productList.length <= 0}
-    <div class="ProductList-empty-message">
-      La compañia todavía no ha agregado Productos
+
+  {#if mobile}
+    <HorizontalScrollList id="product-list" beginningItemsNumber={productList.length}>
+
+      {#each displayedProducts as element}
+        <ProfileProductCard productElementOverview={element} onDelete={onDeleteProduct} />
+      {:else}
+        {#if displayedProducts.length >= 1}
+          <p>Loading...</p>
+        {:else}
+          <ProfileProductCard
+            productElementOverview={{
+              name: "Producto de muestra", category: "Categoría", minimum_price: "Precio"
+            }}
+            isSample />
+        {/if}
+      {/each}
+
+    </HorizontalScrollList>
+  {:else}
+    <div class="Products">
+
+      {#each displayedProducts as element}
+        <ProfileProductCard productElementOverview={element} onDelete={onDeleteProduct} />
+      {:else}
+        {#if displayedProducts.length >= 1}
+          <p>Loading...</p>
+        {:else}
+          <ProfileProductCard
+            productElementOverview={{
+              name: "Producto de muestra", category: "Categoría", minimum_price: "Precio"
+            }}
+            isSample />
+        {/if}
+      {/each}
+      
     </div>
   {/if}
-  <div class="Products">
-    {#each displayedProducts as element}
-      <ProfileProductCard productElementOverview={element} onDelete={onDeleteProduct} />
-    {:else}
-      {#if displayedProducts.length >= 1}
-        <p>Loading...</p>
-      {/if}
-    {/each}
-  </div>
+
+
   {#if productList.length >= 4}
     <div class="ProductShowMoreOrLess">
       {#if displayedProducts.length > 4}

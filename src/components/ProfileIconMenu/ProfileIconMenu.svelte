@@ -1,12 +1,12 @@
 <script>
-  import { stores } from "@sapper/app";
-  import ProfileIcon from "../ProfileIcon/ProfileIcon.svelte";
-  import ArrowCollapseRight from "svelte-material-icons/ArrowCollapseRight.svelte";
-  import ChevronDown from "svelte-material-icons/ChevronDown.svelte";
-  import ChevronUp from "svelte-material-icons/ChevronUp.svelte";
-  import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
-  import { deleteCookie } from "../../utils/cookie.js";
-  import { _ } from "../../services/i18n";
+  import { stores } from '@sapper/app';
+  import ProfileIcon from '../ProfileIcon/ProfileIcon.svelte';
+  import ArrowCollapseRight from 'svelte-material-icons/ArrowCollapseRight.svelte';
+  import ChevronDown from 'svelte-material-icons/ChevronDown.svelte';
+  import ChevronUp from 'svelte-material-icons/ChevronUp.svelte';
+  import PencilOutline from 'svelte-material-icons/PencilOutline.svelte';
+  import { deleteCookie } from '../../utils/cookie.js';
+  import { _ } from 'svelte-i18n';
 
   export let logoSrc;
 
@@ -29,17 +29,17 @@
   let sessionProfilePath = `/profile/${sessionCompanyAccountname}`;
 
   let gotoProfile = () => {
-    document.body.style.cursor = "wait";
+    document.body.style.cursor = 'wait';
     location.href = sessionProfilePath;
-    document.body.style.cursor = "auto";
+    document.body.style.cursor = 'auto';
   };
 
   async function closeSession() {
-    deleteCookie("JPGE");
-    deleteCookie("access_accountname");
+    deleteCookie('JPGE');
+    deleteCookie('access_accountname');
     /* goto isn't used because the session has to be 
         closed from the server and goto happens on the client */
-    location.href = "/";
+    location.href = '/';
   }
 </script>
 
@@ -58,14 +58,14 @@
   <div class="ProfileIconMenu-dropdown" class:hide={!displayMenu}>
     {#if actualPath !== sessionProfilePath}
       <div class="ProfileIconMenu-option" on:click={gotoProfile}>
-        <span>{$_("profileIconMenu.editProfile")}</span>
+        <span>{$_('profileIconMenu.editProfile')}</span>
         <PencilOutline size="16" color="var(--secondary-text-color)" />
       </div>
     {/if}
 
     {#if sessionIsAuthenticated}
       <div class="ProfileIconMenu-option" on:click={closeSession}>
-        <span>{$_("profileIconMenu.signOut")}</span>
+        <span>{$_('profileIconMenu.signOut')}</span>
         <ArrowCollapseRight size="16" color="var(--secondary-text-color)" />
       </div>
     {/if}

@@ -1,10 +1,10 @@
 <script>
-  import Dropzone from "svelte-file-dropzone";
-  import CloudUploadOutline from "svelte-material-icons/CloudUploadOutline.svelte";
-  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
-  import ImageOutline from "svelte-material-icons/ImageOutline.svelte";
-  import DeleteCircleOutline from "svelte-material-icons/DeleteCircleOutline.svelte";
-  import { _ } from "../../services/i18n";
+  import Dropzone from 'svelte-file-dropzone';
+  import CloudUploadOutline from 'svelte-material-icons/CloudUploadOutline.svelte';
+  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
+  import ImageOutline from 'svelte-material-icons/ImageOutline.svelte';
+  import DeleteCircleOutline from 'svelte-material-icons/DeleteCircleOutline.svelte';
+  import { _ } from 'svelte-i18n';
 
   export let imagePath; // If not, isn't required
   export let multiple = false;
@@ -12,7 +12,7 @@
   export let imageFile; // For binding the value from an external component
   export let onDelete = () => {};
   export let allowDelete = false;
-  let uploadedImage = "";
+  let uploadedImage = '';
 
   let files = {
     accepted: [],
@@ -21,7 +21,7 @@
 
   function deleteFile() {
     URL.revokeObjectURL(uploadedImage);
-    uploadedImage = "";
+    uploadedImage = '';
     imageFile = undefined;
     onDelete();
   }
@@ -44,7 +44,7 @@
   class="Dropzone"
   style={imagePath || uploadedImage
     ? `background-image: url(${uploadedImage ? uploadedImage : imagePath})`
-    : ""}
+    : ''}
 >
   {#if allowDelete}
     <div class="delete-button" on:click={deleteFile}>
@@ -53,13 +53,13 @@
   {/if}
   <Dropzone
     on:drop={handleFilesSelect}
-    accept={["image/*"]}
+    accept={['image/*']}
     containerStyles={`width: 100%; height: 100%; padding: 0; background-color: transparent;`}
     {multiple}
   >
     <div
       class={`dropzone-content ${
-        imagePath || uploadedImage ? "image-defined" : ""
+        imagePath || uploadedImage ? 'image-defined' : ''
       }`}
     >
       {#if small}
@@ -67,18 +67,18 @@
       {:else}
         {#if !imagePath && !uploadedImage}
           <CloudUploadOutline size={80} />
-          <span class="Dropzone-title">{$_("dropZone.dragAndDropTheFile")}</span
+          <span class="Dropzone-title">{$_('dropZone.dragAndDropTheFile')}</span
           >
         {/if}
         {#if !imagePath && !uploadedImage}
           <span class="Dropzone-subtitle"
-            >{$_("dropZone.orUploadItFromYourComputer")}</span
+            >{$_('dropZone.orUploadItFromYourComputer')}</span
           >
         {/if}
 
         <div class="upload-card">
           <ImageOutline size={25} />
-          <span>{$_("dropZone.uploadImage")}</span>
+          <span>{$_('dropZone.uploadImage')}</span>
         </div>
       {/if}
     </div>

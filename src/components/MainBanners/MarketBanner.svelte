@@ -1,14 +1,14 @@
 <script>
-  import { onMount } from "svelte";
-  import ConectyWhiteWordmark from "../Wordmarks/ConectyWhiteWordmark.svelte";
-  import { _ } from "../../services/i18n";
+  import { onMount } from 'svelte';
+  import ConectyWhiteWordmark from '../Wordmarks/ConectyWhiteWordmark.svelte';
+  import { _ } from 'svelte-i18n';
 
-  export let name = "1";
-  export let imageSrc = "/images/market-main-banner.png";
+  export let name = '1';
+  export let imageSrc = '/images/market-main-banner.png';
 
   let marketBannerElementName = `MarketBanner-${name}`;
   let backgroundGradient =
-    "linear-gradient(270deg, rgba(83, 123, 201, 0.7) 0%, rgba(3, 165, 235, 0.7) 97.79%)";
+    'linear-gradient(270deg, rgba(83, 123, 201, 0.7) 0%, rgba(3, 165, 235, 0.7) 97.79%)';
 
   onMount(async () => {
     let marketBannerElement = document.getElementById(marketBannerElementName);
@@ -18,7 +18,7 @@
 
 <div id={marketBannerElementName} class="MarketBanner">
   <h3 class="MarketBanner-title">
-    {$_("marketBanner.welcomToTheNewWayOfMeetingSuppliers")}
+    {$_('marketBanner.welcomToTheNewWayOfMeetingSuppliers')}
   </h3>
   <div class="MarketBanner-Conecty-wordmark">
     <ConectyWhiteWordmark />

@@ -1,17 +1,17 @@
 <script>
-  import { stores } from "@sapper/app";
-  import { getContext, onMount } from "svelte";
-  import CheckDecagram from "svelte-material-icons/CheckDecagram.svelte";
+  import { stores } from '@sapper/app';
+  import { getContext, onMount } from 'svelte';
+  import CheckDecagram from 'svelte-material-icons/CheckDecagram.svelte';
 
-  import Modal from "../Modal.svelte";
-  import CompanyVerificationService from "../../services/verifications/company.verification.service.js";
-  import CertificateUpload from "../../containers/CertificateUploadForm/CertificateUploadForm.svelte";
-  import { _ } from "../../services/i18n";
+  import Modal from '../Modal.svelte';
+  import CompanyVerificationService from '../../services/verifications/company.verification.service.js';
+  import CertificateUpload from '../../containers/CertificateUploadForm/CertificateUploadForm.svelte';
+  import { _ } from 'svelte-i18n';
 
   const { session } = stores();
   const companyVerificationService = new CompanyVerificationService();
-  let isVerifiedProfile = getContext("isVerifiedProfile");
-  const isEditableProfile = getContext("isEditableProfile");
+  let isVerifiedProfile = getContext('isVerifiedProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   let verification;
   let uploadCertificateForm = false;
@@ -40,32 +40,32 @@
     <div class="ProfileVerification-card ProfileVerification-card--verified">
       <span class="icon-check"><CheckDecagram size="22" /></span>
       <span class="ProfileVerification-title"
-        >{$_("profileVerification.verifiedCompany")}</span
+        >{$_('profileVerification.verifiedCompany')}</span
       >
     </div>
   {:else if false}
-    {#if verification && verification.state.toLowerCase() == "inprogress"}
+    {#if verification && verification.state.toLowerCase() == 'inprogress'}
       <div
         class="ProfileVerification-card ProfileVerification-card--inprogress"
       >
         <span class="ProfileVerification-title">
-          {$_("profileVerification.theCompanyIsInTheProcessOfVerification")}<br
+          {$_('profileVerification.theCompanyIsInTheProcessOfVerification')}<br
           />
-          {$_("profileVerification.CheckinTheNextFewHours")}
+          {$_('profileVerification.CheckinTheNextFewHours')}
           <b style="color:#5387cc;text-decoration:underline;"
-            >{$_("profileVerification.theMailIsFoundInTheCertificate")}</b
+            >{$_('profileVerification.theMailIsFoundInTheCertificate')}</b
           >
-          {$_("profileVerification.toFinishTheProcess")}
+          {$_('profileVerification.toFinishTheProcess')}
         </span>
       </div>
-    {:else if verification && verification.state.toLowerCase() == "none"}
+    {:else if verification && verification.state.toLowerCase() == 'none'}
       <div class="ProfileVerification-card ProfileVerification-card--none">
         <span class="ProfileVerification-title">
-          {$_("profileVerification.yourCompanyIsNotYetVerified")}
+          {$_('profileVerification.yourCompanyIsNotYetVerified')}
           <a
             id="profile-submit-certificate-link"
             class="ProfileVerification-submit-link">
-            {$_("profileVerification.chamberOfCommerceHere")}
+            {$_('profileVerification.chamberOfCommerceHere')}
           </a>
         </span>
       </div>
@@ -73,16 +73,16 @@
   {:else if isEditableProfile}
     <div class="ProfileVerification-card ProfileVerification-card--none">
       <span class="ProfileVerification-title"
-        >{$_("profileVerification.companyNotVerified")}</span
+        >{$_('profileVerification.companyNotVerified')}</span
       >
     </div>
 
     <p class="ProfileVerification-card--call-to-action">
       Haz
       <a href="/" on:click|preventDefault={toggleCertificateForm}
-        >{$_("profileVerification.clickHere")}</a
+        >{$_('profileVerification.clickHere')}</a
       >
-      {$_("profileVerification.toUploadTheCertificate")}
+      {$_('profileVerification.toUploadTheCertificate')}
     </p>
   {/if}
   {#if uploadCertificateForm}

@@ -1,40 +1,38 @@
 <script>
-  import { onMount } from "svelte";
-  import LandingBanner from "../../components/MainBanners/LandingBanner.svelte";
-  import AuthenticationContainer from "../AuthenticationContainer/AuthenticationContainer.svelte";
-  import Close from "svelte-material-icons/Close.svelte";
-  import Whatsapp from "svelte-material-icons/Whatsapp.svelte";
-  import ContactUsButton from "../../components/ContactUsButton/ContactUsButton.svelte";
-  import { setupI18n } from "../../services/i18n";
-  import { _ } from "../../services/i18n";
+  import { onMount } from 'svelte';
+  import LandingBanner from '../../components/MainBanners/LandingBanner.svelte';
+  import AuthenticationContainer from '../AuthenticationContainer/AuthenticationContainer.svelte';
+  import Close from 'svelte-material-icons/Close.svelte';
+  import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
+  import ContactUsButton from '../../components/ContactUsButton/ContactUsButton.svelte';
+  import { _ } from 'svelte-i18n';
 
-  setupI18n({ withLocale: "es" });
 
   export let content = {
-    title: "",
-    subtitle: "",
+    title: '',
+    subtitle: '',
     features: [
       {
-        title: "",
-        description: "",
-        advice: "",
+        title: '',
+        description: '',
+        advice: '',
       },
     ],
   };
-  export let authenticationContainerState = "signup";
+  export let authenticationContainerState = 'signup';
   export let homeAuthenticationOpen = false;
 
   let homeAuthenticationMediaQuery;
-  let contactLink = "https://wa.me/573133800223";
+  let contactLink = 'https://wa.me/573133800223';
 
   onMount(async () => {
-    homeAuthenticationMediaQuery = window.matchMedia("(min-width: 1000px)");
+    homeAuthenticationMediaQuery = window.matchMedia('(min-width: 1000px)');
 
     if (!homeAuthenticationMediaQuery.matches) homeAuthenticationOpen = false;
     else toggleHomeAuthenticationDisplay();
 
     homeAuthenticationMediaQuery.addEventListener(
-      "change",
+      'change',
       toggleHomeAuthenticationDisplay
     );
     document.onscroll = toggleHomeAuthenticationDisplay;
@@ -81,7 +79,7 @@
             <button
               class="button Home-register-button"
               on:click={() => (homeAuthenticationOpen = true)}>
-              {$_("home.signUpForFree")}
+              {$_('home.signUpForFree')}
             </button>
           </div>
         </div>
@@ -112,7 +110,7 @@
             <button
               class="button Home-register-button"
               on:click={() => (homeAuthenticationOpen = true)}>
-              {$_("home.signUpForFree")}
+              {$_('home.signUpForFree')}
             </button>
           </div>
         </div>
@@ -142,9 +140,9 @@
           </p>
           <div class="Home-register">
             <ContactUsButton
-              title={$_("home.contactUs")}
+              title={$_('home.contactUs')}
               buttonAction={() => {
-                window.open(contactLink, "_blank");
+                window.open(contactLink, '_blank');
               }}
             >
               <span slot="main-icon">

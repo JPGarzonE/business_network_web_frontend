@@ -1,27 +1,27 @@
 <script>
-  import LoginForm from "../LoginForm/LoginForm.svelte";
-  import SignupForm from "../SignupForm/SignupForm.svelte";
-  import SignupBuyerForm from "../SignupBuyerForm/SignupBuyerForm.svelte";
-  import { _ } from "../../services/i18n";
+  import LoginForm from '../LoginForm/LoginForm.svelte';
+  import SignupForm from '../SignupForm/SignupForm.svelte';
+  import SignupBuyerForm from '../SignupBuyerForm/SignupBuyerForm.svelte';
+  import { _ } from 'svelte-i18n';
 
-  export let state = "signup";
+  export let state = 'signup';
 </script>
 
 <div class="AuthenticationContainer">
-  {#if state === "signup"}
-    <h6>{$_("authenticationContainer.signUp")}</h6>
+  {#if state === 'signup'}
+    <h6>{$_('authenticationContainer.signUp')}</h6>
 
     <div class="AuthenticationContainer-form">
       <div>
-        <SignupBuyerForm loginRedirectionAction={() => (state = "login")} />
+        <SignupBuyerForm loginRedirectionAction={() => (state = 'login')} />
       </div>
     </div>
-  {:else if state === "login"}
-    <h6>{$_("authenticationContainer.signIn")}</h6>
+  {:else if state === 'login'}
+    <h6>{$_('authenticationContainer.signIn')}</h6>
 
     <div class="AuthenticationContainer-form">
       <div>
-        <LoginForm signupRedirectionAction={() => (state = "signup")} />
+        <LoginForm signupRedirectionAction={() => (state = 'signup')} />
       </div>
     </div>
   {/if}

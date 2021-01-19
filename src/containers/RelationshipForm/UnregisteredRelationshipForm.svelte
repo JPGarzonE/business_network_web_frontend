@@ -1,64 +1,64 @@
 <script>
-  import { getContext } from "svelte";
-  import { stores } from "@sapper/app";
-  import Textfield from "@smui/textfield";
-  import HelperText from "@smui/textfield/helper-text";
-  import Select, { Option } from "@smui/select";
-  import PlusCircleOutline from "svelte-material-icons/PlusCircleOutline.svelte";
-  import { _ } from "../../services/i18n";
+  import { getContext } from 'svelte';
+  import { stores } from '@sapper/app';
+  import Textfield from '@smui/textfield';
+  import HelperText from '@smui/textfield/helper-text';
+  import Select, { Option } from '@smui/select';
+  import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
+  import { _ } from 'svelte-i18n';
 
-  import UnregisteredRelationshipService from "../../services/relationships/unregistered.relationship.service.js";
-  import { INDUSTRIES } from "../../store/store.js";
+  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
+  import { INDUSTRIES } from '../../store/store.js';
 
   export let afterSubmit;
   export let unregisteredRelationship; // Pass if is an update form
 
   const editMode = unregisteredRelationship !== undefined;
 
-  const fields = ["name", "industry", "country", "type"];
+  const fields = ['name', 'industry', 'country', 'type'];
   const { session } = stores();
-  const isEditableProfile = getContext("isEditableProfile");
+  const isEditableProfile = getContext('isEditableProfile');
   const unregisteredRelationshipService = new UnregisteredRelationshipService();
 
-  const { unregistered = {}, type = "", id: relationshipID } = editMode
+  const { unregistered = {}, type = '', id: relationshipID } = editMode
     ? unregisteredRelationship
     : {};
 
-  let name = editMode ? unregistered.name : "";
+  let name = editMode ? unregistered.name : '';
   let industry = editMode
     ? unregistered.industry
     : INDUSTRIES
     ? INDUSTRIES[0]
-    : "";
-  let otherIndustry = "";
-  let country = editMode && unregistered.country ? unregistered.country : "";
-  let relationshipType = type ? type : "";
+    : '';
+  let otherIndustry = '';
+  let country = editMode && unregistered.country ? unregistered.country : '';
+  let relationshipType = type ? type : '';
 
-  $: industryIsOther = industry.includes("OTROS");
-  let formErrorMessage = "";
+  $: industryIsOther = industry.includes('OTROS');
+  let formErrorMessage = '';
 
-  let nameFeedback = "";
-  let otherIndustryFeedback = "";
-  let countryFeedback = "";
-  let relationshipTypeFeedback = "";
+  let nameFeedback = '';
+  let otherIndustryFeedback = '';
+  let countryFeedback = '';
+  let relationshipTypeFeedback = '';
 
   function validateName() {
     if (name && name.length >= 2) {
       if (name.length > 60) {
-        nameFeedback = $_("unregisteredRelationshipForm.maxCharacters", {
+        nameFeedback = $_('unregisteredRelationshipForm.maxCharacters', {
           num: 60,
         });
         return false;
       }
-      nameFeedback = "";
+      nameFeedback = '';
       return true;
     } else if (name && name.length > 0 && name.length < 2) {
-      nameFeedback = $_("unregisteredRelationshipForm.minCharacters", {
+      nameFeedback = $_('unregisteredRelationshipForm.minCharacters', {
         num: 2,
       });
       return false;
     } else {
-      nameFeedback = $_("unregisteredRelationshipForm.requiredName");
+      nameFeedback = $_('unregisteredRelationshipForm.requiredName');
       return false;
     }
   }
@@ -68,12 +68,12 @@
       if (otherIndustry && otherIndustry.length >= 3) {
         if (otherIndustry.length > 50) {
           otherIndustryFeedback = $_(
-            "unregisteredRelationshipForm.maxCharacters",
+            'unregisteredRelationshipForm.maxCharacters',
             { num: 50 }
           );
           return false;
         }
-        otherIndustryFeedback = "";
+        otherIndustryFeedback = '';
         return true;
       } else if (
         otherIndustry &&
@@ -81,41 +81,41 @@
         otherIndustry.length < 3
       ) {
         otherIndustryFeedback = $_(
-          "unregisteredRelationshipForm.minCharacters",
+          'unregisteredRelationshipForm.minCharacters',
           { num: 3 }
         );
         return false;
       } else {
         otherIndustryFeedback = $_(
-          "unregisteredRelationshipForm.requiredIndustry"
+          'unregisteredRelationshipForm.requiredIndustry'
         );
         return false;
       }
     }
 
-    otherIndustryFeedback = "";
+    otherIndustryFeedback = '';
     return true;
   }
 
   function validateCountry() {
     if (country && country.length >= 2) {
       if (country.length > 40) {
-        countryFeedback = $_("unregisteredRelationshipForm.maxCharacters", {
+        countryFeedback = $_('unregisteredRelationshipForm.maxCharacters', {
           num: 40,
         });
         return false;
       }
 
-      countryFeedback = "";
+      countryFeedback = '';
       return true;
     } else if (country && country.length > 0 && country.length < 2) {
-      countryFeedback = $_("unregisteredRelationshipForm.minCharacters", {
+      countryFeedback = $_('unregisteredRelationshipForm.minCharacters', {
         num: 2,
       });
       return false;
     }
 
-    countryFeedback = "";
+    countryFeedback = '';
     return true;
   }
 
@@ -123,17 +123,17 @@
     if (relationshipType && relationshipType.length > 1) {
       if (relationshipType.length > 30) {
         relationshipTypeFeedback = $_(
-          "unregisteredRelationshipForm.maxCharacters",
+          'unregisteredRelationshipForm.maxCharacters',
           { num: 30 }
         );
         return false;
       }
 
-      relationshipTypeFeedback = "";
+      relationshipTypeFeedback = '';
       return true;
     } else {
       relationshipTypeFeedback = $_(
-        "unregisteredRelationshipForm.requiredRelation"
+        'unregisteredRelationshipForm.requiredRelation'
       );
       return false;
     }
@@ -148,17 +148,17 @@
         validateRelationshipType()
       )
     ) {
-      formErrorMessage = "Los datos no son válidos";
+      formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
-      formErrorMessage = "";
+      formErrorMessage = '';
     }
   }
 
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = "not-allowed";
+    Target.style.cursor = 'not-allowed';
 
     try {
       if (isEditableProfile) {
@@ -193,14 +193,14 @@
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? "\n" : ""}${field}: ${
+          formErrorMessage += `${formErrorMessage ? '\n' : ''}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = "pointer";
+      Target.style.cursor = 'pointer';
     }
   }
 </script>
@@ -215,8 +215,8 @@
   <div class="UnregisteredRelationshipForm-headline">
     <h3 class="UnregisteredRelationshipForm-title">
       {editMode
-        ? $_("unregisteredRelationshipForm.updateClient")
-        : $_("unregisteredRelationshipForm.addClient")}
+        ? $_('unregisteredRelationshipForm.updateClient')
+        : $_('unregisteredRelationshipForm.addClient')}
     </h3>
 
     {#if formErrorMessage}
@@ -232,7 +232,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={name}
-        label={$_("unregisteredRelationshipForm.clientName")}
+        label={$_('unregisteredRelationshipForm.clientName')}
         input$aria-controls="company-name"
         input$aria-describedby="company-name"
         input$maxlength="60"
@@ -247,7 +247,7 @@
         <Select
           variant="outlined"
           bind:value={industry}
-          label={$_("unregisteredRelationshipForm.category")}
+          label={$_('unregisteredRelationshipForm.category')}
         >
           {#each INDUSTRIES as ind}
             <Option value={ind} selected={industry === ind.toLowerCase()}>
@@ -262,7 +262,7 @@
             style="width: 100%;"
             variant="outlined"
             bind:value={otherIndustry}
-            label={$_("unregisteredRelationshipForm.whichOther")}
+            label={$_('unregisteredRelationshipForm.whichOther')}
             input$aria-controls="company-other-industry"
             input$aria-describedby="company-other-industry"
             input$maxlength="60"
@@ -279,7 +279,7 @@
           style="width: 100%;"
           variant="outlined"
           bind:value={industry}
-          label={$_("unregisteredRelationshipForm.category")}
+          label={$_('unregisteredRelationshipForm.category')}
           input$aria-controls="company-industry"
           input$aria-describedby="company-industry"
           input$maxlength="60"
@@ -293,7 +293,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={country}
-        label={$_("unregisteredRelationshipForm.countryOfOrigin")}
+        label={$_('unregisteredRelationshipForm.countryOfOrigin')}
         input$aria-controls="company-country"
         input$aria-describedby="company-country"
         input$maxlength="40"
@@ -322,14 +322,14 @@
       class="UnregisteredRelationshipForm-button button button--secondary">
       <PlusCircleOutline size={15} />
       {editMode
-        ? $_("unregisteredRelationshipForm.updateClient")
-        : $_("unregisteredRelationshipForm.addClient")}
+        ? $_('unregisteredRelationshipForm.updateClient')
+        : $_('unregisteredRelationshipForm.addClient')}
     </button>
   </form>
 </div>
 
 <style>
-  @import "/styles/form.css";
+  @import '/styles/form.css';
 
   .UnregisteredRelationshipForm-headline {
     width: 100%;

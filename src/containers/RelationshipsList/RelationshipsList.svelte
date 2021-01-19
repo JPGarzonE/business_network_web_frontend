@@ -1,15 +1,15 @@
 <script>
-  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
-  import RelationshipCard from "../../components/RelationshipCard/RelationshipCard.svelte";
-  import Modal from "../../components/Modal.svelte";
-  import RelationshipForm from "../RelationshipForm/RelationshipForm.svelte";
-  import UnregisteredRelationshipForm from "../RelationshipForm/UnregisteredRelationshipForm.svelte";
-  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
-  import { getContext } from "svelte";
-  import { _ } from "../../services/i18n";
+  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
+  import RelationshipCard from '../../components/RelationshipCard/RelationshipCard.svelte';
+  import Modal from '../../components/Modal.svelte';
+  import RelationshipForm from '../RelationshipForm/RelationshipForm.svelte';
+  import UnregisteredRelationshipForm from '../RelationshipForm/UnregisteredRelationshipForm.svelte';
+  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
+  import { getContext } from 'svelte';
+  import { _ } from 'svelte-i18n';
 
   export let unregisteredRelationships = [];
-  const isEditableProfile = getContext("isEditableProfile");
+  const isEditableProfile = getContext('isEditableProfile');
 
   let displayUnregisteredCreateForm = false;
 
@@ -62,7 +62,7 @@
   {/if}
 
   <h3 class="RelationshipsList-headline">
-    {$_("relationshipList.whoWorksWithUs")}
+    {$_('relationshipList.whoWorksWithUs')}
   </h3>
   {#if isEditableProfile}
     <div class="RelationshipsList-card--create">
@@ -82,7 +82,7 @@
       />
     {:else}
       <div class="RelationshipsList-empty-message">
-        <p>{$_("relationshipList.theCompanyHasNotAddeAnyClientsYet")}</p>
+        <p>{$_('relationshipList.theCompanyHasNotAddeAnyClientsYet')}</p>
       </div>
     {/each}
   </HorizontalScrollList>

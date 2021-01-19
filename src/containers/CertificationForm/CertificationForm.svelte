@@ -1,49 +1,49 @@
 <script>
-  import { getContext } from "svelte";
-  import { stores } from "@sapper/app";
-  import Textfield from "@smui/textfield";
-  import HelperText from "@smui/textfield/helper-text";
-  import CharacterCounter from "@smui/textfield/character-counter/index";
-  import PlusCircleOutline from "svelte-material-icons/PlusCircleOutline.svelte";
-  import Dropzone from "../../components/Dropzone/Dropzone.svelte";
-  import CertificationsService from "../../services/suppliers/certifications.service.js";
-  import { _ } from "../../services/i18n";
+  import { getContext } from 'svelte';
+  import { stores } from '@sapper/app';
+  import Textfield from '@smui/textfield';
+  import HelperText from '@smui/textfield/helper-text';
+  import CharacterCounter from '@smui/textfield/character-counter/index';
+  import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
+  import Dropzone from '../../components/Dropzone/Dropzone.svelte';
+  import CertificationsService from '../../services/suppliers/certifications.service.js';
+  import { _ } from 'svelte-i18n';
 
   export let afterSubmit;
   export let CertificationElement; // Pass if is an update form
   const { session } = stores();
-  const isEditableProfile = getContext("isEditableProfile");
+  const isEditableProfile = getContext('isEditableProfile');
 
-  const fields = ["name", "description"];
+  const fields = ['name', 'description'];
 
   const certificationEditData = CertificationElement
     ? CertificationElement
     : {};
 
-  let name = certificationEditData.name ? certificationEditData.name : "";
+  let name = certificationEditData.name ? certificationEditData.name : '';
   let description = certificationEditData.description
     ? certificationEditData.description
-    : "";
-  let media = certificationEditData.media ? certificationEditData.media : "";
+    : '';
+  let media = certificationEditData.media ? certificationEditData.media : '';
   let newMediaFile;
   let formErrorMessage = null;
-  let nameFeedback = "";
-  let descriptionFeedback = "";
+  let nameFeedback = '';
+  let descriptionFeedback = '';
 
   function validateName() {
     if (name && name.length >= 2) {
       if (name.length > 50) {
-        nameFeedback = "Máximo 50 caracteres";
+        nameFeedback = 'Máximo 50 caracteres';
         return false;
       }
 
-      nameFeedback = "";
+      nameFeedback = '';
       return true;
     } else if (name && name.length > 0 && name.length <= 2) {
-      nameFeedback = "Mínimo 2 caracteres";
+      nameFeedback = 'Mínimo 2 caracteres';
       return false;
     } else {
-      nameFeedback = "El nombre es obligatorio";
+      nameFeedback = 'El nombre es obligatorio';
       return false;
     }
   }
@@ -59,17 +59,17 @@
       description.length > 0 &&
       description.length < 2
     ) {
-      descriptionFeedback = "Mínimo 2 caracteres";
+      descriptionFeedback = 'Mínimo 2 caracteres';
       return false;
     }
 
-    descriptionFeedback = "";
+    descriptionFeedback = '';
     return true;
   }
 
   function validateCertificationForm() {
     if (!(validateName() && validateDescription())) {
-      formErrorMessage = "Los datos no son válidos";
+      formErrorMessage = 'Los datos no son válidos';
       throw new Error();
     } else {
       formErrorMessage = null;
@@ -79,7 +79,7 @@
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = "not-allowed";
+    Target.style.cursor = 'not-allowed';
 
     try {
       if (isEditableProfile) {
@@ -101,14 +101,14 @@
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? "\n" : null}${field}: ${
+          formErrorMessage += `${formErrorMessage ? '\n' : null}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = "pointer";
+      Target.style.cursor = 'pointer';
     }
   }
 
@@ -171,8 +171,8 @@
   <div class="CertificationForm-headline">
     <h3 class="CertificationForm-title">
       {CertificationElement
-        ? $_("certificationForm.updateCertificate")
-        : $_("certificationForm.addCertificate")}
+        ? $_('certificationForm.updateCertificate')
+        : $_('certificationForm.addCertificate')}
     </h3>
 
     {#if formErrorMessage}
@@ -181,7 +181,7 @@
       </div>
     {:else if !CertificationElement}
       <p class="CertificationForm-subtitle">
-        {$_("certificationForm.uploadTheImageOfYourCertificate")}
+        {$_('certificationForm.uploadTheImageOfYourCertificate')}
       </p>
     {/if}
   </div>
@@ -196,7 +196,7 @@
 
   <p class="CertificationForm-advice">
     {$_(
-      "certificationForm.itMustBeTheImageOfTheEntityThatIssuesTheCertificate"
+      'certificationForm.itMustBeTheImageOfTheEntityThatIssuesTheCertificate'
     )}
   </p>
 
@@ -206,7 +206,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={name}
-        label={$_("certificationForm.nameOfTheCertificate")}
+        label={$_('certificationForm.nameOfTheCertificate')}
         input$aria-controls="certificate-name"
         input$aria-describedby="certificate-name"
         input$maxlength="50"
@@ -221,7 +221,7 @@
         textarea
         variant="outlined"
         bind:value={description}
-        label={$_("certificationForm.addDescription")}
+        label={$_('certificationForm.addDescription')}
         input$aria-controls="certificate-description"
         input$aria-describedby="certificate-description"
         input$maxlength="155"
@@ -239,14 +239,14 @@
       class="CertificationForm-button button button--secondary">
       <PlusCircleOutline size={15} />
       {CertificationElement
-        ? $_("certificationForm.updateCertificate")
-        : $_("certificationForm.addCertificate")}
+        ? $_('certificationForm.updateCertificate')
+        : $_('certificationForm.addCertificate')}
     </button>
   </form>
 </div>
 
 <style>
-  @import "/styles/form.css";
+  @import '/styles/form.css';
 
   .CertificationForm-headline {
     width: 100%;

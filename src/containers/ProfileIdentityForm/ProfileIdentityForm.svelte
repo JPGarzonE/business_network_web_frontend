@@ -1,48 +1,48 @@
 <script>
-  import CompanyService from "../../services/companies/companies.service.js";
-  import Textfield from "@smui/textfield";
-  import HelperText from "@smui/textfield/helper-text";
-  import Select, { Option } from "@smui/select";
-  import SelectHelperText from "@smui/select/helper-text";
-  import Cellphone from "svelte-material-icons/Cellphone.svelte";
-  import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
-  import Web from "svelte-material-icons/Web.svelte";
+  import CompanyService from '../../services/companies/companies.service.js';
+  import Textfield from '@smui/textfield';
+  import HelperText from '@smui/textfield/helper-text';
+  import Select, { Option } from '@smui/select';
+  import SelectHelperText from '@smui/select/helper-text';
+  import Cellphone from 'svelte-material-icons/Cellphone.svelte';
+  import MapMarkerOutline from 'svelte-material-icons/MapMarkerOutline.svelte';
+  import Web from 'svelte-material-icons/Web.svelte';
   import {
     validateString,
     validateInternationalPhoneNumber,
     validateAreaCodePhoneNumber,
-  } from "../../validators/formValidators.js";
-  import { stores } from "@sapper/app";
-  import { getContext } from "svelte";
-  import { _ } from "../../services/i18n";
+  } from '../../validators/formValidators.js';
+  import { stores } from '@sapper/app';
+  import { getContext } from 'svelte';
+  import { _ } from 'svelte-i18n';
 
   export let afterSubmit;
-  export let name = "";
-  export let industry = "";
-  export let webUrl = "";
+  export let name = '';
+  export let industry = '';
+  export let webUrl = '';
   export let location = null;
   export let contact = null;
   const { session } = stores();
-  const isEditableProfile = getContext("isEditableProfile");
+  const isEditableProfile = getContext('isEditableProfile');
 
-  const countries = ["Colombia", "Estados unidos"];
-  const fields = ["city", "country", "address", "web_url"];
+  const countries = ['Colombia', 'Estados unidos'];
+  const fields = ['city', 'country', 'address', 'web_url'];
 
-  webUrl = webUrl ? webUrl : "";
-  let city = location && location.city ? location.city : "";
+  webUrl = webUrl ? webUrl : '';
+  let city = location && location.city ? location.city : '';
   let country = countries[0];
-  let address = location && location.address ? location.address : "";
-  let contactAreaCode = contact && contact.area_code ? contact.area_code : "";
-  let contactNumber = contact && contact.phone ? contact.phone : "";
+  let address = location && location.address ? location.address : '';
+  let contactAreaCode = contact && contact.area_code ? contact.area_code : '';
+  let contactNumber = contact && contact.phone ? contact.phone : '';
 
-  let submitErrorMessage = "";
+  let submitErrorMessage = '';
 
   $: nameValidation = validateString(
     name,
     3,
     50,
     true,
-    "Nombre de la empresa válido"
+    'Nombre de la empresa válido'
   );
 
   $: industryValidation = validateString(
@@ -50,7 +50,7 @@
     3,
     50,
     true,
-    "Industria válida"
+    'Industria válida'
   );
 
   $: countryValidation = validateString(
@@ -58,17 +58,17 @@
     2,
     40,
     true,
-    "País de origen válido"
+    'País de origen válido'
   );
 
-  $: cityValidation = validateString(city, 1, 40, false, "Ciudad válida");
+  $: cityValidation = validateString(city, 1, 40, false, 'Ciudad válida');
 
   $: addressValidation = validateString(
     address,
     2,
     40,
     false,
-    "Dirección válida"
+    'Dirección válida'
   );
 
   $: webUrlValidation = validateString(
@@ -76,7 +76,7 @@
     0,
     70,
     false,
-    "Página web válida"
+    'Página web válida'
   );
 
   $: contactAreaCodeValidation = validateAreaCodePhoneNumber(contactAreaCode);
@@ -95,7 +95,7 @@
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = "not-allowed";
+    Target.style.cursor = 'not-allowed';
 
     try {
       if (isEditableProfile) {
@@ -105,27 +105,27 @@
       }
     } catch (e) {
       const error = e.message;
-      submitErrorMessage = "";
+      submitErrorMessage = '';
       let existErrorField = false;
       fields.map((field) => {
         let errorField = error[field];
-        if (field == "nit" || field == "name" || field == "industry")
-          errorField = error["company"] ? error["company"][field] : null;
+        if (field == 'nit' || field == 'name' || field == 'industry')
+          errorField = error['company'] ? error['company'][field] : null;
 
         if (errorField) {
           existErrorField = true;
           submitErrorMessage += `${
-            submitErrorMessage ? `\n` : ""
+            submitErrorMessage ? `\n` : ''
           }-${field}: ${errorField}`;
         }
       });
 
       if (!existErrorField && !error)
-        submitErrorMessage = "Los datos no son válidos";
+        submitErrorMessage = 'Los datos no son válidos';
       else if (!existErrorField) submitErrorMessage = error;
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = "pointer";
+      Target.style.cursor = 'pointer';
     }
   }
 
@@ -133,34 +133,34 @@
     const companyService = new CompanyService();
     let dataToSubmit = {};
 
-    if (country && country != "")
+    if (country && country != '')
       dataToSubmit.principal_location = {
         ...dataToSubmit.principal_location,
         country: country,
       };
-    if (city && city != "")
+    if (city && city != '')
       dataToSubmit.principal_location = {
         ...dataToSubmit.principal_location,
         city: city,
       };
-    if (address && address != "")
+    if (address && address != '')
       dataToSubmit.principal_location = {
         ...dataToSubmit.principal_location,
         address: address,
       };
 
-    if (contactNumber && contactNumber != "")
+    if (contactNumber && contactNumber != '')
       dataToSubmit.principal_contact = {
         ...dataToSubmit.principal_contact,
         phone: contactNumber,
       };
-    if (contactAreaCode && contactAreaCode != "")
+    if (contactAreaCode && contactAreaCode != '')
       dataToSubmit.principal_contact = {
         ...dataToSubmit.principal_contact,
         area_code: contactAreaCode,
       };
 
-    if (webUrl && webUrl != "") dataToSubmit.web_url = webUrl;
+    if (webUrl && webUrl != '') dataToSubmit.web_url = webUrl;
 
     const CompanySummary = await companyService.updateCompanySummary(
       $session.username,
@@ -197,7 +197,7 @@
           style="width:100%;height:45px;"
           bind:value={country}
           variant="standard"
-          label={$_("profileIdentityForm.country")}
+          label={$_('profileIdentityForm.country')}
           input$style="width: 100%;height:100%"
           invalid={country && !countryValidation.isValid}
         >
@@ -223,7 +223,7 @@
         <Textfield
           style="width: 100%;height:45px"
           variant="standard"
-          label={$_("profileIdentityForm.city")}
+          label={$_('profileIdentityForm.city')}
           input$aria-controls="city"
           input$aria-describedby="city"
           input$maxlength="50"
@@ -238,7 +238,7 @@
     </div>
 
     <p class="ProfileIdentityForm-message">
-      {$_("profileIdentityForm.changeYourMainData")}
+      {$_('profileIdentityForm.changeYourMainData')}
     </p>
 
     <div class="form-group">
@@ -251,7 +251,7 @@
           <Textfield
             style="width: 100%;height:45px"
             variant="standard"
-            label={$_("profileIdentityForm.adress")}
+            label={$_('profileIdentityForm.adress')}
             input$aria-controls="address"
             input$aria-describedby="address"
             input$maxlength="50"
@@ -274,7 +274,7 @@
           <Textfield
             style="width: 100%;height:45px"
             variant="standard"
-            label={$_("profileIdentityForm.webPage")}
+            label={$_('profileIdentityForm.webPage')}
             input$aria-controls="web-url"
             input$aria-describedby="web-url"
             input$maxlength="50"
@@ -297,7 +297,7 @@
           <Textfield
             style="width:100%;height:45px"
             variant="standard"
-            label={$_("profileIdentityForm.code")}
+            label={$_('profileIdentityForm.code')}
             input$aria-controls="contact-area-code"
             input$aria-describedby="contact-area-code"
             input$maxlength="5"
@@ -316,7 +316,7 @@
           <Textfield
             style="width:100%;height:45px"
             variant="standard"
-            label={$_("profileIdentityForm.contactCellphone")}
+            label={$_('profileIdentityForm.contactCellphone')}
             input$aria-controls="contact-number"
             input$aria-describedby="contact-number"
             input$maxlength="50"
@@ -334,23 +334,23 @@
 
       <p class="ProfileIdentity-advice">
         {$_(
-          "profileIdentityForm.throughThisNumberVerifiedBuyerWillBeAbleToCOntactYou"
+          'profileIdentityForm.throughThisNumberVerifiedBuyerWillBeAbleToCOntactYou'
         )} <br />
-        {$_("profileIdentityForm.withOneClickWeConectItDirectlyToWhatsapp")}
+        {$_('profileIdentityForm.withOneClickWeConectItDirectlyToWhatsapp')}
       </p>
 
       <button
         on:click|preventDefault={submit}
         disabled={!validBeforeSubmit}
         class="ProfileIdentityForm-button button button--principal">
-        {$_("profileIdentityForm.acceptAndDisplay")}
+        {$_('profileIdentityForm.acceptAndDisplay')}
       </button>
     </div>
   </form>
 </div>
 
 <style>
-  @import "/styles/form.css";
+  @import '/styles/form.css';
 
   .form-group {
     margin-top: 0;

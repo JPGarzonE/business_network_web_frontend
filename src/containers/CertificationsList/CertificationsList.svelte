@@ -1,13 +1,13 @@
 <script>
-  import { getContext } from "svelte";
-  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
-  import CertificationCard from "../../components/CertificationCard/CertificationCard.svelte";
-  import Modal from "../../components/Modal.svelte";
-  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
-  import CertificationForm from "../CertificationForm/CertificationForm.svelte";
-  import { _ } from "../../services/i18n";
+  import { getContext } from 'svelte';
+  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
+  import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
+  import Modal from '../../components/Modal.svelte';
+  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
+  import CertificationForm from '../CertificationForm/CertificationForm.svelte';
+  import { _ } from 'svelte-i18n';
 
-  const isEditableProfile = getContext("isEditableProfile");
+  const isEditableProfile = getContext('isEditableProfile');
 
   export let certificationsList = [];
 
@@ -38,7 +38,7 @@
   {/if}
 
   <h3 class="CertificationsList-headline">
-    {$_("certificationsList.certifications")}
+    {$_('certificationsList.certifications')}
   </h3>
 
   {#if isEditableProfile}
@@ -64,7 +64,7 @@
       <div class="CertificationsList-empty-message">
         <p>
           {$_(
-            "certificationsList.theCompayDoesNotHaveCertificationsThatIdentifyItYet"
+            'certificationsList.theCompayDoesNotHaveCertificationsThatIdentifyItYet'
           )}
         </p>
       </div>

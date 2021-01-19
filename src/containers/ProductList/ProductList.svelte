@@ -1,16 +1,16 @@
 <script>
-  import { getContext } from "svelte";
-  import ProductService from "../../services/suppliers/product.service.js";
-  import ProfileProductCard from "../../components/ProfileProductCard/ProfileProductCard.svelte";
-  import Modal from "../../components/Modal.svelte";
-  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
-  import ProductForm from "../ProductForm/ProductForm.svelte";
-  import { _ } from "../../services/i18n";
+  import { getContext } from 'svelte';
+  import ProductService from '../../services/suppliers/product.service.js';
+  import ProfileProductCard from '../../components/ProfileProductCard/ProfileProductCard.svelte';
+  import Modal from '../../components/Modal.svelte';
+  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
+  import ProductForm from '../ProductForm/ProductForm.svelte';
+  import { _ } from 'svelte-i18n';
 
   export let productList = [];
 
-  const isEditableProfile = getContext("isEditableProfile");
-  const profileAccountname = getContext("profileAccountname");
+  const isEditableProfile = getContext('isEditableProfile');
+  const profileAccountname = getContext('profileAccountname');
   const productService = new ProductService();
 
   const productsPerLine = 4;
@@ -91,7 +91,7 @@
   {/if}
   {#if productList && productList.length <= 0}
     <div class="ProductList-empty-message">
-      {$_("productList.theCompanyHasNotAddedAnyProducts")}
+      {$_('productList.theCompanyHasNotAddedAnyProducts')}
     </div>
   {/if}
   <div class="Products">
@@ -113,7 +113,7 @@
           class="ProductShowLink ProductShowLink-less"
           on:click={showLessGondola}>
           <i class="icon-next" />
-          {$_("productList.lessProducts")}
+          {$_('productList.lessProducts')}
         </span>
       {/if}
 
@@ -122,7 +122,7 @@
           class="ProductShowLink ProductShowLink-more"
           on:click={showMoreGondola}>
           <i class="icon-next" />
-          {$_("productList.moreProducts")}
+          {$_('productList.moreProducts')}
         </span>
       {/if}
     </div>

@@ -1,18 +1,18 @@
 <script>
-  import { goto } from "@sapper/app";
-  import LoginService from "../../services/authentication/login.service.js";
-  import { _ } from "../../services/i18n";
-  import Textfield from "@smui/textfield";
-  import HelperText from "@smui/textfield/helper-text";
-  import { validateEmailPattern } from "../../validators/formValidators.js";
-  import { setCookie } from "../../utils/cookie.js";
+  import { goto } from '@sapper/app';
+  import LoginService from '../../services/authentication/login.service.js';
+  import { _ } from 'svelte-i18n';
+  import Textfield from '@smui/textfield';
+  import HelperText from '@smui/textfield/helper-text';
+  import { validateEmailPattern } from '../../validators/formValidators.js';
+  import { setCookie } from '../../utils/cookie.js';
 
-  export let signupRedirectionAction = async () => await goto("/signup");
+  export let signupRedirectionAction = async () => await goto('/signup');
   const loginService = new LoginService();
 
-  let email = "";
-  let password = "";
-  let emailFeedback = "";
+  let email = '';
+  let password = '';
+  let emailFeedback = '';
   let emailIsValid = null;
   let submitErrorMessage;
 
@@ -27,16 +27,16 @@
   async function submitLogin(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = "not-allowed";
+    Target.style.cursor = 'not-allowed';
 
     try {
-      if (!isValidBeforeSumbit) throw new Error("Invalid");
+      if (!isValidBeforeSumbit) throw new Error('Invalid');
 
       const data = await loginService.login(email, password);
       let accountname = data.access_user.default_company.accountname;
 
-      setCookie("JPGE", data.access_token, 1);
-      setCookie("access_accountname", accountname, 1);
+      setCookie('JPGE', data.access_token, 1);
+      setCookie('access_accountname', accountname, 1);
 
       // Here we not use goto because the server has to render an authenticated content after login
       // With goto this not happen because the render acts only on the client
@@ -44,22 +44,22 @@
     } catch (e) {
       const errors = e.message;
       if (errors.non_field_errors || errors.password)
-        submitErrorMessage = "Credenciales inválidas";
-      else if (errors == "Invalid")
-        submitErrorMessage = "Los datos no son válidos";
+        submitErrorMessage = 'Credenciales inválidas';
+      else if (errors == 'Invalid')
+        submitErrorMessage = 'Los datos no son válidos';
       else
         submitErrorMessage =
-          "Hubo un error en la aplicación, intente más tarde";
+          'Hubo un error en la aplicación, intente más tarde';
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = "pointer";
+      Target.style.cursor = 'pointer';
     }
   }
 </script>
 
 <div class="LoginForm">
   <form class="LoginForm-form">
-    <h2 class="LoginForm-title">{$_("loginForm.weAreGladToSeeYouAgain")}</h2>
+    <h2 class="LoginForm-title">{$_('loginForm.weAreGladToSeeYouAgain')}</h2>
 
     {#if submitErrorMessage}
       <div class="form-banner--invalid">{submitErrorMessage}</div>
@@ -69,7 +69,7 @@
       <Textfield
         style="width: 100%;height:50px"
         variant="outlined"
-        label={$_("loginForm.mail")}
+        label={$_('loginForm.mail')}
         input$aria-controls="email"
         input$aria-describedby="email"
         input$maxlength="50"
@@ -82,7 +82,7 @@
       <Textfield
         style="width: 100%;height:50px"
         variant="outlined"
-        label={$_("loginForm.password")}
+        label={$_('loginForm.password')}
         input$aria-controls="password"
         input$aria-describedby="password"
         input$type="password"
@@ -98,14 +98,14 @@
         class="button form-button button--principal"
         name="submit"
         on:click={submitLogin}
-        value={$_("loginForm.logIn")}
+        value={$_('loginForm.logIn')}
       />
     </div>
 
     <div class="LoginForm-register">
       <hr />
       <!-- <p>Olvidé mi contraseña</p><br/> -->
-      <p>{$_("loginForm.doNotHaveAnAccount")}</p>
+      <p>{$_('loginForm.doNotHaveAnAccount')}</p>
       <input
         type="button"
         class="button button--secondary"
@@ -117,7 +117,7 @@
 </div>
 
 <style>
-  @import "/styles/form.css";
+  @import '/styles/form.css';
 
   .form-group {
     max-width: 400px;

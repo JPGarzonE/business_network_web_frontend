@@ -1,0 +1,151 @@
+{
+    "authenticationContainer": {
+        "signIn": "Iniciar Sesión",
+        "signUp": "Crear Cuenta"
+    },
+    "certificationForm": {
+        "addCertificate": "Añadir certificado ",
+        "addDescription ": "Añadir descripción",
+        "itMustBeTheImageOfTheEntityThatIssuesTheCertificate": "* Debe ser la imagen de la entidad que emite el certificado. No la del documento.",
+        "nameOfTheCertificate": "Nombre del certificado",
+        "updateCertificate": "Actualizar certificado",
+        "uploadTheImageOfYourCertificate": "Sube la imagen de tu certificado"
+    },
+    "certificationsList": {
+        "certifications": "Certificaciones",
+        "theCompayDoesNotHaveCertificationsThatIdentifyItYet": "La compañia todavía no tiene certificaciones que la identifiquen"
+    },
+    "dropZone": {
+        "dragAndDropTheFile": "Arrastra y suelta el archivo",
+        "dragAndDropTheFileOrUploadItFromYourComputer": "Arrastra y suelta el archivo o selecciónalo otra opción",
+        "orUploadItFromYourComputer": "o selecciona otra opción",
+        "uploadImage": "Subir imagen"
+    },
+    "header": {
+        "goToTheMarket": "Ir al mercado",
+        "signIn": "Inicia sesión",
+        "signUp": "Unete ahora"
+    },
+    "home": {
+        "contactUs": "Contáctanos"
+    },
+    "index": {
+        "allOfOurBuyersHaveBeenVerifiedAgainstDifferentInternationalBackground": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales",
+        "allOfOurSuppliersHaveBeenVerifiedAgainstDifferentInternational": "*Todos nuestros proveedores han sido verificados en diferentes listas de antecedentes internacionales.",
+        "avoidFraudulentProcessesThroughOurModelThatAllowsUsToSecureYourPayment": "Evita procesos fraudulentos por medio de nuestro modelo fiduciario que nos permite asegurar tu pago y garantizar la transparencia de cualquier transacción",
+        "bePartOfTheInternationalTradeNetworkThatIsConnectingTheMostCompetitive": "Se parte de la red de comercio internacional que está conectando las ofertas más competitivas del mercado con compradores previamente verificados.",
+        "connectWithInternationalBuyersAndSuppliersAroundTheWorld": "Conecta con compradores y proveedores internacionales alrededor del mundo.",
+        "createYourProfileInConectyWhereYouCanEasilyHaveADigitalExposure": "Crea tu perfil en Conecty, donde de forma fácil podrás tener una exposición digital con cientos de compradores internacionales quienes han sido sometidos a verificaciones de seguridad previas.",
+        "digitalExposureWithInternationalBuyers": "Exposición digital con compradores internacionales",
+        "findInAnOrganizedWayTheRelevantInformationAboutTheProductsYou": "Encuentra de manera organizada, la información relevante acerca de los productos que requieres, con nuestra herramienta de busqueda y accede a una de las redes de proveedores calificados de America latina.",
+        "learnMoreAboutThisModelByContactingOurSalesConsultants": "Conoce más sobre este modelo contactando a nuestros asesores de venta.",
+        "searchYourProductsTheEasyWay": "Busca tus productos de forma fácil",
+        "secureYourPaymentsWithUs": "Asegura tus pagos con nosotros"
+    },
+    "loginForm": {
+        "doNotHaveAnAccount": "Si no tienes cuenta",
+        "logIn": "Ingresar",
+        "mail": "Correo*",
+        "password": "Contraseña*",
+        "signUp": "Crea cuenta",
+        "weAreGladToSeeYouAgain": "¡Nos encanta verte de nuevo!"
+    },
+    "market": {
+        "insertTheTariffSubheading": "Ingresa la subpartida arancelaria",
+        "thereIsNoContentAvailable": "No hay contenido para mostrar"
+    },
+    "marketBanner": {
+        "welcomToTheNewWayOfMeetingSuppliers": "Bienvenido a la nueva forma de conocer clientes, proveedores y aliados."
+    },
+    "productForm": {
+        "addDescription": "Añadir descripción",
+        "addProduct": "Añadir producto",
+        "categoryOfTheProduct": "Categoria del producto*",
+        "maximumPrice ": "Precio máximo",
+        "minimumPrice": "Precio mínimo*",
+        "minimumPurchase ": "Compra mínima",
+        "nameOfTheProduct": "Nombre del Producto*",
+        "productCertifications": "Certificaciones",
+        "tariffHeading": "Partida arancelaria",
+        "unitOfMesurement ": "Unidad de medida",
+        "updateProduct": "Actualiza tu producto"
+    },
+    "productList": {
+        "theCompanyHasNotAddedAnyProducts": "La compañia todavía no ha agregado Productos"
+    },
+    "profileIconMenu": {
+        "editProfile": "Editar mi perfil",
+        "signOut": "Cerrar sesión"
+    },
+    "profileIdentityForm": {
+        "acceptAndDisplay": "Aceptar y mostrar",
+        "adress": "Direccion",
+        "changeYourMainData": "Cambia tus datos principales",
+        "city": "Ciudad",
+        "code": "Codigo",
+        "contactCellphone": "Celular de contacto",
+        "country": "Pais",
+        "throughThisNumberVerifiedBuyerWillBeAbleToCOntactYou": "* Por medio de este numero los compradores verificados de Conecty te van a poder contactar.",
+        "webPage": "Pagina Web",
+        "withOneClickWeConectItDirectlyToWhatsapp": "Con un click lo conectamos directamente a whatsapp para que contactarte ¡sea cuestión de segundos!"
+    },
+    "profileLogoUpload": {
+        "addLogo": "Agregar logo",
+        "uploadImage": "Subir imagen",
+        "uploadTheLogoOrImageThatRepresentsYourComany": "¡Sube el logo o una imagen que represente a tu empresa!",
+        "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios."
+    },
+    "profileVerification": {
+        "companyNotVerified": "Empresa no verificada",
+        "verifiedCompany": "Empresa verificada"
+    },
+    "relationshipList": {
+        "theCompanyHasNotAddeAnyClientsYet": "La compañia todavía no ha agregado las empresas con las que trabaja",
+        "whoWorksWithUs": "Con que empresas trabaja"
+    },
+    "signUpBuyerForm": {
+        "acceptAndJoin": "Aceptar y unirte",
+        "and": "y",
+        "companyID": "ID de la empresa*",
+        "companyInformation": "Datos de la empresa",
+        "confirmPassword": "Confirmar contraseña",
+        "fullName": "Nombre completo",
+        "iHaveReadUnderstoodAndAcceptedThe": "He leído, entendido y aceptado los ",
+        "mail": "Correo",
+        "nameOfTheCompany": "Nombre de la empresa",
+        "next": "Siguiente",
+        "password": "Contraseña",
+        "signIn": "Ingresar",
+        "signUpInformation": "Datos básicos personales",
+        "termsAndConditions": "términos y condiciones",
+        "theDataProtectionPolicy": "la política de protección de datos"
+    },
+    "signUpForm": {
+        "acceptAndJoin": "Aceptar y unirte",
+        "alreadyHaveAnAccount": "Si ya tienes cuenta",
+        "and": "y",
+        "companyInformation": "Datos de la empresa",
+        "confirmPassword": "Confirmar contraseña*",
+        "fullName": "Nombre completo*",
+        "iHaveReadUnderstoodAndAcceptedThe": "He leído, entendido y aceptado los ",
+        "ifYouDoNotHaveItAtTheMoment": "* Si no lo tienes a la mano puedes omitir este paso",
+        "industry": "Industria*",
+        "mail": "Correo*",
+        "nameOfTheCompany": "Nombre de la empresa*",
+        "password": "Contraseña*",
+        "signIn": "Ingresar",
+        "signUpInformation": "Datos básicos personales",
+        "taxID": "NIT*",
+        "termsAndConditions": "términos y condiciones",
+        "theDataProtectionPolicy": "la política de protección de datos",
+        "uploadCertificateOfExistence": "Ingresa el certificado de cámara de comercio "
+    },
+    "unregisteredRelationshipForm": {
+        "addClient": "Añadir cliente",
+        "category": "Categoría*",
+        "clientName": "Nombre del cliente*",
+        "countryOfOrigin": "País de origen",
+        "updateClient": "Actualizar cliente",
+        "whichOther": "¿Cuál otra?"
+    }
+}

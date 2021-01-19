@@ -1,12 +1,13 @@
 <script>
-  import { getContext } from 'svelte';
-  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
-  import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
-  import Modal from '../../components/Modal.svelte';
-  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
-  import CertificationForm from '../CertificationForm/CertificationForm.svelte';
+  import { getContext } from "svelte";
+  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
+  import CertificationCard from "../../components/CertificationCard/CertificationCard.svelte";
+  import Modal from "../../components/Modal.svelte";
+  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
+  import CertificationForm from "../CertificationForm/CertificationForm.svelte";
+  import { _ } from "../../services/i18n";
 
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
   export let certificationsList = [];
 
@@ -25,6 +26,51 @@
     certificationsList = certificationsList.filter((item) => item.id !== id);
   }
 </script>
+
+<div class="CertificationsList">
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <CertificationForm
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+      />
+    </Modal>
+  {/if}
+
+  <h3 class="CertificationsList-headline">
+    {$_("certificationsList.certifications")}
+  </h3>
+
+  {#if isEditableProfile}
+    <div class="CertificationsList-card--create">
+      <div on:click={toggleEditableMode}>
+        <CreateButton size={25} />
+      </div>
+    </div>
+  {/if}
+  <HorizontalScrollList
+    id="certifications-list"
+    beginningItemsNumber={certificationsList.length}
+  >
+    {#each certificationsList as element}
+      <CertificationCard
+        id={element.certificate.id}
+        media={element.certificate.logo}
+        name={element.certificate.name}
+        description={element.certificate.description}
+        onDelete={onDeleteCertification}
+      />
+    {:else}
+      <div class="CertificationsList-empty-message">
+        <p>
+          {$_(
+            "certificationsList.theCompayDoesNotHaveCertificationsThatIdentifyItYet"
+          )}
+        </p>
+      </div>
+    {/each}
+  </HorizontalScrollList>
+</div>
 
 <style>
   .CertificationsList {
@@ -73,39 +119,3 @@
     }
   }
 </style>
-
-<div class="CertificationsList">
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <CertificationForm
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData} />
-    </Modal>
-  {/if}
-
-  <h3 class="CertificationsList-headline">Certificaciones</h3>
-
-  {#if isEditableProfile}
-    <div class="CertificationsList-card--create">
-      <div on:click={toggleEditableMode}>
-        <CreateButton size={25} />
-      </div>
-    </div>
-  {/if}
-  <HorizontalScrollList
-    id="certifications-list"
-    beginningItemsNumber={certificationsList.length}>
-    {#each certificationsList as element}
-      <CertificationCard
-        id={element.certificate.id}
-        media={element.certificate.logo}
-        name={element.certificate.name}
-        description={element.certificate.description}
-        onDelete={onDeleteCertification} />
-    {:else}
-      <div class="CertificationsList-empty-message">
-        <p>La compañia todavía no tiene certificaciones que la identifiquen</p>
-      </div>
-    {/each}
-  </HorizontalScrollList>
-</div>

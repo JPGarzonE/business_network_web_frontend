@@ -12,6 +12,7 @@
     "polka": "^0.5.2",
     "sirv": "^1.0.1",
     "svelte-file-dropzone": "0.0.10",
+    "svelte-i18n": "^3.3.0",
     "svelte-material-icons": "^1.0.3"
   },
   "main": "index.js",

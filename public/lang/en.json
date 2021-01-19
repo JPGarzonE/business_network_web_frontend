@@ -1,0 +1,170 @@
+{
+    "authenticationContainer": {
+        "signIn": "Sign In",
+        "signUp": "Sign Up"
+    },
+    "certificationForm": {
+        "addCertificate": "Add certificate",
+        "addDescription ": "Add description",
+        "itMustBeTheImageOfTheEntityThatIssuesTheCertificate": "* It must be the image of the entity that issues the certificate. Not the document",
+        "nameOfTheCertificate": "Name of the certificate",
+        "updateCertificate": "Update certificate",
+        "uploadTheImageOfYourCertificate": "Upload the image of your certificate"
+    },
+    "certificationsList": {
+        "certifications": "Certifications",
+        "theCompayDoesNotHaveCertificationsThatIdentifyItYet": "The Company does not have certifications that identify it yet."
+    },
+    "dropZone": {
+        "dragAndDropTheFileOrUploadItFromYourComputer": "Drag and drop the file or upload it from your computer.",
+        "dragAndDropTheFile": "= Drag and drop the file",
+        "orUploadItFromYourComputer": "or upload it from your computer.",
+        "uploadImage": "Upload image"
+    },
+    "header": {
+        "goToTheMarket": "Go to the market",
+        "signIn": "Sign In",
+        "signUp": "Sign Up"
+    },
+    "home": {
+        "contactUs": "Contact us",
+        "signUpForFree": "Sign Up for Free"
+    },
+    "index": {
+        "allOfOurBuyersHaveBeenVerifiedAgainstDifferentInternationalBackground": "* All of our buyers have been verified against different international background lists",
+        "allOfOurSuppliersHaveBeenVerifiedAgainstDifferentInternational": "*All of our suppliers have been verified against different international background lists",
+        "avoidFraudulentProcessesThroughOurModelThatAllowsUsToSecureYourPayment": "Avoid fraudulent processes through our ESCROW model that allows us to secure your payment and guarantee the transparency of any transaction.",
+        "bePartOfTheInternationalTradeNetworkThatIsConnectingTheMostCompetitive": "Be part of the international trade network that is connecting the most competitive offers on the market with previously verified buyers.",
+        "connectWithInternationalBuyersAndSuppliersAroundTheWorld": "Connect with international buyers and suppliers around the world",
+        "createYourProfileInConectyWhereYouCanEasilyHaveADigitalExposure": "Create your profile in Conecty, where you can easily have a digital exposure with hundreds of international buyers who have undergone previous security checks",
+        "digitalExposureWithInternationalBuyers": "Digital exposure with international buyers",
+        "findInAnOrganizedWayTheRelevantInformationAboutTheProductsYou": "Find, in an organized way, the relevant information about the products you require, with our search tool and access one of the networks of qualified suppliers in Latin America.",
+        "learnMoreAboutThisModelByContactingOurSalesConsultants": "Learn more about this model by contacting our sales consultants.",
+        "searchYourProductsTheEasyWay": "Search your products the easy way",
+        "secureYourPaymentsWithUs": "Secure your payments with us"
+    },
+    "loginForm": {
+        "doNotHaveAnAccount": "Dont have an account?",
+        "logIn": "Log in",
+        "mail": "Mail*",
+        "password": "Password*",
+        "signUp": "Sign Up",
+        "weAreGladToSeeYouAgain": "¡Glad to see you again!"
+    },
+    "market": {
+        "insertTheTariffSubheading": "Insert the tariff subheading",
+        "thereIsNoContentAvailable": "There is no content available"
+    },
+    "marketBanner": {
+        "welcomToTheNewWayOfMeetingSuppliers": "Welcome to the new way of meeting suppliers, vendors, and international allies."
+    },
+    "productForm": {
+        "addDescription": "Add description",
+        "addProduct": "Add product",
+        "categoryOfTheProduct": "category of the product*",
+        "maximumPrice ": "Maximum Price*",
+        "minimumPrice": "Minimum Price*",
+        "minimumPurchase ": "Minimum Purchase",
+        "nameOfTheProduct": "Name of thye Product*",
+        "productCertifications": "Product Certifications",
+        "tariffHeading": "Tariff Heading",
+        "unitOfMesurement ": "Unit of Measurement",
+        "updateProduct": "Update product"
+    },
+    "productList": {
+        "theCompanyHasNotAddedAnyProducts": "The company has not added any clients yet. ",
+        "moreProducts":"Show more products",
+        "lessProducts":"Show less products"
+    },
+    "profileIconMenu": {
+        "editProfile": "Edit profile",
+        "signOut": "Sign Out"
+    },
+    "profileIdentityForm": {
+        "acceptAndDisplay": "Accept and Display",
+        "adress": "Adress",
+        "changeYourMainData": "Change your main data",
+        "city": "City",
+        "code": "Code",
+        "contactCellphone": "Contact celphone",
+        "country": "Country",
+        "throughThisNumberVerifiedBuyerWillBeAbleToCOntactYou": "* Through this number, verified Conecty buyers will be able to contact you.",
+        "webPage": "Web page",
+        "withOneClickWeConectItDirectlyToWhatsapp": "With one click we connect it directly to whatsapp so that contacting you is a matter of seconds!"
+    },
+    "profileLogoUpload": {
+        "addLogo": "Add logo",
+        "uploadImage": "Upload image",
+        "uploadTheLogoOrImageThatRepresentsYourComany": "= Upload the logo or image that represents your company!",
+        "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "You will have more opportunities to attract new costumers and close deals.",
+        "thisIsHowYourCompanyProfileImage":"¡This is How your company profile image will look like!",
+        "changeImage":"Change Image"
+    },
+    "profileVerification": {
+        "companyNotVerified": "Company not verified",
+        "verifiedCompany": "Verified company",
+        "theCompanyIsInTheProcessOfVerification": "The company is in process of verification.",
+        "CheckinTheNextFewHours":"Check in the next few hours",
+        "theMailIsFoundInTheCertificate":"the mail found in the JuanPablo certificate",
+        "toFinishTheProcess":"to finish the process.",
+        "yourCompanyIsNotYetVerified":"Your company is not yet verified, upload your certificate of",
+        "chamberOfCommerceHere":"JuanPablo here",
+        "clickHere":"click here",
+        "toUploadTheCertificate":"To upload the JuanPablo certificate, otherwise you will not be able to publish your profile"
+    },
+    "relationshipList": {
+        "theCompanyHasNotAddeAnyClientsYet": "The company has not added any clients yet.",
+        "whoWorksWithUs": "Who works with us?."
+    },
+    "signUpBuyerForm": {
+        "acceptAndJoin": "Accept and Join",
+        "and": " and ",
+        "companyID": "Company ID",
+        "companyInformation": "Company information",
+        "confirmPassword": "Confirm password",
+        "fullName": "Full Name ",
+        "iHaveReadUnderstoodAndAcceptedThe": "I have read, understood and accepted the ",
+        "mail": "Mail",
+        "nameOfTheCompany": "Name of the company",
+        "next": "Next",
+        "password": "Password",
+        "signIn": "Sign in",
+        "signUpInformation": "Sign up information",
+        "termsAndConditions": "terms and conditions",
+        "theDataProtectionPolicy": "data protection policy"
+    },
+    "signUpForm": {
+        "acceptAndJoin": "Accept and Join",
+        "alreadyHaveAnAccount": "Already have an account? ",
+        "and": " and ",
+        "companyInformation": "Company information",
+        "confirmPassword": "Confirm password",
+        "fullName": "Full Name",
+        "iHaveReadUnderstoodAndAcceptedThe": "I have read, understood and accepted the ",
+        "ifYouDoNotHaveItAtTheMoment": "* if you do not have it at the momento, you can skip this step.",
+        "industry": "Industry*",
+        "mail": "Mail",
+        "nameOfTheCompany": "Name of the company",
+        "next": "Next",
+        "password": "Password",
+        "signIn": "Sign in",
+        "signUpInformation": "Sign up information",
+        "taxID": "TAX ID*",
+        "termsAndConditions": "terms and conditions",
+        "theDataProtectionPolicy": "data protection policy",
+        "uploadCertificateOfExistence": "Upload your certificate of existence "
+    },
+    "unregisteredRelationshipForm": {
+        "addClient": "Add client",
+        "category": "Category*",
+        "clientName": "client Name*",
+        "countryOfOrigin": "Country of origin ",
+        "updateClient": "Update client",
+        "whichOther": "Which other?",
+        "minCharacters": "At least {num} characters",
+        "maxCharacters" : "At most {num} characters",
+        "requiredIndustry": "INdustry required",
+        "requiredName":"Name Required",
+        "requiredRelation":"Relation Required"
+    }
+}

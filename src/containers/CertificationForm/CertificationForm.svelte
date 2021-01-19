@@ -1,48 +1,49 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
-  import Textfield from '@smui/textfield';
-  import HelperText from '@smui/textfield/helper-text';
-  import CharacterCounter from '@smui/textfield/character-counter/index';
-  import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
-  import Dropzone from '../../components/Dropzone/Dropzone.svelte';
-  import CertificationsService from '../../services/suppliers/certifications.service.js';
+  import { getContext } from "svelte";
+  import { stores } from "@sapper/app";
+  import Textfield from "@smui/textfield";
+  import HelperText from "@smui/textfield/helper-text";
+  import CharacterCounter from "@smui/textfield/character-counter/index";
+  import PlusCircleOutline from "svelte-material-icons/PlusCircleOutline.svelte";
+  import Dropzone from "../../components/Dropzone/Dropzone.svelte";
+  import CertificationsService from "../../services/suppliers/certifications.service.js";
+  import { _ } from "../../services/i18n";
 
   export let afterSubmit;
   export let CertificationElement; // Pass if is an update form
   const { session } = stores();
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
-  const fields = ['name', 'description'];
+  const fields = ["name", "description"];
 
   const certificationEditData = CertificationElement
     ? CertificationElement
     : {};
 
-  let name = certificationEditData.name ? certificationEditData.name : '';
+  let name = certificationEditData.name ? certificationEditData.name : "";
   let description = certificationEditData.description
     ? certificationEditData.description
-    : '';
-  let media = certificationEditData.media ? certificationEditData.media : '';
+    : "";
+  let media = certificationEditData.media ? certificationEditData.media : "";
   let newMediaFile;
   let formErrorMessage = null;
-  let nameFeedback = '';
-  let descriptionFeedback = '';
+  let nameFeedback = "";
+  let descriptionFeedback = "";
 
   function validateName() {
     if (name && name.length >= 2) {
       if (name.length > 50) {
-        nameFeedback = 'Máximo 50 caracteres';
+        nameFeedback = "Máximo 50 caracteres";
         return false;
       }
 
-      nameFeedback = '';
+      nameFeedback = "";
       return true;
     } else if (name && name.length > 0 && name.length <= 2) {
-      nameFeedback = 'Mínimo 2 caracteres';
+      nameFeedback = "Mínimo 2 caracteres";
       return false;
     } else {
-      nameFeedback = 'El nombre es obligatorio';
+      nameFeedback = "El nombre es obligatorio";
       return false;
     }
   }
@@ -58,17 +59,17 @@
       description.length > 0 &&
       description.length < 2
     ) {
-      descriptionFeedback = 'Mínimo 2 caracteres';
+      descriptionFeedback = "Mínimo 2 caracteres";
       return false;
     }
 
-    descriptionFeedback = '';
+    descriptionFeedback = "";
     return true;
   }
 
   function validateCertificationForm() {
     if (!(validateName() && validateDescription())) {
-      formErrorMessage = 'Los datos no son válidos';
+      formErrorMessage = "Los datos no son válidos";
       throw new Error();
     } else {
       formErrorMessage = null;
@@ -78,7 +79,7 @@
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
+    Target.style.cursor = "not-allowed";
 
     try {
       if (isEditableProfile) {
@@ -100,14 +101,14 @@
       const error = e.message;
       fields.map((field) => {
         if (error[field]) {
-          formErrorMessage += `${formErrorMessage ? '\n' : null}${field}: ${
+          formErrorMessage += `${formErrorMessage ? "\n" : null}${field}: ${
             error[field]
           }`;
         }
       });
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 
@@ -160,8 +161,92 @@
   }
 </script>
 
+<div class="CertificationForm ProfileForm">
+  <button
+    class="CertificationForm-close-button ProfileForm-close-button"
+    on:click>
+    <span>X</span>
+  </button>
+
+  <div class="CertificationForm-headline">
+    <h3 class="CertificationForm-title">
+      {CertificationElement
+        ? $_("certificationForm.updateCertificate")
+        : $_("certificationForm.addCertificate")}
+    </h3>
+
+    {#if formErrorMessage}
+      <div class="form-banner--invalid">
+        <p>{formErrorMessage}</p>
+      </div>
+    {:else if !CertificationElement}
+      <p class="CertificationForm-subtitle">
+        {$_("certificationForm.uploadTheImageOfYourCertificate")}
+      </p>
+    {/if}
+  </div>
+
+  <div class="CertificationForm-preview">
+    <Dropzone
+      id="CertificationForm"
+      bind:imageFile={newMediaFile}
+      imagePath={media ? media.path : null}
+    />
+  </div>
+
+  <p class="CertificationForm-advice">
+    {$_(
+      "certificationForm.itMustBeTheImageOfTheEntityThatIssuesTheCertificate"
+    )}
+  </p>
+
+  <form class="CertificationForm-form ProfileForm-form">
+    <div class="form-group">
+      <Textfield
+        style="width: 100%;"
+        variant="outlined"
+        bind:value={name}
+        label={$_("certificationForm.nameOfTheCertificate")}
+        input$aria-controls="certificate-name"
+        input$aria-describedby="certificate-name"
+        input$maxlength="50"
+        on:input={validateName}
+      />
+      <HelperText id="certificate-name">{nameFeedback}</HelperText>
+    </div>
+
+    <div class="form-group">
+      <Textfield
+        fullwidth
+        textarea
+        variant="outlined"
+        bind:value={description}
+        label={$_("certificationForm.addDescription")}
+        input$aria-controls="certificate-description"
+        input$aria-describedby="certificate-description"
+        input$maxlength="155"
+        on:input={validateDescription}
+      >
+        <CharacterCounter>0 / 50</CharacterCounter>
+      </Textfield>
+      <HelperText id="certificate-description">
+        {descriptionFeedback}
+      </HelperText>
+    </div>
+
+    <button
+      on:click|preventDefault={submit}
+      class="CertificationForm-button button button--secondary">
+      <PlusCircleOutline size={15} />
+      {CertificationElement
+        ? $_("certificationForm.updateCertificate")
+        : $_("certificationForm.addCertificate")}
+    </button>
+  </form>
+</div>
+
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .CertificationForm-headline {
     width: 100%;
@@ -212,76 +297,3 @@
     }
   }
 </style>
-
-<div class="CertificationForm ProfileForm">
-  <button
-    class="CertificationForm-close-button ProfileForm-close-button"
-    on:click>
-    <span>X</span>
-  </button>
-
-  <div class="CertificationForm-headline">
-    <h3 class="CertificationForm-title">
-      {CertificationElement ? 'Actualiza tu certificado' : 'Añadir certificado'}
-    </h3>
-
-    {#if formErrorMessage}
-      <div class="form-banner--invalid">
-        <p>{formErrorMessage}</p>
-      </div>
-    {:else if !CertificationElement}
-      <p class="CertificationForm-subtitle">Sube la imagen de tu certificado</p>
-    {/if}
-  </div>
-
-  <div class="CertificationForm-preview">
-    <Dropzone
-      id="CertificationForm"
-      bind:imageFile={newMediaFile}
-      imagePath={media ? media.path : null} />
-    </div>
-
-    <p class="CertificationForm-advice">
-      * Debe ser la imagen de la entidad que emite el certificado. No la del documento.
-    </p>
-
-  <form class="CertificationForm-form ProfileForm-form">
-    <div class="form-group">
-      <Textfield
-        style="width: 100%;"
-        variant="outlined"
-        bind:value={name}
-        label="Nombre del certificado*"
-        input$aria-controls="certificate-name"
-        input$aria-describedby="certificate-name"
-        input$maxlength="50"
-        on:input={validateName} />
-      <HelperText id="certificate-name">{nameFeedback}</HelperText>
-    </div>
-
-    <div class="form-group">
-      <Textfield
-        fullwidth
-        textarea
-        variant="outlined"
-        bind:value={description}
-        label="Añadir descripción"
-        input$aria-controls="certificate-description"
-        input$aria-describedby="certificate-description"
-        input$maxlength="155"
-        on:input={validateDescription}>
-        <CharacterCounter>0 / 50</CharacterCounter>
-      </Textfield>
-      <HelperText id="certificate-description">
-        {descriptionFeedback}
-      </HelperText>
-    </div>
-
-    <button
-      on:click|preventDefault={submit}
-      class="CertificationForm-button button button--secondary">
-      <PlusCircleOutline size={15} />
-      {CertificationElement ? 'Actualizar certificado' : 'Añadir certificado'}
-    </button>
-  </form>
-</div>

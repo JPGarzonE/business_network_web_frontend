@@ -1,79 +1,103 @@
 <script context="module">
-    export async function preload(page, session) {
-        if( session.authenticated ) {
-            return this.redirect(301, '/market');
-        }
+  import { _ } from "../services/i18n";
+
+  export async function preload(page, session) {
+    if (session.authenticated) {
+      return this.redirect(301, "/market");
     }
+  }
 </script>
 
 <script>
-    import Header from "../components/Header.svelte";
-    import Home from "../containers/Home/Home.svelte";
-    import Footer from "../components/Footer.svelte";
+  import Header from "../components/Header.svelte";
+  import Home from "../containers/Home/Home.svelte";
+  import Footer from "../components/Footer.svelte";
 
-    let homeAuthenticationOpen = false;
-    let authenticationContainerState = "signup";
+  let homeAuthenticationOpen = false;
+  let authenticationContainerState = "signup";
 
-    const content = {
-        "title": "Conecta con compradores y proveedores internacionales alrededor del mundo.",
-        "subtitle": "Se parte de la red de comercio internacional que está conectando las ofertas más competitivas del mercado con compradores previamente verificados.",
-        "features": [
-            {
-                "title": "Busca tus productos de forma fácil",
-                "description": "Encuentra de manera organizada, la información relevante acerca de los productos que requieres, con nuestra herramienta de busqueda y accede a una de las redes de proveedores calificados de America latina.",
-                "advice": "*Todos nuestros proveedores han sido verificados en diferentes listas de antecedentes internacionales."
-            },
-            {
-                "title": "Exposición digital con compradores internacionales",
-                "description": "Crea tu perfil en Conecty, donde de forma fácil podrás tener una exposición digital con cientos de compradores internacionales quienes han sido sometidos a verificaciones de seguridad previas.",
-                "advice": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales"
-            },
-            {
-                "title": "Asegura tus pagos con nosotros",
-                "description": "Evita procesos fraudulentos por medio de nuestro modelo fiduciario que nos permite asegurar tu pago y garantizar la transparencia de cualquier transacción.",
-                "advice": "Conoce más sobre este modelo contactando a nuestros asesores de venta."
-            }
-        ]
-    }
+  const content = {
+    title: $_("index.connectWithInternationalBuyersAndSuppliersAroundTheWorld"),
+    subtitle: $_(
+      "index.bePartOfTheInternationalTradeNetworkThatIsConnectingTheMostCompetitive"
+    ),
+    features: [
+      {
+        title: $_("index.searchYourProductsTheEasyWay"),
+        description: $_(
+          "index.findInAnOrganizedWayTheRelevantInformationAboutTheProductsYou"
+        ),
+        advice: $_(
+          "index.allOfOurSuppliersHaveBeenVerifiedAgainstDifferentInternational"
+        ),
+      },
+      {
+        title: $_("index.digitalExposureWithInternationalBuyers"),
+        description: $_(
+          "index.createYourProfileInConectyWhereYouCanEasilyHaveADigitalExposure"
+        ),
+        advice: $_(
+          "index.allOfOurSuppliersHaveBeenVerifiedAgainstDifferentInternational"
+        ),
+      },
+      {
+        title: $_("index.secureYourPaymentsWithUs"),
+        description: $_(
+          "index.avoidFraudulentProcessesThroughOurModelThatAllowsUsToSecureYourPayment"
+        ),
+        advice: $_(
+          "index.learnMoreAboutThisModelByContactingOurSalesConsultants"
+        ),
+      },
+    ],
+  };
 </script>
 
-<style>
-    .Header {
-        position: fixed;
-        width: 100%;
-        z-index: 10;
-    }
-</style>
-
 <svelte:head>
-    <!-- Hotjar Tracking Code for joinconecty.com -->
-    <script>
-        (function(h,o,t,j,a,r){
-            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-            h._hjSettings={hjid:2111995,hjsv:6};
-            a=o.getElementsByTagName('head')[0];
-            r=o.createElement('script');r.async=1;
-            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    </script>
-
-    <title>Conecty</title>
+  <!-- Hotjar Tracking Code for joinconecty.com --><script>
+    (function (h, o, t, j, a, r) {
+      h.hj =
+        h.hj ||
+        function () {
+          (h.hj.q = h.hj.q || []).push(arguments);
+        };
+      h._hjSettings = { hjid: 2111995, hjsv: 6 };
+      a = o.getElementsByTagName("head")[0];
+      r = o.createElement("script");
+      r.async = 1;
+      r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+      a.appendChild(r);
+    })(window, document, "https://static.hotjar.com/c/hotjar-", ".js?sv=");
+  </script><title>Conecty</title>
 </svelte:head>
 
 <div class="Header">
-    <Header 
-        signupActionButton={() => {homeAuthenticationOpen = true; authenticationContainerState = "signup"}}
-        loginActionButton={() => {homeAuthenticationOpen = true; authenticationContainerState = "login"}}
-    />
+  <Header
+    signupActionButton={() => {
+      homeAuthenticationOpen = true;
+      authenticationContainerState = "signup";
+    }}
+    loginActionButton={() => {
+      homeAuthenticationOpen = true;
+      authenticationContainerState = "login";
+    }}
+  />
 </div>
 
 <div class="index">
-    <Home 
-        bind:homeAuthenticationOpen
-        bind:authenticationContainerState
-        content={content}
-    />
+  <Home
+    bind:homeAuthenticationOpen
+    bind:authenticationContainerState
+    {content}
+  />
 </div>
 
 <Footer />
+
+<style>
+  .Header {
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+  }
+</style>

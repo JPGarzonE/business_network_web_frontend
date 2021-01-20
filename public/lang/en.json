@@ -15,6 +15,12 @@
         "certifications": "Certifications",
         "theCompayDoesNotHaveCertificationsThatIdentifyItYet": "The Company does not have certifications that identify it yet."
     },
+    "companyContact":{
+        "joinToContact":"Join To Contact",
+        "thisUserDoNotHaveRegisteredContactNumber":"This User Do not have registered contact number",
+        "talkToOurSalesConsultantToCOntact":"Talk to our sales consultant and will get in touch.",
+        "cantContactDirectlyUntilVerified":"Cant contact directly until verified"
+    },
     "dropZone": {
         "dragAndDropTheFileOrUploadItFromYourComputer": "Drag and drop the file or upload it from your computer.",
         "dragAndDropTheFile": "= Drag and drop the file",
@@ -74,11 +80,15 @@
     "productList": {
         "theCompanyHasNotAddedAnyProducts": "The company has not added any clients yet. ",
         "moreProducts":"Show more products",
-        "lessProducts":"Show less products"
+        "lessProducts":"Show less products",
+        "productsAndServicesPortfolio":"Products and services Portfolio"
     },
     "profileIconMenu": {
         "editProfile": "Edit profile",
         "signOut": "Sign Out"
+    },
+    "profileIdentity":{
+            "itdoesnthaveyet":"It doesn't have one yet"
     },
     "profileIdentityForm": {
         "acceptAndDisplay": "Accept and Display",
@@ -114,7 +124,7 @@
     },
     "relationshipList": {
         "theCompanyHasNotAddeAnyClientsYet": "The company has not added any clients yet.",
-        "whoWorksWithUs": "Who works with us?."
+        "whoWorksWithUs": "Who works with us"
     },
     "signUpBuyerForm": {
         "acceptAndJoin": "Accept and Join",

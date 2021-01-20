@@ -7,7 +7,7 @@
   import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
   import HomeOutline from "svelte-material-icons/HomeOutline.svelte";
   import LocaleSwitcher from "../components/LocaleSwitcher/LocaleSwitcher.svelte";
-  import { _, setupI18n } from "../services/i18n";
+  import { _, locale, locales } from "svelte-i18n";
 
   let gotoSignup = async () => {
     document.body.style.cursor = "wait";
@@ -66,10 +66,25 @@
           </div>
         </span>
       </div>
-      <LocaleSwitcher
-        value="es"
-        on:locale-changed={(e) => setupI18n({ withLocale: e.detail })}
-      />
+      <ul class="lang">
+        {#each $locales as item}
+          <li>
+            <span
+              class="lang-flags"
+              class:selected={$locale.includes(item)}
+              href={`#!${item}`}
+              on:click={() => ($locale = item)}>
+              <img
+                class="image-Logo"
+                src="images/lang/{item}.png"
+                alt=" "
+                style="height: auto;
+    width: 25px;"
+              />
+            </span>
+          </li>
+        {/each}
+      </ul>
       {#if userIsAuthenticated}
         <div class="Header-user-data">
           {#if actualPath !== `/market`}
@@ -126,6 +141,12 @@
     padding: 0px 2em;
     font-size: 0.85em;
     color: white;
+  }
+  .lang {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .Header-logo {
@@ -193,7 +214,6 @@
       font-size: 1.2em;
     }
   }
-
   @media screen and (min-width: 525px) {
     .Header-user-authenticate {
       width: 300px;

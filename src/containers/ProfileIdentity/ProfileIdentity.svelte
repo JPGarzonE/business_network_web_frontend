@@ -8,6 +8,7 @@
   import { getContext } from "svelte";
   import Web from "svelte-material-icons/Web.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
+  import { _ } from "svelte-i18n";
 
   export let name;
   export let industry;
@@ -46,6 +47,68 @@
     editableMode = false;
   }
 </script>
+
+<div class="ProfileIdentity">
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <ProfileIdentityForm
+        {name}
+        {industry}
+        {webUrl}
+        {location}
+        {contact}
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+      />
+    </Modal>
+  {/if}
+
+  <div class="ProfileIdentity-container">
+    <div class="ProfileIdentity-content">
+      <ProfileLogo {logo} />
+      <ProfileVerification />
+
+      <div class="ProfileIdentity-NameContainer">
+        <p class="ProfileIdentity-name">{name}</p>
+        {#if isEditableProfile}
+          <div class="ProfileIdentity-NameEditor">
+            <EditButton size={17} color="gray" onEdit={toggleEditableMode} />
+          </div>
+        {/if}
+      </div>
+
+      <div class="ProfileIdentity-subheadline">
+        <p class="ProfileIdentity-industry">{industry}</p>
+        {#if locationSubtitle}
+          <p class="ProfileIdentity-location">{locationSubtitle}</p>
+        {/if}
+      </div>
+
+      <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><MapMarkerOutline /></i>
+        <span class="ProfileIdentity-address"
+          >{address ? address : $_("profileIdentity.itdoesnthaveyet")}</span
+        >
+      </p>
+      <!-- <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><GoogleTranslate /></i>
+        No tiene aún
+      </p> -->
+      <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><Web /></i>
+        <a class="ProfileIdentity-webUrl" href={webUrl} target="_blank"
+          >{webUrl ? webUrl : $_("profileIdentity.itdoesnthaveyet")}</a
+        >
+      </p>
+
+      <div class="ProfileIdentity-contact-me">
+        {#if !isEditableProfile}
+          <CompanyContact {contact} />
+        {/if}
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
   @import "/styles/form.css";
@@ -152,61 +215,3 @@
     }
   }
 </style>
-
-<div class="ProfileIdentity">
-
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <ProfileIdentityForm
-        {name} {industry} {webUrl} 
-        {location} {contact}
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData} />
-    </Modal>
-  {/if}
-
-  <div class="ProfileIdentity-container">
-    <div class="ProfileIdentity-content">
-      <ProfileLogo {logo} />
-      <ProfileVerification />
-
-      <div class="ProfileIdentity-NameContainer">
-        <p class="ProfileIdentity-name">{name}</p>
-        {#if isEditableProfile}
-          <div class="ProfileIdentity-NameEditor">
-            <EditButton size={17} color="gray" onEdit={toggleEditableMode} />
-          </div>
-        {/if}
-      </div>
-  
-      <div class="ProfileIdentity-subheadline">
-        <p class="ProfileIdentity-industry">{industry}</p>
-        {#if locationSubtitle}
-          <p class="ProfileIdentity-location">{locationSubtitle}</p>
-        {/if}
-      </div>
-
-      <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><MapMarkerOutline /></i>
-        <span
-          class="ProfileIdentity-address">{address ? address : 'No tiene aún'}</span>
-      </p>
-      <!-- <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><GoogleTranslate /></i>
-        No tiene aún
-      </p> -->
-      <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><Web /></i>
-        <a class="ProfileIdentity-webUrl" href={webUrl} 
-          target="_blank">{webUrl ? webUrl : 'No tiene aún'}</a>
-      </p>
-
-      <div class="ProfileIdentity-contact-me">
-        {#if !isEditableProfile}
-          <CompanyContact {contact} />
-        {/if}
-      </div>
-
-    </div>
-  </div>
-</div>

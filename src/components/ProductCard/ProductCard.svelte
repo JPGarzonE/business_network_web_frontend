@@ -93,7 +93,7 @@
         <img src={principalImage.path} alt={name}
             class="ProductCard-media-image" />
     {:else}
-        <img src="/images/profile_icon.svg" alt={name}
+        <img src="/images/default_product.png" alt={name}
             class="ProductCard-media-image--default" />
     {/if}
     </figure>
@@ -108,7 +108,7 @@
     <p class="ProductCard-price">
         {minimum_price} 
         {maximum_price != null ? ` - ${maximum_price}` : ""}
-        {currency.code}
+        {currency && currency.code ? currency.code : ""}
     </p>
     {/if}
 </div>

@@ -39,7 +39,7 @@
             
             // Here we not use goto because the server has to render an authenticated content after login
             // With goto this not happen because the render acts only on the client
-            location.href = `/profile/${accountname}`;
+            location.href = `/profile/suppliers/${accountname}`;
         }
         catch(e){
             const errors = e.message;

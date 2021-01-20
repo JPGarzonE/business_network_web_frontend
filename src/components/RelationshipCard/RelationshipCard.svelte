@@ -12,6 +12,7 @@
   export let isRegisteredCompany = false;
   export let username;
   export let relationshipData;
+  export let isSample = false;
 
   let confirmationMode = false;
 
@@ -56,16 +57,20 @@
 
   async function deleteRelationship() {
     toggleConfirmation();
-    try {
-      const unregisteredServiceInstance = new UnregisteredRelationshipService();
-      await unregisteredServiceInstance.deleteUnregisteredRelationship(
-        $session.company_accountname,
-        relationshipData.id,
-        $session.accessToken
-      );
-      onDelete(relationshipData.id);
-    } catch (e) {
-      console.error(e);
+    if( !isSample ) {
+
+      try {
+        const unregisteredServiceInstance = new UnregisteredRelationshipService();
+        await unregisteredServiceInstance.deleteUnregisteredRelationship(
+          $session.company_accountname,
+          relationshipData.id,
+          $session.accessToken
+        );
+        onDelete(relationshipData.id);
+      } catch (e) {
+        console.error(e);
+      }
+
     }
   }
 
@@ -115,7 +120,7 @@
     max-width: 150px;
     display: flex;
     justify-content: center;
-    margin: 0px 10px;
+    margin: 0 10px 22px;
     border-radius: 100%;
   }
 
@@ -125,16 +130,22 @@
     border-radius: inherit;
   }
 
+  .RelationshipCard-logo-image--default {
+    width: 150px;
+    border: 1px solid var(--light-color);
+    padding: 15%;
+    border-radius: inherit;
+  }
+
   .RelationshipCard-name {
     font-size: 1rem;
     font-weight: bold;
     color: var(--secondary-text-color);
-    text-transform: capitalize;
     margin-bottom: 10px;
   }
   .RelationshipCard-location {
     font-size: 1rem;
-    color: var(--secondary-text-color);
+    color: var(--light-color);
     text-transform: capitalize;
     margin-bottom: 10px;
   }
@@ -163,7 +174,10 @@
 
 {#if confirmationMode && isEditableProfile}
   <ConfirmationModal
-    title="Desea eliminar la relacion con {name}"
+    title={isSample ? 
+      "Agrega una relación y esta desaparecerá" :
+      `Desea eliminar la relacion con ${name}`
+    }
     onAccept={deleteRelationship}
     onDecline={toggleConfirmation} />
 {/if}
@@ -172,7 +186,7 @@
     <UnregisteredRelationshipForm
       on:click={toggleEditableMode}
       afterSubmit={reloadComponentData}
-      unregisteredRelationship={relationshipData} />
+      unregisteredRelationship={isSample ? null : relationshipData} />
   </Modal>
 {/if}
 <div class="RelationshipCard-wrapper">
@@ -191,9 +205,9 @@
     on:click={isRegisteredCompany ? handleRelationshipClick : undefined}>
     <figure class="RelationshipCard-logo-container">
       <img
-        src={logoPath ? logoPath : '/images/profile_icon.svg'}
+        src={logoPath ? logoPath : '/images/default_relationship.png'}
         alt="{name} logo"
-        class="RelationshipCard-logo-image" />
+        class={logoPath ? "RelationshipCard-logo-image" : "RelationshipCard-logo-image--default"} />
     </figure>
     <p class="RelationshipCard-name">
       <a

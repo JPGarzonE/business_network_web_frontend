@@ -66,9 +66,11 @@
         onDelete={onDeleteCertification}
       />
     {:else}
-      <div class="CertificationsList-empty-message">
-        <p>La compañia todavía no tiene certificaciones que la identifiquen</p>
-      </div>
+      <CertificationCard
+        name="Certificación de muestra"
+        description="Descripción de la certificación de muestra"
+        isSample
+      />
     {/each}
   </HorizontalScrollList>
 </div>
@@ -97,16 +99,6 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-  }
-
-  .CertificationsList-empty-message {
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-align: center;
-    color: var(--secondary-text-color);
   }
 
   .Certification-card-create-button {

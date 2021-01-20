@@ -1,5 +1,5 @@
 <script context="module">
-  import ProfilesService from "../../services/suppliers/profiles.service.js";
+  import ProfilesService from "../../../services/suppliers/profiles.service.js";
 
   export async function preload(page, session) {
     const profilesService = new ProfilesService();
@@ -25,13 +25,13 @@
 <script>
   import { setContext } from "svelte";
 
-  import Header from "../../components/Header.svelte";
-  import Footer from "../../components/Footer.svelte";
-  import ProfileIdentity from "../../containers/ProfileIdentity/ProfileIdentity.svelte";
-  import RelationshipsList from "../../containers/RelationshipsList/RelationshipsList.svelte";
-  import CertificationsList from "../../containers/CertificationsList/CertificationsList.svelte";
-  import ProductList from "../../containers/ProductList/ProductList.svelte";
-  import Onboarding from "../../components/Onboarding/OnBoarding.svelte";
+  import Header from "../../../components/Header.svelte";
+  import Footer from "../../../components/Footer.svelte";
+  import ProfileIdentity from "../../../containers/ProfileIdentity/ProfileIdentity.svelte";
+  import RelationshipsList from "../../../containers/RelationshipsList/RelationshipsList.svelte";
+  import CertificationsList from "../../../containers/CertificationsList/CertificationsList.svelte";
+  import ProductList from "../../../containers/ProductList/ProductList.svelte";
+  import Onboarding from "../../../components/Onboarding/OnBoarding.svelte";
   export let editable;
   export let supplier;
   export let principalLocation;
@@ -72,7 +72,7 @@
 </script>
 
 <svelte:head>
-  <title>{supplier.name} - Conecty</title>
+  <title>{supplier.display_name} - Conecty</title>
 </svelte:head>
 
 <svelte:window bind:innerWidth={width} />

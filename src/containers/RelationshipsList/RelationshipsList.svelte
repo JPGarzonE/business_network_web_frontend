@@ -67,7 +67,7 @@
     <div class="RelationshipsList-card--create">
       <div
         on:click={!onBoarding && toggleAddRelationshipDisplay}
-        class={onBoarding ? "Productlist-card-create-button" : ""}
+        class:Productlist-card-create-button={onBoarding}
       >
         <CreateButton
           size={25}
@@ -97,6 +97,7 @@
           },
         }}
         isSample
+        {onBoarding}
       />
     {/each}
   </HorizontalScrollList>

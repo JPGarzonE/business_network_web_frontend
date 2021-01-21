@@ -101,13 +101,14 @@
     <div class="ProductList-card--create-container">
       <div
         on:click={!onBoarding && toggleEditableMode}
-        class={onBoarding ? "Productlist-card-create-button" : ""}
-      />
-      <CreateButton
-        size={25}
-        color={onBoarding ? "white" : "var(--principal-color)"}
-        id="ProductCreate"
-      />
+        class:Productlist-card-create-button={onBoarding}
+      >
+        <CreateButton
+          size={25}
+          color={onBoarding ? "white" : "var(--principal-color)"}
+          id="ProductCreate"
+        />
+      </div>
     </div>
   {/if}
 
@@ -132,6 +133,7 @@
               minimum_price: "Precio",
             }}
             isSample
+            {onBoarding}
           />
         {/if}
       {/each}

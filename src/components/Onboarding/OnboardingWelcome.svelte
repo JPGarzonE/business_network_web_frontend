@@ -2,6 +2,9 @@
   import { onMount } from "svelte";
   export let handleCancel;
   export let handleNext;
+  onMount(() => {
+    window.scrollTo(0, 0);
+  });
 </script>
 
 <div class="ModalOnboarding">

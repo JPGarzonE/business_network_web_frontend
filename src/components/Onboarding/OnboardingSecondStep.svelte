@@ -1,20 +1,21 @@
 <script>
-  import ProfileLogo from "../../components/ProfileLogo/ProfileLogo.svelte";
-  import ButtonChat from "../ButtonChat/ButtonChat.svelte";
-  import ProfileVerification from "../../components/ProfileVerification/ProfileVerification.svelte";
-  import Map from "svelte-material-icons/Map.svelte";
-  import Earth from "svelte-material-icons/Earth.svelte";
-  import Whatsapp from "svelte-material-icons/Whatsapp.svelte";
-  import EditButton from "../EditButton/EditButton.svelte";
-  import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
-  import ProfileIdentity from "../../containers/ProfileIdentity/ProfileIdentity.svelte";
+  import { onMount, beforeUpdate, afterUpdate, onDestroy } from "svelte";
   import PuzzleOutline from "svelte-material-icons/PuzzleOutline.svelte";
   import Check from "svelte-material-icons/ShieldCheckOutline.svelte";
   import Comment from "svelte-material-icons/CommentProcessingOutline.svelte";
 
-  export let supplier;
   export let handleCancel;
   export let handleNext;
+
+  onMount(async () => {
+    window.scrollTo(0, 0);
+  });
+  afterUpdate(async () => {
+    document.getElementsByTagName("body")[0].classList.add("noScroll");
+  });
+  onDestroy(async () => {
+    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+  });
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
@@ -28,30 +29,22 @@
 />
 
 <div class="container">
-  <ProfileIdentity
-    name={supplier.display_name}
-    industry={supplier.industry}
-    webUrl={supplier.web_url}
-    contact={0}
-    location={supplier.location}
-    class="Onboarding"
-  >
-    <Whatsapp />
-  </ProfileIdentity>
   <div class="instructions-container">
     <div class="AddLogoInstruciton">
       <img src="/images/OB2_V3.svg" alt="arrow" class="Arrow First-Arrow" />
-      <span class="Icon Puzzle">
-        <PuzzleOutline size={60} color="white" />
-      </span>
-      <span class="Text Puzzle-Text">
-        Agrega el logo de tu empresa
-        <br />
-        <span class="Text--description">
-          Haz clic en el ícono de edición y adjunta tu logo en formato png o
-          jpg.</span
-        >
-      </span>
+      <div>
+        <span class="Icon Puzzle">
+          <PuzzleOutline size={60} color="white" />
+        </span>
+        <span class="Text Puzzle-Text">
+          Agrega el logo de tu empresa
+          <br />
+          <span class="Text--description">
+            Haz clic en el ícono de edición y adjunta tu logo en formato png o
+            jpg.</span
+          >
+        </span>
+      </div>
     </div>
     <div class="VerifyInstructions">
       <img src="/images/OB2_V2.svg" alt="arrow" class="Arrow Second-Arrow" />
@@ -109,20 +102,20 @@
   }
 
   .instructions-container {
-    width: calc(100% - 260px);
+    width: calc(100% - 290px);
     background-color: transparent;
     position: relative;
   }
   .container {
     max-width: 1400px;
     width: 100%;
-    padding: 25px;
+    padding: 0 25px;
     z-index: 20;
-    display: flex;
-    margin: 0 auto;
     position: relative;
     align-self: flex-start;
-    margin-top: 80px;
+    margin-top: 100px;
+    display: flex;
+    justify-content: flex-end;
   }
   .VerifyInstructions {
     margin-left: 10px;
@@ -139,7 +132,7 @@
     top: 145px;
   }
   .Third-Arrow {
-    top: 410px;
+    top: 425px;
     left: 10px;
   }
   .Icon {

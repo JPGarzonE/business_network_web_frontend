@@ -17,7 +17,7 @@
   export let contact;
   export { className as class };
   let className = "";
-  let Onboarding = className == "Onboarding";
+  $: Onboarding = className == "Onboarding";
 
   const isEditableProfile = getContext("isEditableProfile");
 

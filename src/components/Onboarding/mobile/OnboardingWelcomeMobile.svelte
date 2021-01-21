@@ -5,6 +5,7 @@
 
   onMount(async () => {
     const module = await import("@composi/gestures");
+    window.scrollTo(0, 0);
     module.gestures();
   });
 </script>

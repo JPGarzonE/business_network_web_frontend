@@ -6,6 +6,13 @@
   export let handleNext;
   export let handlePrev;
 
+  afterUpdate(async () => {
+    document.getElementsByTagName("body")[0].classList.add("noScroll");
+  });
+  onDestroy(async () => {
+    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+  });
+
   onMount(async () => {
     scrollToTargetAdjusted();
     const module = await import("@composi/gestures");
@@ -53,26 +60,6 @@
     </span>
   </div>
   <img src="/images/OB_Mobile.svg" alt="Arrow" class="Arrow" id="arrow3" />
-  <div class="Certification-Container">
-    <div class="EditButtonOverride">
-      <EditButton
-        disabled={true}
-        size={20}
-        color="var(--light-color)"
-        onEdit={() => undefined}
-      />
-    </div>
-    <img
-      id="arrow3"
-      src="/images/Example_cert.svg"
-      alt="Ejemplo Certificacion"
-      class="Certification-Image"
-    />
-
-    <p class="Certification-Title">Certificación de muestra</p>
-    <p class="Certification-Content">Certificaciones</p>
-    <p class="Certification-More">Ver mas</p>
-  </div>
 </div>
 
 <style>
@@ -89,47 +76,6 @@
     font-size: 14px;
     font-weight: 900;
   }
-
-  .Certification-Container {
-    margin-top: 55px;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: white;
-    border-radius: 4px;
-    position: relative;
-    padding: 15px;
-    height: fit-content;
-  }
-  .EditButtonOverride {
-    position: absolute;
-    top: 10px;
-    right: 5px;
-  }
-  .Certification-Image {
-    align-self: center;
-  }
-  .Certification-Title {
-    font-weight: bold;
-    font-size: 16px;
-    color: #5384c9;
-    margin: 10px 10px 10px 0;
-  }
-  .Certification-Content {
-    font-weight: normal;
-    font-size: 16px;
-    color: #9e9fa0;
-  }
-  .Certification-More {
-    font-weight: normal;
-    font-size: 16px;
-    align-self: flex-end;
-    text-decoration: underline;
-    color: #5384c9;
-    margin-top: 10px;
-  }
-
   .Main-Container {
     height: 100%;
     align-self: flex-start;
@@ -143,7 +89,7 @@
   .Text-Container {
     max-width: 300px;
     margin-inline: auto;
-    margin-top: 120px;
+    margin-top: 105px;
   }
   .Text {
     color: white;

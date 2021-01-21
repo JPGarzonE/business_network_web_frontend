@@ -1,11 +1,33 @@
 <script>
-  import EditButton from "../../components/EditButton/EditButton.svelte";
+  import { afterUpdate, onDestroy, onMount } from "svelte";
   import Pencil from "svelte-material-icons/PencilOutline.svelte";
   import AddCert from "svelte-material-icons/ImagePlus.svelte";
 
   export let handleCancel;
   export let handleNext;
   export let handlePrev;
+
+  afterUpdate(async () => {
+    document.getElementsByTagName("body")[0].classList.add("noScroll");
+  });
+  onDestroy(async () => {
+    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+  });
+  onMount(async () => {
+    scrollToTargetAdjusted();
+  });
+
+  function scrollToTargetAdjusted() {
+    const btn = document.getElementById("ProductCreate");
+    const arrow = document.getElementById("arrowDesktopProfile");
+    const btnPosition = btn.getBoundingClientRect();
+    const offset = arrow.getBoundingClientRect();
+    const offsetPosition = btnPosition.top - offset.top;
+    window.scrollBy({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
@@ -25,24 +47,6 @@
 />
 
 <div class="Main-Container">
-  <div class="Certification-Container">
-    <div class="EditButtonOverride">
-      <EditButton
-        disabled={true}
-        size={20}
-        color="var(--light-color)"
-        onEdit={() => undefined}
-      />
-    </div>
-    <img
-      src="/images/Sample_Article.svg"
-      alt="Ejemplo Certificacion"
-      class="Certification-Image"
-    />
-    <p class="Certification-Title">Artículo de muestra</p>
-    <p class="Certification-Content">Catgeoría</p>
-    <p class="Certification-More">Precio</p>
-  </div>
   <div class="instructions-container">
     <div class="Edit-Delete">
       <img src="/images/OB4-5_V1.svg" alt="arrow" class="Arrow First-Arrow" />
@@ -68,7 +72,12 @@
           productos
           <br />
         </span>
-        <img src="/images/OB3_V2.svg" alt="arrow" class="Arrow Second-Arrow" />
+        <img
+          src="/images/OB3_V2.svg"
+          alt="arrow"
+          class="Arrow Second-Arrow"
+          id="arrowDesktopProfile"
+        />
       </div>
       <span class="Text--description">
         Adjunta la foto de tus productos con su descripción y precio.</span
@@ -105,73 +114,34 @@
     transform: rotate(180deg);
   }
 
-  .Certification-Container {
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    border-radius: 4px;
-    position: relative;
-    padding: 15px 30px;
-    margin-left: 300px;
-    height: fit-content;
-    margin-top: 60px;
-    max-width: 30%;
-  }
-  .EditButtonOverride {
-    position: absolute;
-    top: 10px;
-    right: 5px;
-  }
-  .Certification-Image {
-    align-self: center;
-  }
-  .Certification-Title {
-    font-weight: bold;
-    font-size: 16px;
-    color: #5384c9;
-    margin: 10px 10px 10px 0;
-  }
-  .Certification-Content {
-    font-weight: normal;
-    font-size: 16px;
-    color: #9e9fa0;
-  }
-  .Certification-More {
-    font-weight: normal;
-    font-size: 16px;
-    color: #9e9fa0;
-    margin-top: 10px;
-    font-weight: bold;
-  }
   .instructions-container {
-    width: 60%;
+    width: 67%;
     display: flex;
     justify-content: flex-end;
     height: 100%;
+    display: flex;
+    align-items: center;
   }
   .Main-Container {
-    align-self: center;
     max-width: 1400px;
     padding: 25px;
     z-index: 20;
     display: flex;
-    margin: 15px auto 30px auto;
     position: relative;
-    justify-content: space-between;
+    justify-content: flex-end;
+    height: 100%;
+    margin-left: 140px;
   }
   .Arrow {
     width: fit-content;
   }
+
   .First-Arrow {
-    top: 10px;
     position: absolute;
-    left: -10px;
+    left: -15px;
+    bottom: 470px;
   }
-  .Second-Arrow {
-    margin-right: 40px;
-  }
+
   .Text {
     color: white;
     font-size: 24px;
@@ -192,13 +162,15 @@
     flex-direction: column;
     margin-left: 10px;
     position: relative;
-    margin-top: 7%;
+    height: 100%;
+    justify-content: center;
+    margin-top: 320px;
   }
   .Icon {
     margin-bottom: 10px;
   }
   .Pencil {
-    margin-top: 80px;
+    margin-top: 70px;
   }
   .Add-Cert {
     display: flex;

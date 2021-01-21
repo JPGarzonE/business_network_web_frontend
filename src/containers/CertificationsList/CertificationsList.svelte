@@ -43,7 +43,7 @@
     <div class="CertificationsList-card--create">
       <div
         on:click={!onBoarding && toggleEditableMode}
-        class={onBoarding ? "Certification-card-create-button" : ""}
+        class:Certification-card-create-button={onBoarding}
       >
         <CreateButton
           size={25}
@@ -70,6 +70,7 @@
         name="Certificación de muestra"
         description="Descripción de la certificación de muestra"
         isSample
+        {onBoarding}
       />
     {/each}
   </HorizontalScrollList>

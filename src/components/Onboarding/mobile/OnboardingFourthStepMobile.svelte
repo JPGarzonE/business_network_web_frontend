@@ -52,25 +52,6 @@
     </span>
   </div>
   <img src="/images/OB_Mobile.svg" alt="Arrow" class="Arrow" id="arrow4" />
-
-  <div class="Products-Container">
-    <div class="EditButtonOverride">
-      <EditButton
-        disabled={true}
-        size={20}
-        color="var(--light-color)"
-        onEdit={() => undefined}
-      />
-    </div>
-    <img
-      src="/images/Sample_Article.svg"
-      alt="Ejemplo Certificacion"
-      class="Products-Image"
-    />
-    <p class="Products-Title">Artículo de muestra</p>
-    <p class="Products-Content">Catgeoría</p>
-    <p class="Products-More">Precio</p>
-  </div>
 </div>
 
 <style>
@@ -86,46 +67,6 @@
     color: white;
     font-size: 14px;
     font-weight: 900;
-  }
-
-  .Products-Container {
-    margin: 55px auto 0;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    border-radius: 4px;
-    position: relative;
-    padding: 15px;
-    height: fit-content;
-    max-width: 240px;
-  }
-  .EditButtonOverride {
-    position: absolute;
-    top: 10px;
-    right: 5px;
-  }
-  .Products-Image {
-    align-self: center;
-  }
-  .Products-Title {
-    font-weight: bold;
-    font-size: 16px;
-    color: #5384c9;
-    margin: 10px 10px 10px 0;
-  }
-  .Products-Content {
-    font-weight: normal;
-    font-size: 16px;
-    color: #9e9fa0;
-  }
-  .Products-More {
-    font-weight: normal;
-    font-size: 16px;
-    color: #9e9fa0;
-    margin-top: 10px;
-    font-weight: bold;
   }
 
   .Main-Container {

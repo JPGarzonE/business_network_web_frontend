@@ -31,56 +31,56 @@
 {#if onboardingOn}
   {#if width > 850}
     {#if onboardingStep == 0}
-      <Modal opacity={0.9}>
+      <Modal>
         <OnboardingWelcome {handleCancel} {handleNext} />
       </Modal>
     {:else if onboardingStep == 1}
-      <Modal opacity={0.9}>
+      <Modal>
         <OnboardingSecondStep {handleCancel} {handleNext} supplier={data} />
         <ProgressButtons numberOfButtons={4} active={0} {changeStep} />
       </Modal>
     {:else if onboardingStep == 2}
-      <Modal opacity={0.9}>
+      <Modal>
         <OnboardingThirdStep {handleCancel} {handleNext} {handlePrev} />
         <ProgressButtons numberOfButtons={4} active={1} {changeStep} />
       </Modal>
     {:else if onboardingStep == 3}
-      <Modal opacity={0.9}>
+      <Modal>
         <OnboardingFourthStep {handleCancel} {handleNext} {handlePrev} />
         <ProgressButtons numberOfButtons={4} active={2} {changeStep} />
       </Modal>
     {:else}
-      <Modal opacity={0.9}>
+      <Modal>
         <OnboardingFifthStep {handleCancel} {handleNext} {handlePrev} />
         <ProgressButtons numberOfButtons={4} active={3} {changeStep} />
       </Modal>
     {/if}
   {:else if onboardingStepMobile == 0}
-    <Modal opacity={0.9}>
+    <Modal>
       <OnboardingWelcomeMobile {handleCancel} {handleNext} />
     </Modal>
   {:else if onboardingStepMobile == 1}
-    <Modal opacity={0.9}>
+    <Modal>
       <OnboardingSecondStepMobile {handleCancel} {handleNext} />
       <ProgressButtons numberOfButtons={5} active={0} {changeStep} />
     </Modal>
   {:else if onboardingStepMobile == 2}
-    <Modal opacity={0.9}>
+    <Modal>
       <OnboardingSecondStepMobile2 {handleCancel} {handleNext} {handlePrev} />
       <ProgressButtons numberOfButtons={5} active={1} {changeStep} />
     </Modal>
   {:else if onboardingStepMobile == 3}
-    <Modal opacity={0.9}>
+    <Modal>
       <OnboardingThirdStepMobile {handleCancel} {handleNext} {handlePrev} />
       <ProgressButtons numberOfButtons={5} active={2} {changeStep} />
     </Modal>
   {:else if onboardingStepMobile == 4}
-    <Modal opacity={0.9}>
+    <Modal>
       <OnboardingFourthStepMobile {handleCancel} {handleNext} {handlePrev} />
       <ProgressButtons numberOfButtons={5} active={3} {changeStep} />
     </Modal>
   {:else}
-    <Modal opacity={0.9}>
+    <Modal>
       <OnboardingFifthStepMobile {handleCancel} {handleNext} {handlePrev} />
       <ProgressButtons numberOfButtons={5} active={4} {changeStep} />
     </Modal>

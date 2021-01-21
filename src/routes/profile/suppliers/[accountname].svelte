@@ -17,7 +17,7 @@
       products: profileData.products,
       certifications: profileData.certificates,
       unregisteredRelationships: profileData.unregistered_relationships,
-      tutorial: profileData.display_tutorial,
+      onboardingOn: profileData.display_tutorial,
     };
   }
 </script>
@@ -35,18 +35,17 @@
   export let editable;
   export let supplier;
   export let principalLocation;
-  export let tutorial;
+  export let onboardingOn;
   let width;
   // export let saleLocations;
   export let products;
   export let certifications;
   export let unregisteredRelationships;
-  let onboardingOn = true;
   let onboardingStep = 0;
   let onboardingStepMobile = 0;
 
   const handleCancel = () => {
-    onboardingOn = false;
+    onboardingOn = true;
   };
 
   const handleNext = () => {
@@ -59,6 +58,7 @@
       onboardingStep -= 1;
       onboardingStepMobile -= 1;
     }
+    torialoc;
   };
 
   const changeStep = (e) => {
@@ -78,7 +78,7 @@
 <svelte:window bind:innerWidth={width} />
 <Header />
 
-{#if !tutorial}
+{#if onboardingOn}
   <Onboarding
     {onboardingOn}
     {onboardingStep}
@@ -92,7 +92,13 @@
 {/if}
 <div class="SupplierProfile">
   <div class="SupplierProfile-content">
-    <section class="SupplierProfile-sidebar">
+    <section
+      class="SupplierProfile-sidebar{onboardingOn &&
+      onboardingStep == 1 &&
+      width > 850
+        ? '--Onboarding'
+        : ''}"
+    >
       <ProfileIdentity
         name={supplier.display_name}
         industry={supplier.industry}
@@ -101,6 +107,7 @@
         contact={null}
         location={principalLocation}
         onboarding={onboardingOn}
+        class={onboardingOn ? "Onboarding" : ""}
       />
     </section>
     <section class="SupplierProfile-main">
@@ -146,6 +153,9 @@
   .SupplierProfile-sidebar {
     position: relative;
     z-index: 20;
+  }
+  .SupplierProfile-sidebar--Onboarding {
+    z-index: 30;
   }
 
   @media screen and (min-width: 850px) {

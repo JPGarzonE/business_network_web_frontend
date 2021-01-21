@@ -48,24 +48,6 @@
     </span>
   </div>
   <img src="/images/OB_Mobile.svg" alt="Arrow" class="Arrow" id="arrow5" />
-  <div class="Certification-Container">
-    <div class="EditButtonOverride">
-      <EditButton
-        disabled={true}
-        size={20}
-        color="var(--light-color)"
-        onEdit={() => undefined}
-      />
-    </div>
-    <img
-      src="/images/twitter.svg"
-      alt="Ejemplo Certificacion"
-      class="Certification-Image"
-    />
-    <p class="Certification-Title">Logo de muestra</p>
-    <p class="Certification-Content">Bog. Colombia</p>
-    <p class="Certification-More">Cervecería</p>
-  </div>
 </div>
 
 <style>
@@ -82,50 +64,6 @@
     color: #537bc9;
     font-size: 14px;
   }
-
-  .Certification-Container {
-    margin: 55px auto 0;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: white;
-    border-radius: 4px;
-    position: relative;
-    padding: 15px;
-    height: fit-content;
-    max-width: 240px;
-  }
-  .EditButtonOverride {
-    position: absolute;
-    top: 10px;
-    right: 5px;
-  }
-  .Certification-Image {
-    align-self: center;
-    border-radius: 50%;
-    border: 1px solid #b3b3b3;
-    padding: 15px;
-  }
-  .Certification-Title {
-    font-weight: bold;
-    font-size: 16px;
-    color: #5384c9;
-    margin: 10px 10px 10px 0;
-  }
-  .Certification-Content {
-    font-weight: normal;
-    font-size: 16px;
-    color: #9e9fa0;
-  }
-  .Certification-More {
-    font-weight: normal;
-    font-size: 16px;
-    color: #5384c9;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-
   .Main-Container {
     height: 100%;
     align-self: flex-start;

@@ -7,11 +7,6 @@
 
   export let contact;
   export let disabled;
-  console.log(
-    "🚀 ~ file: CompanyContact.svelte ~ line 10 ~ disabled",
-    disabled
-  );
-
   const { session } = stores();
 
   let companyContactLink =

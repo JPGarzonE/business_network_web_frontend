@@ -5,7 +5,7 @@
   import Modal from '../Modal.svelte';
   import EditButton from '../EditButton/EditButton.svelte';
   import UnregisteredRelationshipForm from '../../containers/RelationshipForm/UnregisteredRelationshipForm.svelte';
-  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
+  import UnregisteredRelationshipService from '../../services/relationships/unregistered.service.js';
   import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
 
   export let onDelete;

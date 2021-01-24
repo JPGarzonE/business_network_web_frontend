@@ -6,7 +6,7 @@
   import Select, { Option } from '@smui/select';
   import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
 
-  import UnregisteredRelationshipService from '../../services/relationships/unregistered.relationship.service.js';
+  import UnregisteredRelationshipService from '../../services/relationships/unregistered.service.js';
   import { INDUSTRIES } from '../../store/store.js';
 
   export let afterSubmit;

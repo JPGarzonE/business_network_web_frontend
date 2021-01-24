@@ -15,7 +15,7 @@ export default class CompaniesSearchService extends SearchService {
     }
 
     get unregisteredCompaniesSearchPath(){
-        return this.searchPath + "unregistered/";
+        return super.searchPath + "unregistered-companies/";
     }
 
     getCompanyByName( name ){
@@ -33,9 +33,10 @@ export default class CompaniesSearchService extends SearchService {
         if( !query )
             throw new Error("query is required in CompanySearchService.searchCompanies");
 
-        const QueryParams = Object.assign({
+        const QueryParams = {
+            ...params,
             q: query
-        }, params);
+        }
 
         return this.customSearch(this.searchPath, QueryParams );
     }
@@ -45,9 +46,10 @@ export default class CompaniesSearchService extends SearchService {
         if( !query )
             throw new Error("Query is required in CompanySearchService.searchUnregisteredCompanies");
 
-        const QueryParams = Object.assign({
+        const QueryParams = {
+            ...params,
             q: query
-        }, params);
+        }
 
         return this.customSearch(this.unregisteredCompaniesSearchPath, QueryParams );
     }

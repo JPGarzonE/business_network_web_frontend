@@ -6,6 +6,16 @@ export default class RelationshipService extends RequestService{
         super();
     }
 
+    get baseHeader() {
+        return {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    get authPrefix() {
+        return "Bearer";
+    }
+
     getCompanyRelationshipsPath( accountname ){
         return `/companies/${accountname}/relationships/`;
     }
@@ -14,7 +24,9 @@ export default class RelationshipService extends RequestService{
         if( !accountname )
             throw new Error("accountname is required in RelationshipService.getCompanyRelationships");
 
-        return this.get( this.getCompanyRelationshipsPath(accountname), {'Content-Type': 'application/json'}, null );
+        const Headers = {...this.baseHeader};
+
+        return this.get( this.getCompanyRelationshipsPath(accountname), Headers, null );
     }
 
     getCompanyRelationship( accountname, relationshipID ){
@@ -24,9 +36,11 @@ export default class RelationshipService extends RequestService{
         if( !relationshipID )
             throw new Error("Relationship ID is required in RelationshipService.getCompanyRelationship");
 
+        const Headers = {...this.baseHeader};
+
         const RequestUrl = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
 
-        return this.get( RequestUrl, {'Content-Type': 'application/json'}, null );
+        return this.get( RequestUrl, Headers, null );
     }
 
     getCompanyRelationshipFilteredByAddressedCompany( accountname, addressedCompanyID ){
@@ -36,8 +50,13 @@ export default class RelationshipService extends RequestService{
         if( !addressedCompanyID )
             throw new Error("addressedCompanyID is required in RelationshipService.getCompanyRelationshipFilteredByAddressedCompany");
 
-        return this.get( this.getCompanyRelationshipsPath(accountname), 
-            {'Content-Type': 'application/json'}, {'addressed_id': addressedCompanyID} );
+        const Headers = {...this.baseHeader};
+
+        return this.get( 
+            this.getCompanyRelationshipsPath(accountname), 
+            Headers, 
+            {'addressed_id': addressedCompanyID} 
+        );
     }
 
     updateCompanyRelationship( accountname, relationshipID, relationshipData, accessToken ){
@@ -50,14 +69,14 @@ export default class RelationshipService extends RequestService{
         if( !accessToken )
             throw new Error("accessToken is required in RelationshipService.updateCompanyRelationship");
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
+        const Headers = {
+            ...this.baseHeader,
+            'Authorization': `${this.authPrefix} ${accessToken}`
         }
 
-        const RequestUrl = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
+        const RequestUrl = `${this.getCompanyRelationshipsPath(accountname)}${relationshipID}/`;
 
-        return this.patch( RequestUrl, headers, relationshipData );
+        return this.patch( RequestUrl, Headers, relationshipData );
     }
 
     deleteCompanyRelationship( accountname, relationshipID, accessToken ){
@@ -71,11 +90,11 @@ export default class RelationshipService extends RequestService{
             throw new Error("accessToken is required in RelationshipService.updateCompanyRelationship");
 
         const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
+            ...this.baseHeader,
+            'Authorization': `${this.authPrefix} ${accessToken}`
         }
 
-        const RequestUrl = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
+        const RequestUrl = `${this.getCompanyRelationshipsPath(accountname)}${relationshipID}/`;
 
         return this.delete( RequestUrl, headers );
     }

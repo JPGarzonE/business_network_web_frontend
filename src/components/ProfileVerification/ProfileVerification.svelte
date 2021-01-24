@@ -23,15 +23,16 @@
     toggleCertificateForm();
   }
 
-  // onMount(async () => {
-  //   if (isEditableProfile) {
-  //     const data = await companyVerificationService.getCompanyVerification(
-  //       $session.company_accountname,
-  //       $session.accessToken
-  //     );
-  //     verification = data;
-  //   }
-  // });
+  onMount(async () => {
+    if (isEditableProfile) {
+      const data = await companyVerificationService.getCompanyVerification(
+        $session.company_accountname,
+        $session.accessToken
+      );
+      verification = data;
+      console.log("verification: ", verification);
+    }
+  });
 </script>
 
 <style>
@@ -80,21 +81,20 @@
     text-align: center;
     font-size: 0.9rem;
   }
-
-  .ProfileVerification-submit-link {
-    text-decoration: underline;
-    cursor: pointer;
-  }
 </style>
 
 <div class="ProfileVerification">
+
   {#if isVerifiedProfile}
+
     <div class="ProfileVerification-card ProfileVerification-card--verified">
       <span class="icon-check"><CheckDecagram size="22" /></span>
       <span class="ProfileVerification-title">Empresa verificada</span>
     </div>
-  {:else if false}
-    {#if verification && verification.state.toLowerCase() == 'inprogress'}
+
+  {:else if isEditableProfile}
+
+    {#if false && verification && verification.state.toLowerCase() == 'inprogress'}
       <div
         class="ProfileVerification-card ProfileVerification-card--inprogress">
         <span class="ProfileVerification-title">
@@ -105,30 +105,20 @@
           para finalizar el proceso.
         </span>
       </div>
-    {:else if verification && verification.state.toLowerCase() == 'none'}
+    {:else if true || verification && verification.state.toLowerCase() == 'none'}
       <div class="ProfileVerification-card ProfileVerification-card--none">
-        <span class="ProfileVerification-title">
-          Tu empresa aún no esta verificada, sube tu certificado de
-          <a
-            id="profile-submit-certificate-link"
-            class="ProfileVerification-submit-link">
-            camara de comercio aquí
-          </a>
-        </span>
+        <span class="ProfileVerification-title"> Empresa no verificada </span>
       </div>
-    {/if}
-  {:else if isEditableProfile}
-    <div class="ProfileVerification-card ProfileVerification-card--none">
-      <span class="ProfileVerification-title"> Empresa no verificada </span>
-    </div>
 
-    <p class="ProfileVerification-card--call-to-action">
-      Haz
-      <a href="/" on:click|preventDefault={toggleCertificateForm}>clic aquí</a>
-      para subir el certificado de cámara y comercio, de lo contrario no podras
-      publicar tu perfil
-    </p>
+      <p class="ProfileVerification-card--call-to-action">
+        Haz
+        <a href="/" on:click|preventDefault={toggleCertificateForm}>clic aquí</a>
+        para subir el certificado de cámara y comercio, de lo contrario no podras
+        publicar tu perfil
+      </p>
+    {/if}
   {/if}
+
   {#if uploadCertificateForm}
     <Modal on:click={toggleCertificateForm}>
       <CertificateUpload
@@ -137,4 +127,5 @@
         continueWithoutCertificate={toggleCertificateForm} />
     </Modal>
   {/if}
+
 </div>

@@ -10,14 +10,19 @@ export default class ProductsSearchService extends SearchService {
         return super.searchPath + "products/";
     }
 
-    /* params must be an object with key: value */
-    searchProducts( query, params ) {
+    // params must be an object with key: value
+    // fields must be an array
+    searchProducts( query, params, fields ) {
         if( !query )
             throw new Error("query is required in ProductSearchService.searchProducts");
 
-        const QueryParams = Object.assign({
+        let QueryParams = {
+            ...params,
             q: query
-        }, params);
+        }
+
+        if( fields && fields.length > 0 )
+            QueryParams['query_fields'] = fields.toLocaleString();
 
         return this.customSearch(this.searchPath, QueryParams);
     }

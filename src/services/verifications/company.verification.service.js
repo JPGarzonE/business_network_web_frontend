@@ -16,7 +16,7 @@ export default class CompanyVerificationService extends RequestService {
   }
 
   getCompanyVerification(accountname, accessToken) {
-    if (accountname)
+    if (!accountname)
       throw new Error(
         'accountname is required in CompanyVerificationService.getCompanyVerification'
       );
@@ -67,7 +67,7 @@ export default class CompanyVerificationService extends RequestService {
   }
 
   async uploadCompanyCertificate(accountname, accessToken, certificateFile) {
-    /* Upload certificate file and associta to the verification of the company */
+    /* Upload certificate file and associate to the verification of the company */
 
     if (!accountname)
       throw new Error(

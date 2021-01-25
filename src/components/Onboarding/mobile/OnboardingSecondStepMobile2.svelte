@@ -1,6 +1,6 @@
 <script>
   import EditButton from "../../EditButton/EditButton.svelte";
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
   import ButtonChat from "../../ButtonChat/ButtonChat.svelte";
   import Map from "svelte-material-icons/Map.svelte";
   import Earth from "svelte-material-icons/Earth.svelte";
@@ -10,10 +10,17 @@
   export let handleNext;
   export let handlePrev;
 
+  afterUpdate(async () => {
+    document.getElementsByTagName("body")[0].classList.add("noScroll");
+  });
+  onDestroy(() => {
+    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+  });
+
   onMount(async () => {
     const module = await import("@composi/gestures");
     module.gestures();
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 50);
   });
 </script>
 
@@ -34,7 +41,7 @@
         ubicación y países donde exportas tus productos.
       </span>
       <span class="Text">
-        Añade tu whatsaspp
+        Añade tu whatsapp
         <br />
         <span class="Text--description">
           Agrega tu teléfono de whatsapp, para que tus compradores se comuniquen
@@ -95,6 +102,7 @@
     color: white;
     font-size: 14px;
     font-weight: 900;
+    text-transform: none;
   }
   .Container {
     z-index: 25;

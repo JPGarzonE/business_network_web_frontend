@@ -94,6 +94,7 @@
     color: white;
     font-size: 14px;
     font-weight: 900;
+    text-transform: none;
   }
   .Chev {
     cursor: pointer;
@@ -156,7 +157,7 @@
     position: relative;
     height: 100%;
     justify-content: center;
-    margin-top: 320px;
+    margin-top: 365px;
   }
   .Icon {
     margin-bottom: 10px;

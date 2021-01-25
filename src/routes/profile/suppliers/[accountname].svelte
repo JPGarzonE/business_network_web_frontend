@@ -35,7 +35,8 @@
   export let editable;
   export let supplier;
   export let principalLocation;
-  export let onboardingOn;
+  let onboardingOn = true;
+
   let width;
   // export let saleLocations;
   export let products;
@@ -45,7 +46,7 @@
   let onboardingStepMobile = 0;
 
   const handleCancel = () => {
-    onboardingOn = true;
+    onboardingOn = false;
   };
 
   const handleNext = () => {
@@ -58,7 +59,6 @@
       onboardingStep -= 1;
       onboardingStepMobile -= 1;
     }
-    torialoc;
   };
 
   const changeStep = (e) => {

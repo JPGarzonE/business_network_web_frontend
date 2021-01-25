@@ -1,6 +1,5 @@
 <script>
-  import EditButton from "../../../components/EditButton/EditButton.svelte";
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
 
   export let handleCancel;
   export let handleNext;
@@ -75,6 +74,7 @@
     color: white;
     font-size: 14px;
     font-weight: 900;
+    text-transform: none;
   }
   .Main-Container {
     height: 100%;

@@ -1,7 +1,15 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
+
   export let handleCancel;
   export let handleNext;
+  afterUpdate(async () => {
+    document.getElementsByTagName("body")[0].classList.add("noScroll");
+  });
+  onDestroy(() => {
+    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+  });
+
   onMount(() => {
     window.scrollTo(0, 0);
   });
@@ -13,7 +21,7 @@
     on:click={handleCancel}>
     <span>X</span>
   </button>
-  <span class="ModalTitle">¡Bienvenido a Contecty!</span>
+  <span class="ModalTitle">¡Bienvenido a Conecty!</span>
   <span class="ModalMessage"
     >¿Quieres hacer un tour por nuestra plataforma?</span
   >
@@ -56,6 +64,7 @@
     color: gray;
     font-weight: 100;
     margin-inline: 60px;
+    font-size: 1.125rem;
   }
   .ModalButtons {
     margin-top: 30px;
@@ -63,6 +72,8 @@
     width: 100%;
   }
   .button {
+    font-size: 17px;
+    letter-spacing: 0.216px;
     height: 50px;
     font-weight: bold;
     margin: 0 50px;

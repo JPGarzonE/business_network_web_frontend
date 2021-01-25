@@ -99,6 +99,7 @@
     color: white;
     font-size: 14px;
     font-weight: 900;
+    text-transform: none;
   }
   .Chev {
     cursor: pointer;

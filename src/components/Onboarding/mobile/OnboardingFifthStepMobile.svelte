@@ -1,9 +1,15 @@
 <script>
-  import { onMount } from "svelte";
-  import EditButton from "../../../components/EditButton/EditButton.svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
 
   export let handleCancel;
   export let handlePrev;
+
+  afterUpdate(async () => {
+    document.getElementsByTagName("body")[0].classList.add("noScroll");
+  });
+  onDestroy(() => {
+    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+  });
 
   onMount(async () => {
     scrollToTargetAdjusted();
@@ -63,6 +69,7 @@
     border-color: #537bc9;
     color: #537bc9;
     font-size: 14px;
+    text-transform: none;
   }
   .Main-Container {
     height: 100%;

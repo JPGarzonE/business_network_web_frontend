@@ -1,10 +1,16 @@
 <script>
   import ProfileLogo from "../../../components/ProfileLogo/ProfileLogo.svelte";
   import ProfileVerification from "../../../components/ProfileVerification/ProfileVerification.svelte";
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
   export let handleCancel;
   export let handleNext;
   let width;
+  afterUpdate(async () => {
+    document.getElementsByTagName("body")[0].classList.add("noScroll");
+  });
+  onDestroy(() => {
+    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+  });
 
   onMount(async () => {
     const module = await import("@composi/gestures");
@@ -23,14 +29,6 @@
     <div class="ProfileIdentity-content">
       <ProfileLogo logo={undefined} blank />
       <ProfileVerification />
-      <div class="ProfileIdentity-NameContainer">
-        <p class="ProfileIdentity-text">
-          Haz
-          <span class="ProfileIdentity-text--clic">clic aquí</span>
-          para subir el certificado de cámara y comercio, de lo contrario no podrás
-          publicar tu perfíl.
-        </p>
-      </div>
     </div>
   </div>
   <div class="Text-Container">
@@ -67,6 +65,7 @@
     color: white;
     font-size: 14px;
     font-weight: 900;
+    text-transform: none;
   }
   .Container {
     z-index: 25;
@@ -80,25 +79,7 @@
     min-width: 210px;
     max-width: 300px;
     margin: auto;
-    margin-top: 95px;
-  }
-  .ProfileIdentity-NameContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .ProfileIdentity-text {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 11px;
-    color: #ff6660;
-  }
-  .ProfileIdentity-text--clic {
-    text-decoration: underline;
-    font-weight: bold;
-    color: red;
+    margin-top: 91px;
   }
   .Text-Container {
     max-width: 300px;

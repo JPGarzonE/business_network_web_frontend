@@ -9,6 +9,16 @@
   };
 </script>
 
+<ul class="Container">
+  {#each Array(numberOfButtons) as _, i}
+    {#if active == i}
+      <li class="Dot Active" number={i} />
+    {:else}
+      <li class="Dot" on:click={() => handleClick(i)} />
+    {/if}
+  {/each}
+</ul>
+
 <style>
   .Container {
     display: flex;
@@ -18,6 +28,7 @@
     left: 50%;
     bottom: 0;
     transform: translate(-50%, -50%);
+    padding: 0;
   }
 
   .Dot {
@@ -34,13 +45,3 @@
     cursor: default;
   }
 </style>
-
-<ul class="Container">
-  {#each Array(numberOfButtons) as _, i}
-    {#if active == i}
-      <li class="Dot Active" number={i} />
-    {:else}
-      <li class="Dot" on:click={() => handleClick(i)} />
-    {/if}
-  {/each}
-</ul>

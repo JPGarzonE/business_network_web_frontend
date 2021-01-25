@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
   export let handleCancel;
   export let handleNext;
 
@@ -16,7 +16,7 @@
     on:click={handleCancel}>
     <span>X</span>
   </button>
-  <span class="ModalTitle">¡Bienvenido a Contecty!</span>
+  <span class="ModalTitle">¡Bienvenido a Conecty!</span>
   <span class="ModalMessage"
     >¿Quieres hacer un tour por nuestra plataforma?</span
   >
@@ -61,6 +61,7 @@
     color: gray;
     font-weight: normal;
     margin-bottom: 30px;
+    font-size: 1.125rem;
   }
   .ModalButtons {
     margin-top: 50px;
@@ -73,6 +74,7 @@
     text-transform: none;
     font-weight: bold;
     font-size: 15px;
+    letter-spacing: 0.216px;
   }
   .button--secondary {
     margin-right: 4px;

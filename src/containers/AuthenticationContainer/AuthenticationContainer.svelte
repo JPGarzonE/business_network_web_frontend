@@ -1,15 +1,35 @@
 <script>
+    import { onMount } from 'svelte';
     import LoginForm from "../LoginForm/LoginForm.svelte";
     import SignupForm from "../SignupForm/SignupForm.svelte";
-    import SignupBuyerForm from "../SignupBuyerForm/SignupBuyerForm.svelte";
 
     export let state = "signup";
+    export let darkMode = false;
+
+    let backgroundColor = darkMode ? '#00409A': 'var(--extra-light-gray)';
+    let activeColor = darkMode ? 'var(--white)' : 'var(--principal-color)';
+    let inactiveColor = darkMode ? 'transparent' : '#E8E8E8';
+    let formContentColor = darkMode ? 'var(--white)' : 'var(--light-color)';
+    let secondaryContentColor = darkMode ? 'var(--white)' : '#9E9FA0';
+
+    onMount(async () => {
+        const Head = document.getElementsByTagName('head')[0];
+        const Link = document.createElement('link');
+        Link.rel = 'stylesheet';
+        Link.type = 'text/css';
+
+        if( darkMode )
+            Link.href = '/styles/material-inputs-dark-theme.css';
+        else
+            Link.href = '/styles/material-inputs-light-theme.css';
+
+        Head.appendChild(Link);
+    });
 </script>
 
 <style>
     .AuthenticationContainer {
         width: 100%;
-        max-width: 660px;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -38,7 +58,7 @@
         flex-shrink: 0;
         margin-top: 15px;
         font-weight: bold;
-        font-size: 1.13em;
+        font-size: 1.2em;
         letter-spacing: 0.216px;
         color: var(--principal-color);
     }
@@ -51,6 +71,7 @@
 
     @media screen and (min-width: 1000px) {
         .AuthenticationContainer {
+            max-width: 660px;
             margin: 0;
             padding: 0 2.5em 2em;
         }
@@ -66,22 +87,35 @@
     }
 </style>
 
-<div class="AuthenticationContainer">
+<div class="AuthenticationContainer" style="background-color:{backgroundColor}">
     {#if state === 'signup'}
-        <h6>Crear Cuenta</h6>
+        <h6 style="color:{activeColor}">Registro</h6>
 
         <div class="AuthenticationContainer-form">
             <div>
-                <SignupBuyerForm
-                    loginRedirectionAction={() => (state = 'login')} />
+                <SignupForm
+                    loginRedirectionAction={() => (state = 'login')}
+                    {backgroundColor}
+                    {activeColor}
+                    {inactiveColor}
+                    {formContentColor}
+                    {secondaryContentColor}
+                />
             </div>
         </div>
     {:else if state === 'login'}
-        <h6>Iniciar Sesión</h6>
+        <h6 style="color:{activeColor}">Iniciar Sesión</h6>
 
         <div class="AuthenticationContainer-form">
             <div>
-                <LoginForm signupRedirectionAction={() => (state = 'signup')} />
+                <LoginForm 
+                    signupRedirectionAction={() => (state = 'signup')}
+                    {backgroundColor}
+                    {activeColor}
+                    {inactiveColor}
+                    {formContentColor}
+                    {secondaryContentColor}
+                />
             </div>
         </div>
     {/if}

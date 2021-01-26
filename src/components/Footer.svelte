@@ -1,5 +1,8 @@
 <script>
     import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
+
+    export let background = "linear-gradient(90deg, rgba(0,180,226,1) 0%, rgba(0,155,214,1) 30%, rgba(44,133,205,1) 79%)";
+    export let textColor = '#FFFFFF';
 </script>
 
 <style>
@@ -25,7 +28,7 @@
         justify-content: center;
         align-items: center;
         font-size: .85em;
-        color: white;
+        color: inherit;
     }
 
     .Footer-wordmark {
@@ -42,12 +45,12 @@
     .Footer-email-content {
         display: flex;
         flex-direction: column;
-        color: var(--secondary-color);
+        color: inherit;
     }
 
     .Footer-tel-content {
         display: flex;
-        color: var(--secondary-color);
+        color: inherit;
     }
 
     @media screen and (min-width: 850px){
@@ -63,7 +66,9 @@
     }
 </style>
 
-<footer class="Footer">
+<footer class="Footer" 
+    style="background:{background};color:{textColor};"
+>
     <div class="Footer-content">
         <div class="Footer-slogan">
             <a href="/" style="display:flex;">
@@ -83,7 +88,7 @@
         <div class="Footer-tel-container">
             <i class="icon icon-tel--white"></i>
             <div class="Footer-tel-content">
-                (+57) 3133800223
+                (+57) (318) 754-1301
             </div>
         </div>
     </div>

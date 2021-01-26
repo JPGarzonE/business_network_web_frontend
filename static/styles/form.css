@@ -160,11 +160,12 @@
   align-items: center;
   justify-content: center;
   margin-top: 15px;
+  margin-bottom: 16px;
   border: 1px solid red;
   border-radius: 5px;
   padding: 10px;
   font-size: 0.85em;
-  background-color: #ffa2894a;
+  background-color: #ff898940;
   color: red;
   text-align: center;
 }

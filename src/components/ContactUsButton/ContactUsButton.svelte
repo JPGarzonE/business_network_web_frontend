@@ -11,12 +11,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: .45em;
+        padding: .4em;
         border: 2px solid var(--whatsapp-color);
         border-radius: 4px;
-        color: var(--whatsapp-color);
+        background-color: var(--whatsapp-color);
+        color: var(--white);
         font-size: 1em;
-        background-color: transparent;
         cursor: pointer;
     }
 
@@ -31,7 +31,7 @@
 <button on:click={buttonAction}>
     <span class="ContactUsButton-icon">
         <slot name="main-icon">
-            <Whatsapp size={22} color="var(--whatsapp-color)" />
+            <Whatsapp width={50} height={28} color="var(--white)" />
         </slot>
     </span>
 

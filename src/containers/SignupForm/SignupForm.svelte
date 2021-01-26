@@ -15,10 +15,17 @@
     import { setCookie } from "../../utils/cookie.js";
 
     export let loginRedirectionAction = async () => await goto('/login');
+    export let backgroundColor; 
+    export let activeColor;
+    export let inactiveColor;
+    export let formContentColor;
+    export let secondaryContentColor;
+
     const signupService = new SignupService();
 
     const fields = ['full_name', 'email', 'name', 'legalIdentifier', 
         'industry', 'password', 'password_confirmation'];
+    
     let steps = { 1: null, 2: null }
     let actualStep = 1;
     let termsAndConditionsSelected = false;
@@ -146,8 +153,8 @@
         text-align: center;
         line-height: 16px;
         letter-spacing: 0.22px;
-        color: var(--light-color);
         font-size: 1em;
+        color: var(--light-color);
         font-weight: 400;
     }
 
@@ -165,21 +172,20 @@
         width: 100%;
         height: 2px;
         border: 1px solid transparent;
-        background: var(--light-color);
     }
 
     .SignupForm-login p {
         margin: 5px 0px;
-        color: var(--light-color);
         text-align: center;
+        color: var(--light-color);
         font-size: 15px;
     }
 
     .SignupForm-login input {
         margin-top: 11px;
-        font-size: 14px;
-        color: var(--principal-color);
+        font-size: 16px;
         background-color: transparent;
+        color: var(--principal-color);
         text-decoration: none;
         letter-spacing: 0.22px;
     }
@@ -217,7 +223,9 @@
 <div class="SignupForm">
     {#if actualStep === 2}
     <div class="SignupForm-back">
-        <button on:click={() => actualStep--}>
+        <button style="color:{formContentColor}" 
+            on:click={() => actualStep--}
+        >
             <span>{"<"}</span> Volver
         </button>
     </div>
@@ -225,7 +233,13 @@
 
     <StepsCarousel 
         steps={steps}
-        selectedStep={actualStep} />
+        selectedStep={actualStep}
+        backgroundColor={inactiveColor}
+        textColor={secondaryContentColor}
+        selectedBackgroundColor={activeColor}
+        selectedTextColor={backgroundColor}
+        borderColor={inactiveColor == 'transparent' ? activeColor : inactiveColor}
+    />
 
     {#if submitErrorMessage }
         <div class="form-banner--invalid">
@@ -235,10 +249,12 @@
         
     <form class="SignupForm-form">
     {#if actualStep === 1}
-        <h3 class="SignupForm-title">Datos básicos personales</h3>
+        <h3 class="SignupForm-title" style="color:{formContentColor}">
+            Información personal
+        </h3>
 
         <div class="form-group">
-            <Textfield style="width: 100%;height:50px" variant="outlined"
+            <Textfield style="width: 100%;height:50px;" variant="outlined"
                 label="Nombre completo*" input$aria-controls="full-name" input$aria-describedby="full-name"
                 input$maxlength="50" bind:value={fullName}
                 invalid={fullName && !fullNameValidation.isValid} />
@@ -280,18 +296,22 @@
 
         <div class="form-button-group" style="margin-top:0.8em;">
             <input disabled={!firstStepValid} type="button" class="button form-button button--principal" 
+                style="color:{backgroundColor};background-color:{activeColor}"
                 name="next" on:click={()=>actualStep++} value="Siguiente" />
         </div>
 
         <div class="SignupForm-login">
-            <hr />
-            <p>Si ya tienes cuenta</p>
+            <hr style="background-color:{formContentColor}" />
+            <p style="color:{secondaryContentColor}">Si ya tienes una cuenta</p>
             <input type="button" name="login-redirect" class="button button--secondary" 
-                value="Ingresar" on:click={loginRedirectionAction} />
+                style="color:{activeColor};border:2px solid {activeColor}"  
+                value="Iniciar sesión" on:click={loginRedirectionAction} />
         </div>
 
     {:else if actualStep === 2}
-        <h3 class="SignupForm-title">Datos de la empresa</h3>
+        <h3 class="SignupForm-title" style="color:{formContentColor}">
+            Datos de la empresa
+        </h3>
 
         <div class="form-group">
             <Textfield style="width: 100%;height:50px" variant="outlined"
@@ -326,8 +346,10 @@
 
         <div class="form-group" style="margin-top:1.6em;">
             <FileUploadInput name="Certificate" message="Subir certificado"
-                acceptFiles={["application/pdf"]} bind:value={certificate} />
-            <p class="SignupForm-certificate-helper">
+                inputColor={activeColor} acceptFiles={["application/pdf"]} 
+                bind:value={certificate} 
+            />
+            <p class="SignupForm-certificate-helper" style="color:{activeColor}">
                 Ingresa el certificado de cámara de comercio <br />
                 * Si no lo tienes a la mano puedes omitir este paso
             </p>
@@ -335,14 +357,17 @@
 
         <div class="SignupForm-terms">
             <CheckBox bind:checked={termsAndConditionsSelected} />
-            <p>
+            <p style="color:{secondaryContentColor}">
                 He leído, entendido y aceptado los 
-                <a href="/">términos y condiciones</a> y <a href="/">la política de protección de datos</a>
+                <a href="/" style="color:{activeColor}">términos y condiciones</a> y 
+                <a href="/" style="color:{activeColor}">la política de protección de datos</a>
             </p>
         </div>
 
         <div class="form-button-group" style="margin-top:1.7em">
-            <input disabled={!validBeforeSubmit} type="button" name="submit" class="button Signup-button button--secondary" 
+            <input disabled={!validBeforeSubmit} type="button" name="submit"
+                class="button Signup-button button--secondary"
+                style="color:{backgroundColor};background-color:{activeColor}"
                 value="Aceptar y unirte" on:click={submitSignup} />
         </div>
     {/if}

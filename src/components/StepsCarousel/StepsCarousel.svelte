@@ -4,7 +4,26 @@
     export let steps;
 
     /* Name of the selected step */
-    export let selectedStep; 
+    export let selectedStep;
+
+    export let backgroundColor="#E8E8E8";
+    export let textColor="#9E9FA0";
+    export let selectedBackgroundColor="var(--principal-color)";
+    export let selectedTextColor="var(--white)";
+    export let borderColor="transparent";
+
+    const DefaultStyleList = [
+        `background-color: ${backgroundColor}`,
+        `color: ${textColor}`,
+        `border: 2px solid ${borderColor}`
+    ];
+    const DefaultStyle = DefaultStyleList.join(";");
+
+    const SelectedStyleList = [
+        `background-color: ${selectedBackgroundColor}`,
+        `color: ${selectedTextColor}`
+    ];
+    const SelectedStyle = SelectedStyleList.join(";");
 </script>
 
 <style>
@@ -32,16 +51,10 @@
         cursor: pointer;
     }
 
-    .selected {
-        background: #5387cc;
-        color: #ffffff;
-    }
-
     .StepsCarousel-divisor {
         width: 2.8em;
         margin: 0 4px;
-        background-color: var(--principal-color);
-        border: 1px solid var(--principal-color);
+        border: 1px solid;
     }
 
     @media screen and (min-width: 1000px) {
@@ -55,12 +68,16 @@
 <div class="StepsCarousel">
     {#each Object.entries(steps) as [name, functionKey], idx}
         <span 
-            class="StepsCarousel-step {name <= selectedStep ? "selected" : null}"
-            on:click={functionKey}>
+            class="StepsCarousel-step"
+            style={name <= selectedStep ? SelectedStyle : DefaultStyle}
+            on:click={functionKey}
+        >
             {name}
         </span>
         {#if (idx+1) !== Object.entries(steps).length}
-            <hr class="StepsCarousel-divisor" />
+            <hr class="StepsCarousel-divisor" 
+                style="background-color:{selectedBackgroundColor};border-color:{selectedBackgroundColor}" 
+            />
         {/if}
     {/each}
 </div>

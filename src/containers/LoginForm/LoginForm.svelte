@@ -7,6 +7,11 @@
     import { setCookie } from "../../utils/cookie.js";
 
     export let signupRedirectionAction = async ()=> await goto('/signup');
+    export let backgroundColor; 
+    export let activeColor;
+    export let formContentColor;
+    export let secondaryContentColor;
+
     const loginService = new LoginService();
 
     let email = '';
@@ -104,7 +109,6 @@
         width: 100%;
         height: 2px;
         border: 1px solid transparent;
-        background: var(--light-color);
     }
 
     .LoginForm-register p{
@@ -116,7 +120,7 @@
 
     .LoginForm-register input{
         margin-top: 11px;
-        font-size: 14px;
+        font-size: 16px;
         color: var(--principal-color);
         background-color: transparent;
         text-decoration: none;
@@ -126,7 +130,9 @@
 
 <div class="LoginForm">
     <form class="LoginForm-form">
-        <h2 class="LoginForm-title">¡Nos encanta verte de nuevo!</h2>
+        <h2 class="LoginForm-title" style="color:{formContentColor}">
+            ¡Nos encanta verte de nuevo!
+        </h2>
 
         {#if submitErrorMessage}
             <div class="form-banner--invalid">{submitErrorMessage}</div>
@@ -149,14 +155,16 @@
 
         <div class="form-button-group">
             <input disabled={!isValidBeforeSumbit} type="button" class="button form-button button--principal" 
+                style="color:{backgroundColor};background-color:{activeColor}"
                 name="submit" on:click={submitLogin} value="Ingresar" />
         </div>
 
         <div class="LoginForm-register">
-            <hr />
+            <hr style="background-color:{formContentColor}" />
             <!-- <p>Olvidé mi contraseña</p><br/> -->
-            <p>Si no tienes cuenta</p>
-            <input type="button" class="button button--secondary" 
+            <p style="color:{secondaryContentColor}">Si no tienes cuenta</p>
+            <input type="button" class="button button--secondary"
+                style="color:{activeColor};border:2px solid {activeColor}"
                 value="Crea cuenta" on:click={signupRedirectionAction} />
         </div>
     </form>

@@ -1,27 +1,16 @@
 <script>
     import { onMount } from 'svelte';
-    import LandingBanner from "../../components/MainBanners/LandingBanner.svelte";
-    import AuthenticationContainer from "../AuthenticationContainer/AuthenticationContainer.svelte";
+    import MainBanner from "../../components/LandingPage/MainBanner.svelte";
+    import FeatureSection from "../../components/LandingPage/FeatureSection.svelte";
+    import ContactSection from "../../components/LandingPage/ContactSection.svelte";
+    import AlliesSection from "../../components/LandingPage/AlliesSection.svelte";
     import Close from "svelte-material-icons/Close.svelte";
-    import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
-    import ContactUsButton from '../../components/ContactUsButton/ContactUsButton.svelte';
+    import AuthenticationContainer from "../AuthenticationContainer/AuthenticationContainer.svelte";
 
-    export let content = { 
-        "title": "", 
-        "subtitle": "",
-        "features": [
-            {
-                "title": "",
-                "description": "",
-                "advice": ""
-            }
-        ]
-    };
     export let authenticationContainerState = "signup";
     export let homeAuthenticationOpen = false;
 
     let homeAuthenticationMediaQuery;
-    let contactLink = "https://wa.me/573133800223";
 
     onMount( async () => {
         homeAuthenticationMediaQuery = window.matchMedia("(min-width: 1000px)");
@@ -36,14 +25,32 @@
     });
 
     function toggleHomeAuthenticationDisplay() {
-        if( homeAuthenticationMediaQuery.matches && window.scrollY < 370)
-            homeAuthenticationOpen = true;
-        else
-            homeAuthenticationOpen = false;
+
+        if(homeAuthenticationMediaQuery.matches) {
+            if( window.scrollY < 370)
+                homeAuthenticationOpen = true;
+            else
+                homeAuthenticationOpen = false;   
+        }
+    }
+
+    $:  if( homeAuthenticationMediaQuery && 
+            !homeAuthenticationMediaQuery.matches && 
+            homeAuthenticationOpen 
+        )
+            document.body.style.overflow = "hidden";
+
+    const closeHomeAuthentication = ()=>{
+        homeAuthenticationOpen = false;
+        document.body.style.overflow = "scroll";
     }
 </script>
 
 <style>
+    @import '/styles/feature-online-shopping.css';
+    @import '/styles/feature-container-ship.css';
+    @import '/styles/feature-payment-information.css';
+
     .Home {
         max-width: 1600px;
         margin: 0 auto;
@@ -56,7 +63,6 @@
         right: 0;
         top: 0;
         z-index: 15;
-        background-color: var(--extra-light-gray);
         transition: transform 500ms cubic-bezier(0.5, 0, 0, 1);
         transition-timing-function: cubic-bezier(0.5, 0, 0, 1);
     }
@@ -77,216 +83,31 @@
         cursor: pointer;
     }
 
-    .Home-features {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 15% 10%;
-        margin-bottom: 0;
-    }
-
-    .Home-features-content {
+    .FeatureMultimedia-online-shopping {
         width: 100%;
-        max-width: 1300px;
+        max-width: 500px;
+        height: 100%;
+        max-height: 500px;
     }
 
-    .Home-feature {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 4em;
-    }
-
-    .Home-feature-description {
+    .FeatureMultimedia-online-shopping img {
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-bottom: 2em;
-    }
-
-    .Home-feature-description h2 {
-        font-size: 1.87em;
-        font-weight: bold;
-        line-height: 35px;
-        letter-spacing: 0.216px;
-        color: var(--principal-text-color);
-    }
-
-    .Home-feature-description p {
-        width: 85%;
-        margin: 20px 0;
-        font-size: 1em;
-        letter-spacing: 0.216px;
-    }
-
-    .Home-feature-description p b {
-        font-size: 1.12em;
-    }
-
-    .Home-register {
-        max-width: 475px;
-        margin: 1.2em 0;
-    }
-
-    .Home-register-button {
-        width: 75%;
-        max-width: 250px;
-        height: 42px;
-        font-size: .75em;
-        color: #fff;
-        background-color: var(--button-color);
-    }
-
-    .Home-feature-image {
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .Home-feature-image figure {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
-
-    .Home-feature-image-mobile {
-        max-width: 332px;
-    }
-
-    .Home-feature-image-laptop {
-        min-width: 488px;
-        left: 25%;
-    }
-
-    .Home-feature-image-security {
-        min-width: 330px
-    }
-
-    .Home-feature-image-device {
-        width: 100%;
-        position: relative;
-        z-index: 3;
-    }
-
-    .Home-feature-image-mobile .Home-feature-image-screenshot {
-        width: 66%;
-    }
-
-    .Home-feature-image-laptop .Home-feature-image-screenshot {
-        width: 55%;
-    }
-
-    .Home-feature-image-screenshot {
-        position: absolute;
-        top: 8px;
-    }
-
-    .Home-allies {
-        background-color: var(--extra-light-gray);
-        padding: 4% 2%;
-    }
-
-    .Home-allies-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .Home-allies-content img {
-        width: 90%;
-        max-width: 270px;
-        margin: 0 .5em;
-    }
-
-    @media screen and (min-width: 375px) {
-        .Home-feature-image-laptop {
-            min-width: 588px;
-        }
-    }
-
-    @media screen and (min-width: 525px) {
-        .Home-feature-image-laptop {
-            min-width: 688px;
-        }
-    }
-
-    @media screen and (min-width: 767px) {
-        .Home-feature-image {
-            width: 100%;
-            overflow: visible;
-        }
-        .Home-feature-image-laptop .Home-feature-image-device{
-            min-width: 485px;
-        }
-        .Home-feature-image-laptop {
-            max-width: 642px;
-            min-width: auto;
-            left: 0;
-        }
-    }
-
-    @media screen and (min-width: 850px) {
-        .Home-features {
-            margin: 100px 40px;
-        }
-        .Home-features-content {
-            width: 88%;
-            padding-left: 40px;
-            border-left: 7px solid var(--principal-color);
-        }
-        .Home-feature {
-            flex-direction: row;
-        }
-        .Home-feature-description {
-            width: 50%;
-        }
-        .Home-feature-description h2 {
-            font-size: 1.95em;
-        }
-        .Home-feature-description p {
-            font-size: 1.2em;
-        }
-        .Home-feature-image {
-            width: 55%;
-        }
-        .Home-feature-image-mobile {
-            width: 70%;
-        }
-        .Home-allies-content {
-            flex-direction: row;
-        }
-        .Home-allies-content img {
-            width: auto;
-            height: 160px;
-        }
+        height: 100%;
     }
 
     @media screen and (min-width: 1000px) {
         .Home-Authentication {
-            width: calc(34%);
+            width: calc(35%);
             min-width: 400px;
         }
-        .Home-allies-content img {
-            height: 175px;
+        .Home-Authentication-close {
+            display: none;
         }
     }
 
     @media screen and (min-width: 1175px) {
         .Home-feature-image figure img {
             width: 100%;
-        }
-    }
-
-    @media screen and (min-width: 1270px) {
-        .Home-features-content {
-            margin: 0;
-            margin-left: auto;
         }
     }
 
@@ -298,102 +119,57 @@
 </style>
 
 <div class="Home">
-    <LandingBanner
-        title={content.title} subtitle={content.subtitle} bind:homeAuthenticationOpen />
+    <MainBanner
+        imageSrc='/images/banner_logistics.png'
+        title="Conéctate con compradores acreditados" 
+        subtitle="Se parte de la red que está conectando las ofertas más competitivas del mercado con compradores previamente verificados." 
+        bind:homeAuthenticationOpen 
+    />
     
     <div class="Home-Authentication Home-Authentication--open {homeAuthenticationOpen ? "" : "Home-Authentication--closed"}"
         id="Home-Authentication">
-        <span class="Home-Authentication-close" on:click={()=>homeAuthenticationOpen = false}>
-            <Close size="30" color="rgba(0, 0, 0, 0.54)" />
+
+        <span class="Home-Authentication-close" on:click={closeHomeAuthentication}>
+            <Close size="30" color="var(--white)" />
         </span>
-        <AuthenticationContainer bind:state={authenticationContainerState} />
+
+        <AuthenticationContainer darkMode bind:state={authenticationContainerState} />
     </div>
 
-    <div class="Home-features">
-        <div class="Home-features-content">
+    <FeatureSection title="Ofrece tus productos por medios digitales"
+        subtitle="Sube a la plataforma tu oferta de productos exportables y las certificaciones de tus productos."
+        textColor="#09178D"
+        background="#FFFFFF"
+    >
+        <figure slot="FeatureMultimedia" class="FeatureMultimedia-online-shopping">
+            <img src="/images/feature-online-shopping.svg" alt="" />
+        </figure>
+    </FeatureSection>
 
-            <div class="Home-feature">
-                <div class="Home-feature-description">
-                    <h2>{content.features[0].title}</h2>
-                    <p>{content.features[0].description}</p>
-                    <p> 
-                        <b>{content.features[0].advice}</b> 
-                    </p>
-                    <div class="Home-register">
-                        <button class="button Home-register-button"
-                            on:click={()=>homeAuthenticationOpen = true}>
-                            Regístrate Gratis
-                        </button>
-                    </div>
-                </div>
-                <div class="Home-feature-image">
-                    <figure class="Home-feature-image-mobile">
-                        <img class="Home-feature-image-device" src="images/feature-device-1.png" alt="Device">
-                        <img class="Home-feature-image-screenshot" src="images/feature-ss-1.png" alt="Screenshot">
-                    </figure>
-                </div>
-            </div>
+    <FeatureSection title="Te conectamos con las empresas que te interesan"
+        subtitle="Buscaremos la oferta comercial que se ajuste a tu modelo de negocio y te ayudaremos a construir esa relación comercial."
+        textColor="#002D6B"
+        background="#15B2D5"
+    >
+        <figure slot="FeatureMultimedia" class="FeatureMultimedia-online-shopping">
+            <img src="/images/feature-container-ship.svg" alt="" />
+        </figure>
+    </FeatureSection>
 
-            <div class="Home-feature">
-                <div class="Home-feature-description" style="margin-bottom: 0;">
-                    <h2>{content.features[1].title}</h2>
-                    <p>{content.features[1].description}</p>
-                    <p> 
-                        <b>{content.features[1].advice}</b> 
-                    </p>
-                    <div class="Home-register">
-                        <button class="button Home-register-button"
-                            on:click={()=>homeAuthenticationOpen = true}>
-                            Regístrate Gratis
-                        </button>
-                    </div>
-                </div>
-                <div class="Home-feature-image">
-                    <figure class="Home-feature-image-laptop">
-                        <img class="Home-feature-image-device" src="images/feature-device-2.png" alt="Device">
-                        <img class="Home-feature-image-screenshot" src="images/feature-ss-2.png" 
-                            alt="Screenshot" style="top:auto;" />
-                    </figure>
-                </div>
-            </div>
+    <FeatureSection title="Recibe tu pago de forma segura"
+        subtitle="En Conecty mantenemos a salvo tu pago mientras se completa exitosamente la negociación."
+        textColor="#09178D"
+        background="var(--white)"
+    >
+        <figure slot="FeatureMultimedia" class="FeatureMultimedia-online-shopping">
+            <img src="/images/feature-payment-information.svg" alt="" />
+        </figure>
+    </FeatureSection>
 
-            <div class="Home-feature">
-                <div class="Home-feature-description" style="margin-bottom: 0;">
-                    <h2>{content.features[2].title}</h2>
-                    <p>{content.features[2].description}</p>
-                    <p> 
-                        <b>{content.features[2].advice}</b> 
-                    </p>
-                    <div class="Home-register">
-                        <ContactUsButton title="Contáctanos" buttonAction={() => {window.open(contactLink, "_blank")}}>
-                            <span slot="main-icon">
-                                <Whatsapp size={18} color="var(--whatsapp-color)" />
-                            </span>
-                        </ContactUsButton>
-                    </div>
-                </div>
-                <div class="Home-feature-image">
-                    <figure>
-                        <img class="Home-feature-image-security" src="images/feature-security.png"
-                            alt="Screenshot" style="top:auto;" />
-                    </figure>
-                </div>
-            </div>
+    <ContactSection message="Conoce más sobre este modelo contactándonos"
+        background="#0757C6" textColor="var(--white)" contactPhone="573187541301"
+    >
+    </ContactSection>
 
-        </div>
-    </div>
-
-    <div class="Home-allies">
-        <div class="Home-allies-content">
-            <figure style="border-right:2px solid var(--light-color)">
-                <img src="/images/mintic-ally.png" alt="Mintic" />
-            </figure>
-            <figure>
-                <img src="/images/appsco-ally.png" alt="Apps.co" />
-            </figure>
-            <figure>
-                <img src="/images/innomake-ally.png" alt="Innomake" />
-            </figure>
-        </div>
-    </div>
+    <AlliesSection></AlliesSection>
 </div>

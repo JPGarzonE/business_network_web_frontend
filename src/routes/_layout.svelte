@@ -4,7 +4,7 @@
 
 <style>
   main {
-    height: 100vh;
+    height: 100%;
   }
   :global(.noScroll) {
     overflow-y: hidden;

@@ -24,6 +24,7 @@
   "author": "Conecty",
   "license": "ISC",
   "devDependencies": {
+    "@composi/gestures": "^1.0.9",
     "@smui/checkbox": "^1.0.0",
     "@smui/menu": "^1.0.0",
     "@smui/select": "^1.0.0",

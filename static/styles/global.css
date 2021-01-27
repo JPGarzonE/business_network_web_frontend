@@ -82,3 +82,7 @@ p,
 figure {
   margin: 0px;
 }
+
+.no-scroll {
+  overflow: hidden;
+}

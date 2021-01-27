@@ -87,7 +87,7 @@
     position: absolute;
     top: 10%;
     right: 5%;
-    z-index: 20;
+    z-index: 30;
     width: 138px;
     height: 38px;
     border-color: white;

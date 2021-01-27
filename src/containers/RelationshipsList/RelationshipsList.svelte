@@ -2,7 +2,6 @@
   import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
   import RelationshipCard from "../../components/RelationshipCard/RelationshipCard.svelte";
   import Modal from "../../components/Modal.svelte";
-  import RelationshipForm from "../RelationshipForm/RelationshipForm.svelte";
   import UnregisteredRelationshipForm from "../RelationshipForm/UnregisteredRelationshipForm.svelte";
   import CreateButton from "../../components/CreateButton/CreateButton.svelte";
   import { getContext } from "svelte";
@@ -16,17 +15,6 @@
 
   function toggleUnregisteredCreateForm() {
     displayUnregisteredCreateForm = !displayUnregisteredCreateForm;
-  }
-
-  let displayAddRelationship = false;
-
-  function toggleAddRelationshipDisplay() {
-    displayAddRelationship = !displayAddRelationship;
-  }
-
-  function hideAddRelationshipAndDisplayUnregisteredCreate() {
-    displayAddRelationship = false;
-    displayUnregisteredCreateForm = true;
   }
 
   function reloadComponentData(unregisteredRelationshipData) {
@@ -44,15 +32,6 @@
 </script>
 
 <div class="RelationshipsList" id="RelationshipsList">
-  {#if displayAddRelationship && isEditableProfile}
-    <Modal on:click={toggleAddRelationshipDisplay}>
-      <RelationshipForm
-        on:click={toggleAddRelationshipDisplay}
-        displayCreateCompany={hideAddRelationshipAndDisplayUnregisteredCreate}
-      />
-    </Modal>
-  {/if}
-
   {#if displayUnregisteredCreateForm && isEditableProfile}
     <Modal on:click={toggleUnregisteredCreateForm}>
       <UnregisteredRelationshipForm
@@ -66,7 +45,7 @@
   {#if isEditableProfile}
     <div class="RelationshipsList-card--create">
       <div
-        on:click={!onBoarding && toggleAddRelationshipDisplay}
+        on:click={!onBoarding && toggleUnregisteredCreateForm}
         class:Productlist-card-create-button={onBoarding}
       >
         <CreateButton

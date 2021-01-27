@@ -38,6 +38,7 @@
 }
 
 .button--secondary {
+  border: 2px solid var(--principal-color);
   background-color: transparent;
   color: var(--principal-color);
   cursor: pointer;

@@ -7,6 +7,7 @@
   import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
   import Dropzone from '../../components/Dropzone/Dropzone.svelte';
   import CertificationsService from '../../services/suppliers/certifications.service.js';
+  import { _ } from 'svelte-i18n';
 
   export let afterSubmit;
   export let CertificationElement; // Pass if is an update form
@@ -160,6 +161,90 @@
   }
 </script>
 
+<div class="CertificationForm ProfileForm">
+  <button
+    class="CertificationForm-close-button ProfileForm-close-button"
+    on:click>
+    <span>X</span>
+  </button>
+
+  <div class="CertificationForm-headline">
+    <h3 class="CertificationForm-title">
+      {CertificationElement
+        ? $_('certificationForm.updateCertificate')
+        : $_('certificationForm.addCertificate')}
+    </h3>
+
+    {#if formErrorMessage}
+      <div class="form-banner--invalid">
+        <p>{formErrorMessage}</p>
+      </div>
+    {:else if !CertificationElement}
+      <p class="CertificationForm-subtitle">
+        {$_('certificationForm.uploadTheImageOfYourCertificate')}
+      </p>
+    {/if}
+  </div>
+
+  <div class="CertificationForm-preview">
+    <Dropzone
+      id="CertificationForm"
+      bind:imageFile={newMediaFile}
+      imagePath={media ? media.path : null}
+    />
+  </div>
+
+  <p class="CertificationForm-advice">
+    {$_(
+      'certificationForm.itMustBeTheImageOfTheEntityThatIssuesTheCertificate'
+    )}
+  </p>
+
+  <form class="CertificationForm-form ProfileForm-form">
+    <div class="form-group">
+      <Textfield
+        style="width: 100%;"
+        variant="outlined"
+        bind:value={name}
+        label={$_('certificationForm.nameOfTheCertificate')}
+        input$aria-controls="certificate-name"
+        input$aria-describedby="certificate-name"
+        input$maxlength="50"
+        on:input={validateName}
+      />
+      <HelperText id="certificate-name">{nameFeedback}</HelperText>
+    </div>
+
+    <div class="form-group">
+      <Textfield
+        fullwidth
+        textarea
+        variant="outlined"
+        bind:value={description}
+        label={$_('certificationForm.addDescription')}
+        input$aria-controls="certificate-description"
+        input$aria-describedby="certificate-description"
+        input$maxlength="155"
+        on:input={validateDescription}
+      >
+        <CharacterCounter>0 / 50</CharacterCounter>
+      </Textfield>
+      <HelperText id="certificate-description">
+        {descriptionFeedback}
+      </HelperText>
+    </div>
+
+    <button
+      on:click|preventDefault={submit}
+      class="CertificationForm-button button button--secondary">
+      <PlusCircleOutline size={15} />
+      {CertificationElement
+        ? $_('certificationForm.updateCertificate')
+        : $_('certificationForm.addCertificate')}
+    </button>
+  </form>
+</div>
+
 <style>
   @import '/styles/form.css';
 
@@ -212,76 +297,3 @@
     }
   }
 </style>
-
-<div class="CertificationForm ProfileForm">
-  <button
-    class="CertificationForm-close-button ProfileForm-close-button"
-    on:click>
-    <span>X</span>
-  </button>
-
-  <div class="CertificationForm-headline">
-    <h3 class="CertificationForm-title">
-      {CertificationElement ? 'Actualiza tu certificado' : 'Añadir certificado'}
-    </h3>
-
-    {#if formErrorMessage}
-      <div class="form-banner--invalid">
-        <p>{formErrorMessage}</p>
-      </div>
-    {:else if !CertificationElement}
-      <p class="CertificationForm-subtitle">Sube la imagen de tu certificado</p>
-    {/if}
-  </div>
-
-  <div class="CertificationForm-preview">
-    <Dropzone
-      id="CertificationForm"
-      bind:imageFile={newMediaFile}
-      imagePath={media ? media.path : null} />
-    </div>
-
-    <p class="CertificationForm-advice">
-      * Debe ser la imagen de la entidad que emite el certificado. No la del documento.
-    </p>
-
-  <form class="CertificationForm-form ProfileForm-form">
-    <div class="form-group">
-      <Textfield
-        style="width: 100%;"
-        variant="outlined"
-        bind:value={name}
-        label="Nombre del certificado*"
-        input$aria-controls="certificate-name"
-        input$aria-describedby="certificate-name"
-        input$maxlength="50"
-        on:input={validateName} />
-      <HelperText id="certificate-name">{nameFeedback}</HelperText>
-    </div>
-
-    <div class="form-group">
-      <Textfield
-        fullwidth
-        textarea
-        variant="outlined"
-        bind:value={description}
-        label="Añadir descripción"
-        input$aria-controls="certificate-description"
-        input$aria-describedby="certificate-description"
-        input$maxlength="155"
-        on:input={validateDescription}>
-        <CharacterCounter>0 / 50</CharacterCounter>
-      </Textfield>
-      <HelperText id="certificate-description">
-        {descriptionFeedback}
-      </HelperText>
-    </div>
-
-    <button
-      on:click|preventDefault={submit}
-      class="CertificationForm-button button button--secondary">
-      <PlusCircleOutline size={15} />
-      {CertificationElement ? 'Actualizar certificado' : 'Añadir certificado'}
-    </button>
-  </form>
-</div>

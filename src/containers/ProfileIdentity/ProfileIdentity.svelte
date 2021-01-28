@@ -8,6 +8,7 @@
   import { getContext } from "svelte";
   import Web from "svelte-material-icons/Web.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
+  import { _ } from "svelte-i18n";
 
   export let name;
   export let industry;
@@ -94,7 +95,7 @@
       <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><MapMarkerOutline /></i>
         <span class="ProfileIdentity-address"
-          >{address ? address : "No tiene aún"}</span
+          >{address ? address : $_("profileIdentity.itdoesnthaveyet")}</span
         >
       </p>
       <!-- <p class="ProfileIdentity-data">
@@ -104,7 +105,7 @@
       <p class="ProfileIdentity-data">
         <i class="icon-wrapper"><Web /></i>
         <a class="ProfileIdentity-webUrl" href={webUrl} target="_blank"
-          >{webUrl ? webUrl : "No tiene aún"}</a
+          >{webUrl ? webUrl : $_("profileIdentity.itdoesnthaveyet")}</a
         >
       </p>
 

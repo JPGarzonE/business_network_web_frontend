@@ -3,6 +3,7 @@
   import PuzzleOutline from "svelte-material-icons/PuzzleOutline.svelte";
   import Check from "svelte-material-icons/ShieldCheckOutline.svelte";
   import Comment from "svelte-material-icons/CommentProcessingOutline.svelte";
+  import { _ } from "svelte-i18n";
 
   export let handleCancel;
   export let handleNext;
@@ -19,7 +20,7 @@
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >Finalizar Tour</button
+  >{$_("onBoardingSecondStep.endTour")}</button
 >
 <img
   src="/images/chevron-right.svg"
@@ -37,11 +38,10 @@
           <PuzzleOutline size={60} color="white" />
         </span>
         <span class="Text Puzzle-Text">
-          Agrega el logo de tu empresa
+          {$_("onBoardingSecondStep.addCompanyLogo")}
           <br />
           <span class="Text--description">
-            Haz clic en el ícono de edición y adjunta tu logo en formato png o
-            jpg.</span
+            {$_("onBoardingSecondStep.clickTheIconToAddYourLogo")}</span
           >
         </span>
       </div>
@@ -52,11 +52,10 @@
         <Check size={60} color="white" />
       </span>
       <span class="Text Check-Text">
-        Verifica tu empresa
+        {$_("onBoardingSecondStep.clickTheIconToAddYourLogo")}
         <br />
         <span class="Text--description">
-          Adjunta tu certificado de Cámara y comercio, de esa forma podrás
-          publicar tu perfíl.
+          {$_("onBoardingSecondStep.addCertificate")}
         </span>
       </span>
     </div>
@@ -66,11 +65,10 @@
         <Comment size={60} color="white" />
       </span>
       <span class="Text Whatsapp-Text">
-        Añade tu whatsapp
+        {$_("onBoardingSecondStep.addWhatsApp")}
         <br />
         <span class="Text--description">
-          Agrega tu teléfono de whatsapp, para que tus compradores se comuniquen
-          contigo de forma fácil y rápida.
+          {$_("onBoardingSecondStep.addWhatsAppToLet")}
         </span>
       </span>
     </div>

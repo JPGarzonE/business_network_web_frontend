@@ -1,5 +1,6 @@
 <script>
     import { stores } from "@sapper/app";
+    import { GetRoute as GetRootRoute } from  '../../routes/index.svelte';
     import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
     import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
     import ProfileIcon from "../ProfileIcon/ProfileIcon.svelte";
@@ -8,6 +9,7 @@
     import ChevronUp from "svelte-material-icons/ChevronUp.svelte";
     import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
     import { deleteCookie } from "../../utils/cookie.js";
+    import { _ } from 'svelte-i18n';
 
     export let logoSrc;
 
@@ -49,67 +51,19 @@
     async function closeSession() {
         deleteCookie("JPGE");
         deleteCookie("access_accountname");
-        /* goto isn't used because the session has to be 
+        /* goto isn't used because the session has to be
         closed from the server and goto happens on the client */
-        location.href = '/';
+        location.href = GetRootRoute();
     }
 </script>
 
-<style>
-    .ProfileIconMenu, .ProfileIconMenu-icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .ProfileIconMenu {
-        position: relative;
-    }
-
-    .ProfileIconMenu-dropdown {
-        width: 210px;
-        min-height: 40px;
-        position: absolute;
-        top: 65px;
-        right: 0px;
-        z-index: 25;
-        border-radius: 0 0 8px 8px;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        background-color: var(--extra-light-gray);
-    }
-
-    .hide {
-        display: none;
-    }
-
-    .ProfileIconMenu-dropdown span {
-        color: var(--secondary-text-color);
-    }
-
-    .ProfileIconMenu-option {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        padding: 7% 10%;
-        border-top: 0.1px solid var(--light-color);
-        cursor: pointer;
-    }
-
-    .ProfileIconMenu-option:hover {
-        background-color: var(--lightest-gray);
-    }
-
-    .ProfileIconMenu-option span {
-        font-size: 1.1em;
-        letter-spacing: 0.22px;
-        color: var(--light-color);
-    }
-</style>
 
 <div class="ProfileIconMenu">
-    <div class="ProfileIconMenu-icon" on:click={() => displayMenu = !displayMenu}>
+    <div class="ProfileIconMenu-icon" 
+        on:click={() => displayMenu = !displayMenu}
+    >
         <ProfileIcon {logoSrc} />
+
         {#if displayMenu}
             <ChevronUp size=40 />
         {:else}
@@ -121,15 +75,69 @@
         <div class="ProfileIconMenu-dropdown" class:hide={!displayMenu} >
             {#if actualPath !== sessionProfilePath}
             <div class="ProfileIconMenu-option" on:click={gotoProfile}>
-                <span>Editar mi perfil</span>
+                <span>{$_('profileIconMenu.editProfile')}</span>
                 <PencilOutline size=16 color="var(--secondary-text-color)" />
             </div>
             {/if}
 
             <div class="ProfileIconMenu-option" on:click={closeSession}>
-                <span>Cerrar sesión</span>
+                <span>{$_('profileIconMenu.signOut')}</span>
                 <ArrowCollapseRight size=16 color="var(--secondary-text-color)" />
             </div>
         </div>
     {/if}
 </div>
+
+
+<style>
+  .ProfileIconMenu,
+  .ProfileIconMenu-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .ProfileIconMenu {
+    position: relative;
+  }
+
+  .ProfileIconMenu-dropdown {
+    width: 210px;
+    min-height: 40px;
+    position: absolute;
+    top: 65px;
+    right: 0px;
+    z-index: 25;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: var(--extra-light-gray);
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .ProfileIconMenu-dropdown span {
+    color: var(--secondary-text-color);
+  }
+
+  .ProfileIconMenu-option {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 7% 10%;
+    border-top: 0.1px solid var(--light-color);
+    cursor: pointer;
+  }
+
+  .ProfileIconMenu-option:hover {
+    background-color: var(--lightest-gray);
+  }
+
+  .ProfileIconMenu-option span {
+    font-size: 1.1em;
+    letter-spacing: 0.22px;
+    color: var(--light-color);
+  }
+</style>

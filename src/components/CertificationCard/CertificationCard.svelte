@@ -6,6 +6,7 @@
   import CertificationForm from "../../containers/CertificationForm/CertificationForm.svelte";
   import CertificationsService from "../../services/suppliers/certifications.service.js";
   import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
+  import { _ } from "svelte-i18n";
 
   export let id;
   export let media;
@@ -65,8 +66,8 @@
 {#if confirmationMode && isEditableProfile}
   <ConfirmationModal
     title={isSample
-      ? "Crea un certificado y este desaparacerá"
-      : `Desea eliminar el Certificado ${name}`}
+      ? $_("certificationCard.createACertificateAndThisONeWillDisapear")
+      : `${$_("certificationCard.deleteCertificate")} ${name}`}
     onAccept={deleteCertification}
     onDecline={toggleConfirmation}
   />
@@ -123,12 +124,16 @@
   {/if}
 
   <div class="CertificationCard-bottom">
-    <p class="CertificationCard-category">Certificaciones</p>
+    <p class="CertificationCard-category">
+      {$_("certificationCard.certifications")}
+    </p>
 
     {#if description}
       <span on:click={toggleStoryDisplay}>
         <a class="CertificationCard-story-link" id="story-link">
-          {displayStory ? "Ver menos" : "Ver más"}
+          {displayStory
+            ? $_("certificationCard.less")
+            : $_("certificationCard.more")}
         </a>
       </span>
     {/if}

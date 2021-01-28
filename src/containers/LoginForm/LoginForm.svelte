@@ -8,6 +8,7 @@
     import HelperText from "@smui/textfield/helper-text";
     import { validateEmailPattern } from "../../validators/formValidators.js";
     import { setCookie } from "../../utils/cookie.js";
+    import { _ } from "svelte-i18n";
 
     export let signupRedirectionAction = async ()=> await goto(GetSignupRoute());
     export let backgroundColor; 
@@ -70,110 +71,131 @@
     }
 </script>
 
-<style>
-    @import "/styles/form.css";
-
-    .form-group {
-        max-width: 400px;
-        margin-top: 0.4em;
-    }
-
-    .LoginForm {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto;
-    }
-
-    .LoginForm-form {
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .LoginForm-title {
-        margin-bottom: 15px;
-        font-size: 16px;
-        font-weight: 300;
-        color: #666666;
-    }
-
-    .LoginForm-register {
-        width: 100%;
-        max-width: 400px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-top: 35px;
-    }
-
-    .LoginForm-register hr{
-        width: 100%;
-        height: 2px;
-        border: 1px solid transparent;
-    }
-
-    .LoginForm-register p{
-        margin: 5px 0px;
-        color: var(--light-color);
-        text-align: center;
-        font-size: 15px;
-    }
-
-    .LoginForm-register input{
-        margin-top: 11px;
-        font-size: 16px;
-        color: var(--principal-color);
-        background-color: transparent;
-        text-decoration: none;
-        letter-spacing: 0.22px;
-    }
-</style>
-
 <div class="LoginForm">
-    <form class="LoginForm-form">
-        <h2 class="LoginForm-title" style="color:{formContentColor}">
-            ¡Nos encanta verte de nuevo!
-        </h2>
+  <form class="LoginForm-form">
+    <h2 class="LoginForm-title" style="color:{formContentColor}">
+      ¡Nos encanta verte de nuevo!
+    </h2>
 
-        {#if submitErrorMessage}
-            <div class="form-banner--invalid">{submitErrorMessage}</div>
-        {/if}
+    {#if submitErrorMessage}
+      <div class="form-banner--invalid">{submitErrorMessage}</div>
+    {/if}
 
-        <div class="form-group">
-            <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="Correo*" input$aria-controls="email"
-                input$aria-describedby="email"
-                input$maxlength="50" bind:value={email} />
-            <HelperText id="email">{emailFeedback}</HelperText>
-        </div>
+    <div class="form-group">
+      <Textfield
+        style="width: 100%;height:50px"
+        variant="outlined"
+        label="Correo*"
+        input$aria-controls="email"
+        input$aria-describedby="email"
+        input$maxlength="50"
+        bind:value={email}
+      />
+      <HelperText id="email">{emailFeedback}</HelperText>
+    </div>
 
-        <div class="form-group">
-            <Textfield style="width: 100%;height:50px" variant="outlined"
-                label="Contraseña*" input$aria-controls="password"
-                input$aria-describedby="password" input$type="password"
-                input$maxlength="50" bind:value={password} />
-        </div>
+    <div class="form-group">
+      <Textfield
+        style="width: 100%;height:50px"
+        variant="outlined"
+        label="Contraseña*"
+        input$aria-controls="password"
+        input$aria-describedby="password"
+        input$type="password"
+        input$maxlength="50"
+        bind:value={password}
+      />
+    </div>
 
-        <div class="form-button-group">
-            <input disabled={!isValidBeforeSumbit} type="button" class="button form-button button--principal" 
-                style="color:{backgroundColor};background-color:{activeColor}"
-                name="submit" on:click={submitLogin} value="Ingresar" />
-        </div>
+    <div class="form-button-group">
+      <input
+        disabled={!isValidBeforeSumbit}
+        type="button"
+        class="button form-button button--principal"
+        style="color:{backgroundColor};background-color:{activeColor}"
+        name="submit"
+        on:click={submitLogin}
+        value="Ingresar"
+      />
+    </div>
 
-        <div class="LoginForm-register">
-            <hr style="background-color:{formContentColor}" />
-            <!-- <p>Olvidé mi contraseña</p><br/> -->
-            <p style="color:{secondaryContentColor}">Si no tienes cuenta</p>
-            <input type="button" class="button button--secondary"
-                style="color:{activeColor};border:2px solid {activeColor}"
-                value="Crea cuenta" on:click={signupRedirectionAction} />
-        </div>
-    </form>
+    <div class="LoginForm-register">
+      <hr style="background-color:{formContentColor}" />
+      <!-- <p>Olvidé mi contraseña</p><br/> -->
+      <p style="color:{secondaryContentColor}">Si no tienes cuenta</p>
+      <input
+        type="button"
+        class="button button--secondary"
+        style="color:{activeColor};border:2px solid {activeColor}"
+        value="Crea cuenta"
+        on:click={signupRedirectionAction}
+      />
+    </div>
+  </form>
 </div>
+
+<style>
+  @import "/styles/form.css";
+
+  .form-group {
+    max-width: 400px;
+    margin-top: 0.4em;
+  }
+
+  .LoginForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .LoginForm-form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .LoginForm-title {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 300;
+    color: #666666;
+  }
+
+  .LoginForm-register {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 35px;
+  }
+
+  .LoginForm-register hr {
+    width: 100%;
+    height: 2px;
+    border: 1px solid transparent;
+  }
+
+  .LoginForm-register p {
+    margin: 5px 0px;
+    color: var(--light-color);
+    text-align: center;
+    font-size: 15px;
+  }
+
+  .LoginForm-register input {
+    margin-top: 11px;
+    font-size: 16px;
+    color: var(--principal-color);
+    background-color: transparent;
+    text-decoration: none;
+    letter-spacing: 0.22px;
+  }
+</style>

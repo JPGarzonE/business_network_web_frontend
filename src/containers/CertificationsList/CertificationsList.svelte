@@ -5,6 +5,7 @@
   import Modal from "../../components/Modal.svelte";
   import CreateButton from "../../components/CreateButton/CreateButton.svelte";
   import CertificationForm from "../CertificationForm/CertificationForm.svelte";
+  import { _ } from "svelte-i18n";
 
   const isEditableProfile = getContext("isEditableProfile");
 
@@ -37,7 +38,9 @@
     </Modal>
   {/if}
 
-  <h3 class="CertificationsList-headline">Certificaciones</h3>
+  <h3 class="CertificationsList-headline">
+    {$_("certificationsList.certifications")}
+  </h3>
 
   {#if isEditableProfile}
     <div class="CertificationsList-card--create">

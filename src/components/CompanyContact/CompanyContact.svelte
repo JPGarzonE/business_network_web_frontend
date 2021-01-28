@@ -4,9 +4,11 @@
   import Whatsapp from "svelte-material-icons/Whatsapp.svelte";
   import { stores } from "@sapper/app";
   import { goto } from "@sapper/app";
+  import { _ } from "svelte-i18n";
 
   export let contact;
   export let disabled;
+
   const { session } = stores();
 
   let companyContactLink =
@@ -18,7 +20,7 @@
 <div class="CompanyContact">
   {#if !$session.authenticated}
     <ButtonChat
-      title="Registrate para contactar"
+      title={$_("companyContact.joinToContact")}
       buttonAction={async () => {
         await goto("");
       }}
@@ -41,13 +43,13 @@
   {:else}
     {#if $session.isVerified}
       <p class="ProfileIdentity-advice">
-        Este usuario no tiene asignado un número de contacto.<br />
-        Hable con nuestros asesores de venta y lo contactaremos por usted.
+        {$_("companyContact.thisUserDoNotHaveRegisteredContactNumber")}<br />
+        {$_("companyContact.talkToOurSalesConsultantToCOntact")}
       </p>
     {:else}
       <p class="ProfileIdentity-advice">
-        No puede contactar directamente hasta estar verificado.<br />
-        Hable con nuestros asesores de venta y lo contactaremos por usted.
+        {$_("companyContact.cantContactDirectlyUntilVerified")}<br />
+        {$_("companyContact.talkToOurSalesConsultantToCOntact")}
       </p>
     {/if}
     <ContactUsButton

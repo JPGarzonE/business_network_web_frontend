@@ -2,6 +2,7 @@
   import { afterUpdate, onDestroy, onMount } from "svelte";
   import Pencil from "svelte-material-icons/PencilOutline.svelte";
   import AddCert from "svelte-material-icons/ImagePlus.svelte";
+  import { _ } from "svelte-i18n";
 
   export let handleCancel;
   export let handleNext;
@@ -31,7 +32,7 @@
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >Finalizar Tour</button
+  >{$_("onBoardingFourthStep.endTour")}</button
 >
 <img
   src="/images/chevron-right.svg"
@@ -54,11 +55,10 @@
         <Pencil size={60} color="white" />
       </span>
       <span class="Text Pencil-Text">
-        Edita y elimina
+        {$_("onBoardingFourthStep.editAndDelete")}
         <br />
         <span class="Text--description">
-          Haz clic en el botón de edición para modificar o eliminar los datos
-          que subiste previamente.<span />
+          {$_("onBoardingFourthStep.clickToModifyOrDeletePrevieusData")}<span />
         </span></span
       >
     </div>
@@ -68,8 +68,8 @@
       </span>
       <div class="Text-Arrow-container">
         <span class="Text AddCert-Text">
-          Agrega tus<br />
-          productos
+          {$_("onBoardingFourthStep.addYour")}<br />
+          {$_("onBoardingFourthStep.products")}
           <br />
         </span>
         <img
@@ -80,7 +80,7 @@
         />
       </div>
       <span class="Text--description">
-        Adjunta la foto de tus productos con su descripción y precio.</span
+        {$_("onBoardingFourthStep.addPhotoAndDescription")}</span
       >
     </div>
   </div>

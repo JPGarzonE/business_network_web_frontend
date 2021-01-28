@@ -6,7 +6,7 @@
 </script>
 
 <script>
-    import LandingBanner from "../components/MainBanners/LandingBanner.svelte";
+    import MainBanner from "../components/LandingPage/MainBanner.svelte";
     import AuthContainer from "../components/authentication/AuthContainer.svelte";
     import LoginForm from "../containers/LoginForm/LoginForm.svelte";
 </script>
@@ -51,7 +51,7 @@
 
 <div class="login">
     <div class="login-banner">
-        <LandingBanner name="Login" />
+        <MainBanner name="Login" />
     </div>
     <div class="login-form">
         <AuthContainer>

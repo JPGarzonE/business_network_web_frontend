@@ -13,30 +13,45 @@
 }
 
 @font-face {
+  font-family: 'Rowdies';
+  src: url('/fonts/Rowdies-Bold.ttf');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Rowdies';
+  src: url('/fonts/Rowdies-Regular.ttf');
+  font-weight: normal;
+}
+
+@font-face {
   font-family: 'Metropolis';
   src: url('/fonts/Metropolis-Regular.otf');
 }
 
 :root {
-  --principal-color: #5387cc;
-  --secondary-color: #ffffff;
-  --light-color: #b3b3b3;
+  --principal-color: #5387CC;
+  --secondary-color: #FFFFFF;
+  --light-color: #B3B3B3;
   --principal-text-color: #333333;
   --secondary-text-color: #808080;
-  --success-color: #3fc68d;
-  --error-color: #e77557;
-  --button-color: #ff9c41;
+
+  --success-color: #3FC68D;
+  --error-color: #FF6660;
+  --button-color: #FF9C41;
   --whatsapp-color: #51C85D;  
 
   --lightest-gray: rgba(0, 0, 0, 0.05);
   --super-extra-light-gray: rgba(0, 0, 0, 0.25);
-  --extra-light-gray: #f1f0f0;
+  --extra-light-gray: #F8F8F8;
   --extra-light-gray-transparent: rgb(222, 222, 222, 0.5);
-  --white: #ffffff;
-  --light-orange: #ffe3c9;
+  --white: #FFFFFF;
+  --principal-orange: #FF7A00;
+  --light-orange: #FFE3C9;
 
   --title-font: 'Roboto', sans-serif;
   --body-font: 'Roboto', sans-serif;
+  --landing-title-font: 'Rowdies', sans-serif;
 }
 
 * {
@@ -81,4 +96,8 @@ h2 {
 p,
 figure {
   margin: 0px;
+}
+
+.no-scroll {
+  overflow: hidden;
 }

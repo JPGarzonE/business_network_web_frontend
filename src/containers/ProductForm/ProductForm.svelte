@@ -20,7 +20,7 @@
   const fields = [ 'name', 'description', 'certificates', 'minimum_purchase', 'tariff_heading', 
     'maximum_price', 'minimum_price', 'category', 'measurement_unit' ];
   const productEditData = ProductElement ? ProductElement : {};
-  const editMode = ProductElement !== undefined;
+  const editMode = ProductElement != undefined;
 
   let name = productEditData.name ? productEditData.name : '';
   let category = ProductElement ? ProductElement.category : (CATEGORY ? CATEGORY[0] : '');

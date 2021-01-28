@@ -1,14 +1,15 @@
 <script>
-  import { getContext } from 'svelte';
-  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
-  import CertificationCard from '../../components/CertificationCard/CertificationCard.svelte';
-  import Modal from '../../components/Modal.svelte';
-  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
-  import CertificationForm from '../CertificationForm/CertificationForm.svelte';
+  import { getContext } from "svelte";
+  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
+  import CertificationCard from "../../components/CertificationCard/CertificationCard.svelte";
+  import Modal from "../../components/Modal.svelte";
+  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
+  import CertificationForm from "../CertificationForm/CertificationForm.svelte";
 
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
   export let certificationsList = [];
+  export let onBoarding = false;
 
   let editableMode = false;
 
@@ -25,6 +26,55 @@
     certificationsList = certificationsList.filter((item) => item.id !== id);
   }
 </script>
+
+<div class="CertificationsList" id="CertificationsList">
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <CertificationForm
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+      />
+    </Modal>
+  {/if}
+
+  <h3 class="CertificationsList-headline">Certificaciones</h3>
+
+  {#if isEditableProfile}
+    <div class="CertificationsList-card--create">
+      <div
+        on:click={!onBoarding && toggleEditableMode}
+        class:Certification-card-create-button={onBoarding}
+      >
+        <CreateButton
+          size={25}
+          color={onBoarding ? "white" : "var(--principal-color)"}
+          id="CertificationsCreate"
+        />
+      </div>
+    </div>
+  {/if}
+  <HorizontalScrollList
+    id="certifications-list"
+    beginningItemsNumber={certificationsList.length}
+  >
+    {#each certificationsList as element}
+      <CertificationCard
+        id={element.certificate.id}
+        media={element.certificate.logo}
+        name={element.certificate.name}
+        description={element.certificate.description}
+        onDelete={onDeleteCertification}
+      />
+    {:else}
+      <CertificationCard
+        name="Certificación de muestra"
+        description="Descripción de la certificación de muestra"
+        isSample
+        {onBoarding}
+      />
+    {/each}
+  </HorizontalScrollList>
+</div>
 
 <style>
   .CertificationsList {
@@ -52,14 +102,9 @@
     justify-content: flex-end;
   }
 
-  .CertificationsList-empty-message {
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-align: center;
-    color: var(--secondary-text-color);
+  .Certification-card-create-button {
+    z-index: 40;
+    border-color: white;
   }
 
   @media screen and (min-width: 850px) {
@@ -73,39 +118,3 @@
     }
   }
 </style>
-
-<div class="CertificationsList">
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <CertificationForm
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData} />
-    </Modal>
-  {/if}
-
-  <h3 class="CertificationsList-headline">Certificaciones</h3>
-
-  {#if isEditableProfile}
-    <div class="CertificationsList-card--create">
-      <div on:click={toggleEditableMode}>
-        <CreateButton size={25} />
-      </div>
-    </div>
-  {/if}
-  <HorizontalScrollList
-    id="certifications-list"
-    beginningItemsNumber={certificationsList.length}>
-    {#each certificationsList as element}
-      <CertificationCard
-        id={element.certificate.id}
-        media={element.certificate.logo}
-        name={element.certificate.name}
-        description={element.certificate.description}
-        onDelete={onDeleteCertification} />
-    {:else}
-      <div class="CertificationsList-empty-message">
-        <p>La compañia todavía no tiene certificaciones que la identifiquen</p>
-      </div>
-    {/each}
-  </HorizontalScrollList>
-</div>

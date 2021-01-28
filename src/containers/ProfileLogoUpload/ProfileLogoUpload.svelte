@@ -1,13 +1,13 @@
 <script>
-  import CompanyService from '../../services/companies/companies.service.js';
-  import { stores } from '@sapper/app';
-  import { getContext } from 'svelte';
+  import CompanyService from "../../services/companies/companies.service.js";
+  import { stores } from "@sapper/app";
+  import { getContext } from "svelte";
 
   export let actualLogo;
   export let afterSubmit;
   const { session } = stores();
-  const profileUsername = getContext('profileUsername');
-  const isEditableProfile = getContext('isEditableProfile');
+  const profileUsername = getContext("profileUsername");
+  const isSessionUserProfile = getContext("isSessionUserProfile");
 
   let imageUploaded = false;
   let newLogoFile;
@@ -26,14 +26,16 @@
   }
 
   function updateLogoImagePreview(imgValue) {
-    const ProfileLogoUploadImage = document.getElementById('ProfileLogoUpload-image');
+    const ProfileLogoUploadImage = document.getElementById(
+      "ProfileLogoUpload-image"
+    );
     ProfileLogoUploadImage.src = imgValue;
   }
 
   async function submit(event) {
     try {
       event.target.style.opacity = 0.4;
-      event.target.style.cursor = 'not-allowed';
+      event.target.style.cursor = "not-allowed";
 
       const companyService = new CompanyService();
       if (isEditableProfile && newLogoFile) {
@@ -47,16 +49,16 @@
       }
 
       event.target.style.opacity = 1;
-      event.target.style.cursor = 'pointer';
+      event.target.style.cursor = "pointer";
     } catch (e) {
       event.target.style.opacity = 1;
-      event.target.style.cursor = 'pointer';
+      event.target.style.cursor = "pointer";
     }
   }
 </script>
 
 <style>
-  @import '/styles/button.css';
+  @import "/styles/button.css";
 
   .ProfileLogoUpload {
     width: 100%;
@@ -185,7 +187,9 @@
 </style>
 
 <div class="ProfileLogoUpload">
-  <button class="ProfileLogoUpload-close-button" on:click> <span>X</span> </button>
+  <button class="ProfileLogoUpload-close-button" on:click>
+    <span>x</span>
+  </button>
 
   <div class="ProfileLogoUpload-header">
     <h4 class="ProfileLogoUpload-title">Agregar logo</h4>
@@ -224,8 +228,9 @@
       </p>
     {:else}
       <p class="ProfileLogoUpload-message">
-        ¡Sube el logo o una imagen que represente a tu empresa! <br /> Tendrás más
-        oportunidades de atraer nuevos aliados y cerrar negocios.
+        ¡Sube el logo o una imagen que represente a tu empresa!
+        <br />
+        Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios.
       </p>
     {/if}
   </div>

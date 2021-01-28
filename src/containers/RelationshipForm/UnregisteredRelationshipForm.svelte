@@ -12,7 +12,7 @@
   export let afterSubmit;
   export let unregisteredRelationship; // Pass if is an update form
 
-  const editMode = unregisteredRelationship !== undefined;
+  const editMode = unregisteredRelationship != undefined;
 
   const fields = ['name', 'industry', 'country', 'type'];
   const { session } = stores();
@@ -242,7 +242,7 @@
 
     {#if !editMode}
       <div class="form-group">
-        <Select variant="outlined" bind:value={industry} label="Categoría*">
+        <Select variant="outlined" style="width: 100%;" bind:value={industry} label="Categoría*">
           {#each INDUSTRIES as ind}
             <Option value={ind} selected={industry === ind.toLowerCase()}>
               {ind}

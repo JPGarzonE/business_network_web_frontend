@@ -4,7 +4,7 @@
 
     const companiesSearchService = new CompaniesSearchService();
 
-    let searchQuery;
+    let searchQuery = '';
     let companiesSearchResults = [];
     let unregisteredCompaniesSearchResults = [];
 

@@ -1,19 +1,22 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
-  import Modal from '../Modal.svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
-  import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';
-  import CertificationsService from '../../services/suppliers/certifications.service.js';
-  import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
+  import { getContext } from "svelte";
+  import { stores } from "@sapper/app";
+  import Modal from "../Modal.svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
+  import CertificationForm from "../../containers/CertificationForm/CertificationForm.svelte";
+  import CertificationsService from "../../services/suppliers/certifications.service.js";
+  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
 
   export let id;
   export let media;
   export let name;
   export let description;
   export let onDelete;
+  export let isSample = false;
+  export let onBoarding;
+
   const { session } = stores();
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
   let editableMode = false;
   let displayStory = false;
@@ -33,21 +36,24 @@
 
   async function deleteCertification() {
     toggleConfirmation();
-    try {
-      const certificationsService = new CertificationsService();
-      const certificationData = await certificationsService.deleteCertificationElement(
-        $session.company_accountname,
-        id,
-        $session.accessToken
-      );
-      onDelete(id);
-    } catch (e) {
-      console.error(e);
+    if (!isSample) {
+      try {
+        const certificationsService = new CertificationsService();
+        await certificationsService.deleteCertificationElement(
+          $session.company_accountname,
+          id,
+          $session.accessToken
+        );
+        onDelete(id);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
   function reloadComponentData(CertificationElementData) {
     const { certificate } = CertificationElementData;
+    id = certificate.id;
     name = certificate.name;
     media = certificate.logo ? certificate.logo : null;
     description = certificate.description ? certificate.description : null;
@@ -55,6 +61,79 @@
     editableMode = false;
   }
 </script>
+
+{#if confirmationMode && isEditableProfile}
+  <ConfirmationModal
+    title={isSample
+      ? "Crea un certificado y este desaparacerá"
+      : `Desea eliminar el Certificado ${name}`}
+    onAccept={deleteCertification}
+    onDecline={toggleConfirmation}
+  />
+{/if}
+<div
+  class="CertificationCard {onBoarding ? 'CertificationCard--Onboarding' : ''}"
+>
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <CertificationForm
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+        CertificationElement={isSample
+          ? null
+          : { id: id, name: name, description: description, media: media }}
+      />
+    </Modal>
+  {/if}
+
+  <figure
+    class="CertificationCard-media-container"
+    on:click={!onBoarding && toggleEditableMode}
+  >
+    {#if media && media.path}
+      <img src={media.path} alt={name} class="CertificationCard-media-image" />
+    {:else}
+      <img
+        src="/images/default_certification.png"
+        alt={name}
+        class="CertificationCard-media-image"
+      />
+    {/if}
+  </figure>
+
+  {#if isEditableProfile}
+    <div class="CertificationCard-edit-button">
+      <EditButton
+        size={25}
+        color="gray"
+        onEdit={toggleEditableMode}
+        onDelete={toggleConfirmation}
+        menuButton
+        disabled={onBoarding}
+      />
+    </div>
+  {/if}
+
+  <h4 class="CertificationCard-name">{name}</h4>
+
+  {#if description}
+    {#if displayStory}
+      <p class="CertificationCard-story">{description}</p>
+    {/if}
+  {/if}
+
+  <div class="CertificationCard-bottom">
+    <p class="CertificationCard-category">Certificaciones</p>
+
+    {#if description}
+      <span on:click={toggleStoryDisplay}>
+        <a class="CertificationCard-story-link" id="story-link">
+          {displayStory ? "Ver menos" : "Ver más"}
+        </a>
+      </span>
+    {/if}
+  </div>
+</div>
 
 <style>
   .CertificationCard {
@@ -69,8 +148,15 @@
     margin: 0 30px 0 0;
     padding: 0;
     border: 1px solid var(--principal-color);
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
+  }
+  .CertificationCard--Onboarding {
+    z-index: 30;
+    background-color: white;
+    cursor: default;
+    margin: 0;
+    margin-top: 25px;
   }
   .CertificationCard-edit-button {
     position: absolute;
@@ -104,7 +190,7 @@
     font-size: 1em;
     padding: 0 5%;
     text-align: start;
-    font-weight: 100;
+    font-weight: bold;
     color: var(--principal-color);
     word-break: break-word;
   }
@@ -140,68 +226,10 @@
 
   @media screen and (min-width: 850px) {
     .CertificationCard {
-      min-width: 285px;
+      min-width: 270px;
+    }
+    .CertificationCard--Onboarding {
+      margin: 0;
     }
   }
 </style>
-
-{#if confirmationMode && isEditableProfile}
-  <ConfirmationModal
-    title="Desea eliminar el Certificado {name}"
-    onAccept={deleteCertification}
-    onDecline={toggleConfirmation} />
-{/if}
-<div class="CertificationCard">
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <CertificationForm
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData}
-        CertificationElement={{ id: id, name: name, description: description, media: media }} />
-    </Modal>
-  {/if}
-
-  <figure
-    class="CertificationCard-media-container"
-    on:click={toggleEditableMode}>
-    {#if media && media.path}
-      <img src={media.path} alt={name} class="CertificationCard-media-image" />
-    {:else}
-      <img
-        src="/images/profile_icon.svg"
-        alt={name}
-        class="CertificationCard-media-image" />
-    {/if}
-  </figure>
-
-  {#if isEditableProfile}
-    <div class="CertificationCard-edit-button">
-      <EditButton
-        size={25}
-        color="gray"
-        onEdit={toggleEditableMode}
-        onDelete={toggleConfirmation}
-        menuButton />
-    </div>
-  {/if}
-
-  <h4 class="CertificationCard-name">{name}</h4>
-
-  {#if description}
-    {#if displayStory}
-      <p class="CertificationCard-story">{description}</p>
-    {/if}
-  {/if}
-
-  <div class="CertificationCard-bottom">
-    <p class="CertificationCard-category">Certificaciones</p>
-
-    {#if description}
-      <span on:click={toggleStoryDisplay}>
-        <a class="CertificationCard-story-link" id="story-link">
-          {displayStory ? "Ver menos" : "Ver más"}
-        </a>
-      </span>
-    {/if}
-  </div>
-</div>

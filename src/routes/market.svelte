@@ -17,7 +17,7 @@
 
 <script>
     import Header from "../components/Header.svelte";
-    import MarketBanner from "../components/MainBanners/MarketBanner.svelte";
+    import MarketBanner from "../components/Market/MarketBanner.svelte";
     import ProductSearch from "../containers/Search/ProductSearch/ProductSearch.svelte";
     import MarketCategoryList from "../containers/MarketCategoryList/MarketCategoryList.svelte";
     import Footer from "../components/Footer.svelte";

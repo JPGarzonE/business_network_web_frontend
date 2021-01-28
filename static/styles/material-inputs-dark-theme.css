@@ -1,0 +1,100 @@
+/* Override Material UI input styles */
+
+/* Input border */
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+  border-color: var(--white);
+}
+
+/* Input border on hover */
+.mdc-text-field:not(.mdc-text-field--disabled):hover .mdc-notched-outline__leading, 
+.mdc-text-field:not(.mdc-text-field--disabled):hover .mdc-notched-outline__notch, 
+.mdc-text-field:not(.mdc-text-field--disabled):hover .mdc-notched-outline__trailing {
+    border-color: var(--white) !important;
+}
+
+/* Input border when is focused */
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: var(--white);
+}
+
+/* Input border on error */
+.mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-notched-outline__leading, 
+.mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-notched-outline__notch, 
+.mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
+    border-color: var(--error-color) !important;
+}
+
+/* Input floating placeholder */
+.mdc-floating-label {
+    color: var(--white) !important;
+}
+
+/* Input floating placeholder when is focused */
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: var(--white) !important;
+}
+
+/* Input floating label on error*/
+.mdc-text-field--outlined.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: var(--error-color) !important;
+}
+
+/* Input content */
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: var(--white);
+    caret-color: var(--white);
+}
+
+/* Input helper text */
+.mdc-text-field-helper-text {
+    color: var(--white) !important;
+}
+
+/* Select content */
+.mdc-select:not(.mdc-select--disabled) .mdc-select__native-control {
+    color: var(--white) !important;
+}
+
+/* Select option */
+.mdc-select option {
+    background-color: #00409A;
+}
+
+/* Select helper text */
+.mdc-select-helper-text {
+    color: white !important;
+}
+
+/* Select border */
+.mdc-select--outlined:not(.mdc-select--disabled) .mdc-notched-outline__leading, 
+.mdc-select--outlined:not(.mdc-select--disabled) .mdc-notched-outline__notch, 
+.mdc-select--outlined:not(.mdc-select--disabled) .mdc-notched-outline__trailing {
+    border-color: var(--white) !important;
+}
+
+/* Select border on hover */
+.mdc-select--outlined:not(.mdc-select--disabled):hover .mdc-notched-outline__leading, 
+.mdc-select--outlined:not(.mdc-select--disabled):hover .mdc-notched-outline__notch, 
+.mdc-select--outlined:not(.mdc-select--disabled):hover .mdc-notched-outline__trailing {
+    border-color: var(--white) !important;
+}
+
+/* Checkbox content */
+.mdc-checkbox__checkmark {
+    color: #00409A;
+}
+
+/* Checkbox background */
+.mdc-checkbox__background {
+    background-color: white !important;
+    border-color: white !important;
+}
+
+/* Checkbox when is selected */
+.mdc-checkbox:not(.mdc-checkbox--selected) .mdc-checkbox__background {
+    background-color: transparent !important;
+}

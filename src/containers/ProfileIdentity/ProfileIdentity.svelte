@@ -8,8 +8,7 @@
   import { getContext } from "svelte";
   import Web from "svelte-material-icons/Web.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
-import Hoverable from "../../components/Hoverable/Hoverable.svelte";
-
+  import Hoverable from "../../components/Hoverable/Hoverable.svelte";
 
   export let name;
   export let industry;
@@ -17,6 +16,9 @@ import Hoverable from "../../components/Hoverable/Hoverable.svelte";
   export let logo;
   export let location;
   export let contact;
+  export { className as class };
+  let className = "";
+  $: Onboarding = className == "Onboarding";
 
   const isEditableProfile = getContext("isEditableProfile");
 
@@ -48,29 +50,96 @@ import Hoverable from "../../components/Hoverable/Hoverable.svelte";
     editableMode = false;
   }
 
-  let hoverOne=false;
-  let hoverTwo=false;
-  let hoverThree=false;
+  let hoverOne = false;
+  let hoverTwo = false;
+  let hoverThree = false;
 
-  function HandleHoverOne(e){
-    hoverOne= true;
+  function HandleHoverOne(e) {
+    hoverOne = true;
   }
-  function handleOffOne(e){
-    hoverOne= false;
+  function handleOffOne(e) {
+    hoverOne = false;
   }
-  function HandleHoverTwo(e){
-    hoverTwo= true;
+  function HandleHoverTwo(e) {
+    hoverTwo = true;
   }
-  function handleOffTwo(e){
-    hoverTwo= false;
+  function handleOffTwo(e) {
+    hoverTwo = false;
   }
-  function HandleHoverThree(e){
-    hoverThree= true;
+  function HandleHoverThree(e) {
+    hoverThree = true;
   }
-  function handleOffThree(e){
-    hoverThree= false;
+  function handleOffThree(e) {
+    hoverThree = false;
   }
 </script>
+
+<div class="ProfileIdentity">
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <ProfileIdentityForm
+        {name}
+        {industry}
+        {webUrl}
+        {location}
+        {contact}
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+      />
+    </Modal>
+  {/if}
+
+  <div class="ProfileIdentity-container {className}">
+    <div class="ProfileIdentity-content">
+      <ProfileLogo {logo} blank={Onboarding} />
+      <ProfileVerification />
+
+      <div class="ProfileIdentity-NameContainer">
+        <p class="ProfileIdentity-name">{name}</p>
+        {#if isEditableProfile}
+          <div class="ProfileIdentity-NameEditor">
+            <EditButton
+              size={17}
+              color="gray"
+              onEdit={toggleEditableMode}
+              disabled={Onboarding}
+            />
+          </div>
+        {/if}
+      </div>
+
+      <div class="ProfileIdentity-subheadline">
+        <p class="ProfileIdentity-industry">{industry}</p>
+        {#if locationSubtitle}
+          <p class="ProfileIdentity-location">{locationSubtitle}</p>
+        {/if}
+      </div>
+
+      <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><MapMarkerOutline /></i>
+        <span class="ProfileIdentity-address"
+          >{address ? address : "No tiene aún"}</span
+        >
+      </p>
+      <!-- <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><GoogleTranslate /></i>
+        No tiene aún
+      </p> -->
+      <p class="ProfileIdentity-data">
+        <i class="icon-wrapper"><Web /></i>
+        <a class="ProfileIdentity-webUrl" href={webUrl} target="_blank"
+          >{webUrl ? webUrl : "No tiene aún"}</a
+        >
+      </p>
+
+      <div class="ProfileIdentity-contact-me">
+        {#if !isEditableProfile || Onboarding}
+          <CompanyContact {contact} disabled={Onboarding} />
+        {/if}
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
   @import "/styles/form.css";
@@ -142,7 +211,7 @@ import Hoverable from "../../components/Hoverable/Hoverable.svelte";
   }
 
   .ProfileIdentity-data {
-    position:relative;
+    position: relative;
     width: 75%;
     display: flex;
     justify-content: flex-start;
@@ -171,79 +240,13 @@ import Hoverable from "../../components/Hoverable/Hoverable.svelte";
     margin: 0 auto;
     margin-top: 15%;
   }
+  .Onboarding {
+    background-color: white;
+  }
+
   @media screen and (min-width: 1024px) {
     .ProfileIdentity-name {
       font-size: 1.3em;
     }
   }
 </style>
-
-<div class="ProfileIdentity">
-
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <ProfileIdentityForm
-        {name} {industry} {webUrl} 
-        {location} {contact}
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData} />
-    </Modal>
-  {/if}
-
-  <div class="ProfileIdentity-container">
-    <div class="ProfileIdentity-content">
-      <ProfileLogo {logo} />
-      <ProfileVerification />
-
-      <div class="ProfileIdentity-NameContainer">
-        <p class="ProfileIdentity-name">{name}</p>
-        {#if isEditableProfile}
-          <div class="ProfileIdentity-NameEditor">
-            <EditButton size={17} color="gray" onEdit={toggleEditableMode} />
-          </div>
-        {/if}
-      </div>
-  
-      <div class="ProfileIdentity-subheadline">
-        <p class="ProfileIdentity-industry">{industry}</p>
-        {#if locationSubtitle}
-          <p class="ProfileIdentity-location">{locationSubtitle}</p>
-        {/if}
-      </div>
-
-      <!-- direccion -->
-      <p class="ProfileIdentity-data">
-        <i class="icon-wrapper" on:mouseover={HandleHoverOne} on:mouseout={handleOffOne}><MapMarkerOutline /></i>
-        <span
-          class="ProfileIdentity-address">{address ? address : 'No tiene aún'}</span>
-          {#if hoverOne}
-          <Hoverable message="Direccion"/>
-          {/if}
-      </p>
-      <!-- <p class="ProfileIdentity-data">
-        <i class="icon-wrapper" on:mouseover={HandleHoverTwo} on:mouseout={handleOffTwo}><GoogleTranslate /></i>
-        No tiene aún
-      </p>
-      {#if hoverTwo}
-      <Hoverable message="Ciudad de Ubicacion"/>
-      {/if} -->
-      <!-- pagina web -->
-      <p class="ProfileIdentity-data">
-
-        <i class="icon-wrapper" on:mouseover={HandleHoverThree} on:mouseout={handleOffThree}><Web /></i>
-        <a class="ProfileIdentity-webUrl" href={webUrl} 
-          target="_blank">{webUrl ? webUrl : 'No tiene aún'}</a>
-        {#if hoverThree}
-          <Hoverable message="Paises donde Exporta"/>
-        {/if}
-      </p>
-
-      <div class="ProfileIdentity-contact-me">
-        {#if !isEditableProfile}
-          <CompanyContact {contact} />
-        {/if}
-      </div>
-
-    </div>
-  </div>
-</div>

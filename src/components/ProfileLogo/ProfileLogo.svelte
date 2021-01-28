@@ -1,12 +1,13 @@
 <script>
-  import Modal from '../Modal.svelte';
-  import LogoUpload from '../../containers/ProfileLogoUpload/ProfileLogoUpload.svelte';
-  import { getContext } from 'svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
+  import Modal from "../Modal.svelte";
+  import LogoUpload from "../../containers/ProfileLogoUpload/ProfileLogoUpload.svelte";
+  import { getContext } from "svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
   export let logo;
+  export let blank = false;
 
-  const profileAccountname = getContext('profileAccountname');
-  const isEditableProfile = getContext('isEditableProfile');
+  const profileAccountname = getContext("profileAccountname");
+  const isEditableProfile = getContext("isEditableProfile");
 
   let editableMode = false;
 
@@ -19,6 +20,42 @@
     editableMode = false;
   }
 </script>
+
+<div class="ProfileLogo">
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <LogoUpload
+        actualLogo={logo}
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+      />
+    </Modal>
+  {/if}
+
+  <figure
+    class="ProfileLogo-container {logo && logo.path
+      ? ''
+      : 'ProfileLogo-container--default'}"
+  >
+    <img
+      src={logo && logo.path ? logo.path : "/images/profile_icon.svg"}
+      alt={profileAccountname}
+      class="ProfileLogo-image {logo && logo.path
+        ? ''
+        : 'ProfileLogo-image--default'}"
+    />
+    {#if isEditableProfile}
+      <div class="CertificationCard-edit-button">
+        <EditButton
+          disabled={blank}
+          size={20}
+          color="var(--light-color)"
+          onEdit={toggleEditableMode}
+        />
+      </div>
+    {/if}
+  </figure>
+</div>
 
 <style>
   .ProfileLogo-container {
@@ -74,30 +111,3 @@
     }
   }
 </style>
-
-<div class="ProfileLogo">
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <LogoUpload
-        actualLogo={logo}
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData} />
-    </Modal>
-  {/if}
-
-  <figure
-    class="ProfileLogo-container {logo && logo.path ? '' : 'ProfileLogo-container--default'}">
-    <img
-      src={logo && logo.path ? logo.path : '/images/profile_icon.svg'}
-      alt={profileAccountname}
-      class="ProfileLogo-image {logo && logo.path ? '' : 'ProfileLogo-image--default'}" />
-    {#if isEditableProfile}
-      <div class="CertificationCard-edit-button">
-        <EditButton
-          size={20}
-          color="var(--light-color)"
-          onEdit={toggleEditableMode} />
-      </div>
-    {/if}
-  </figure>
-</div>

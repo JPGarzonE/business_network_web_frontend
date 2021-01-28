@@ -1,5 +1,6 @@
 <script>
     import { goto } from "@sapper/app";
+    import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
     import { INDUSTRIES } from "../../store/store.js";
     import SignupService from "../../services/authentication/signup.service.js";
     import StepsCarousel from "../../components/StepsCarousel/StepsCarousel.svelte";
@@ -80,7 +81,7 @@
             
             // Here we not use goto because the server has to render an authenticated content after login
             // With goto this not happen because the render acts only on the client
-            location.href = `/profile/suppliers/${accountname}`;
+            location.href = GetSupplierProfileRoute(accountname);
         }
         catch(e) {
             console.log("error: ", e);

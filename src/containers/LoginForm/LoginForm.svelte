@@ -1,12 +1,15 @@
 <script>
     import { goto } from "@sapper/app";
+    import { GetRoute as GetSignupRoute } from '../../routes/signup.svelte';
+    import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
+    import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
     import LoginService from "../../services/authentication/login.service.js";
     import Textfield from "@smui/textfield";
     import HelperText from "@smui/textfield/helper-text";
     import { validateEmailPattern } from "../../validators/formValidators.js";
     import { setCookie } from "../../utils/cookie.js";
 
-    export let signupRedirectionAction = async ()=> await goto('/signup');
+    export let signupRedirectionAction = async ()=> await goto(GetSignupRoute());
     export let backgroundColor; 
     export let activeColor;
     export let formContentColor;
@@ -38,13 +41,18 @@
             
             const data = await loginService.login( email, password );
             let accountname = data.access_user.default_company.accountname;
+            let isBuyer = data.access_user.default_company.is_buyer;
+            let isSupplier = data.access_user.default_company.is_supplier;
 
             setCookie("JPGE", data.access_token, 1);
             setCookie("access_accountname", accountname, 1);
             
             // Here we not use goto because the server has to render an authenticated content after login
             // With goto this not happen because the render acts only on the client
-            location.href = `/profile/suppliers/${accountname}`;
+            if( isBuyer )
+                location.href = GetBuyerProfileRoute(accountname);
+            else if( isSupplier )
+                location.href = GetSupplierProfileRoute(accountname);
         }
         catch(e){
             const errors = e.message;

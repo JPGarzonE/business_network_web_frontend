@@ -1,6 +1,7 @@
 <script>
   import { getContext } from "svelte";
   import { stores, goto } from "@sapper/app";
+  import { GetRoute as GetProductDetailRoute } from '../../routes/product/[product_id].svelte';
   import Modal from "../Modal.svelte";
   import EditButton from "../EditButton/EditButton.svelte";
   import ProductCard from "../ProductCard/ProductCard.svelte";
@@ -20,7 +21,7 @@
   const ProductID =
     productElementOverview && !isSample ? productElementOverview.id : null;
   const ProductDetailPath =
-    ProductID && !isSample ? `product/${ProductID}` : null;
+    ProductID && !isSample ? GetProductDetailRoute(ProductID) : null;
 
   let productElementDetail = null;
   let editableMode = false;

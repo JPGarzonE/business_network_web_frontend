@@ -1,5 +1,10 @@
 <script context="module">
     import ShowcaseService from "../services/market/showcase.service.js";
+    import { GetRoute as GetRootRoute } from './index.svelte';
+
+    export const GetRoute = () => {
+        return `/market/`;
+    }
 
     export async function preload(page, session) {
         if( session.authenticated ) {
@@ -10,7 +15,7 @@
                 showcase: data
             }
         }else {
-            return this.redirect(301, '/');
+            return this.redirect(301, GetRootRoute());
         }
     }
 </script>

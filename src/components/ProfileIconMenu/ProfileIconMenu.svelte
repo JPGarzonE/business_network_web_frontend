@@ -1,5 +1,7 @@
 <script>
     import { stores } from "@sapper/app";
+    import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
+    import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
     import ProfileIcon from "../ProfileIcon/ProfileIcon.svelte";
     import ArrowCollapseRight from "svelte-material-icons/ArrowCollapseRight.svelte";
     import ChevronDown from "svelte-material-icons/ChevronDown.svelte";
@@ -15,22 +17,33 @@
     let actualPath = null;
     let sessionCompanyAccountname = null;
     let sessionIsAuthenticated = false;
+    let sessionProfilePath = '';
+    let companyIsBuyer = false;
+    let companyIsSupplier = false;
 
     session.subscribe(session => {
         sessionIsAuthenticated = session.authenticated;
-        if( sessionIsAuthenticated )
+        if( sessionIsAuthenticated && session.company ) {
             sessionCompanyAccountname = session.company_accountname;
+            companyIsBuyer = session.company.is_buyer;
+            companyIsSupplier = session.company.is_supplier;
+        }
     });
     page.subscribe(page => {
         actualPath = page.path;
     });
 
-    let sessionProfilePath = `/profile/${sessionCompanyAccountname}`;
+    if( companyIsSupplier )
+        sessionProfilePath = GetSupplierProfileRoute(sessionCompanyAccountname);
+    else if( companyIsBuyer )
+        sessionProfilePath = GetBuyerProfileRoute(sessionCompanyAccountname);
 
     let gotoProfile = () => {
-        document.body.style.cursor = "wait";
-        location.href = sessionProfilePath;
-        document.body.style.cursor = "auto";
+        if( sessionIsAuthenticated ) {
+            document.body.style.cursor = "wait";
+            location.href = sessionProfilePath;
+            document.body.style.cursor = "auto";
+        }
     }
     
     async function closeSession() {
@@ -103,19 +116,20 @@
             <ChevronDown size=40 />
         {/if}
     </div>
-    <div class="ProfileIconMenu-dropdown" class:hide={!displayMenu} >
-        {#if actualPath !== sessionProfilePath}
-        <div class="ProfileIconMenu-option" on:click={gotoProfile}>
-            <span>Editar mi perfil</span>
-            <PencilOutline size=16 color="var(--secondary-text-color)" />
-        </div>
-        {/if}
 
-        {#if sessionIsAuthenticated}
-        <div class="ProfileIconMenu-option" on:click={closeSession}>
-            <span>Cerrar sesión</span>
-            <ArrowCollapseRight size=16 color="var(--secondary-text-color)" />
+    {#if sessionIsAuthenticated}
+        <div class="ProfileIconMenu-dropdown" class:hide={!displayMenu} >
+            {#if actualPath !== sessionProfilePath}
+            <div class="ProfileIconMenu-option" on:click={gotoProfile}>
+                <span>Editar mi perfil</span>
+                <PencilOutline size=16 color="var(--secondary-text-color)" />
+            </div>
+            {/if}
+
+            <div class="ProfileIconMenu-option" on:click={closeSession}>
+                <span>Cerrar sesión</span>
+                <ArrowCollapseRight size=16 color="var(--secondary-text-color)" />
+            </div>
         </div>
-        {/if}
-    </div>
+    {/if}
 </div>

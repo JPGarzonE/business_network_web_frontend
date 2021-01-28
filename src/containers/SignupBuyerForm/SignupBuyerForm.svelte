@@ -1,5 +1,7 @@
 <script>
     import { goto } from "@sapper/app";
+    import { GetRoute as GetLoginRoute } from '../../routes/login.svelte';
+    import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
     import SignupService from "../../services/authentication/signup.service.js";
     import StepsCarousel from "../../components/StepsCarousel/StepsCarousel.svelte";
     import Textfield from "@smui/textfield";
@@ -14,7 +16,7 @@
     } from "../../validators/formValidators.js";
     import { setCookie } from "../../utils/cookie.js";
 
-    export let loginRedirectionAction = async () => await goto("/login");
+    export let loginRedirectionAction = async () => await goto(GetLoginRoute());
     const signupService = new SignupService();
 
     const fields = [
@@ -98,7 +100,7 @@
 
             // Here we not use goto because the server has to render an authenticated content after login
             // With goto this not happen because the render acts only on the client
-            location.href = `/profile/buyer/${accountname}`;
+            location.href = GetBuyerProfileRoute(accountname);
         } catch (e) {
             const error = e.message;
             submitErrorMessage = "";

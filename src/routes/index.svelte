@@ -1,6 +1,4 @@
 <script context="module">
-  import { _ } from "../services/i18n";
-
   export async function preload(page, session) {
     if (session.authenticated) {
       return this.redirect(301, "/market");
@@ -15,42 +13,6 @@
 
   let homeAuthenticationOpen = false;
   let authenticationContainerState = "signup";
-
-  const content = {
-    title: $_("index.connectWithInternationalBuyersAndSuppliersAroundTheWorld"),
-    subtitle: $_(
-      "index.bePartOfTheInternationalTradeNetworkThatIsConnectingTheMostCompetitive"
-    ),
-    features: [
-      {
-        title: $_("index.searchYourProductsTheEasyWay"),
-        description: $_(
-          "index.findInAnOrganizedWayTheRelevantInformationAboutTheProductsYou"
-        ),
-        advice: $_(
-          "index.allOfOurSuppliersHaveBeenVerifiedAgainstDifferentInternational"
-        ),
-      },
-      {
-        title: $_("index.digitalExposureWithInternationalBuyers"),
-        description: $_(
-          "index.createYourProfileInConectyWhereYouCanEasilyHaveADigitalExposure"
-        ),
-        advice: $_(
-          "index.allOfOurSuppliersHaveBeenVerifiedAgainstDifferentInternational"
-        ),
-      },
-      {
-        title: $_("index.secureYourPaymentsWithUs"),
-        description: $_(
-          "index.avoidFraudulentProcessesThroughOurModelThatAllowsUsToSecureYourPayment"
-        ),
-        advice: $_(
-          "index.learnMoreAboutThisModelByContactingOurSalesConsultants"
-        ),
-      },
-    ],
-  };
 </script>
 
 <svelte:head>
@@ -81,23 +43,13 @@
       homeAuthenticationOpen = true;
       authenticationContainerState = "login";
     }}
+    background="var(--principal-orange)"
+    textColor="#FFFFFF"
   />
 </div>
 
 <div class="index">
-  <Home
-    bind:homeAuthenticationOpen
-    bind:authenticationContainerState
-    {content}
-  />
+  <Home bind:homeAuthenticationOpen bind:authenticationContainerState />
 </div>
 
-<Footer />
-
-<style>
-  .Header {
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-  }
-</style>
+<Footer background="#273035" textColor="#FFFFFF" />

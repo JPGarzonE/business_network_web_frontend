@@ -1,6 +1,6 @@
 <script context="module">
   import ShowcaseService from "../services/market/showcase.service.js";
-  import { _ } from "../services/i18n";
+  import { _ } from "svelte-i18n";
 
   export async function preload(page, session) {
     if (session.authenticated) {
@@ -18,7 +18,7 @@
 
 <script>
   import Header from "../components/Header.svelte";
-  import MarketBanner from "../components/MainBanners/MarketBanner.svelte";
+  import MarketBanner from "../components/Market/MarketBanner.svelte";
   import ProductSearch from "../containers/Search/ProductSearch/ProductSearch.svelte";
   import MarketCategoryList from "../containers/MarketCategoryList/MarketCategoryList.svelte";
   import Footer from "../components/Footer.svelte";

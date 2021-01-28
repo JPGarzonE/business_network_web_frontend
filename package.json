@@ -6,7 +6,7 @@
     "node": "12.6.0"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "polka": "^0.5.2",
@@ -25,6 +25,7 @@
   "author": "Conecty",
   "license": "ISC",
   "devDependencies": {
+    "@composi/gestures": "^1.0.9",
     "@smui/checkbox": "^1.0.0",
     "@smui/menu": "^1.0.0",
     "@smui/select": "^1.0.0",

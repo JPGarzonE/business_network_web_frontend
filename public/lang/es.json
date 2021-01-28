@@ -1,7 +1,15 @@
 {
     "authenticationContainer": {
         "signIn": "Iniciar Sesión",
-        "signUp": "Crear Cuenta"
+        "signUp": "Crear Cuenta",
+        "register": "Registro"
+    },
+    "certificationCard":{
+        "more":"Ver más",
+        "less":"Ver menos",
+        "certifications":"Certificaciones",
+        "createACertificateAndThisONeWillDisapear":"Crea un certificado y este desaparacerá",
+        "deleteCertificate":"Desea eliminar el Certificado"
     },
     "certificationForm": {
         "addCertificate": "Añadir certificado ",
@@ -21,6 +29,9 @@
         "talkToOurSalesConsultantToCOntact":"Hable con nuestros asesores de venta y lo contactaremos por usted.",
         "cantContactDirectlyUntilVerified":"No puede contactar directamente hasta estar verificado."
     },
+    "contactUsButton":{
+        "getInTouch":"Contáctanos"
+    },
     "dropZone": {
         "dragAndDropTheFile": "Arrastra y suelta el archivo",
         "dragAndDropTheFileOrUploadItFromYourComputer": "Arrastra y suelta el archivo o selecciónalo otra opción",
@@ -34,7 +45,16 @@
     },
     "home": {
         "contactUs": "Contáctanos",
-        "signUpForFree": "Registrate Gratis"
+        "signUpForFree": "Registrate Gratis",
+        "connectWithB2BAccreditedBuyersAbroad":"Conéctate con compradores acreditados",
+        "bePartOfTheNetworkThatIsConnecting":"Se parte de la red que está conectando las ofertas más competitivas del mercado con compradores previamente verificados.",
+        "offerYourProductsThroughDigitalChannels":"Ofrece tus productos por medios digitales",
+        "uploadTheRangeOfExportableProductsYour":"Sube a la plataforma tu oferta de productos exportables y las certificaciones de tus productos.",
+        "weIntroduceYouToCompaniesThatAreRelevantToYourBusiness":"Te conectamos con las empresas que te interesan",
+        "weLookForPotentialBuyersThatAreRelevantToYourCore":"Buscaremos la oferta comercial que se ajuste a tu modelo de negocio y te ayudaremos a construir esa relación comercial.",
+        "secureYourPayment":"Recibe tu pago de forma segura",
+        "inConectyWeKeepGuardOfYourPaymentsWhileYouGo":"En Conecty mantenemos a salvo tu pago mientras se completa exitosamente la negociación.",
+        "talkToUsToKnowMoreAboutUs":"Conoce más sobre este modelo contactándonos"
     },
     "index": {
         "allOfOurBuyersHaveBeenVerifiedAgainstDifferentInternationalBackground": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales",
@@ -63,6 +83,12 @@
     },
     "marketBanner": {
         "welcomToTheNewWayOfMeetingSuppliers": "Bienvenido a la nueva forma de conocer clientes, proveedores y aliados."
+    },
+    "onBoardingWelcome":{
+        "welcomeToConecty":"¡Bienvenido a Conecty!",
+        "tourOnOurPlatform":"¿Quieres hacer un tour por nuestra plataforma?",
+        "nextTime":"En otra ocasión",
+        "continue":"Continuar"
     },
     "productForm": {
         "addDescription": "Añadir descripción",
@@ -136,7 +162,7 @@
     "signUpForm": {
         "acceptAndJoin": "Aceptar y unirte",
         "alreadyHaveAnAccount": "Si ya tienes cuenta",
-        "and": "y",
+        "and": " y ",
         "companyInformation": "Datos de la empresa",
         "confirmPassword": "Confirmar contraseña*",
         "fullName": "Nombre completo*",
@@ -145,13 +171,15 @@
         "industry": "Industria*",
         "mail": "Correo*",
         "nameOfTheCompany": "Nombre de la empresa*",
+        "personalData":"Información personal",
         "password": "Contraseña*",
-        "signIn": "Ingresar",
+        "logIn": "Iniciar sesión",
         "signUpInformation": "Datos básicos personales",
         "taxID": "NIT*",
         "termsAndConditions": "términos y condiciones",
         "theDataProtectionPolicy": "la política de protección de datos",
-        "uploadCertificateOfExistence": "Ingresa el certificado de cámara de comercio "
+        "uploadCertificateOfExistence": "Ingresa el certificado de cámara de comercio ",
+        "next":"Siguiente"
     },
     "unregisteredRelationshipForm": {
         "addClient": "Añadir cliente",

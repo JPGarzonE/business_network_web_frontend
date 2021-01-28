@@ -1,31 +1,21 @@
 <script>
-  import HorizontalScrollList from '../../components/componentLists/HorizontalScrollList.svelte';
-  import RelationshipCard from '../../components/RelationshipCard/RelationshipCard.svelte';
-  import Modal from '../../components/Modal.svelte';
-  import RelationshipForm from '../RelationshipForm/RelationshipForm.svelte';
-  import UnregisteredRelationshipForm from '../RelationshipForm/UnregisteredRelationshipForm.svelte';
-  import CreateButton from '../../components/CreateButton/CreateButton.svelte';
-  import { getContext } from 'svelte';
-  import { _ } from 'svelte-i18n';
+  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
+  import RelationshipCard from "../../components/RelationshipCard/RelationshipCard.svelte";
+  import Modal from "../../components/Modal.svelte";
+  import UnregisteredRelationshipForm from "../RelationshipForm/UnregisteredRelationshipForm.svelte";
+  import CreateButton from "../../components/CreateButton/CreateButton.svelte";
+  import { getContext } from "svelte";
+  import { _ } from "svelte-i18n";
 
   export let unregisteredRelationships = [];
-  const isEditableProfile = getContext('isEditableProfile');
+  export let onBoarding = false;
+
+  const isEditableProfile = getContext("isEditableProfile");
 
   let displayUnregisteredCreateForm = false;
 
   function toggleUnregisteredCreateForm() {
     displayUnregisteredCreateForm = !displayUnregisteredCreateForm;
-  }
-
-  let displayAddRelationship = false;
-
-  function toggleAddRelationshipDisplay() {
-    displayAddRelationship = !displayAddRelationship;
-  }
-
-  function hideAddRelationshipAndDisplayUnregisteredCreate() {
-    displayAddRelationship = false;
-    displayUnregisteredCreateForm = true;
   }
 
   function reloadComponentData(unregisteredRelationshipData) {
@@ -42,16 +32,7 @@
   }
 </script>
 
-<div class="RelationshipsList">
-  {#if displayAddRelationship && isEditableProfile}
-    <Modal on:click={toggleAddRelationshipDisplay}>
-      <RelationshipForm
-        on:click={toggleAddRelationshipDisplay}
-        displayCreateCompany={hideAddRelationshipAndDisplayUnregisteredCreate}
-      />
-    </Modal>
-  {/if}
-
+<div class="RelationshipsList" id="RelationshipsList">
   {#if displayUnregisteredCreateForm && isEditableProfile}
     <Modal on:click={toggleUnregisteredCreateForm}>
       <UnregisteredRelationshipForm
@@ -62,12 +43,19 @@
   {/if}
 
   <h3 class="RelationshipsList-headline">
-    {$_('relationshipList.whoWorksWithUs')}
+    {$_("relationshipList.whoWorksWithUs")}
   </h3>
   {#if isEditableProfile}
     <div class="RelationshipsList-card--create">
-      <div on:click={toggleUnregisteredCreateForm}>
-        <CreateButton size={25} />
+      <div
+        on:click={!onBoarding && toggleUnregisteredCreateForm}
+        class:Productlist-card-create-button={onBoarding}
+      >
+        <CreateButton
+          size={25}
+          color={onBoarding ? "white" : "var(--principal-color)"}
+          id="RelationshipCreate"
+        />
       </div>
     </div>
   {/if}
@@ -81,9 +69,18 @@
         onDelete={onDeleteUnregisteredRelationship}
       />
     {:else}
-      <div class="RelationshipsList-empty-message">
-        <p>{$_('relationshipList.theCompanyHasNotAddeAnyClientsYet')}</p>
-      </div>
+      <RelationshipCard
+        relationshipData={{
+          unregistered: {
+            name: "Logo de muestra",
+            city: "Bog",
+            country: "Colombia",
+            industry: "Cervecería",
+          },
+        }}
+        isSample
+        {onBoarding}
+      />
     {/each}
   </HorizontalScrollList>
 </div>
@@ -118,14 +115,10 @@
     display: flex;
     justify-content: flex-end;
   }
-  .RelationshipsList-empty-message {
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-align: center;
-    color: var(--secondary-text-color);
+
+  .Productlist-card-create-button {
+    z-index: 40;
+    border-color: white;
   }
 
   @media screen and (min-width: 850px) {

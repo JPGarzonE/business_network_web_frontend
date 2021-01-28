@@ -1,7 +1,15 @@
 {
     "authenticationContainer": {
         "signIn": "Sign In",
-        "signUp": "Sign Up"
+        "signUp": "Sign Up",
+        "register": "Register"
+    },
+    "certificationCard":{
+        "more":"More",
+        "less":"Less",
+        "certifications":"Certifications",
+        "createACertificateAndThisONeWillDisapear":"Create a certification and this will diseapear",
+        "deleteCertificate":"do you want to delete the certificate"
     },
     "certificationForm": {
         "addCertificate": "Add certificate",
@@ -21,6 +29,9 @@
         "talkToOurSalesConsultantToCOntact":"Talk to our sales consultant and will get in touch.",
         "cantContactDirectlyUntilVerified":"Cant contact directly until verified"
     },
+    "contactUsButton":{
+        "getInTouch":"Get in touch"
+    },
     "dropZone": {
         "dragAndDropTheFileOrUploadItFromYourComputer": "Drag and drop the file or upload it from your computer.",
         "dragAndDropTheFile": "= Drag and drop the file",
@@ -34,7 +45,16 @@
     },
     "home": {
         "contactUs": "Contact us",
-        "signUpForFree": "Sign Up for Free"
+        "signUpForFree": "Sign Up for Free",
+        "connectWithB2BAccreditedBuyersAbroad":"Connect with B2B accredited buyers abroad",
+        "bePartOfTheNetworkThatIsConnecting":"Be part of the network that is connecting the most competitive international offer of products with verified buyers.",
+        "offerYourProductsThroughDigitalChannels":"Offer your products through digital channels",
+        "uploadTheRangeOfExportableProductsYour":"Upload the range of exportable products your company offers and their international certificates.",
+        "weIntroduceYouToCompaniesThatAreRelevantToYourBusiness":"We introduce you to companies that are relevant to your business",
+        "weLookForPotentialBuyersThatAreRelevantToYourCore":"We look for potential buyers that are relevant to your core business and help you establish that relationship.",
+        "secureYourPayment":"Secure your payment",
+        "inConectyWeKeepGuardOfYourPaymentsWhileYouGo":"In Conecty we keep guard of your payments while you go through the negotiation procees.",
+        "talkToUsToKnowMoreAboutUs":"Talk to us to know more about us."
     },
     "index": {
         "allOfOurBuyersHaveBeenVerifiedAgainstDifferentInternationalBackground": "* All of our buyers have been verified against different international background lists",
@@ -63,6 +83,12 @@
     },
     "marketBanner": {
         "welcomToTheNewWayOfMeetingSuppliers": "Welcome to the new way of meeting suppliers, vendors, and international allies."
+    },
+    "onBoardingWelcome":{
+        "welcomeToConecty":"Welcome to Conecty!",
+        "tourOnOurPlatform":"¿Quieres hacer un tour por nuestra plataforma?",
+        "nextTime":"En otra ocasión",
+        "continue":"Continue"
     },
     "productForm": {
         "addDescription": "Add description",
@@ -155,9 +181,10 @@
         "industry": "Industry*",
         "mail": "Mail",
         "nameOfTheCompany": "Name of the company",
+        "personalData":"Personal data",
         "next": "Next",
         "password": "Password",
-        "signIn": "Sign in",
+        "logIn": "Log in",
         "signUpInformation": "Sign up information",
         "taxID": "TAX ID*",
         "termsAndConditions": "terms and conditions",

@@ -33,7 +33,7 @@
     'measurement_unit',
   ];
   const productEditData = ProductElement ? ProductElement : {};
-  const editMode = ProductElement !== undefined;
+  const editMode = ProductElement != undefined;
 
   let name = productEditData.name ? productEditData.name : '';
   let category = ProductElement

@@ -1,28 +1,15 @@
 <script>
   import { goto } from "@sapper/app";
   import { stores } from "@sapper/app";
-  import { isLoading } from "svelte-i18n";
   import ButtonChat from "./ButtonChat/ButtonChat.svelte";
   import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
   import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
   import HomeOutline from "svelte-material-icons/HomeOutline.svelte";
-  import LocaleSwitcher from "../components/LocaleSwitcher/LocaleSwitcher.svelte";
   import { _, locale, locales } from "svelte-i18n";
 
-  let gotoSignup = async () => {
-    document.body.style.cursor = "wait";
-    await goto("/signup");
-    document.body.style.cursor = "auto";
-  };
-
-  let gotoLogin = async () => {
-    document.body.style.cursor = "wait";
-    await goto("/login");
-    document.body.style.cursor = "auto";
-  };
-
-  export let signupActionButton = gotoSignup;
-  export let loginActionButton = gotoLogin;
+  export let background =
+    "linear-gradient(90deg, rgba(0,180,226,1) 0%, rgba(0,155,214,1) 30%, rgba(44,133,205,1) 79%)";
+  export let textColor = "#FFFFFF";
 
   const { session, page } = stores();
 
@@ -54,85 +41,69 @@
   };
 </script>
 
-{#if $isLoading}
-  wait bitch
-{:else}
-  <header class="Header">
-    <div class="Header-container">
-      <div class="Header-wordmark">
-        Stay <span on:click={gotoRoot} style="cursor:pointer;display:flex;">
-          <div class="Header-logo">
-            <ConectyWhiteWordmark />
-          </div>
-        </span>
+<header class="Header" style="background:{background};color:{textColor};">
+  <div class="Header-container">
+    <div class="Header-wordmark">
+      <span>Stay</span>
+      <div
+        class="Header-logo"
+        on:click={gotoRoot}
+        style="cursor:pointer;display:flex;"
+      >
+        <ConectyWhiteWordmark />
       </div>
-      <ul class="lang">
-        {#each $locales as item}
-          <li>
-            <span
-              class="lang-flags"
-              class:selected={$locale.includes(item)}
-              href={`#!${item}`}
-              on:click={() => ($locale = item)}>
-              <img
-                class="image-Logo"
-                src="images/lang/{item}.png"
-                alt=" "
-                style="height: auto;
-    width: 25px;"
-              />
-            </span>
-          </li>
-        {/each}
-      </ul>
-      {#if userIsAuthenticated}
-        <div class="Header-user-data">
-          {#if actualPath !== `/market`}
-            <div class="Header-user-data-market">
-              <ButtonChat
-                title={$_("header.goToTheMarket")}
-                buttonAction={gotoMarket}
-              >
-                <span slot="button-icon" style="display: flex">
-                  <HomeOutline size={20} />
-                </span>
-              </ButtonChat>
-            </div>
-          {/if}
-          <ProfileIconMenu {logoSrc} />
-        </div>
-      {:else}
-        <div class="Header-user-authenticate">
-          <button
-            class="button button--variant Header-user-authenticate-signup"
-            on:click={signupActionButton}>{$_("header.signUp")}</button
-          >
-          <button
-            class="button button--variant Header-user-authenticate-login"
-            on:click={loginActionButton}> {$_("header.signIn")} </button>
-        </div>
-      {/if}
     </div>
-  </header>
-{/if}
+    <ul class="lang">
+      <li>
+        <div
+          class="lang-flags"
+          class:selected={$locale.includes("es")}
+          href={`#!${"es"}`}
+          on:click={() => ($locale = "es")}
+        >
+          <img class="image-Logo" src="images/lang/es.png" alt=" " />
+        </div>
+        <div>ESP</div>
+      </li>
+      <li class="line" />
+      <li>
+        <div
+          class="lang-flags"
+          class:selected={$locale.includes("en")}
+          href={`#!${"en"}`}
+          on:click={() => ($locale = "en")}
+        >
+          <img class="image-Logo" src="images/lang/en.png" alt=" " />
+        </div>
+        <div>ENG</div>
+      </li>
+    </ul>
+    {#if userIsAuthenticated}
+      <div class="Header-user-data">
+        {#if actualPath !== `/market`}
+          <div class="Header-user-data-market">
+            <ButtonChat title="Ir al mercado" buttonAction={gotoMarket}>
+              <span slot="button-icon" style="display: flex">
+                <HomeOutline size={20} />
+              </span>
+            </ButtonChat>
+          </div>
+        {/if}
+        <ProfileIconMenu {logoSrc} />
+      </div>
+    {/if}
+  </div>
+</header>
 
 <style>
   @import "/styles/button.css";
-
-  Header {
-    height: 80px;
+  .Header {
+    height: 67px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgb(0, 180, 226);
-    background: linear-gradient(
-      90deg,
-      rgba(0, 180, 226, 1) 0%,
-      rgba(0, 155, 214, 1) 30%,
-      rgba(44, 133, 205, 1) 79%
-    );
+    background: var(--principal-color);
   }
-
   .Header-container {
     width: 100%;
     display: flex;
@@ -140,110 +111,89 @@
     align-items: center;
     padding: 0px 2em;
     font-size: 0.85em;
-    color: white;
+    color: inherit;
   }
-  .lang {
-    display: flex;
-    list-style-type: none;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
   .Header-logo {
-    width: 90px;
-    height: 19px;
+    width: 87px;
+    height: 18px;
     margin: 0px 5px;
   }
-
   .Header-wordmark {
     display: flex;
   }
-
+  .Header-wordmark span {
+    display: none;
+    align-items: center;
+    font-size: 16px;
+    margin-right: 2px;
+  }
   .Header-user-data {
     width: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
-
   .Header-user-data-market {
     width: 138px;
     display: none;
     align-items: center;
     margin-right: 36px;
   }
-
-  .Header-user-authenticate {
+  .lang {
     display: flex;
-    flex-direction: column;
+    list-style-type: none;
+    flex-direction: row;
     justify-content: space-between;
-    width: 220px;
+    color: black;
+    margin-right: 5%;
+  }
+  .line {
+    border-left: 1px solid black;
+    margin: 0 10px 15px 10px;
   }
 
-  .Header-user-authenticate-signup,
-  .Header-user-authenticate-login {
-    text-transform: capitalize;
-    letter-spacing: 0.22px;
-    padding: 1.05em;
-    color: white;
+  .image-Logo {
+    height: auto;
+    width: 25px;
   }
 
-  .Header-user-authenticate-signup {
-    display: none;
-    margin-right: 15px;
-  }
-
-  .Header-user-authenticate-login {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 1.1em;
-    font-weight: bold;
-  }
-
-  .Header-user-authenticate-signup:hover {
-    background-color: var(--lightest-gray);
-  }
-
-  .Header-user-authenticate-login:hover {
-    border: 2px solid white;
-    background-color: var(--lightest-gray);
-  }
-
-  @media screen and (min-width: 425px) {
-    .Header-user-authenticate-login {
-      font-size: 1.2em;
+  @media screen and (min-width: 475px) {
+    .Header {
+      height: 89px;
+    }
+    .lang {
+      margin-right: 30%;
     }
   }
-  @media screen and (min-width: 525px) {
-    .Header-user-authenticate {
-      width: 300px;
-      flex-direction: row;
-    }
-    .Header-user-authenticate-login {
-      justify-content: center;
-      border: 1px solid white;
-      font-weight: normal;
-      font-size: 1.3em;
-    }
-    .Header-user-authenticate-signup {
-      display: flex;
-      font-size: 1.3em;
-    }
-  }
-
   @media screen and (min-width: 625px) {
+    .Header {
+      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    }
+    .Header-wordmark span {
+      display: flex;
+    }
+    .Header-logo {
+      width: 120px;
+      height: 25px;
+    }
     .Header-container {
       padding: 0 5em;
     }
-
     .Header-user-data-market {
       display: flex;
     }
+    .lang {
+      margin-right: 40%;
+    }
   }
-
+  @media screen and (min-width: 1000px) {
+  }
   @media screen and (min-width: 1445px) {
     .Header-container {
       padding: 0 10em;
+    }
+    .lang {
+      margin-right: 45%;
     }
   }
 </style>

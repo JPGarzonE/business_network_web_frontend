@@ -6,6 +6,7 @@
     export let primary;
     export let acceptFiles; // Array of Strings of the types of files
     export let value = null; // Actual file content of the input
+    export let inputColor = "var(--principal-color)";
 
     const inputName = `${name}-input`;
     let valueName = value && value.name ? value.name : "";
@@ -15,7 +16,7 @@
     $: {
         if (validType === false) fontColor = "var(--error-color)";
         else if (value || primary) fontColor = "white";
-        else fontColor = "var(--principal-color)";
+        else fontColor = inputColor;
     }
 
     function setInputValue(event) {
@@ -88,7 +89,7 @@
     <label
         for={inputName}
         class="FileUploadInput-label {primary ? 'primary' : ''}"
-        style="border-color:{fontColor}; background-color:{value && validType ? 'var(--principal-color)' : 'none'}">
+        style="border-color:{fontColor}; background-color:{value && validType ? inputColor : 'none'}">
         <span class="FileUploadInput-icon-container">
             <UploadOutline size={25} color={fontColor} />
         </span>

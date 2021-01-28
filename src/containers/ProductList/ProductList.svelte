@@ -1,13 +1,15 @@
 <script>
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import ProductService from "../../services/suppliers/product.service.js";
   import ProfileProductCard from "../../components/ProfileProductCard/ProfileProductCard.svelte";
+  import HorizontalScrollList from "../../components/componentLists/HorizontalScrollList.svelte";
   import Modal from "../../components/Modal.svelte";
   import CreateButton from "../../components/CreateButton/CreateButton.svelte";
   import ProductForm from "../ProductForm/ProductForm.svelte";
   import { _ } from "svelte-i18n";
 
   export let productList = [];
+  export let onBoarding = false;
 
   const isEditableProfile = getContext("isEditableProfile");
   const profileAccountname = getContext("profileAccountname");
@@ -28,6 +30,20 @@
   let editableMode = false;
   let loadedAll = productList <= 6;
   $: displayedAll = loadedProducts.length <= 0 && loadedAll;
+
+  let mobile = true;
+
+  onMount(() => {
+    let mediaQuery = window.matchMedia("(min-width: 850px)");
+
+    mediaQuery.addEventListener("change", handleWindowChange);
+  });
+
+  const handleWindowChange = (e) => {
+    console.log("SS: ", e.matches);
+    mobile = !e.matches;
+    console.log("SSS: ", mobile);
+  };
 
   function toggleEditableMode() {
     editableMode = !editableMode;
@@ -72,7 +88,7 @@
   };
 </script>
 
-<div class="ProductsList">
+<div class="ProductsList" id="ProductsList">
   <h3 class="ProductsList-headline">
     {$_("productList.productsAndServicesPortfolio")}
   </h3>
@@ -86,28 +102,69 @@
   {/if}
   {#if isEditableProfile}
     <div class="ProductList-card--create-container">
-      <div on:click={toggleEditableMode}>
-        <CreateButton size={25} />
+      <div
+        on:click={!onBoarding && toggleEditableMode}
+        class:Productlist-card-create-button={onBoarding}
+      >
+        <CreateButton
+          size={25}
+          color={onBoarding ? "white" : "var(--principal-color)"}
+          id="ProductCreate"
+        />
       </div>
     </div>
   {/if}
-  {#if productList && productList.length <= 0}
-    <div class="ProductList-empty-message">
-      {$_("productList.theCompanyHasNotAddedAnyProducts")}
+
+  {#if mobile}
+    <HorizontalScrollList
+      id="product-list"
+      beginningItemsNumber={productList.length}
+    >
+      {#each displayedProducts as element}
+        <ProfileProductCard
+          productElementOverview={element}
+          onDelete={onDeleteProduct}
+        />
+      {:else}
+        {#if displayedProducts.length >= 1}
+          <p>Loading...</p>
+        {:else}
+          <ProfileProductCard
+            productElementOverview={{
+              name: "Producto de muestra",
+              category: "Categoría",
+              minimum_price: "Precio",
+            }}
+            isSample
+            {onBoarding}
+          />
+        {/if}
+      {/each}
+    </HorizontalScrollList>
+  {:else}
+    <div class="Products">
+      {#each displayedProducts as element}
+        <ProfileProductCard
+          productElementOverview={element}
+          onDelete={onDeleteProduct}
+        />
+      {:else}
+        {#if displayedProducts.length >= 1}
+          <p>Loading...</p>
+        {:else}
+          <ProfileProductCard
+            productElementOverview={{
+              name: "Producto de muestra",
+              category: "Categoría",
+              minimum_price: "Precio",
+            }}
+            isSample
+          />
+        {/if}
+      {/each}
     </div>
   {/if}
-  <div class="Products">
-    {#each displayedProducts as element}
-      <ProfileProductCard
-        productElementOverview={element}
-        onDelete={onDeleteProduct}
-      />
-    {:else}
-      {#if displayedProducts.length >= 1}
-        <p>Loading...</p>
-      {/if}
-    {/each}
-  </div>
+
   {#if productList.length >= 4}
     <div class="ProductShowMoreOrLess">
       {#if displayedProducts.length > 4}
@@ -135,7 +192,6 @@
   .Products {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
   }
   .ProductsList {
     position: relative;
@@ -164,16 +220,6 @@
     width: 100%;
   }
 
-  .ProductList-empty-message {
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    text-align: center;
-    color: var(--secondary-text-color);
-  }
-
   .ProductShowMoreOrLess {
     display: flex;
     justify-content: center;
@@ -196,6 +242,10 @@
 
   .ProductShowLink-less i {
     transform: rotate(-90deg);
+  }
+  .Productlist-card-create-button {
+    z-index: 40;
+    border-color: white;
   }
 
   @media screen and (min-width: 850px) {

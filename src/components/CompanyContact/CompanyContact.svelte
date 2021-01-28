@@ -7,6 +7,7 @@
   import { _ } from "svelte-i18n";
 
   export let contact;
+  export let disabled;
 
   const { session } = stores();
 

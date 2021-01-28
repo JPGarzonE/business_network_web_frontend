@@ -1,56 +1,59 @@
 <script>
-  import { goto } from '@sapper/app';
-  import { INDUSTRIES } from '../../store/store.js';
-  import SignupService from '../../services/authentication/signup.service.js';
-  import StepsCarousel from '../../components/StepsCarousel/StepsCarousel.svelte';
-  import Textfield from '@smui/textfield';
-  import HelperText from '@smui/textfield/helper-text';
-  import Select, { Option } from '@smui/select';
-  import SelectHelperText from '@smui/select/helper-text';
-  import CheckBox from '@smui/checkbox';
-  import FileUploadInput from '../../components/FileUploadInput/FIleUploadInput.svelte';
+  import { goto } from "@sapper/app";
+  import { INDUSTRIES } from "../../store/store.js";
+  import SignupService from "../../services/authentication/signup.service.js";
+  import StepsCarousel from "../../components/StepsCarousel/StepsCarousel.svelte";
+  import Textfield from "@smui/textfield";
+  import HelperText from "@smui/textfield/helper-text";
+  import Select, { Option } from "@smui/select";
+  import SelectHelperText from "@smui/select/helper-text";
+  import CheckBox from "@smui/checkbox";
+  import FileUploadInput from "../../components/FileUploadInput/FIleUploadInput.svelte";
   import {
     validateString,
     validateEmailPattern,
     validatePassword,
     validatePasswordConfirmation,
     validateNIT,
-  } from '../../validators/formValidators.js';
-  import { setCookie } from '../../utils/cookie.js';
-  import { _ } from 'svelte-i18n';
+  } from "../../validators/formValidators.js";
+  import { setCookie } from "../../utils/cookie.js";
+  import { _ } from "svelte-i18n";
 
-  export let loginRedirectionAction = async () => await goto('/login');
+  export let loginRedirectionAction = async () => await goto("/login");
+  export let backgroundColor;
+  export let activeColor;
+  export let inactiveColor;
+  export let formContentColor;
+  export let secondaryContentColor;
   const signupService = new SignupService();
-
   const fields = [
-    'full_name',
-    'email',
-    'name',
-    'legalIdentifier',
-    'industry',
-    'password',
-    'password_confirmation',
+    "full_name",
+    "email",
+    "name",
+    "legalIdentifier",
+    "industry",
+    "password",
+    "password_confirmation",
   ];
+
   let steps = { 1: null, 2: null };
   let actualStep = 1;
   let termsAndConditionsSelected = false;
-  let submitErrorMessage = '';
-
-  let fullName = '';
-  let email = '';
-  let password = '';
-  let passwordConfirmation = '';
-  let companyName = '';
-  let legalIdentifier = '';
-  let industry = '';
+  let submitErrorMessage = "";
+  let fullName = "";
+  let email = "";
+  let password = "";
+  let passwordConfirmation = "";
+  let companyName = "";
+  let legalIdentifier = "";
+  let industry = "";
   let certificate = null; // File
-
   $: fullNameValidation = validateString(
     fullName,
     3,
     50,
     true,
-    'Nombre completo válido'
+    "Nombre completo válido"
   );
   $: emailValidation = validateEmailPattern(email);
   $: passwordValidation = validatePassword(password);
@@ -63,7 +66,7 @@
     3,
     50,
     true,
-    'Nombre de la empresa válido'
+    "Nombre de la empresa válido"
   );
   $: legalIdentifierValidation = validateNIT(legalIdentifier);
   $: industryValidation = validateString(
@@ -71,9 +74,8 @@
     3,
     50,
     true,
-    'La industria es válida'
+    "La industria es válida"
   );
-
   $: firstStepValid =
     fullNameValidation.isValid &&
     emailValidation.isValid &&
@@ -89,13 +91,11 @@
   async function submitSignup(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
-
+    Target.style.cursor = "not-allowed";
     try {
       if (!termsAndConditionsSelected)
-        throw new Error('Acepta los terminos y condiciones');
+        throw new Error("Acepta los terminos y condiciones");
       else if (!validBeforeSubmit) throw new Error();
-
       let userData = {
         email: email,
         full_name: fullName,
@@ -105,7 +105,6 @@
         legal_identifier: legalIdentifier,
         industry: industry,
       };
-
       let data;
       if (certificate)
         data = await signupService.signupSupplierWithCertificate(
@@ -113,43 +112,39 @@
           certificate
         );
       else data = await signupService.signupSupplier(userData);
-
       let accountname = data.company.accountname;
-
-      setCookie('JPGE', data.access_token, 1);
-      setCookie('access_username', accountname, 1);
+      setCookie("JPGE", data.access_token, 1);
+      setCookie("access_username", accountname, 1);
 
       // Here we not use goto because the server has to render an authenticated content after login
       // With goto this not happen because the render acts only on the client
-      location.href = `/profile/${accountname}`;
+      location.href = `/profile/suppliers/${accountname}`;
     } catch (e) {
-      console.log('error: ', e);
+      console.log("error: ", e);
       const error = e.message;
-      submitErrorMessage = '';
+      submitErrorMessage = "";
       let existErrorField = false;
       fields.map((field) => {
         let errorField = error[field];
         if (
-          field == 'legalIdentifier' ||
-          field == 'name' ||
-          field == 'industry'
+          field == "legalIdentifier" ||
+          field == "name" ||
+          field == "industry"
         )
-          errorField = error['company'] ? error['company'][field] : null;
-
+          errorField = error["company"] ? error["company"][field] : null;
         if (errorField) {
           existErrorField = true;
           submitErrorMessage += `${
-            submitErrorMessage ? `\n` : ''
+            submitErrorMessage ? `\n` : ""
           }-${field}: ${errorField}`;
         }
       });
-
       if (!existErrorField && !error)
-        submitErrorMessage = 'Los datos no son válidos';
+        submitErrorMessage = "Los datos no son válidos";
       else if (!existErrorField) submitErrorMessage = error;
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 </script>
@@ -157,13 +152,21 @@
 <div class="SignupForm">
   {#if actualStep === 2}
     <div class="SignupForm-back">
-      <button on:click={() => actualStep--}>
-        <span>{'<'}</span> Volver
+      <button style="color:{formContentColor}" on:click={() => actualStep--}>
+        <span>{"<"}</span> Volver
       </button>
     </div>
   {/if}
 
-  <StepsCarousel {steps} selectedStep={actualStep} />
+  <StepsCarousel
+    {steps}
+    selectedStep={actualStep}
+    backgroundColor={inactiveColor}
+    textColor={secondaryContentColor}
+    selectedBackgroundColor={activeColor}
+    selectedTextColor={backgroundColor}
+    borderColor={inactiveColor == "transparent" ? activeColor : inactiveColor}
+  />
 
   {#if submitErrorMessage}
     <div class="form-banner--invalid">
@@ -173,13 +176,15 @@
 
   <form class="SignupForm-form">
     {#if actualStep === 1}
-      <h3 class="SignupForm-title">{$_('signUpForm.signUpInformation')}</h3>
+      <h3 class="SignupForm-title" style="color:{formContentColor}">
+        {$_("signUpForm.personalData")}
+      </h3>
 
       <div class="form-group">
         <Textfield
-          style="width: 100%;height:50px"
+          style="width: 100%;height:50px;"
           variant="outlined"
-          label={$_('signUpForm.fullName')}
+          label={$_("signUpForm.fullName")}
           input$aria-controls="full-name"
           input$aria-describedby="full-name"
           input$maxlength="50"
@@ -199,7 +204,7 @@
         <Textfield
           style="width: 100%;height:50px"
           variant="outlined"
-          label={$_('signUpForm.mail')}
+          label={$_("signUpForm.mail")}
           input$aria-controls="email"
           input$aria-describedby="email"
           input$maxlength="50"
@@ -217,7 +222,7 @@
           style="width: 100%;height:50px"
           variant="outlined"
           bind:value={password}
-          label={$_('signUpForm.password')}
+          label={$_("signUpForm.password")}
           input$aria-controls="password"
           input$aria-describedby="password"
           input$type="password"
@@ -237,7 +242,7 @@
         <Textfield
           style="width: 100%;height:50px"
           variant="outlined"
-          label={$_('signUpForm.confirmPassword')}
+          label={$_("signUpForm.confirmPassword")}
           input$aria-controls="password-confirmation"
           input$aria-describedby="password-confirmation"
           input$type="password"
@@ -260,31 +265,37 @@
           disabled={!firstStepValid}
           type="button"
           class="button form-button button--principal"
+          style="color:{backgroundColor};background-color:{activeColor}"
           name="next"
           on:click={() => actualStep++}
-          value={$_('signUpForm.next')}
+          value={$_("signUpForm.next")}
         />
       </div>
 
       <div class="SignupForm-login">
-        <hr />
-        <p>{$_('signUpForm.alreadyHaveAnAccount')}</p>
+        <hr style="background-color:{formContentColor}" />
+        <p style="color:{secondaryContentColor}">
+          {$_("signUpForm.alreadyHaveAnAccount")}
+        </p>
         <input
           type="button"
           name="login-redirect"
           class="button button--secondary"
-          value={$_('signUpForm.signIn')}
+          style="color:{activeColor};border:2px solid {activeColor}"
+          value={$_("signUpForm.logIn")}
           on:click={loginRedirectionAction}
         />
       </div>
     {:else if actualStep === 2}
-      <h3 class="SignupForm-title">Datos de la empresa</h3>
+      <h3 class="SignupForm-title" style="color:{formContentColor}">
+        {$_("signUpForm.companyInformation")}
+      </h3>
 
       <div class="form-group">
         <Textfield
           style="width: 100%;height:50px"
           variant="outlined"
-          label={$_('signUpForm.nameOfTheCompany')}
+          label={$_("signUpForm.nameOfTheCompany")}
           input$aria-controls="company-name"
           input$aria-describedby="company-name"
           input$maxlength="50"
@@ -304,7 +315,7 @@
         <Textfield
           style="width: 100%;height:50px"
           variant="outlined"
-          label={$_('signUpForm.taxID')}
+          label={$_("signUpForm.taxID")}
           input$aria-controls="legalIdentifier"
           input$aria-describedby="legalIdentifier"
           input$maxlength="50"
@@ -336,23 +347,28 @@
       <div class="form-group" style="margin-top:1.6em;">
         <FileUploadInput
           name="Certificate"
-          message={$_('signUpForm.uploadCertificate')}
-          acceptFiles={['application/pdf']}
+          message="Subir certificado"
+          inputColor={activeColor}
+          acceptFiles={["application/pdf"]}
           bind:value={certificate}
         />
-        <p class="SignupForm-certificate-helper">
-          {$_('signUpForm.uploadCertificateOfExistence')} <br />
-          {$_('signUpForm.ifYouDoNotHaveItAtTheMoment')}
+        <p class="SignupForm-certificate-helper" style="color:{activeColor}">
+          {$_("signUpForm.uploadCertificateOfExistence")} <br />
+          {$_("signUpForm.ifYouDoNotHaveItAtTheMoment")}
         </p>
       </div>
 
       <div class="SignupForm-terms">
         <CheckBox bind:checked={termsAndConditionsSelected} />
-        <p>
-          {$_('signUpForm.iHaveReadUnderstoodAndAcceptedThe')}
-          <a href="/">{$_('signUpForm.termsAndConditions')}</a>{$_(
-            'signUpForm.and'
-          )}<a href="/">{$_('signUpForm.theDataProtectionPolicy')}</a>
+        <p style="color:{secondaryContentColor}">
+          {$_("signUpForm.iHaveReadUnderstoodAndAcceptedThe")}
+          <a href="/" style="color:{activeColor}"
+            >{$_("signUpForm.termsAndConditions")}</a
+          >
+          {$_("signUpForm.and")}
+          <a href="/" style="color:{activeColor}"
+            >{$_("signUpForm.theDataProtectionPolicy")}</a
+          >
         </p>
       </div>
 
@@ -362,7 +378,8 @@
           type="button"
           name="submit"
           class="button Signup-button button--secondary"
-          value={$_('signUpForm.acceptAndJoin')}
+          style="color:{backgroundColor};background-color:{activeColor}"
+          value={$_("signUpForm.acceptAndJoin")}
           on:click={submitSignup}
         />
       </div>
@@ -371,18 +388,15 @@
 </div>
 
 <style>
-  @import '/styles/form.css';
-
+  @import "/styles/form.css";
   .form-group {
     max-width: 400px;
     margin-top: 0.4em;
   }
-
   .SignupForm-back {
     margin-bottom: -0.5em;
     margin-left: -1em;
   }
-
   .SignupForm-back button {
     border: unset;
     letter-spacing: 0.22px;
@@ -391,33 +405,28 @@
     background-color: unset;
     cursor: pointer;
   }
-
   .SignupForm-back button:hover {
     text-decoration: underline;
   }
-
   .SignupForm-back button span {
     font-weight: 900;
     margin-right: 0.35em;
   }
-
   .SignupForm-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
-
   .SignupForm-title {
     margin-bottom: 14px;
     text-align: center;
     line-height: 16px;
     letter-spacing: 0.22px;
-    color: var(--light-color);
     font-size: 1em;
+    color: var(--light-color);
     font-weight: 400;
   }
-
   .SignupForm-login {
     width: 100%;
     max-width: 400px;
@@ -427,30 +436,25 @@
     align-items: center;
     margin-top: 1.2em;
   }
-
   .SignupForm-login hr {
     width: 100%;
     height: 2px;
     border: 1px solid transparent;
-    background: var(--light-color);
   }
-
   .SignupForm-login p {
     margin: 5px 0px;
-    color: var(--light-color);
     text-align: center;
+    color: var(--light-color);
     font-size: 15px;
   }
-
   .SignupForm-login input {
     margin-top: 11px;
-    font-size: 14px;
-    color: var(--principal-color);
+    font-size: 16px;
     background-color: transparent;
+    color: var(--principal-color);
     text-decoration: none;
     letter-spacing: 0.22px;
   }
-
   .SignupForm-certificate-helper {
     width: 100%;
     margin-left: 1em;
@@ -459,22 +463,18 @@
     letter-spacing: 0.22px;
     color: var(--error-color);
   }
-
   .SignupForm-terms {
     display: flex;
     margin-top: 27px;
   }
-
   .SignupForm-terms p {
     margin-top: 0.7em;
     font-size: 0.8em;
     letter-spacing: 0.22px;
   }
-
   .SignupForm-terms p a {
     color: var(--principal-color);
   }
-
   .Signup-button {
     font-size: 14px;
     letter-spacing: 0.22px;

@@ -1,18 +1,23 @@
 <script>
-  import { goto } from '@sapper/app';
-  import LoginService from '../../services/authentication/login.service.js';
-  import { _ } from 'svelte-i18n';
-  import Textfield from '@smui/textfield';
-  import HelperText from '@smui/textfield/helper-text';
-  import { validateEmailPattern } from '../../validators/formValidators.js';
-  import { setCookie } from '../../utils/cookie.js';
+  import { goto } from "@sapper/app";
+  import LoginService from "../../services/authentication/login.service.js";
+  import Textfield from "@smui/textfield";
+  import HelperText from "@smui/textfield/helper-text";
+  import { validateEmailPattern } from "../../validators/formValidators.js";
+  import { setCookie } from "../../utils/cookie.js";
+  import { _ } from "svelte-i18n";
 
-  export let signupRedirectionAction = async () => await goto('/signup');
+  export let signupRedirectionAction = async () => await goto("/signup");
+  export let backgroundColor;
+  export let activeColor;
+  export let formContentColor;
+  export let secondaryContentColor;
+
   const loginService = new LoginService();
 
-  let email = '';
-  let password = '';
-  let emailFeedback = '';
+  let email = "";
+  let password = "";
+  let emailFeedback = "";
   let emailIsValid = null;
   let submitErrorMessage;
 
@@ -27,39 +32,41 @@
   async function submitLogin(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
+    Target.style.cursor = "not-allowed";
 
     try {
-      if (!isValidBeforeSumbit) throw new Error('Invalid');
+      if (!isValidBeforeSumbit) throw new Error("Invalid");
 
       const data = await loginService.login(email, password);
       let accountname = data.access_user.default_company.accountname;
 
-      setCookie('JPGE', data.access_token, 1);
-      setCookie('access_accountname', accountname, 1);
+      setCookie("JPGE", data.access_token, 1);
+      setCookie("access_accountname", accountname, 1);
 
       // Here we not use goto because the server has to render an authenticated content after login
       // With goto this not happen because the render acts only on the client
-      location.href = `/profile/${accountname}`;
+      location.href = `/profile/suppliers/${accountname}`;
     } catch (e) {
       const errors = e.message;
       if (errors.non_field_errors || errors.password)
-        submitErrorMessage = 'Credenciales inválidas';
-      else if (errors == 'Invalid')
-        submitErrorMessage = 'Los datos no son válidos';
+        submitErrorMessage = "Credenciales inválidas";
+      else if (errors == "Invalid")
+        submitErrorMessage = "Los datos no son válidos";
       else
         submitErrorMessage =
-          'Hubo un error en la aplicación, intente más tarde';
+          "Hubo un error en la aplicación, intente más tarde";
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 </script>
 
 <div class="LoginForm">
   <form class="LoginForm-form">
-    <h2 class="LoginForm-title">{$_('loginForm.weAreGladToSeeYouAgain')}</h2>
+    <h2 class="LoginForm-title" style="color:{formContentColor}">
+      ¡Nos encanta verte de nuevo!
+    </h2>
 
     {#if submitErrorMessage}
       <div class="form-banner--invalid">{submitErrorMessage}</div>
@@ -69,7 +76,7 @@
       <Textfield
         style="width: 100%;height:50px"
         variant="outlined"
-        label={$_('loginForm.mail')}
+        label="Correo*"
         input$aria-controls="email"
         input$aria-describedby="email"
         input$maxlength="50"
@@ -82,7 +89,7 @@
       <Textfield
         style="width: 100%;height:50px"
         variant="outlined"
-        label={$_('loginForm.password')}
+        label="Contraseña*"
         input$aria-controls="password"
         input$aria-describedby="password"
         input$type="password"
@@ -96,19 +103,21 @@
         disabled={!isValidBeforeSumbit}
         type="button"
         class="button form-button button--principal"
+        style="color:{backgroundColor};background-color:{activeColor}"
         name="submit"
         on:click={submitLogin}
-        value={$_('loginForm.logIn')}
+        value="Ingresar"
       />
     </div>
 
     <div class="LoginForm-register">
-      <hr />
+      <hr style="background-color:{formContentColor}" />
       <!-- <p>Olvidé mi contraseña</p><br/> -->
-      <p>{$_('loginForm.doNotHaveAnAccount')}</p>
+      <p style="color:{secondaryContentColor}">Si no tienes cuenta</p>
       <input
         type="button"
         class="button button--secondary"
+        style="color:{activeColor};border:2px solid {activeColor}"
         value="Crea cuenta"
         on:click={signupRedirectionAction}
       />
@@ -117,7 +126,7 @@
 </div>
 
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .form-group {
     max-width: 400px;
@@ -163,7 +172,6 @@
     width: 100%;
     height: 2px;
     border: 1px solid transparent;
-    background: var(--light-color);
   }
 
   .LoginForm-register p {
@@ -175,7 +183,7 @@
 
   .LoginForm-register input {
     margin-top: 11px;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--principal-color);
     background-color: transparent;
     text-decoration: none;

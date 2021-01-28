@@ -16,6 +16,9 @@
   export let logo;
   export let location;
   export let contact;
+  export { className as class };
+  let className = "";
+  $: Onboarding = className == "Onboarding";
 
   const isEditableProfile = getContext("isEditableProfile");
 
@@ -63,16 +66,21 @@
     </Modal>
   {/if}
 
-  <div class="ProfileIdentity-container">
+  <div class="ProfileIdentity-container {className}">
     <div class="ProfileIdentity-content">
-      <ProfileLogo {logo} />
+      <ProfileLogo {logo} blank={Onboarding} />
       <ProfileVerification />
 
       <div class="ProfileIdentity-NameContainer">
         <p class="ProfileIdentity-name">{name}</p>
         {#if isEditableProfile}
           <div class="ProfileIdentity-NameEditor">
-            <EditButton size={17} color="gray" onEdit={toggleEditableMode} />
+            <EditButton
+              size={17}
+              color="gray"
+              onEdit={toggleEditableMode}
+              disabled={Onboarding}
+            />
           </div>
         {/if}
       </div>
@@ -102,8 +110,8 @@
       </p>
 
       <div class="ProfileIdentity-contact-me">
-        {#if !isEditableProfile}
-          <CompanyContact {contact} />
+        {#if !isEditableProfile || Onboarding}
+          <CompanyContact {contact} disabled={Onboarding} />
         {/if}
       </div>
     </div>
@@ -207,6 +215,9 @@
     width: 90%;
     margin: 0 auto;
     margin-top: 15%;
+  }
+  .Onboarding {
+    background-color: white;
   }
 
   @media screen and (min-width: 1024px) {

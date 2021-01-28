@@ -105,7 +105,7 @@
           >{address ? address : "No tiene aún"}</span
         >
         {#if hoverOne}
-          <Hoverable message="Direccion" />
+          <Hoverable message="Dirección" />
         {/if}
       </p>
       <!-- <p class="ProfileIdentity-data">
@@ -125,7 +125,7 @@
           >{webUrl ? webUrl : "No tiene aún"}</a
         >
         {#if hoverThree}
-          <Hoverable message="Paises donde Exporta" />
+          <Hoverable message="Países donde Exporta" />
         {/if}
       </p>
 

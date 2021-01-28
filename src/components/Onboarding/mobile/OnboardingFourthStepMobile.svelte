@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy, afterUpdate } from "svelte";
+  import { _ } from "svelte-i18n";
 
   export let handleCancel;
   export let handleNext;
@@ -31,7 +32,7 @@
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >Finalizar Tour</button
+  >{$_("onBoardingFourthStep.endTour")}</button
 >
 
 <div
@@ -41,17 +42,17 @@
 >
   <div class="Text-Container">
     <span class="Text">
-      Edita y elimina
+      {$_("onBoardingFourthStep.editAndDelete")}
       <br />
       <span class="Text--description">
-        Haz clic en el botón de edición para modificar o eliminar los datos que
-        subiste previamente.
+        {$_("onBoardingFourthStep.clickToModifyOrDeletePrevieusData")}
       </span>
       <span class="Text">
-        Agrega tus productos
+        {$_("onBoardingFourthStep.addYour")}
+        {$_("onBoardingFourthStep.products")}
         <br />
         <span class="Text--description"
-          >Adjunta la foto de tus productos con su descripción y precio.
+          >{$_("onBoardingFourthStep.addPhotoAndDescription")}
         </span>
       </span>
     </span>

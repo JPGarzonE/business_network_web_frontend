@@ -77,6 +77,9 @@
         "signUp": "Sign Up",
         "weAreGladToSeeYouAgain": "¡Glad to see you again!"
     },
+    "mainBanner":{
+        "joinForFree":"Join for free"
+    },
     "market": {
         "insertTheTariffSubheading": "Insert the tariff subheading",
         "thereIsNoContentAvailable": "There is no content available"
@@ -84,11 +87,46 @@
     "marketBanner": {
         "welcomToTheNewWayOfMeetingSuppliers": "Welcome to the new way of meeting suppliers, vendors, and international allies."
     },
-    "onBoardingWelcome":{
-        "welcomeToConecty":"Welcome to Conecty!",
-        "tourOnOurPlatform":"¿Quieres hacer un tour por nuestra plataforma?",
-        "nextTime":"En otra ocasión",
-        "continue":"Continue"
+    "onBoardingFifthStep": {
+        "endTour": "Finish Tour",
+        "editAndDelete": "Edit and Delete",
+        "clickToModifyOrDeletePrevieusData": "Click the edit button to modify or delete the data that you previously uploaded.",
+        "addYour": "Add your",
+        "clients": "clients",
+        "addPhotoAndDescription": "Attach the photo of your products with their description and price."
+    },
+    "onBoardingFourthStep": {
+        "endTour": "Finish Tour",
+        "editAndDelete": "Edit and delete",
+        "clickToModifyOrDeletePrevieusData": "Click the edit button to modify or delete the data that you previously uploaded.",
+        "addYour": "Add your",
+        "products": "products",
+        "addPhotoAndDescription": "Attach the photo of your products with their description and price."
+    },
+    "onBoardingSecondStep": {
+        "endTour": "Finish Tour",
+        "addCompanyLogo": "Add your company logo",
+        "clickTheIconToAddYourLogo": "Click on the edit icon and attach your logo in png or jpg format.",
+        "verifyYourCompany": "Verify your company",
+        "addCompanyData":"Add your company data",
+        "addCompanySpecifications":"Enter the name of your company, economic sector, address, city of location and countries where you export your products",
+        "addCertificate": "Attach your Chamber and Commerce certificate, that way you can publish your profile.",
+        "addWhatsApp": "Add your whatsapp",
+        "addWhatsAppToLet": "Add your whatsapp phone, so that your buyers can contact you easily and quickly."
+    },
+    "onBoardingThirdStep": {
+        "endTour": "Finish Tour",
+        "editAndDelete": "Edit and delete",
+        "clickToModifyOrDeletePreviousData": "Click the edit button to modify or delete the data that you previously uploaded.",
+        "addYour": "Add your",
+        "certifications": "certifications",
+        "addCertification": "Attach the certifications of your company, that will give you more credibility with your buyer."
+    },
+    "onBoardingWelcome": {
+        "welcomeToConecty": "Welcome to Conecty!",
+        "tourOnOurPlatform": "Do you want to take a tour of our platform?",
+        "nextTime": "Another time",
+        "continue": "Continue"
     },
     "productForm": {
         "addDescription": "Add description",

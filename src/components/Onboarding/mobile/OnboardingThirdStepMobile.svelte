@@ -1,5 +1,6 @@
 <script>
   import { onMount, afterUpdate, onDestroy } from "svelte";
+  import { _ } from "svelte-i18n";
 
   export let handleCancel;
   export let handleNext;
@@ -33,7 +34,7 @@
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >Finalizar Tour</button
+  >{$_("onBoardingThirdStep.endTour")}</button
 >
 <div
   class="Main-Container"
@@ -42,18 +43,17 @@
 >
   <div class="Text-Container">
     <span class="Text">
-      Edita y elimina
+      {$_("onBoardingThirdStep.editAndDelete")}
       <br />
       <span class="Text--description">
-        Haz clic en el botón de edición para modificar o eliminar los datos que
-        subiste previamente.
+        {$_("onBoardingThirdStep.clickToModifyOrDeletePreviousData")}
       </span>
       <span class="Text">
-        Agrega tus certificaciones
+        {$_("onBoardingThirdStep.addYour")}
+        {$_("onBoardingThirdStep.certifications")}
         <br />
         <span class="Text--description">
-          Adjunta las cértificaciones de tu empresa, eso te dará más
-          credibilidad ante tu comprador.
+          {$_("onBoardingThirdStep.addCertification")}
         </span>
       </span>
     </span>

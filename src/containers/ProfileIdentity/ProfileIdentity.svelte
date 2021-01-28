@@ -23,7 +23,6 @@
   const isEditableProfile = getContext("isEditableProfile");
 
   let editableMode = false;
-
   let locationSubtitle;
   let address;
 
@@ -53,25 +52,6 @@
   let hoverOne = false;
   let hoverTwo = false;
   let hoverThree = false;
-
-  function HandleHoverOne(e) {
-    hoverOne = true;
-  }
-  function handleOffOne(e) {
-    hoverOne = false;
-  }
-  function HandleHoverTwo(e) {
-    hoverTwo = true;
-  }
-  function handleOffTwo(e) {
-    hoverTwo = false;
-  }
-  function HandleHoverThree(e) {
-    hoverThree = true;
-  }
-  function handleOffThree(e) {
-    hoverThree = false;
-  }
 </script>
 
 <div class="ProfileIdentity">
@@ -116,20 +96,37 @@
       </div>
 
       <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><MapMarkerOutline /></i>
+        <i
+          class="icon-wrapper"
+          on:mouseover={() => (hoverOne = !hoverOne)}
+          on:mouseout={() => (hoverOne = !hoverOne)}><MapMarkerOutline /></i
+        >
         <span class="ProfileIdentity-address"
           >{address ? address : "No tiene aún"}</span
         >
+        {#if hoverOne}
+          <Hoverable message="Direccion" />
+        {/if}
       </p>
       <!-- <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><GoogleTranslate /></i>
+        <i class="icon-wrapper" on:mouseover={() => hoverTwo= !hoverTwo} on:mouseout={() => hoverTwo=!hoverTwo}><GoogleTranslate /></i>
         No tiene aún
+        {#if hoverTwo}
+      <Hoverable message="Ciudad de Ubicacion"/>
+      {/if}
       </p> -->
       <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><Web /></i>
+        <i
+          class="icon-wrapper"
+          on:mouseover={() => (hoverThree = !hoverThree)}
+          on:mouseout={() => (hoverThree = !hoverThree)}><Web /></i
+        >
         <a class="ProfileIdentity-webUrl" href={webUrl} target="_blank"
           >{webUrl ? webUrl : "No tiene aún"}</a
         >
+        {#if hoverThree}
+          <Hoverable message="Paises donde Exporta" />
+        {/if}
       </p>
 
       <div class="ProfileIdentity-contact-me">

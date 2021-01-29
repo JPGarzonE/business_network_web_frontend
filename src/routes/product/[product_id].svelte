@@ -65,7 +65,11 @@
     
     const SupplierProfilePath = supplier.accountname ? GetSupplierProfileRoute(supplier.accountname) : '';
     let purchaseQuantity = 1000;
-    let productImages = [principal_image, ...secondary_images];
+    let productImages = [];
+
+    if( principal_image || ( secondary_images && secondary_images.length > 0 ) )
+        productImages = [principal_image, ...secondary_images];
+    
     let contact = supplier.principal_contact;
 </script>
 
@@ -75,7 +79,7 @@
         max-width: 1230px;
         height: auto;
         min-height: 100%;
-        margin: 55px auto 0px;
+        margin: 55px auto 100px;
         padding: 0px 10px;
     }
 

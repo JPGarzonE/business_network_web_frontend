@@ -8,7 +8,7 @@
   export let afterSubmit;
   const { session } = stores();
   const profileUsername = getContext('profileUsername');
-  const isSessionUserProfile = getContext('isSessionUserProfile');
+  const isEditableProfile = getContext('isEditableProfile');
 
   let imageUploaded = false;
   let newLogoFile;
@@ -52,6 +52,7 @@
       event.target.style.opacity = 1;
       event.target.style.cursor = 'pointer';
     } catch (e) {
+      console.log(e);
       event.target.style.opacity = 1;
       event.target.style.cursor = 'pointer';
     }

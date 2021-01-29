@@ -449,5 +449,6 @@
   .Signup-button {
     font-size: 14px;
     letter-spacing: 0.22px;
+    border: none;
   }
 </style>

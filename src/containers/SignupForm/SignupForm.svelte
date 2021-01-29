@@ -153,7 +153,8 @@
   {#if actualStep === 2}
     <div class="SignupForm-back">
       <button style="color:{formContentColor}" on:click={() => actualStep--}>
-        <span>{"<"}</span> Volver
+        <span>{"<"}</span>
+        {$_("signUpForm.back")}
       </button>
     </div>
   {/if}
@@ -347,7 +348,7 @@
       <div class="form-group" style="margin-top:1.6em;">
         <FileUploadInput
           name="Certificate"
-          message="Subir certificado"
+          message={$_("signUpForm.uploadCertificate")}
           inputColor={activeColor}
           acceptFiles={["application/pdf"]}
           bind:value={certificate}

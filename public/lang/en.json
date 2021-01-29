@@ -4,6 +4,12 @@
         "signUp": "Sign Up",
         "register": "Register"
     },
+    "certificateUploadForm":{
+         "noVerifiedProfile": "Your profile has not been verified",
+         "rememberVerifyCOmpany": "Remember that it is important to verify your company through the Chamber and Commerce certificate, this will help improve your consumer experience.",
+         "send": "Send",
+         "continueWhitoutCertificate": "Continue, no certificate"
+     },
     "certificationCard":{
         "more":"More",
         "less":"Less",
@@ -27,16 +33,20 @@
         "joinToContact":"Join To Contact",
         "thisUserDoNotHaveRegisteredContactNumber":"This User Do not have registered contact number",
         "talkToOurSalesConsultantToCOntact":"Talk to our sales consultant and will get in touch.",
-        "cantContactDirectlyUntilVerified":"Cant contact directly until verified"
+        "cantContactDirectlyUntilVerified":"Cant contact directly until verified",
+        "getInTouch":"Get in touch"
     },
     "contactUsButton":{
         "getInTouch":"Get in touch"
     },
     "dropZone": {
         "dragAndDropTheFileOrUploadItFromYourComputer": "Drag and drop the file or upload it from your computer.",
-        "dragAndDropTheFile": "= Drag and drop the file",
+        "dragAndDropTheFile": "Drag and drop the file",
         "orUploadItFromYourComputer": "or upload it from your computer.",
         "uploadImage": "Upload image"
+    },
+        "footer":{
+            "withUs":"with us"
     },
     "header": {
         "goToTheMarket": "Go to the market",
@@ -139,7 +149,8 @@
         "productCertifications": "Product Certifications",
         "tariffHeading": "Tariff Heading",
         "unitOfMesurement ": "Unit of Measurement",
-        "updateProduct": "Update product"
+        "updateProduct": "Update product",
+        "uploadProductImage":" Upload product Image"
     },
     "productList": {
         "theCompanyHasNotAddedAnyProducts": "The company has not added any clients yet. ",
@@ -169,12 +180,14 @@
     "profileLogoUpload": {
         "addLogo": "Add logo",
         "uploadImage": "Upload image",
-        "uploadTheLogoOrImageThatRepresentsYourComany": "= Upload the logo or image that represents your company!",
+        "uploadTheLogoOrImageThatRepresentsYourComany": "Upload the logo or image that represents your company!",
         "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "You will have more opportunities to attract new costumers and close deals.",
         "thisIsHowYourCompanyProfileImage":"¡This is How your company profile image will look like!",
-        "changeImage":"Change Image"
+        "changeImage":"Change Image",
+        "saveLogo":"Save logo"
     },
     "profileVerification": {
+        "haz":"",
         "companyNotVerified": "Company not verified",
         "verifiedCompany": "Verified company",
         "theCompanyIsInTheProcessOfVerification": "The company is in process of verification.",
@@ -227,7 +240,9 @@
         "taxID": "TAX ID*",
         "termsAndConditions": "terms and conditions",
         "theDataProtectionPolicy": "data protection policy",
-        "uploadCertificateOfExistence": "Upload your certificate of existence "
+        "uploadCertificateOfExistence": "Upload your certificate of existence ",
+        "uploadCertificate":"Upload certificate",
+        "back":"Back"
     },
     "unregisteredRelationshipForm": {
         "addClient": "Add client",
@@ -240,6 +255,7 @@
         "maxCharacters" : "At most {num} characters",
         "requiredIndustry": "INdustry required",
         "requiredName":"Name Required",
-        "requiredRelation":"Relation Required"
+        "requiredRelation":"Relation Required",
+        "relationType":"Relationship type"
     }
 }

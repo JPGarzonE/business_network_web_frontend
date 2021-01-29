@@ -31,7 +31,7 @@
 
   const signupService = new SignupService();
 
-  const fields = ['full_name', 'email', 'name', 'legalIdentifier', 
+  const fields = ['full_name', 'email', 'name', 'legal_identifier', 
       'industry', 'password', 'password_confirmation'];
   
   let steps = { 1: null, 2: null }
@@ -97,8 +97,6 @@
       let existErrorField = false;
       fields.map((field) => {
           let errorField = error[field];
-          if( field == "legalIdentifier" || field == "name" || field == "industry" )
-              errorField = error["company"] ? error["company"][field] : null;
 
           if(errorField) {
               existErrorField = true;

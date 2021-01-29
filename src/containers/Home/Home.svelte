@@ -11,28 +11,34 @@
   export let authenticationContainerState = "signup";
   export let homeAuthenticationOpen = false;
   let homeAuthenticationMediaQuery;
+
   onMount(async () => {
     homeAuthenticationMediaQuery = window.matchMedia("(min-width: 1000px)");
+    
     if (!homeAuthenticationMediaQuery.matches) homeAuthenticationOpen = false;
     else toggleHomeAuthenticationDisplay();
+
     homeAuthenticationMediaQuery.addEventListener(
       "change",
       toggleHomeAuthenticationDisplay
     );
     document.onscroll = toggleHomeAuthenticationDisplay;
   });
+
   function toggleHomeAuthenticationDisplay() {
     if (homeAuthenticationMediaQuery.matches) {
       if (window.scrollY < 370) homeAuthenticationOpen = true;
       else homeAuthenticationOpen = false;
     }
   }
+
   $: if (
     homeAuthenticationMediaQuery &&
     !homeAuthenticationMediaQuery.matches &&
     homeAuthenticationOpen
   )
     document.body.style.overflow = "hidden";
+
   const closeHomeAuthentication = () => {
     homeAuthenticationOpen = false;
     document.body.style.overflow = "scroll";

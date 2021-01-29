@@ -6,11 +6,13 @@
 
   export let state = "signup";
   export let darkMode = false;
+
   let backgroundColor = darkMode ? "#00409A" : "var(--extra-light-gray)";
   let activeColor = darkMode ? "var(--white)" : "var(--principal-color)";
   let inactiveColor = darkMode ? "transparent" : "#E8E8E8";
   let formContentColor = darkMode ? "var(--white)" : "var(--light-color)";
   let secondaryContentColor = darkMode ? "var(--white)" : "#9E9FA0";
+  
   onMount(async () => {
     const Head = document.getElementsByTagName("head")[0];
     const Link = document.createElement("link");

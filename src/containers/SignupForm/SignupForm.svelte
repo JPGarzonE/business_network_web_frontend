@@ -94,7 +94,9 @@
       console.log("error: ", e);
       const error = e.message;
       submitErrorMessage = "";
+
       let existErrorField = false;
+
       fields.map((field) => {
           let errorField = error[field];
 
@@ -105,9 +107,16 @@
               }`;
           }
       });
+
       if (!existErrorField && !error)
         submitErrorMessage = $_("signUpForm.invalidData");
-      else if (!existErrorField) submitErrorMessage = error;
+      else if (!existErrorField) {
+        if( error['non_field_errors'] )
+          submitErrorMessage = error['non_field_errors'];
+        else
+          submitErrorMessage = error;
+      }
+
     } finally {
         Target.style.opacity = 1;
         Target.style.cursor = 'pointer';

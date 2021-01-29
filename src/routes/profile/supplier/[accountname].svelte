@@ -105,9 +105,8 @@
         : ''}"
     >
       <ProfileIdentity
-        name={supplier.display_name}
+        displayName={supplier.display_name}
         industry={supplier.industry}
-        webUrl={supplier.web_url}
         logo={supplier.logo}
         contact={null}
         location={principalLocation}

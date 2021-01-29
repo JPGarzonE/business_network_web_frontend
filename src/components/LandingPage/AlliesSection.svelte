@@ -19,6 +19,7 @@
     .AlliesSection-content img {
         width: 90%;
         max-width: 270px;
+        max-height: 195px;
         margin: 0 .5em;
     }
     

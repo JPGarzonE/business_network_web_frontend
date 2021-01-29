@@ -137,7 +137,8 @@
     justify-content: space-between;
   }
   .Header-user-data-market {
-    width: 138px;
+    max-width: 160px;
+    min-width: 138px;
     display: none;
     align-items: center;
     margin-right: 36px;

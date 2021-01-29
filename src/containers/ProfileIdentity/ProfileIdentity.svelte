@@ -9,6 +9,7 @@
   import Web from "svelte-material-icons/Web.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
   import { _ } from "svelte-i18n";
+  import Hoverable from "../../components/Hoverable/Hoverable.svelte";
 
   export let displayName;
   export let industry;
@@ -22,7 +23,6 @@
   const isEditableProfile = getContext("isEditableProfile");
 
   let editableMode = false;
-
   let locationSubtitle;
   let address;
 
@@ -47,6 +47,10 @@
     contact = supplierSummary.principal_contact;
     editableMode = false;
   }
+
+  let hoverOne = false;
+  let hoverTwo = false;
+  let hoverThree = false;
 </script>
 
 <div class="ProfileIdentity">
@@ -90,14 +94,24 @@
       </div>
 
       <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><MapMarkerOutline /></i>
+        <i
+          class="icon-wrapper"
+          on:mouseover={() => (hoverOne = !hoverOne)}
+          on:mouseout={() => (hoverOne = !hoverOne)}><MapMarkerOutline /></i
+        >
         <span class="ProfileIdentity-address"
           >{address ? address : $_("profileIdentity.itdoesnthaveyet")}</span
         >
+        {#if hoverOne}
+          <Hoverable message="Dirección" />
+        {/if}
       </p>
       <!-- <p class="ProfileIdentity-data">
-        <i class="icon-wrapper"><GoogleTranslate /></i>
+        <i class="icon-wrapper" on:mouseover={() => hoverTwo= !hoverTwo} on:mouseout={() => hoverTwo=!hoverTwo}><GoogleTranslate /></i>
         No tiene aún
+        {#if hoverTwo}
+      <Hoverable message="Ciudad de Ubicacion"/>
+      {/if}
       </p> -->
 
       <div class="ProfileIdentity-contact-me">
@@ -179,6 +193,7 @@
   }
 
   .ProfileIdentity-data {
+    position: relative;
     width: 75%;
     display: flex;
     justify-content: flex-start;

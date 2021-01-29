@@ -4,6 +4,12 @@
         "signUp": "Crear Cuenta",
         "register": "Registro"
     },
+    "certificateUploadForm":{
+        "noVerifiedProfile":"Tu perfíl no ha sido verificado",
+        "rememberVerifyCOmpany":"Acuérdate que es importante verificar tu empresa a través del certificado de Cámara y Comercio, esto ayudará a mejorar la experiencia de tu consumidor.",
+        "send":"Enviar",
+        "continueWhitoutCertificate":"Continuar, sin certificado"
+    },
     "certificationCard":{
         "more":"Ver más",
         "less":"Ver menos",
@@ -27,7 +33,8 @@
         "joinToContact":"Registrate para contactar",
         "thisUserDoNotHaveRegisteredContactNumber":"Este usuario no tiene asignado un número de contacto.",
         "talkToOurSalesConsultantToCOntact":"Hable con nuestros asesores de venta y lo contactaremos por usted.",
-        "cantContactDirectlyUntilVerified":"No puede contactar directamente hasta estar verificado."
+        "cantContactDirectlyUntilVerified":"No puede contactar directamente hasta estar verificado.",
+        "getInTouch":"Contáctanos"
     },
     "contactUsButton":{
         "getInTouch":"Contáctanos"
@@ -37,6 +44,9 @@
         "dragAndDropTheFileOrUploadItFromYourComputer": "Arrastra y suelta el archivo o selecciónalo otra opción",
         "orUploadItFromYourComputer": "o selecciona otra opción",
         "uploadImage": "Subir imagen"
+    },
+    "footer":{
+            "withUs":"con nosotros"
     },
     "header": {
         "goToTheMarket": "Ir al mercado",
@@ -139,7 +149,8 @@
         "productCertifications": "Certificaciones",
         "tariffHeading": "Partida arancelaria",
         "unitOfMesurement ": "Unidad de medida",
-        "updateProduct": "Actualiza tu producto"
+        "updateProduct": "Actualiza tu producto",
+        "uploadProductImage":" Sube imagen de producto"
     },
     "productList": {
         "theCompanyHasNotAddedAnyProducts": "La compañia todavía no ha agregado Productos",
@@ -170,11 +181,23 @@
         "addLogo": "Agregar logo",
         "uploadImage": "Subir imagen",
         "uploadTheLogoOrImageThatRepresentsYourComany": "¡Sube el logo o una imagen que represente a tu empresa!",
-        "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios."
+        "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios.",
+        "thisIsHowYourCompanyProfileImage":"¡This is How your company profile image will look like!",
+        "changeImage":"Cambiar Imagen",
+        "saveLogo":"Guardar logo"
     },
-    "profileVerification": {
+    "profileVerification":{
+        "haz":"haz ",
         "companyNotVerified": "Empresa no verificada",
-        "verifiedCompany": "Empresa verificada"
+        "verifiedCompany": "Empresa verificada",
+        "theCompanyIsInTheProcessOfVerification": "The company is in process of verification.",
+        "CheckinTheNextFewHours":"Check in the next few hours",
+        "theMailIsFoundInTheCertificate":"the mail found in the JuanPablo certificate",
+        "toFinishTheProcess":"to finish the process.",
+        "yourCompanyIsNotYetVerified":"Your company is not yet verified, upload your certificate of",
+        "chamberOfCommerceHere":"JuanPablo here",
+        "clickHere":"click here",
+        "toUploadTheCertificate":"To upload the JuanPablo certificate, otherwise you will not be able to publish your profile"
     },
     "relationshipList": {
         "theCompanyHasNotAddeAnyClientsYet": "La compañia todavía no ha agregado las empresas con las que trabaja",
@@ -217,7 +240,9 @@
         "termsAndConditions": "términos y condiciones",
         "theDataProtectionPolicy": "la política de protección de datos",
         "uploadCertificateOfExistence": "Ingresa el certificado de cámara de comercio ",
-        "next":"Siguiente"
+        "next":"Siguiente",
+        "uploadCertificate":"Subir certificado",
+        "back":"Volver"
     },
     "unregisteredRelationshipForm": {
         "addClient": "Añadir cliente",
@@ -225,6 +250,7 @@
         "clientName": "Nombre del cliente*",
         "countryOfOrigin": "País de origen",
         "updateClient": "Actualizar cliente",
-        "whichOther": "¿Cuál otra?"
+        "whichOther": "¿Cuál otra?",
+        "relationType":"Relationship type"
     }
 }

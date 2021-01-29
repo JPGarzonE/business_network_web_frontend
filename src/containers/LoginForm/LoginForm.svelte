@@ -74,7 +74,7 @@
 <div class="LoginForm">
   <form class="LoginForm-form">
     <h2 class="LoginForm-title" style="color:{formContentColor}">
-      ¡Nos encanta verte de nuevo!
+      {$_("loginForm.weAreGladToSeeYouAgain")}
     </h2>
 
     {#if submitErrorMessage}
@@ -85,7 +85,7 @@
       <Textfield
         style="width: 100%;height:50px"
         variant="outlined"
-        label="Correo*"
+        label={$_("loginForm.mail")}
         input$aria-controls="email"
         input$aria-describedby="email"
         input$maxlength="50"
@@ -98,7 +98,7 @@
       <Textfield
         style="width: 100%;height:50px"
         variant="outlined"
-        label="Contraseña*"
+        label={$_("loginForm.password")}
         input$aria-controls="password"
         input$aria-describedby="password"
         input$type="password"
@@ -115,7 +115,7 @@
         style="color:{backgroundColor};background-color:{activeColor}"
         name="submit"
         on:click={submitLogin}
-        value="Ingresar"
+        value={$_("loginForm.logIn")}
       />
     </div>
 
@@ -127,7 +127,7 @@
         type="button"
         class="button button--secondary"
         style="color:{activeColor};border:2px solid {activeColor}"
-        value="Crea cuenta"
+        value={$_("loginForm.signUp")}
         on:click={signupRedirectionAction}
       />
     </div>

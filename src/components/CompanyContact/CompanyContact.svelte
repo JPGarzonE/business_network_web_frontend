@@ -53,7 +53,7 @@
       </p>
     {/if}
     <ContactUsButton
-      title="Contáctanos"
+      title={$_("companyContact.getInTouch")}
       buttonAction={() => {
         !disabled && window.open(companyContactLink, "_blank");
       }}

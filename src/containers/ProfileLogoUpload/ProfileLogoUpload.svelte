@@ -1,13 +1,12 @@
 <script>
-  import CompanyService from '../../services/companies/companies.service.js';
-  import { stores } from '@sapper/app';
-  import { getContext } from 'svelte';
-  import { _ } from 'svelte-i18n';
+  import CompanyService from "../../services/companies/companies.service.js";
+  import { stores } from "@sapper/app";
+  import { getContext } from "svelte";
+  import { _ } from "svelte-i18n";
 
   export let actualLogo;
   export let afterSubmit;
   const { session } = stores();
-  const profileUsername = getContext('profileUsername');
   const isEditableProfile = getContext('isEditableProfile');
 
   let imageUploaded = false;
@@ -28,7 +27,7 @@
 
   function updateLogoImagePreview(imgValue) {
     const ProfileLogoUploadImage = document.getElementById(
-      'ProfileLogoUpload-image'
+      "ProfileLogoUpload-image"
     );
     ProfileLogoUploadImage.src = imgValue;
   }
@@ -36,7 +35,7 @@
   async function submit(event) {
     try {
       event.target.style.opacity = 0.4;
-      event.target.style.cursor = 'not-allowed';
+      event.target.style.cursor = "not-allowed";
 
       const companyService = new CompanyService();
       if (isEditableProfile && newLogoFile) {
@@ -50,11 +49,11 @@
       }
 
       event.target.style.opacity = 1;
-      event.target.style.cursor = 'pointer';
+      event.target.style.cursor = "pointer";
     } catch (e) {
       console.log(e);
       event.target.style.opacity = 1;
-      event.target.style.cursor = 'pointer';
+      event.target.style.cursor = "pointer";
     }
   }
 </script>
@@ -65,7 +64,7 @@
   </button>
 
   <div class="ProfileLogoUpload-header">
-    <h4 class="ProfileLogoUpload-title">{$_('profileLogoUpload.addLogo')}</h4>
+    <h4 class="ProfileLogoUpload-title">{$_("profileLogoUpload.addLogo")}</h4>
   </div>
   <div class="ProfileLogoUpload-content">
     <label for="ProfileLogoUpload">
@@ -78,8 +77,8 @@
           id="ProfileLogoUpload-image"
           src={actualLogo && actualLogo.path
             ? actualLogo.path
-            : '/images/profile_icon.svg'}
-          alt={profileUsername}
+            : "/images/profile_icon.svg"}
+          alt=""
           class="ProfileLogoUpload-logo-image {actualLogo && actualLogo.path
             ? ''
             : 'ProfileLogo-image--default'}"
@@ -93,8 +92,8 @@
     <label for="ProfileLogoUpload" class="ProfileLogoUpload-button-label">
       <span class="ProfileLogoUpload-button button button--principal">
         {imageUploaded
-          ? $_('profileLogoUpload.changeImage')
-          : $_('profileLogoUpload.uploadImage')}
+          ? $_("profileLogoUpload.changeImage")
+          : $_("profileLogoUpload.uploadImage")}
       </span>
     </label>
 
@@ -108,14 +107,14 @@
 
     {#if imageUploaded}
       <p class="ProfileLogoUpload-message">
-        {$_('profileLogoUpload.thisIsHowYourCompanyProfileImage')}
+        {$_("profileLogoUpload.thisIsHowYourCompanyProfileImage")}
       </p>
     {:else}
       <p class="ProfileLogoUpload-message">
-        {$_('profileLogoUpload.uploadTheLogoOrImageThatRepresentsYourComany')}
+        {$_("profileLogoUpload.uploadTheLogoOrImageThatRepresentsYourComany")}
         <br />
         {$_(
-          'profileLogoUpload.youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals'
+          "profileLogoUpload.youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals"
         )}
       </p>
     {/if}
@@ -126,14 +125,14 @@
         type="button"
         on:click|preventDefault={submit}
         class="ProfileLogoUpload-button button button--principal"
-        >Guardar logo</button
+        >{$_("profileLogoUpload.saveLogo")}</button
       >
     {/if}
   </div>
 </div>
 
 <style>
-  @import '/styles/button.css';
+  @import "/styles/button.css";
 
   .ProfileLogoUpload {
     width: 100%;

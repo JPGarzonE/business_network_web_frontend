@@ -309,7 +309,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={relationshipType}
-        label="Tipo relación*"
+        label={$_("unregisteredRelationshipForm.relationType")}
         input$aria-controls="company-relation"
         input$aria-describedby="company-relation"
         input$maxlength="40"

@@ -82,7 +82,10 @@
       <div class="Header-user-data">
         {#if actualPath !== `/market`}
           <div class="Header-user-data-market">
-            <ButtonChat title="Ir al mercado" buttonAction={gotoMarket}>
+            <ButtonChat
+              title={$_("header.goToTheMarket")}
+              buttonAction={gotoMarket}
+            >
               <span slot="button-icon" style="display: flex">
                 <HomeOutline size={20} />
               </span>
@@ -144,17 +147,17 @@
     list-style-type: none;
     flex-direction: row;
     justify-content: space-between;
-    color: black;
+    color: whitesmoke;
     margin-right: 5%;
   }
   .line {
-    border-left: 1px solid black;
+    border-left: 1px solid whitesmoke;
     margin: 0 10px 15px 10px;
   }
 
   .image-Logo {
-    height: auto;
-    width: 25px;
+    width: 33px;
+    height: 22px;
   }
 
   @media screen and (min-width: 475px) {

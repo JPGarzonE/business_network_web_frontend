@@ -1,79 +1,79 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
-  import Textfield from '@smui/textfield';
-  import Select, { Option } from '@smui/select';
-  import HelperText from '@smui/textfield/helper-text';
-  import SelectHelperText from '@smui/select/helper-text';
-  import CharacterCounter from '@smui/textfield/character-counter/index';
-  import PlusCircleOutline from 'svelte-material-icons/PlusCircleOutline.svelte';
-  import Dropzone from '../../components/Dropzone/Dropzone.svelte';
-  import ProductService from '../../services/suppliers/product.service.js';
+  import { getContext } from "svelte";
+  import { stores } from "@sapper/app";
+  import Textfield from "@smui/textfield";
+  import Select, { Option } from "@smui/select";
+  import HelperText from "@smui/textfield/helper-text";
+  import SelectHelperText from "@smui/select/helper-text";
+  import CharacterCounter from "@smui/textfield/character-counter/index";
+  import PlusCircleOutline from "svelte-material-icons/PlusCircleOutline.svelte";
+  import Dropzone from "../../components/Dropzone/Dropzone.svelte";
+  import ProductService from "../../services/suppliers/product.service.js";
   import {
     validateString,
     validatePrice,
-  } from '../../validators/formValidators.js';
-  import { CATEGORY } from '../../store/store.js';
-  import { _ } from 'svelte-i18n';
+  } from "../../validators/formValidators.js";
+  import { CATEGORY } from "../../store/store.js";
+  import { _ } from "svelte-i18n";
 
   export let afterSubmit;
   export let ProductElement; // Pass if is an update form
   const { session } = stores();
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
   const fields = [
-    'name',
-    'description',
-    'certificates',
-    'minimum_purchase',
-    'tariff_heading',
-    'maximum_price',
-    'minimum_price',
-    'category',
-    'measurement_unit',
+    "name",
+    "description",
+    "certificates",
+    "minimum_purchase",
+    "tariff_heading",
+    "maximum_price",
+    "minimum_price",
+    "category",
+    "measurement_unit",
   ];
   const productEditData = ProductElement ? ProductElement : {};
   const editMode = ProductElement != undefined;
 
-  let name = productEditData.name ? productEditData.name : '';
+  let name = productEditData.name ? productEditData.name : "";
   let category = ProductElement
     ? ProductElement.category
     : CATEGORY
     ? CATEGORY[0]
-    : '';
+    : "";
   let description = productEditData.description
     ? productEditData.description
-    : '';
+    : "";
 
   let minimum_price = productEditData.minimum_price
     ? parseFloat(productEditData.minimum_price)
-    : '';
+    : "";
   let maximum_price = productEditData.maximum_price
     ? parseFloat(productEditData.maximum_price)
-    : '';
+    : "";
   let measurement_unit = productEditData.measurement_unit
     ? productEditData.measurement_unit
-    : '';
+    : "";
 
   let currency_id = productEditData.price_currency
     ? productEditData.price_currency.id
     : 1;
   let certificates = productEditData.certificates
     ? productEditData.certificates
-    : '';
+    : "";
   let minimum_purchase = productEditData.minimum_purchase
     ? productEditData.minimum_purchase
-    : '';
+    : "";
   let tariff_heading = productEditData.tariff_heading
     ? productEditData.tariff_heading
-    : '';
+    : "";
 
   $: minimum_price =
-    typeof minimum_price === 'number'
+    typeof minimum_price === "number"
       ? parseFloat(minimum_price.toFixed(2))
       : minimum_price;
   $: maximum_price =
-    typeof maximum_price === 'number'
+    typeof maximum_price === "number"
       ? parseFloat(maximum_price.toFixed(2))
       : maximum_price;
 
@@ -85,16 +85,16 @@
   };
   let imagesToDelete = [];
 
-  let submitErrorMessage = '';
+  let submitErrorMessage = "";
 
-  $: nameValidation = validateString(name, 2, 50, true, 'Nombre válido');
+  $: nameValidation = validateString(name, 2, 50, true, "Nombre válido");
 
   $: categoryValidation = validateString(
     category,
     3,
     60,
     true,
-    'Categoria válida'
+    "Categoria válida"
   );
 
   $: descriptionValidation = validateString(
@@ -102,19 +102,19 @@
     0,
     155,
     false,
-    'Descripción válida'
+    "Descripción válida"
   );
 
   $: minimumPriceValidation = validatePrice(
     minimum_price,
     true,
-    'Precio mínimo válido'
+    "Precio mínimo válido"
   );
 
   $: maximumPriceValidation = validatePrice(
     maximum_price,
     false,
-    'Precio máximo válido'
+    "Precio máximo válido"
   );
 
   $: measurementUnitValidation = validateString(
@@ -122,7 +122,7 @@
     0,
     30,
     false,
-    'Unidad de medida válida'
+    "Unidad de medida válida"
   );
 
   $: minimumPurchaseValidation = validateString(
@@ -130,7 +130,7 @@
     0,
     30,
     true,
-    'Compra mínima válida'
+    "Compra mínima válida"
   );
 
   $: tariffHeadingValidation = validateString(
@@ -138,7 +138,7 @@
     0,
     20,
     false,
-    'Partida arancelaria válida'
+    "Partida arancelaria válida"
   );
 
   $: validBeforeSubmit =
@@ -154,7 +154,7 @@
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
+    Target.style.cursor = "not-allowed";
 
     try {
       if (isEditableProfile) {
@@ -181,25 +181,25 @@
       }
     } catch (e) {
       const error = e.message;
-      submitErrorMessage = '';
+      submitErrorMessage = "";
       let existErrorField = false;
 
       fields.map((field) => {
         if (error[field]) {
-          submitErrorMessage += `${submitErrorMessage ? '\n' : ''}${field}: ${
+          submitErrorMessage += `${submitErrorMessage ? "\n" : ""}${field}: ${
             error[field]
           }`;
         }
       });
 
       if (!existErrorField && !error)
-        submitErrorMessage = 'Los datos no son válidos';
+        submitErrorMessage = "Los datos no son válidos";
       else if (!existErrorField) submitErrorMessage = error;
 
-      document.getElementById('ProductForm').scroll(0, 1);
+      document.getElementById("ProductForm").scroll(0, 1);
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 
@@ -284,8 +284,8 @@
   <div class="ProductForm-headline">
     <h3 class="ProductForm-title">
       {ProductElement
-        ? $_('productForm.updateProduct')
-        : $_('productForm.addProduct')}
+        ? $_("productForm.updateProduct")
+        : $_("productForm.addProduct")}
     </h3>
 
     {#if submitErrorMessage}
@@ -293,7 +293,7 @@
         <p>{submitErrorMessage}</p>
       </div>
     {:else if !editMode}
-      <p class="ProductForm-subtitle">{$_('productForm.uploadProductImage')}</p>
+      <p class="ProductForm-subtitle">{$_("productForm.uploadProductImage")}</p>
     {/if}
   </div>
 
@@ -310,7 +310,7 @@
       onDelete={() => {
         editMode && ProductElement.principal_image
           ? deleteImage(ProductElement.principal_image.id)
-          : '';
+          : "";
       }}
     />
     <div class="productform-previewMini">
@@ -328,7 +328,7 @@
           onDelete={() => {
             editMode && ProductElement.secondary_images[0]
               ? deleteImage(ProductElement.secondary_images[0].id)
-              : '';
+              : "";
           }}
         />
       </div>
@@ -346,7 +346,7 @@
           onDelete={() => {
             editMode && ProductElement.secondary_images[1]
               ? deleteImage(ProductElement.secondary_images[1].id)
-              : '';
+              : "";
           }}
         />
       </div>
@@ -364,7 +364,7 @@
           onDelete={() => {
             editMode && ProductElement.secondary_images[2]
               ? deleteImage(ProductElement.secondary_images[2].id)
-              : '';
+              : "";
           }}
         />
       </div>
@@ -377,7 +377,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={name}
-        label="Nombre del Producto*"
+        label={$_("productForm.nameOfTheProduct")}
         input$aria-controls="product-name"
         input$aria-describedby="product-name"
         input$maxlength="50"
@@ -397,7 +397,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={category}
-        label="Categoria del producto*"
+        label={$_("productForm.categoryOfTheProduct")}
         invalid={category && !categoryValidation.isValid}
       >
         <Option value="" />
@@ -420,7 +420,7 @@
           variant="outlined"
           type="number"
           bind:value={minimum_price}
-          label={$_('productForm.minimumPrice')}
+          label={$_("productForm.minimumPrice")}
           input$aria-controls="product-min-price"
           input$aria-describedby="product-min-price"
           input$maxlength="50"
@@ -433,7 +433,7 @@
           variant="outlined"
           type="number"
           bind:value={maximum_price}
-          label={$_('productForm.maximumPrice')}
+          label={$_("productForm.maximumPrice")}
           input$aria-controls="product-max-price"
           input$aria-describedby="product-max-price"
           input$maxlength="50"
@@ -448,7 +448,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={tariff_heading}
-        label={$_('productForm.tariffHeading')}
+        label={$_("productForm.tariffHeading")}
         input$aria-controls="product-tariff-heading"
         input$aria-describedby="product-tariff-heading"
         input$maxlength="50"
@@ -467,7 +467,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={measurement_unit}
-        label={$_('productForm.unitOfMesurement')}
+        label={$_("productForm.unitOfMesurement")}
         input$aria-controls="product-measurement-unit"
         input$aria-describedby="product-measurement-unit"
         input$maxlength="30"
@@ -486,7 +486,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={minimum_purchase}
-        label={$_('productForm.minimumPurchase')}
+        label={$_("productForm.minimumPurchase")}
         input$aria-controls="product-min-purchase"
         input$aria-describedby="product-min-purchase"
         input$maxlength="50"
@@ -505,7 +505,7 @@
         style="width: 100%;"
         variant="outlined"
         bind:value={certificates}
-        label={$_('productForm.productCertifications')}
+        label={$_("productForm.productCertifications")}
         input$aria-controls="product-name"
         input$aria-describedby="product-name"
         input$maxlength="50"
@@ -520,7 +520,7 @@
         textarea
         variant="outlined"
         bind:value={description}
-        label={$_('productForm.addDescription')}
+        label={$_("productForm.addDescription")}
         input$aria-controls="product-description"
         input$aria-describedby="product-description"
         input$maxlength="155"
@@ -535,14 +535,14 @@
       class="ProductForm-button button button--secondary">
       <PlusCircleOutline size={15} />
       {ProductElement
-        ? $_('productForm.updateProduct')
-        : $_('productForm.addProduct')}
+        ? $_("productForm.updateProduct")
+        : $_("productForm.addProduct")}
     </button>
   </form>
 </div>
 
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .ProductForm-headline {
     width: 100%;

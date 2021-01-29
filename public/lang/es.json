@@ -148,7 +148,7 @@
         "invalidData":"Los datos no son válidos",
         "maximumPrice": "Precio máximo",
         "minimumPrice": "Precio mínimo*",
-        "minimumPurchase": "Compra mínima",
+        "minimumPurchase": "Compra mínima*",
         "nameOfTheProduct": "Nombre del Producto*",
         "productCertifications": "Certificaciones",
         "tariffHeading": "Partida arancelaria",

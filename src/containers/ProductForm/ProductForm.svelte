@@ -100,7 +100,7 @@
   $: descriptionValidation = validateString(
     description,
     0,
-    155,
+    500,
     false,
     "Descripción válida"
   );
@@ -523,10 +523,10 @@
         label={$_("productForm.addDescription")}
         input$aria-controls="product-description"
         input$aria-describedby="product-description"
-        input$maxlength="155"
+        input$maxlength="500"
         invalid={description && !descriptionValidation.isValid}
       >
-        <CharacterCounter>0 / 50</CharacterCounter>
+        <CharacterCounter>0 / 500</CharacterCounter>
       </Textfield>
     </div>
 

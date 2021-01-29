@@ -51,7 +51,7 @@
       if (errors.non_field_errors || errors.password)
         submitErrorMessage = "Credenciales inválidas";
       else if (errors == "Invalid")
-        submitErrorMessage = "Los datos no son válidos";
+        submitErrorMessage = $_("loginForm.invalidData");
       else
         submitErrorMessage =
           "Hubo un error en la aplicación, intente más tarde";
@@ -113,7 +113,9 @@
     <div class="LoginForm-register">
       <hr style="background-color:{formContentColor}" />
       <!-- <p>Olvidé mi contraseña</p><br/> -->
-      <p style="color:{secondaryContentColor}">Si no tienes cuenta</p>
+      <p style="color:{secondaryContentColor}">
+        {$_("loginForm.doNotHaveAnAccount")}
+      </p>
       <input
         type="button"
         class="button button--secondary"

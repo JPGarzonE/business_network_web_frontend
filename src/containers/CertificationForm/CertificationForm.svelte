@@ -69,7 +69,7 @@
 
   function validateCertificationForm() {
     if (!(validateName() && validateDescription())) {
-      formErrorMessage = "Los datos no son válidos";
+      formErrorMessage = $_("certificationForm.invalidData");
       throw new Error();
     } else {
       formErrorMessage = null;

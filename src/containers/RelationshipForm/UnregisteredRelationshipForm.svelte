@@ -148,7 +148,7 @@
         validateRelationshipType()
       )
     ) {
-      formErrorMessage = "Los datos no son válidos";
+      formErrorMessage = $_("unregisteredRelationshipForm.invalidData");
       throw new Error();
     } else {
       formErrorMessage = "";

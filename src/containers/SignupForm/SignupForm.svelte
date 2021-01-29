@@ -140,7 +140,7 @@
         }
       });
       if (!existErrorField && !error)
-        submitErrorMessage = "Los datos no son válidos";
+        submitErrorMessage = $_("signUpForm.invalidData");
       else if (!existErrorField) submitErrorMessage = error;
     } finally {
       Target.style.opacity = 1;

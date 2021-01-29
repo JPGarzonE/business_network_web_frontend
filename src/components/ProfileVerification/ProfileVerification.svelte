@@ -51,7 +51,7 @@
         <span class="ProfileVerification-title">
           {$_("profileVerification.theCompanyIsInTheProcessOfVerification")}<br
           />
-          {$_("profileVerification.CheckinTheNextFewHours")}
+          {$_("profileVerification.checkinTheNextFewHours")}
           <b style="color:#5387cc;text-decoration:underline;"
             >{$_("profileVerification.theMailIsFoundInTheCertificate")}</b
           >
@@ -78,7 +78,6 @@
     </div>
 
     <p class="ProfileVerification-card--call-to-action">
-      {$_("profileVerification.haz")}
       <a href="/" on:click|preventDefault={toggleCertificateForm}
         >{$_("profileVerification.clickHere")}</a
       >

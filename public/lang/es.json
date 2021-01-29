@@ -1,25 +1,27 @@
 {
     "authenticationContainer": {
+        "register": "Registro",
         "signIn": "Iniciar Sesión",
-        "signUp": "Crear Cuenta",
-        "register": "Registro"
+        "signUp": "Crear Cuenta"
     },
-    "certificateUploadForm":{
-        "noVerifiedProfile":"Tu perfíl no ha sido verificado",
-        "rememberVerifyCOmpany":"Acuérdate que es importante verificar tu empresa a través del certificado de Cámara y Comercio, esto ayudará a mejorar la experiencia de tu consumidor.",
-        "send":"Enviar",
-        "continueWhitoutCertificate":"Continuar, sin certificado"
+    "certificateUploadForm": {
+        "continueWhitoutCertificate": "Continuar, sin certificado",
+        "noVerifiedProfile": "Tu perfíl no ha sido verificado",
+        "rememberVerifyCOmpany": "Acuérdate que es importante verificar tu empresa a través del certificado de Cámara y Comercio, esto ayudará a mejorar la experiencia de tu consumidor.",
+        "send": "Enviar",
+        "uploadCertificate": "Subir certificado"
     },
-    "certificationCard":{
-        "more":"Ver más",
-        "less":"Ver menos",
-        "certifications":"Certificaciones",
-        "createACertificateAndThisONeWillDisapear":"Crea un certificado y este desaparacerá",
-        "deleteCertificate":"Desea eliminar el Certificado"
+    "certificationCard": {
+        "certifications": "Certificaciones",
+        "createACertificateAndThisONeWillDisapear": "Crea un certificado y este desaparacerá",
+        "deleteCertificate": "Desea eliminar el Certificado",
+        "less": "Ver menos",
+        "more": "Ver más"
     },
     "certificationForm": {
+        "invalidData":"Los datos no son válidos",
         "addCertificate": "Añadir certificado ",
-        "addDescription ": "Añadir descripción",
+        "addDescription": "Añadir descripción",
         "itMustBeTheImageOfTheEntityThatIssuesTheCertificate": "* Debe ser la imagen de la entidad que emite el certificado. No la del documento.",
         "nameOfTheCertificate": "Nombre del certificado",
         "updateCertificate": "Actualizar certificado",
@@ -29,15 +31,15 @@
         "certifications": "Certificaciones",
         "theCompayDoesNotHaveCertificationsThatIdentifyItYet": "La compañia todavía no tiene certificaciones que la identifiquen"
     },
-    "companyContact":{
-        "joinToContact":"Registrate para contactar",
-        "thisUserDoNotHaveRegisteredContactNumber":"Este usuario no tiene asignado un número de contacto.",
-        "talkToOurSalesConsultantToCOntact":"Hable con nuestros asesores de venta y lo contactaremos por usted.",
-        "cantContactDirectlyUntilVerified":"No puede contactar directamente hasta estar verificado.",
-        "getInTouch":"Contáctanos"
+    "companyContact": {
+        "cantContactDirectlyUntilVerified": "No puede contactar directamente hasta estar verificado.",
+        "getInTouch": "Contáctanos",
+        "joinToContact": "Registrate para contactar",
+        "talkToOurSalesConsultantToCOntact": "Hable con nuestros asesores de venta y lo contactaremos por usted.",
+        "thisUserDoNotHaveRegisteredContactNumber": "Este usuario no tiene asignado un número de contacto."
     },
-    "contactUsButton":{
-        "getInTouch":"Contáctanos"
+    "contactUsButton": {
+        "getInTouch": "Contáctanos"
     },
     "dropZone": {
         "dragAndDropTheFile": "Arrastra y suelta el archivo",
@@ -45,8 +47,8 @@
         "orUploadItFromYourComputer": "o selecciona otra opción",
         "uploadImage": "Subir imagen"
     },
-    "footer":{
-            "withUs":"con nosotros"
+    "footer": {
+        "withUs": "con nosotros"
     },
     "header": {
         "goToTheMarket": "Ir al mercado",
@@ -54,17 +56,17 @@
         "signUp": "Unete ahora"
     },
     "home": {
+        "bePartOfTheNetworkThatIsConnecting": "Se parte de la red que está conectando las ofertas más competitivas del mercado con compradores previamente verificados.",
+        "connectWithB2BAccreditedBuyersAbroad": "Conéctate con compradores acreditados",
         "contactUs": "Contáctanos",
+        "inConectyWeKeepGuardOfYourPaymentsWhileYouGo": "En Conecty mantenemos a salvo tu pago mientras se completa exitosamente la negociación.",
+        "offerYourProductsThroughDigitalChannels": "Ofrece tus productos por medios digitales",
+        "secureYourPayment": "Recibe tu pago de forma segura",
         "signUpForFree": "Registrate Gratis",
-        "connectWithB2BAccreditedBuyersAbroad":"Conéctate con compradores acreditados",
-        "bePartOfTheNetworkThatIsConnecting":"Se parte de la red que está conectando las ofertas más competitivas del mercado con compradores previamente verificados.",
-        "offerYourProductsThroughDigitalChannels":"Ofrece tus productos por medios digitales",
-        "uploadTheRangeOfExportableProductsYour":"Sube a la plataforma tu oferta de productos exportables y las certificaciones de tus productos.",
-        "weIntroduceYouToCompaniesThatAreRelevantToYourBusiness":"Te conectamos con las empresas que te interesan",
-        "weLookForPotentialBuyersThatAreRelevantToYourCore":"Buscaremos la oferta comercial que se ajuste a tu modelo de negocio y te ayudaremos a construir esa relación comercial.",
-        "secureYourPayment":"Recibe tu pago de forma segura",
-        "inConectyWeKeepGuardOfYourPaymentsWhileYouGo":"En Conecty mantenemos a salvo tu pago mientras se completa exitosamente la negociación.",
-        "talkToUsToKnowMoreAboutUs":"Conoce más sobre este modelo contactándonos"
+        "talkToUsToKnowMoreAboutUs": "Conoce más sobre este modelo contactándonos",
+        "uploadTheRangeOfExportableProductsYour": "Sube a la plataforma tu oferta de productos exportables y las certificaciones de tus productos.",
+        "weIntroduceYouToCompaniesThatAreRelevantToYourBusiness": "Te conectamos con las empresas que te interesan",
+        "weLookForPotentialBuyersThatAreRelevantToYourCore": "Buscaremos la oferta comercial que se ajuste a tu modelo de negocio y te ayudaremos a construir esa relación comercial."
     },
     "index": {
         "allOfOurBuyersHaveBeenVerifiedAgainstDifferentInternationalBackground": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales",
@@ -80,6 +82,7 @@
         "secureYourPaymentsWithUs": "Asegura tus pagos con nosotros"
     },
     "loginForm": {
+        "invalidData": "Los datos no son válidos",
         "doNotHaveAnAccount": "Si no tienes cuenta",
         "logIn": "Ingresar",
         "mail": "Correo*",
@@ -87,8 +90,8 @@
         "signUp": "Crea cuenta",
         "weAreGladToSeeYouAgain": "¡Nos encanta verte de nuevo!"
     },
-    "mainBanner":{
-        "joinForFree":"Regístrate Gratis"
+    "mainBanner": {
+        "joinForFree": "Regístrate Gratis"
     },
     "market": {
         "insertTheTariffSubheading": "Ingresa la subpartida arancelaria",
@@ -97,75 +100,77 @@
     "marketBanner": {
         "welcomToTheNewWayOfMeetingSuppliers": "Bienvenido a la nueva forma de conocer clientes, proveedores y aliados."
     },
-    "onBoardingFifthStep":{
-        "endTour":"Finalizar Tour",
-        "editAndDelete":"Edita y elimina",
-        "clickToModifyOrDeletePrevieusData":"Haz clic en el botón de edición para modificar o eliminar los datos que subiste previamente.",
-        "addYour":"Agrega tus",
-        "clients":"clientes",
-        "addPhotoAndDescription":"Adjunta la foto de tus productos con su descripción y precio."
+    "onBoardingFifthStep": {
+        "addPhotoAndDescription": "Adjunta la foto de tus productos con su descripción y precio.",
+        "addYour": "Agrega tus",
+        "clickToModifyOrDeletePrevieusData": "Haz clic en el botón de edición para modificar o eliminar los datos que subiste previamente.",
+        "clients": "clientes",
+        "editAndDelete": "Edita y elimina",
+        "endTour": "Finalizar Tour"
     },
-    "onBoardingFourthStep":{
-        "endTour":"Finalizar Tour",
-        "editAndDelete":"Edita y elimina",
-        "clickToModifyOrDeletePrevieusData":"Haz clic en el botón de edición para modificar o eliminar los datos que subiste previamente.",
-        "addYour":"Agrega tus",
-        "products":"productos",
-        "addPhotoAndDescription":"Adjunta la foto de tus productos con su descripción y precio."
+    "onBoardingFourthStep": {
+        "addPhotoAndDescription": "Adjunta la foto de tus productos con su descripción y precio.",
+        "addYour": "Agrega tus",
+        "clickToModifyOrDeletePrevieusData": "Haz clic en el botón de edición para modificar o eliminar los datos que subiste previamente.",
+        "editAndDelete": "Edita y elimina",
+        "endTour": "Finalizar Tour",
+        "products": "productos"
     },
-    "onBoardingSecondStep":{
-        "endTour":"Finalizar Tour",
-        "addCompanyLogo":"Agrega el logo de tu empresa",
-        "clickTheIconToAddYourLogo":" Haz clic en el ícono de edición y adjunta tu logo en formato png o jpg.",
-        "verifyYourCompany":"Verifica tu empresa",
-        "addCompanyData":"Agrega los datos de tu empresa",
-        "addCompanySpecifications":"Ingresa el nombre de tu empresa, sector económico, dirección, ciudad de ubicación y países donde exportas tus productos.",
-        "addCertificate":"Adjunta tu certificado de Cámara y comercio, de esa forma podrás publicar tu perfíl.",
-        "addWhatsApp":"Añade tu whatsapp",
-        "addWhatsAppToLet":"Agrega tu teléfono de whatsapp, para que tus compradores se comuniquen contigo de forma fácil y rápida."
+    "onBoardingSecondStep": {
+        "addCertificate": "Adjunta tu certificado de Cámara y comercio, de esa forma podrás publicar tu perfíl.",
+        "addCompanyData": "Agrega los datos de tu empresa",
+        "addCompanyLogo": "Agrega el logo de tu empresa",
+        "addCompanySpecifications": "Ingresa el nombre de tu empresa, sector económico, dirección, ciudad de ubicación y países donde exportas tus productos.",
+        "addWhatsApp": "Añade tu whatsapp",
+        "addWhatsAppToLet": "Agrega tu teléfono de whatsapp, para que tus compradores se comuniquen contigo de forma fácil y rápida.",
+        "clickTheIconToAddYourLogo": " Haz clic en el ícono de edición y adjunta tu logo en formato png o jpg.",
+        "endTour": "Finalizar Tour",
+        "verifyYourCompany": "Verifica tu empresa"
     },
-    "onBoardingThirdStep":{
-        "endTour":"Finalizar Tour",
-        "editAndDelete":"Edita y elimina",
-        "clickToModifyOrDeletePreviousData":"Haz clic en el botón de edición para modificar o eliminar los datos que subiste previamente.",
-        "addYour":"Agrega tus",
-        "certifications":"certificaciones",
-        "addCertification":"Adjunta las cértificaciones de tu empresa, eso te dará más credibilidad ante tu comprador."
+    "onBoardingThirdStep": {
+        "addCertification": "Adjunta las cértificaciones de tu empresa, eso te dará más credibilidad ante tu comprador.",
+        "addYour": "Agrega tus",
+        "certifications": "certificaciones",
+        "clickToModifyOrDeletePreviousData": "Haz clic en el botón de edición para modificar o eliminar los datos que subiste previamente.",
+        "editAndDelete": "Edita y elimina",
+        "endTour": "Finalizar Tour"
     },
-    "onBoardingWelcome":{
-        "welcomeToConecty":"¡Bienvenido a Conecty!",
-        "tourOnOurPlatform":"¿Quieres hacer un tour por nuestra plataforma?",
-        "nextTime":"En otra ocasión",
-        "continue":"Continuar"
+    "onBoardingWelcome": {
+        "continue": "Continuar",
+        "nextTime": "En otra ocasión",
+        "tourOnOurPlatform": "¿Quieres hacer un tour por nuestra plataforma?",
+        "welcomeToConecty": "¡Bienvenido a Conecty!"
     },
     "productForm": {
         "addDescription": "Añadir descripción",
         "addProduct": "Añadir producto",
         "categoryOfTheProduct": "Categoria del producto*",
-        "maximumPrice ": "Precio máximo",
+        "invalidData":"Los datos no son válidos",
+        "maximumPrice": "Precio máximo",
         "minimumPrice": "Precio mínimo*",
-        "minimumPurchase ": "Compra mínima",
+        "minimumPurchase": "Compra mínima",
         "nameOfTheProduct": "Nombre del Producto*",
         "productCertifications": "Certificaciones",
         "tariffHeading": "Partida arancelaria",
-        "unitOfMesurement ": "Unidad de medida",
+        "unitOfMesurement": "Unidad de medida",
         "updateProduct": "Actualiza tu producto",
-        "uploadProductImage":" Sube imagen de producto"
+        "uploadProductImage": " Sube imagen de producto"
     },
     "productList": {
-        "theCompanyHasNotAddedAnyProducts": "La compañia todavía no ha agregado Productos",
-        "moreProducts":"Show more products",
-        "lessProducts":"Show less products",
-        "productsAndServicesPortfolio":"Portafolio de productos y servicios"
+        "lessProducts": "Show less products",
+        "moreProducts": "Show more products",
+        "productsAndServicesPortfolio": "Portafolio de productos y servicios",
+        "theCompanyHasNotAddedAnyProducts": "La compañia todavía no ha agregado Productos"
     },
     "profileIconMenu": {
         "editProfile": "Editar mi perfil",
         "signOut": "Cerrar sesión"
     },
-    "profileIdentity":{
-            "itdoesnthaveyet":"No tiene aún"
+    "profileIdentity": {
+        "itdoesnthaveyet": "No tiene aún"
     },
     "profileIdentityForm": {
+        "invalidData": "Los datos no son válidos",
         "acceptAndDisplay": "Aceptar y mostrar",
         "adress": "Direccion",
         "changeYourMainData": "Cambia tus datos principales",
@@ -179,31 +184,32 @@
     },
     "profileLogoUpload": {
         "addLogo": "Agregar logo",
+        "changeImage": "Cambiar Imagen",
+        "saveLogo": "Guardar logo",
+        "thisIsHowYourCompanyProfileImage": "¡This is How your company profile image will look like!",
         "uploadImage": "Subir imagen",
         "uploadTheLogoOrImageThatRepresentsYourComany": "¡Sube el logo o una imagen que represente a tu empresa!",
-        "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios.",
-        "thisIsHowYourCompanyProfileImage":"¡This is How your company profile image will look like!",
-        "changeImage":"Cambiar Imagen",
-        "saveLogo":"Guardar logo"
+        "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios."
     },
-    "profileVerification":{
-        "haz":"haz ",
+    "profileVerification": {
+        "chamberOfCommerceHere": "camara de comercio aquí",
+        "checkinTheNextFewHours": "En las proximas horas revisa",
+        "clickHere": "Clic aquí",
         "companyNotVerified": "Empresa no verificada",
+        "haz": "haz ",
+        "theCompanyIsInTheProcessOfVerification": "La empresa se encuentra en proceso de verificación.",
+        "theMailIsFoundInTheCertificate": "el correo que se encuentra en el certificado de cámara y comercio",
+        "toFinishTheProcess": "para finalizar el proceso.",
+        "toUploadTheCertificate": "para subir el certificado de cámara y comercio, de lo contrario no podras publicar tu perfil",
         "verifiedCompany": "Empresa verificada",
-        "theCompanyIsInTheProcessOfVerification": "The company is in process of verification.",
-        "CheckinTheNextFewHours":"Check in the next few hours",
-        "theMailIsFoundInTheCertificate":"the mail found in the JuanPablo certificate",
-        "toFinishTheProcess":"to finish the process.",
-        "yourCompanyIsNotYetVerified":"Your company is not yet verified, upload your certificate of",
-        "chamberOfCommerceHere":"JuanPablo here",
-        "clickHere":"click here",
-        "toUploadTheCertificate":"To upload the JuanPablo certificate, otherwise you will not be able to publish your profile"
+        "yourCompanyIsNotYetVerified": "Tu empresa aún no esta verificada, sube tu certificado de"
     },
     "relationshipList": {
         "theCompanyHasNotAddeAnyClientsYet": "La compañia todavía no ha agregado las empresas con las que trabaja",
         "whoWorksWithUs": "Con que empresas trabaja"
     },
     "signUpBuyerForm": {
+        "invalidData": "Los datos no son válidos",
         "acceptAndJoin": "Aceptar y unirte",
         "and": "y",
         "companyID": "ID de la empresa*",
@@ -221,36 +227,38 @@
         "theDataProtectionPolicy": "la política de protección de datos"
     },
     "signUpForm": {
+        "invalidData": "Los datos no son válidos",
         "acceptAndJoin": "Aceptar y unirte",
         "alreadyHaveAnAccount": "Si ya tienes cuenta",
         "and": " y ",
+        "back": "Volver",
         "companyInformation": "Datos de la empresa",
         "confirmPassword": "Confirmar contraseña*",
         "fullName": "Nombre completo*",
         "iHaveReadUnderstoodAndAcceptedThe": "He leído, entendido y aceptado los ",
         "ifYouDoNotHaveItAtTheMoment": "* Si no lo tienes a la mano puedes omitir este paso",
         "industry": "Industria*",
+        "logIn": "Iniciar sesión",
         "mail": "Correo*",
         "nameOfTheCompany": "Nombre de la empresa*",
-        "personalData":"Información personal",
+        "next": "Siguiente",
         "password": "Contraseña*",
-        "logIn": "Iniciar sesión",
+        "personalData": "Información personal",
         "signUpInformation": "Datos básicos personales",
         "taxID": "NIT*",
         "termsAndConditions": "términos y condiciones",
         "theDataProtectionPolicy": "la política de protección de datos",
-        "uploadCertificateOfExistence": "Ingresa el certificado de cámara de comercio ",
-        "next":"Siguiente",
-        "uploadCertificate":"Subir certificado",
-        "back":"Volver"
+        "uploadCertificate": "Subir certificado",
+        "uploadCertificateOfExistence": "Ingresa el certificado de cámara de comercio "
     },
     "unregisteredRelationshipForm": {
+        "invalidData":"Los datos no son válidos",
         "addClient": "Añadir cliente",
         "category": "Categoría*",
         "clientName": "Nombre del cliente*",
         "countryOfOrigin": "País de origen",
+        "relationType": "Relationship type",
         "updateClient": "Actualizar cliente",
-        "whichOther": "¿Cuál otra?",
-        "relationType":"Relationship type"
+        "whichOther": "¿Cuál otra?"
     }
 }

@@ -193,7 +193,7 @@
       });
 
       if (!existErrorField && !error)
-        submitErrorMessage = "Los datos no son válidos";
+        submitErrorMessage = $_("productForm.invalidData");
       else if (!existErrorField) submitErrorMessage = error;
 
       document.getElementById("ProductForm").scroll(0, 1);

@@ -1,6 +1,7 @@
 <script>
   import { stores } from "@sapper/app";
   import { getContext } from "svelte";
+  import { _ } from "svelte-i18n";
 
   import FileUploadInput from "../../components/FileUploadInput/FIleUploadInput.svelte";
   import CompanyVerificationService from "../../services/verifications/company.verification.service.js";
@@ -27,6 +28,55 @@
     }
   }
 </script>
+
+<div class="CertificateUploadForm">
+  <button class="CertificateUploadForm-close-button" on:click>
+    <span>x</span>
+  </button>
+
+  <div class="CertificateUploadForm-header">
+    <h4 class="CertificateUploadForm-title">
+      {$_("certificateUploadForm.noVerifiedProfile")}
+    </h4>
+  </div>
+  <div class="CertificateUploadForm-content">
+    <p class="CertificateUploadForm-message">
+      {$_("certificateUploadForm.rememberVerifyCOmpany")}
+    </p>
+    <img
+      class="preview-image"
+      src="images/verified-profile.png"
+      alt="preview verified profile"
+    />
+  </div>
+  <div class="CertificateUploadForm-footer">
+    <div class="CertificateUploadForm-footer--actions">
+      <FileUploadInput
+        name="Certificate"
+        message={$_("certificateUploadForm.uploadCertificate")}
+        acceptFiles={["application/pdf"]}
+        primary
+        bind:value={certificate}
+      />
+
+      {#if certificate}
+        <button
+          type="button"
+          on:click|preventDefault={submit}
+          class="CertificateUploadForm-button button button--secondary"
+          >{$_("certificateUploadForm.send")}
+        </button>
+      {:else}
+        <button
+          type="button"
+          on:click|preventDefault={continueWithoutCertificate}
+          class="CertificateUploadForm-button button button--secondary"
+          >{$_("certificateUploadForm.continueWhitoutCertificate")}</button
+        >
+      {/if}
+    </div>
+  </div>
+</div>
 
 <style>
   @import "/styles/button.css";
@@ -129,48 +179,3 @@
     }
   }
 </style>
-
-<div class="CertificateUploadForm">
-  <button class="CertificateUploadForm-close-button" on:click>
-    <span>x</span>
-  </button>
-
-  <div class="CertificateUploadForm-header">
-    <h4 class="CertificateUploadForm-title">Tu perfíl no ha sido verificado</h4>
-  </div>
-  <div class="CertificateUploadForm-content">
-    <p class="CertificateUploadForm-message">
-      Acuérdate que es importante verificar tu empresa a través del certificado
-      de Cámara y Comercio, esto ayudará a mejorar la experiencia de tu
-      consumidor.
-    </p>
-    <img
-      class="preview-image"
-      src="images/verified-profile.png"
-      alt="preview verified profile" />
-  </div>
-  <div class="CertificateUploadForm-footer">
-    <div class="CertificateUploadForm-footer--actions">
-      <FileUploadInput
-        name="Certificate"
-        message="Subir certificado"
-        acceptFiles={['application/pdf']}
-        primary
-        bind:value={certificate} />
-
-      {#if certificate}
-        <button
-          type="button"
-          on:click|preventDefault={submit}
-          class="CertificateUploadForm-button button button--secondary">Enviar
-        </button>
-      {:else}
-        <button
-          type="button"
-          on:click|preventDefault={continueWithoutCertificate}
-          class="CertificateUploadForm-button button button--secondary">Continuar,
-          sin certificado</button>
-      {/if}
-    </div>
-  </div>
-</div>

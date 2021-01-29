@@ -15,7 +15,7 @@
   export let industry = '';
   export let location = null;
   const { session } = stores();
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
   const countries = ['Colombia', 'Estados unidos'];
   const fields = ['city', 'country', 'address'];
@@ -24,14 +24,14 @@
   let country = countries[0];
   let address = location && location.address ? location.address : '';
 
-  let submitErrorMessage = '';
+  let submitErrorMessage = "";
 
   $: displayNameValidation = validateString(
     displayName,
     3,
     50,
     true,
-    'Nombre de la empresa válido'
+    "Nombre de la empresa válido"
   );
 
   $: industryValidation = validateString(
@@ -39,7 +39,7 @@
     3,
     50,
     true,
-    'Industria válida'
+    "Industria válida"
   );
 
   $: countryValidation = validateString(
@@ -47,17 +47,17 @@
     2,
     40,
     true,
-    'País de origen válido'
+    "País de origen válido"
   );
 
-  $: cityValidation = validateString(city, 1, 40, false, 'Ciudad válida');
+  $: cityValidation = validateString(city, 1, 40, false, "Ciudad válida");
 
   $: addressValidation = validateString(
     address,
     2,
     40,
     false,
-    'Dirección válida'
+    "Dirección válida"
   );
 
   $: validBeforeSubmit =
@@ -69,7 +69,7 @@
   async function submit(event) {
     const Target = event.target;
     Target.style.opacity = 0.4;
-    Target.style.cursor = 'not-allowed';
+    Target.style.cursor = "not-allowed";
 
     try {
       if (isEditableProfile) {
@@ -79,7 +79,7 @@
       }
     } catch (e) {
       const error = e.message;
-      submitErrorMessage = '';
+      submitErrorMessage = "";
       let existErrorField = false;
       fields.map((field) => {
         let errorField = error[field];
@@ -89,17 +89,17 @@
         if (errorField) {
           existErrorField = true;
           submitErrorMessage += `${
-            submitErrorMessage ? `\n` : ''
+            submitErrorMessage ? `\n` : ""
           }-${field}: ${errorField}`;
         }
       });
 
       if (!existErrorField && !error)
-        submitErrorMessage = 'Los datos no son válidos';
+        submitErrorMessage = $_("profileIdentityForm.invalidData");
       else if (!existErrorField) submitErrorMessage = error;
     } finally {
       Target.style.opacity = 1;
-      Target.style.cursor = 'pointer';
+      Target.style.cursor = "pointer";
     }
   }
 
@@ -107,17 +107,17 @@
     const supplierService = new SuppliersService();
     let dataToSubmit = {};
 
-    if (country && country != '')
+    if (country && country != "")
       dataToSubmit.principal_location = {
         ...dataToSubmit.principal_location,
         country: country,
       };
-    if (city && city != '')
+    if (city && city != "")
       dataToSubmit.principal_location = {
         ...dataToSubmit.principal_location,
         city: city,
       };
-    if (address && address != '')
+    if (address && address != "")
       dataToSubmit.principal_location = {
         ...dataToSubmit.principal_location,
         address: address,
@@ -158,7 +158,7 @@
           style="width:100%;height:45px;"
           bind:value={country}
           variant="standard"
-          label={$_('profileIdentityForm.country')}
+          label={$_("profileIdentityForm.country")}
           input$style="width: 100%;height:100%"
           invalid={country && !countryValidation.isValid}
         >
@@ -184,7 +184,7 @@
         <Textfield
           style="width: 100%;height:45px"
           variant="standard"
-          label={$_('profileIdentityForm.city')}
+          label={$_("profileIdentityForm.city")}
           input$aria-controls="city"
           input$aria-describedby="city"
           input$maxlength="50"
@@ -199,7 +199,7 @@
     </div>
 
     <p class="ProfileIdentityForm-message">
-      {$_('profileIdentityForm.changeYourMainData')}
+      {$_("profileIdentityForm.changeYourMainData")}
     </p>
 
     <div class="form-group">
@@ -212,7 +212,7 @@
           <Textfield
             style="width: 100%;height:45px"
             variant="standard"
-            label={$_('profileIdentityForm.adress')}
+            label={$_("profileIdentityForm.adress")}
             input$aria-controls="address"
             input$aria-describedby="address"
             input$maxlength="50"
@@ -230,14 +230,14 @@
         on:click|preventDefault={submit}
         disabled={!validBeforeSubmit}
         class="ProfileIdentityForm-button button button--principal">
-        {$_('profileIdentityForm.acceptAndDisplay')}
+        {$_("profileIdentityForm.acceptAndDisplay")}
       </button>
     </div>
   </form>
 </div>
 
 <style>
-  @import '/styles/form.css';
+  @import "/styles/form.css";
 
   .form-group {
     margin-top: 0;

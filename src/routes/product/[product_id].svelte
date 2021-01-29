@@ -1,6 +1,11 @@
 <script context="module">
     import ProductService from '../../services/suppliers/product.service.js';
 
+    export const GetRoute = ( product_id ) => {
+        product_id = product_id ? product_id : '';
+        return `/product/${product_id}`;
+    }
+
     export async function preload(page, session) {
         const productService = new ProductService();
         const { product_id } = page.params;
@@ -9,12 +14,27 @@
             product_id, session.accessToken
         );
 
-        return productData;
+        return {
+            name: productData.name,
+            category: productData.category,
+            minimum_price: productData.minimum_price,
+            maximum_price: productData.maximum_price,
+            price_currency: productData.price_currency,
+            measurement_unit: productData.measurement_unit,
+            tariff_heading: productData.tariff_heading,
+            minimum_purchase: productData.minimum_purchase,
+            description: productData.description,
+            certificates: productData.certificates,
+            principal_image: productData.principal_image,
+            secondary_images: productData.secondary_images,
+            supplier: productData.supplier
+        };
     }
 </script>
 
 <script>
     import { stores } from '@sapper/app';
+    import { GetRoute as GetSupplierProfileRoute } from '../profile/supplier/[accountname].svelte';
     import Header from '../../components/Header.svelte';
     import ProductImagesCarrousel from '../../components/ProductImagesCarrousel/ProductImagesCarrousel.svelte';
     import CompanyContact from '../../components/CompanyContact/CompanyContact.svelte';
@@ -34,15 +54,23 @@
     export let certificates;
     export let principal_image;
     export let secondary_images;
-    export let company;
+    export let supplier;
 
     const { session } = stores();
-    let sessionUsername = $session.authenticated ? $session.username : null;
+    let sessionCompanyAccountname = $session.authenticated && $session.company 
+        ? 
+        $session.company_accountname 
+        : 
+        null;
     
-    const CompanyProfilePath = company.username ? `profile/${company.username}` : "";
+    const SupplierProfilePath = supplier.accountname ? GetSupplierProfileRoute(supplier.accountname) : '';
     let purchaseQuantity = 1000;
-    let productImages = [principal_image, ...secondary_images];
-    let contact = company.principal_contact;
+    let productImages = [];
+
+    if( principal_image || ( secondary_images && secondary_images.length > 0 ) )
+        productImages = [principal_image, ...secondary_images];
+    
+    let contact = supplier.principal_contact;
 </script>
 
 <style>
@@ -51,7 +79,7 @@
         max-width: 1230px;
         height: auto;
         min-height: 100%;
-        margin: 55px auto 0px;
+        margin: 55px auto 100px;
         padding: 0px 10px;
     }
 
@@ -241,7 +269,7 @@
 </style>
 
 <svelte:head>
-    <title>{name} vendido por {company.name} - Conecty</title>
+    <title>{name} vendido por {supplier.display_name} - Conecty</title>
 </svelte:head>
 
 <Header />
@@ -256,7 +284,7 @@
         </div>
         <div class="ProductDetailNavigation-title">
             <p>
-                <a href={CompanyProfilePath}><span>{company.name}</span></a>
+                <a href={SupplierProfilePath}><span>{supplier.display_name}</span></a>
                 &gt; 
                 <span>{name}</span>
             </p>
@@ -270,7 +298,7 @@
                     images={productImages}
                 />
             </div>
-            {#if sessionUsername !== company.username}
+            {#if sessionCompanyAccountname !== supplier.accountname}
             <div class="ProductDetail-buttons">
                 <span>¿Estás interesado en este producto?</span>
                 <div class="ProductDetail-buttons-contact">
@@ -313,7 +341,7 @@
             <div class="ProductDetail-company">
                 <span class="ProductDetail-company-title">Envíado y vendido por:</span>
                 <h5 class="ProductDetail-company-name">
-                    <a href={CompanyProfilePath}>{company.name}</a>
+                    <a href={SupplierProfilePath}>{supplier.display_name}</a>
                 </h5>
             </div>
         </section>

@@ -2,6 +2,8 @@
   import ProfileLogo from "../../../components/ProfileLogo/ProfileLogo.svelte";
   import ProfileVerification from "../../../components/ProfileVerification/ProfileVerification.svelte";
   import { onMount, afterUpdate, onDestroy } from "svelte";
+  import { _ } from "svelte-i18n";
+
   export let handleCancel;
   export let handleNext;
   let width;
@@ -22,7 +24,7 @@
 <svelte:window bind:innerWidth={width} />
 
 <button class="button button--secondary" on:click={handleCancel}
-  >Finalizar Tour</button
+  >{$_("onBoardingSecondStep.endTour")}</button
 >
 <div class="Container" on:swipeleft={handleNext}>
   <div class="ProfileIdentity">
@@ -33,18 +35,17 @@
   </div>
   <div class="Text-Container">
     <span class="Text">
-      Agrega el logo de tu empresa
+      {$_("onBoardingSecondStep.addCompanyLogo")}
       <br />
       <span class="Text--description">
-        Haz clic en el ícono de edición y adjunta tu logo en formato png o jpg.</span
+        {$_("onBoardingSecondStep.clickTheIconToAddYourLogo")}</span
       >
     </span>
     <span class="Text">
-      Verifica tu empresa
+      {$_("onBoardingSecondStep.clickTheIconToAddYourLogo")}
       <br />
       <span class="Text--description">
-        Adjunta tu certificado de Cámara y comercio, de esa forma podrás
-        publicar tu perfíl.
+        {$_("onBoardingSecondStep.addCertificate")}
       </span>
     </span>
   </div>

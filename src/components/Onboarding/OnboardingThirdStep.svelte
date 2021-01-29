@@ -2,6 +2,7 @@
   import { afterUpdate, onDestroy, onMount } from "svelte";
   import Pencil from "svelte-material-icons/PencilOutline.svelte";
   import AddCert from "svelte-material-icons/ImagePlus.svelte";
+  import { _ } from "svelte-i18n";
 
   export let handleCancel;
   export let handleNext;
@@ -20,7 +21,7 @@
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >Finalizar Tour</button
+  >{$_("onBoardingThirdStep.endTour")}</button
 >
 <img
   src="/images/chevron-right.svg"
@@ -43,11 +44,10 @@
         <Pencil size={60} color="white" />
       </span>
       <span class="Text Pencil-Text">
-        Edita y elimina
+        {$_("onBoardingThirdStep.editAndDelete")}
         <br />
         <span class="Text--description">
-          Haz clic en el botón de edición para modificar o eliminar los datos
-          que subiste previamente.<span />
+          {$_("onBoardingThirdStep.clickToModifyOrDeletePreviousData")}<span />
         </span></span
       >
     </div>
@@ -57,8 +57,8 @@
       </span>
       <div class="Text-Arrow-container">
         <span class="Text AddCert-Text">
-          Agrega tus<br />
-          certificaciones
+          {$_("onBoardingThirdStep.addYour")}<br />
+          {$_("onBoardingThirdStep.certifications")}
           <br />
         </span>
         <img
@@ -70,8 +70,7 @@
       </div>
 
       <span class="Text--description">
-        Adjunta las cértificaciones de tu empresa, eso te dará más credibilidad
-        ante tu comprador.</span
+        {$_("onBoardingThirdStep.addCertification")}</span
       >
     </div>
   </div>

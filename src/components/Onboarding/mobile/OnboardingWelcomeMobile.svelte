@@ -1,5 +1,7 @@
 <script>
   import { onMount, afterUpdate, onDestroy } from "svelte";
+  import { _ } from "svelte-i18n";
+
   export let handleCancel;
   export let handleNext;
 
@@ -16,16 +18,14 @@
     on:click={handleCancel}>
     <span>X</span>
   </button>
-  <span class="ModalTitle">¡Bienvenido a Conecty!</span>
-  <span class="ModalMessage"
-    >¿Quieres hacer un tour por nuestra plataforma?</span
-  >
+  <span class="ModalTitle">{$_("onBoardingWelcome.welcomeToConecty")}</span>
+  <span class="ModalMessage">{$_("onBoardingWelcome.tourOnOurPlatform")}</span>
   <div class="ModalButtons">
     <button class="button button--secondary" on:click={handleCancel}
-      >En otra ocasión</button
+      >{$_("onBoardingWelcome.nextTime")}</button
     >
     <button class="button button--principal" on:click={handleNext}
-      >Continuar</button
+      >{$_("onBoardingWelcome.continue")}</button
     >
   </div>
 </div>

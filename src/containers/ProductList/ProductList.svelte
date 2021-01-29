@@ -6,6 +6,7 @@
   import Modal from "../../components/Modal.svelte";
   import CreateButton from "../../components/CreateButton/CreateButton.svelte";
   import ProductForm from "../ProductForm/ProductForm.svelte";
+  import { _ } from "svelte-i18n";
 
   export let productList = [];
   export let onBoarding = false;
@@ -88,7 +89,9 @@
 </script>
 
 <div class="ProductsList" id="ProductsList">
-  <h3 class="ProductsList-headline">Portafolio de productos y servicios</h3>
+  <h3 class="ProductsList-headline">
+    {$_("productList.productsAndServicesPortfolio")}
+  </h3>
   {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <ProductForm
@@ -169,7 +172,7 @@
           class="ProductShowLink ProductShowLink-less"
           on:click={showLessGondola}>
           <i class="icon-next" />
-          Ver menos productos
+          {$_("productList.lessProducts")}
         </span>
       {/if}
 
@@ -178,7 +181,7 @@
           class="ProductShowLink ProductShowLink-more"
           on:click={showMoreGondola}>
           <i class="icon-next" />
-          Ver más productos
+          {$_("productList.moreProducts")}
         </span>
       {/if}
     </div>

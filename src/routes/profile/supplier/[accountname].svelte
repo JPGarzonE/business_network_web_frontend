@@ -1,6 +1,11 @@
 <script context="module">
   import ProfilesService from "../../../services/suppliers/profiles.service.js";
 
+  export const GetRoute = ( accountname ) => {
+    accountname = accountname ? accountname : '';
+    return `/profile/supplier/${accountname}`;
+  }
+
   export async function preload(page, session) {
     const profilesService = new ProfilesService();
     const { accountname } = page.params;
@@ -100,9 +105,8 @@
         : ''}"
     >
       <ProfileIdentity
-        name={supplier.display_name}
+        displayName={supplier.display_name}
         industry={supplier.industry}
-        webUrl={supplier.web_url}
         logo={supplier.logo}
         contact={null}
         location={principalLocation}

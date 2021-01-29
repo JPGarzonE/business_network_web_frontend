@@ -8,11 +8,11 @@
   import { getContext } from "svelte";
   import Web from "svelte-material-icons/Web.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
+  import { _ } from "svelte-i18n";
   import Hoverable from "../../components/Hoverable/Hoverable.svelte";
 
-  export let name;
+  export let displayName;
   export let industry;
-  export let webUrl;
   export let logo;
   export let location;
   export let contact;
@@ -40,12 +40,11 @@
     editableMode = !editableMode;
   }
 
-  function reloadComponentData(companySummary) {
-    name = companySummary.name;
-    industry = companySummary.industry;
-    location = companySummary.principal_location;
-    webUrl = companySummary.web_url;
-    contact = companySummary.principal_contact;
+  function reloadComponentData(supplierSummary) {
+    displayName = supplierSummary.display_name;
+    industry = supplierSummary.industry;
+    location = supplierSummary.principal_location;
+    contact = supplierSummary.principal_contact;
     editableMode = false;
   }
 
@@ -58,9 +57,8 @@
   {#if editableMode && isEditableProfile}
     <Modal on:click={toggleEditableMode}>
       <ProfileIdentityForm
-        {name}
+        {displayName}
         {industry}
-        {webUrl}
         {location}
         {contact}
         on:click={toggleEditableMode}
@@ -75,7 +73,7 @@
       <ProfileVerification />
 
       <div class="ProfileIdentity-NameContainer">
-        <p class="ProfileIdentity-name">{name}</p>
+        <p class="ProfileIdentity-name">{displayName}</p>
         {#if isEditableProfile}
           <div class="ProfileIdentity-NameEditor">
             <EditButton
@@ -102,7 +100,7 @@
           on:mouseout={() => (hoverOne = !hoverOne)}><MapMarkerOutline /></i
         >
         <span class="ProfileIdentity-address"
-          >{address ? address : "No tiene aún"}</span
+          >{address ? address : $_("profileIdentity.itdoesnthaveyet")}</span
         >
         {#if hoverOne}
           <Hoverable message="Dirección" />
@@ -115,19 +113,6 @@
       <Hoverable message="Ciudad de Ubicacion"/>
       {/if}
       </p> -->
-      <p class="ProfileIdentity-data">
-        <i
-          class="icon-wrapper"
-          on:mouseover={() => (hoverThree = !hoverThree)}
-          on:mouseout={() => (hoverThree = !hoverThree)}><Web /></i
-        >
-        <a class="ProfileIdentity-webUrl" href={webUrl} target="_blank"
-          >{webUrl ? webUrl : "No tiene aún"}</a
-        >
-        {#if hoverThree}
-          <Hoverable message="Países donde Exporta" />
-        {/if}
-      </p>
 
       <div class="ProfileIdentity-contact-me">
         {#if !isEditableProfile || Onboarding}

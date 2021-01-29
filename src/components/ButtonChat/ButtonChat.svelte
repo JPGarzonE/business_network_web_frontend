@@ -14,7 +14,7 @@
     align-items: center;
     border: none;
     border-radius: 5px;
-    padding: 10px 8px;
+    padding: 10px 12px;
     color: #fff;
     background-color: var(--button-color);
     cursor: pointer;

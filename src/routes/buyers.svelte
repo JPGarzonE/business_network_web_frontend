@@ -1,7 +1,13 @@
 <script context="module">
+    import { GetRoute as GetMarketRoute } from './market.svelte';
+
+    export const GetRoute = () => {
+        return `/buyers/`;
+    }
+
     export async function preload(page, session) {
         if( session.authenticated ) {
-            return this.redirect(301, '/market');
+            return this.redirect(301, GetMarketRoute());
         }
     }
 </script>

@@ -40,7 +40,7 @@ export default class CompanyService extends RequestService {
             "logo_id": Logo.id
         }
 
-        const Company = await this.patch( this.getCompaniesPath(username), headers, Data );
+        const Company = await this.patch( this.getCompaniesPath(accountname), headers, Data );
         return Company;
     }
 

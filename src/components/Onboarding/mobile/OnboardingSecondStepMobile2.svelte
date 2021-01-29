@@ -6,6 +6,7 @@
   import Earth from "svelte-material-icons/Earth.svelte";
   import Whatsapp from "svelte-material-icons/Whatsapp.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
+  import { _ } from "svelte-i18n";
   export let handleCancel;
   export let handleNext;
   export let handlePrev;
@@ -25,7 +26,7 @@
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >Finalizar Tour</button
+  >{$_("onBoardingSecondStep.endTour")}</button
 >
 <div
   class="Container Container--2"
@@ -34,18 +35,16 @@
 >
   <div class="Text-Container Text-Container--2">
     <span class="Text">
-      Agrega los datos de tu empresa
+      {$_("onBoardingSecondStep.addCompanyData")}
       <br />
       <span class="Text--description">
-        Ingresa el nombre de tu empresa, sector económico, dirección, ciudad de
-        ubicación y países donde exportas tus productos.
+        {$_("onBoardingSecondStep.addCompanySpecifications")}
       </span>
       <span class="Text">
-        Añade tu whatsapp
+        {$_("onBoardingSecondStep.addWhatsApp")}
         <br />
         <span class="Text--description">
-          Agrega tu teléfono de whatsapp, para que tus compradores se comuniquen
-          contigo de forma fácil y rápida..
+          {$_("onBoardingSecondStep.addWhatsAppToLet")}
         </span>
       </span>
     </span>

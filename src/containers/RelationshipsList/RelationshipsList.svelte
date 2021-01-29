@@ -5,6 +5,7 @@
   import UnregisteredRelationshipForm from "../RelationshipForm/UnregisteredRelationshipForm.svelte";
   import CreateButton from "../../components/CreateButton/CreateButton.svelte";
   import { getContext } from "svelte";
+  import { _ } from "svelte-i18n";
 
   export let unregisteredRelationships = [];
   export let onBoarding = false;
@@ -41,7 +42,9 @@
     </Modal>
   {/if}
 
-  <h3 class="RelationshipsList-headline">Con que empresas trabaja</h3>
+  <h3 class="RelationshipsList-headline">
+    {$_("relationshipList.whoWorksWithUs")}
+  </h3>
   {#if isEditableProfile}
     <div class="RelationshipsList-card--create">
       <div

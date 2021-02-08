@@ -50,7 +50,7 @@ export default class SignupService extends RequestService {
         'CertificateFile is required in SignupService.signupSupplierWithCertificate'
       );
 
-    const SignupData = await this.signup(userData);
+    const SignupData = await this.signupSupplier(userData);
     const AccessToken = await SignupData.access_token;
 
     await this._companyVerificationService.uploadCompanyCertificate(

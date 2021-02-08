@@ -37,16 +37,17 @@
   import CertificationsList from "../../../containers/CertificationsList/CertificationsList.svelte";
   import ProductList from "../../../containers/ProductList/ProductList.svelte";
   import Onboarding from "../../../components/Onboarding/OnBoarding.svelte";
+
   export let editable;
   export let supplier;
   export let principalLocation;
-  let onboardingOn = true;
-
-  let width;
-  // export let saleLocations;
+  export let saleLocations;
   export let products;
   export let certifications;
   export let unregisteredRelationships;
+
+  let onboardingOn = true;
+  let width;
   let onboardingStep = 0;
   let onboardingStepMobile = 0;
 
@@ -109,7 +110,8 @@
         industry={supplier.industry}
         logo={supplier.logo}
         contact={null}
-        location={principalLocation}
+        {principalLocation}
+        {saleLocations}
         onboarding={onboardingOn}
         class={onboardingOn ? "Onboarding" : ""}
       />

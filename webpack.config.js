@@ -11,6 +11,40 @@ const alias = { svelte: path.resolve('node_modules', 'svelte') };
 const extensions = ['.mjs', '.js', '.json', '.svelte', '.html'];
 const mainFields = ['svelte', 'module', 'browser', 'main'];
 
+function tryResolve_(url, sourceFileName) {
+  // Put require.resolve in a try/catch to avoid node-sass failing 
+  // with cryptic libsass errors when the importer throws
+  try {
+    return require.resolve(url, {
+        paths: [ path.dirname(sourceFileName) ]
+    });
+  }
+  catch (e) {
+    return '';
+  }
+}
+
+function tryResolveScss(url, sourceFileName) {
+  // Support the omission of .scss and leading _
+  const normalizedUrl = url.endsWith('.scss') ? url : `${url}.scss`;
+  
+  return tryResolve_(normalizedUrl, sourceFileName) || 
+  tryResolve_( 
+    path.join( path.dirname(normalizedUrl), `_${path.basename(normalizedUrl)}` )
+    ,
+    sourceFileName
+  )
+}
+
+function materialImporter(url, prev) {
+  if ( url.startsWith('@material') ) {
+    const resolved = tryResolveScss(url, prev);
+    return {file: resolved || url};
+  }
+
+  return {file: url};
+}
+
 module.exports = {
   client: {
     entry: config.client.entry(),
@@ -38,7 +72,11 @@ module.exports = {
             {
               loader: 'sass-loader',
               options: {
+                implementation: require('sass'),
+
+                webpackImporter: false,
                 sassOptions: {
+                  importer: materialImporter,
                   includePaths: ['./src/theme', './node_modules'],
                 },
               },
@@ -95,7 +133,11 @@ module.exports = {
             {
               loader: 'sass-loader',
               options: {
+                implementation: require('sass'),
+
+                webpackImporter: false,
                 sassOptions: {
+                  importer: materialImporter,
                   includePaths: ['./src/theme', './node_modules'],
                 },
               },

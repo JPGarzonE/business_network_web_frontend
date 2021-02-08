@@ -11,7 +11,6 @@
     "cookie-parser": "^1.4.5",
     "polka": "^0.5.2",
     "sirv": "^1.0.1",
-    "svelte": "^3.23.0",
     "svelte-file-dropzone": "0.0.10",
     "svelte-i18n": "^3.0.4",
     "svelte-material-icons": "^1.0.3"
@@ -27,7 +26,9 @@
   "license": "ISC",
   "devDependencies": {
     "@composi/gestures": "^1.0.9",
+    "@smui/button": "^2.0.0-beta.0",
     "@smui/checkbox": "^1.0.0",
+    "@smui/chips": "^2.0.0-beta.0",
     "@smui/menu": "^1.0.0",
     "@smui/select": "^1.0.0",
     "@smui/textfield": "^1.0.0",

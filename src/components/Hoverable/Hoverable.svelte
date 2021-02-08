@@ -1,9 +1,20 @@
 <script>
   export let message;
+  export let textTop = '-25px';
+  export let textRight = '60%';
+  export let textLeft = '';
+  export let textBottom = '';
 </script>
 
 <div>
-  <div class="hoverText">{message}</div>
+  <div class="hoverText"
+    style="{textTop ? `top:${textTop}` : ''};
+      {textRight ? `right:${textRight}` : ''};
+      {textLeft ? `left:${textLeft}` : ''};
+      {textBottom ? `bottom:${textBottom}` : ''};"
+  >
+    {message}
+  </div>
   <div class="arrow-down" />
 </div>
 
@@ -13,11 +24,9 @@
     font-size: 10px;
     background-color: #efefef;
     height: 20px;
-    width: fit-content;
+    width: max-content;
     min-width: 80px;
     position: absolute;
-    top: -125%;
-    right: 85%;
     border-radius: 4px;
     display: flex;
     justify-content: center;
@@ -30,7 +39,7 @@
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     position: absolute;
-    top: -29%;
+    top: -6px;
     left: 3%;
     border-top: 10px solid #efefef;
   }

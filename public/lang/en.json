@@ -47,6 +47,9 @@
         "orUploadItFromYourComputer": "or upload it from your computer.",
         "uploadImage": "Upload image"
     },
+    "editableChip": {
+        "inputPlaceholder": "Country"
+    },
     "footer": {
         "withUs": "with us"
     },
@@ -167,17 +170,23 @@
         "signOut": "Sign Out"
     },
     "profileIdentity": {
-        "itdoesnthaveyet": "It doesn't have one yet"
+        "itdoesnthaveyet": "It doesn't have one yet",
+        "address": "Address",
+        "principalLocation": "Principal location",
+        "exportCountries": "Countries where export"
     },
     "profileIdentityForm": {
         "invalidData":"The data is not valid",
         "acceptAndDisplay": "Accept and Display",
-        "adress": "Adress",
+        "name": "Company name",
+        "industry": "Industry",
+        "address": "Address",
         "changeYourMainData": "Change your main data",
         "city": "City",
         "code": "Code",
         "contactCellphone": "Contact celphone",
         "country": "Country",
+        "exportCountries": "Country where you export",
         "throughThisNumberVerifiedBuyerWillBeAbleToCOntactYou": "* Through this number, verified Conecty buyers will be able to contact you.",
         "webPage": "Web page",
         "withOneClickWeConectItDirectlyToWhatsapp": "With one click we connect it directly to whatsapp so that contacting you is a matter of seconds!"

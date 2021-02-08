@@ -37,6 +37,24 @@ export function validateString(
     : { message: successMessage, isValid: true };
 }
 
+export function validateArray( array, validator ) {
+
+  for( let i = 0; i < array.length; i++ ) {
+    let validation = validator( array[i] );
+
+    if( !validation.isValid )
+      return {
+        message: validation.message,
+        isValid: false
+      }
+  }
+
+  return {
+    message: 'Todos los valores son correctos',
+    isValid: true
+  }
+}
+
 export function validatePassword(password) {
   let passwordMatch = password.match(/^(?=.*([A-Z]|[a-z])+)(?=.*[0-9]).{8,}$/);
 

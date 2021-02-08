@@ -53,6 +53,7 @@
     max-height: 337px;
   }
   .ModalTitle {
+    text-align: center;
     font-size: 24px;
     font-weight: bold;
     color: #2885cb;

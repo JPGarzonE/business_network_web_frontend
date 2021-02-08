@@ -10,6 +10,10 @@ export default class LocationService extends RequestService{
         return `/suppliers/${accountname}/locations/`;
     }
 
+    getSupplierSaleLocationsPath( accountname ) {
+        return `/suppliers/${accountname}/sale-locations/`;
+    }
+
     getSupplierLocations( accountname ){
         if( !accountname )
             throw new Error("accountname is required in LocationService.getSupplierLocations");
@@ -74,6 +78,26 @@ export default class LocationService extends RequestService{
 
     deleteSupplierLocation(){
         
+    }
+
+    deleteSupplierSaleLocation( accountname, saleLocationID, accessToken ) {
+        if( !accountname )
+            throw new Error("accountname is required in LocationService.deleteSupplierSaleLocation");
+
+        if( !saleLocationID )
+            throw new Error("saleLocationID is required in LocationService.deleteSupplierSaleLocation");
+
+        if( !accessToken )
+            throw new Error("accessToken is required in LocationService.deleteSupplierSaleLocation");
+
+        const Headers = {
+            'Content-Type': 'application/json',
+            Authorization: 'Token ' + accessToken
+        }
+
+        const RequestUrl = this.getSupplierSaleLocationsPath( accountname ) + saleLocationID + '/';
+
+        return this.delete(RequestUrl, Headers);
     }
 
 }

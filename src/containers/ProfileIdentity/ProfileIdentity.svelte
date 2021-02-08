@@ -6,34 +6,35 @@
   import CompanyContact from "../../components/CompanyContact/CompanyContact.svelte";
   import EditButton from "../../components/EditButton/EditButton.svelte";
   import { getContext } from "svelte";
-  import Web from "svelte-material-icons/Web.svelte";
   import MapMarkerOutline from "svelte-material-icons/MapMarkerOutline.svelte";
+  import MapOutline from 'svelte-material-icons/MapOutline.svelte';
+  import Earth from 'svelte-material-icons/Earth.svelte';
   import { _ } from "svelte-i18n";
   import Hoverable from "../../components/Hoverable/Hoverable.svelte";
 
-  export let displayName;
-  export let industry;
-  export let logo;
-  export let location;
-  export let contact;
+  export let displayName = '';
+  export let industry = '';
+  export let logo = {};
+  export let principalLocation = {};
+  export let saleLocations = [];
+  export let contact = {};
   export { className as class };
+
   let className = "";
   $: Onboarding = className == "Onboarding";
 
   const isEditableProfile = getContext("isEditableProfile");
+  principalLocation = principalLocation ? principalLocation : {};
 
   let editableMode = false;
-  let locationSubtitle;
-  let address;
+  $: address = principalLocation.address ? principalLocation.address : '';
+  let principalLocationSubtitle;
 
-  $: {
-    if (location) {
-      if (location.city && location.country)
-        locationSubtitle = `${location.city}, ${location.country}`;
-      else if (location.country) locationSubtitle = `${location.country}`;
-
-      address = location.address ? location.address : null;
-    }
+  $: if (principalLocation.country) {
+    if (principalLocation.city)
+      principalLocationSubtitle = `${principalLocation.city}, ${principalLocation.country}`;
+    else
+      principalLocationSubtitle = `${principalLocation.country}`;
   }
 
   function toggleEditableMode() {
@@ -43,8 +44,8 @@
   function reloadComponentData(supplierSummary) {
     displayName = supplierSummary.display_name;
     industry = supplierSummary.industry;
-    location = supplierSummary.principal_location;
-    contact = supplierSummary.principal_contact;
+    principalLocation = supplierSummary.principal_location;
+    saleLocations = supplierSummary.sale_locations;
     editableMode = false;
   }
 
@@ -59,7 +60,8 @@
       <ProfileIdentityForm
         {displayName}
         {industry}
-        {location}
+        {principalLocation}
+        {saleLocations}
         {contact}
         on:click={toggleEditableMode}
         afterSubmit={reloadComponentData}
@@ -88,31 +90,70 @@
 
       <div class="ProfileIdentity-subheadline">
         <p class="ProfileIdentity-industry">{industry}</p>
-        {#if locationSubtitle}
-          <p class="ProfileIdentity-location">{locationSubtitle}</p>
+      </div>
+
+      <div class="ProfileIdentity-data">
+        <i class="icon-wrapper"
+          on:mouseover={() => (hoverOne = !hoverOne)}
+          on:mouseout={() => (hoverOne = !hoverOne)}
+        >  
+          <MapMarkerOutline />
+        </i>
+
+        <p class="ProfileIdentity-address">
+          {address ? address : $_("profileIdentity.itdoesnthaveyet")}
+        </p>
+  
+        {#if hoverOne}
+          <Hoverable textRight="70%" 
+            message={$_("profileIdentity.address")}
+          />
         {/if}
       </div>
 
-      <p class="ProfileIdentity-data">
-        <i
-          class="icon-wrapper"
-          on:mouseover={() => (hoverOne = !hoverOne)}
-          on:mouseout={() => (hoverOne = !hoverOne)}><MapMarkerOutline /></i
+      <div class="ProfileIdentity-data">
+        <i class="icon-wrapper" 
+          on:mouseover={() => hoverTwo= !hoverTwo} 
+          on:mouseout={() => hoverTwo=!hoverTwo}
         >
-        <span class="ProfileIdentity-address"
-          >{address ? address : $_("profileIdentity.itdoesnthaveyet")}</span
-        >
-        {#if hoverOne}
-          <Hoverable message="Dirección" />
-        {/if}
-      </p>
-      <!-- <p class="ProfileIdentity-data">
-        <i class="icon-wrapper" on:mouseover={() => hoverTwo= !hoverTwo} on:mouseout={() => hoverTwo=!hoverTwo}><GoogleTranslate /></i>
-        No tiene aún
+          <MapOutline />
+        </i>
+
+        <p class="ProfileIdentity-location">
+          {principalLocationSubtitle ? principalLocationSubtitle : $_("profileIdentity.itdoesnthaveyet")}
+        </p>
+
         {#if hoverTwo}
-      <Hoverable message="Ciudad de Ubicacion"/>
-      {/if}
-      </p> -->
+          <Hoverable 
+            message={$_("profileIdentity.principalLocation")}
+          />
+        {/if}
+      </div>
+
+      <div class="ProfileIdentity-data">
+        <i class="icon-wrapper" 
+          on:mouseover={() => hoverThree= !hoverThree} 
+          on:mouseout={() => hoverThree=!hoverThree}
+        >
+          <Earth />
+        </i>
+
+        <p class="ProfileIdentity-salelocations">
+          {#each saleLocations as saleLocation, idx}
+            <span>
+              {saleLocation.country}{idx+1 === saleLocations.length ? '' : ','}&nbsp;
+            </span>
+          {:else}
+            {$_("profileIdentity.itdoesnthaveyet")}
+          {/each}
+        </p>
+
+        {#if hoverThree}
+          <Hoverable
+            message={$_("profileIdentity.exportCountries")}
+          />
+        {/if}
+      </div>
 
       <div class="ProfileIdentity-contact-me">
         {#if !isEditableProfile || Onboarding}
@@ -186,19 +227,24 @@
     text-transform: capitalize;
   }
 
-  .ProfileIdentity-industry,
-  .ProfileIdentity-location,
-  .ProfileIdentity-address {
+  .ProfileIdentity-industry {
     text-align: center;
+  }
+
+  .ProfileIdentity-salelocations {
+    display: flex;
+    flex-wrap: wrap;
+    word-break: break-word;
   }
 
   .ProfileIdentity-data {
     position: relative;
-    width: 75%;
+    width: 80%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     align-self: flex-start;
+    margin: 0 auto;
     margin-bottom: 0.9rem;
     font-size: 0.9rem;
     color: #b3b3b3;
@@ -206,6 +252,7 @@
   }
   .icon-wrapper {
     display: flex;
+    align-self: flex-start;
     border: 1px solid var(--principal-color);
     border-radius: 100%;
     color: var(--principal-color);

@@ -60,11 +60,10 @@
     text-align: center;
     color: gray;
     font-weight: normal;
-    margin-bottom: 30px;
     font-size: 1.125rem;
   }
   .ModalButtons {
-    margin-top: 50px;
+    margin-top: 30px;
     display: inline-flex;
     width: 100%;
   }

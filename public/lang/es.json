@@ -47,6 +47,9 @@
         "orUploadItFromYourComputer": "o selecciona otra opción",
         "uploadImage": "Subir imagen"
     },
+    "editableChip": {
+        "inputPlaceholder": "País"
+    },
     "footer": {
         "withUs": "con nosotros"
     },
@@ -167,17 +170,23 @@
         "signOut": "Cerrar sesión"
     },
     "profileIdentity": {
-        "itdoesnthaveyet": "No tiene aún"
+        "itdoesnthaveyet": "No tiene aún",
+        "address": "Dirección",
+        "principalLocation": "Ubicación principal",
+        "exportCountries": "Países donde exporta"
     },
     "profileIdentityForm": {
         "invalidData": "Los datos no son válidos",
         "acceptAndDisplay": "Aceptar y mostrar",
-        "adress": "Direccion",
+        "name": "Nombre de la empresa",
+        "industry": "Industria",
+        "address": "Dirección de ubicación",
         "changeYourMainData": "Cambia tus datos principales",
         "city": "Ciudad",
-        "code": "Codigo",
+        "code": "Código",
         "contactCellphone": "Celular de contacto",
-        "country": "Pais",
+        "country": "País",
+        "exportCountries": "País donde exportas",
         "throughThisNumberVerifiedBuyerWillBeAbleToCOntactYou": "* Por medio de este numero los compradores verificados de Conecty te van a poder contactar.",
         "webPage": "Pagina Web",
         "withOneClickWeConectItDirectlyToWhatsapp": "Con un click lo conectamos directamente a whatsapp para que contactarte ¡sea cuestión de segundos!"

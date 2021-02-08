@@ -26,7 +26,7 @@
   let productElementDetail = null;
   let editableMode = false;
   let confirmationMode = false;
-  let productPrincipalImage = productElementOverview
+  $: productPrincipalImage = productElementOverview
     ? productElementOverview.principal_image
     : null;
 
@@ -42,8 +42,9 @@
   }
 
   function reloadComponentData(productElementData) {
+    console.log("Reload: ", productElementData);
     productElementOverview = productElementData;
-    productElementDetail = productElementData;
+    productElementDetail = null;
     editableMode = false;
   }
 

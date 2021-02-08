@@ -40,21 +40,19 @@
   });
 
   const handleWindowChange = (e) => {
-    console.log("SS: ", e.matches);
     mobile = !e.matches;
-    console.log("SSS: ", mobile);
   };
 
   function toggleEditableMode() {
     editableMode = !editableMode;
   }
   function reloadComponentData(productData) {
-    productList = [...productList, productData];
+    displayedProducts = [...displayedProducts, productData];
     editableMode = false;
   }
 
   function onDeleteProduct(id) {
-    productList = productList.filter((item) => item.id !== id);
+    displayedProducts = displayedProducts.filter((item) => item.id !== id);
   }
 
   const showLessGondola = () => {
@@ -118,7 +116,7 @@
   {#if mobile}
     <HorizontalScrollList
       id="product-list"
-      beginningItemsNumber={productList.length}
+      beginningItemsNumber={displayedProducts.length}
     >
       {#each displayedProducts as element}
         <ProfileProductCard
@@ -165,7 +163,7 @@
     </div>
   {/if}
 
-  {#if productList.length >= 4}
+  {#if displayedProducts.length >= 4}
     <div class="ProductShowMoreOrLess">
       {#if displayedProducts.length > 4}
         <span

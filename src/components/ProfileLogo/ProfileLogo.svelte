@@ -71,7 +71,7 @@
     position: relative;
     margin: 20px auto;
     margin-bottom: 30px;
-    padding: 0.1em;
+    padding: 10px;
     border: 1px solid var(--principal-color);
     background-color: white;
   }
@@ -91,6 +91,7 @@
 
   .ProfileLogo-image {
     width: 100%;
+    max-height: inherit;
     border-radius: inherit;
     object-fit: contain;
   }

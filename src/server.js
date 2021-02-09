@@ -3,8 +3,9 @@ import compression from 'compression';
 import polka from 'polka';
 import cookieParser from 'cookie-parser';
 import * as sapper from '@sapper/server';
-import { API_URL } from './store/store.js';
 import axios from 'axios';
+import { API_URL } from './store/store.js';
+import { i18nMiddleware } from './i18n.js';
 
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV;
@@ -15,6 +16,7 @@ polka()
     compression({ threshold: 0 }),
     sirv('static', { dev }),
     cookieParser(),
+    i18nMiddleware(),
     sapper.middleware({
       session: async (req, res) => {
         const cookie = req.cookies;
@@ -38,7 +40,7 @@ polka()
               user_username: data.user.username,
               company_accountname: data.default_company.accountname,
               user: data.user,
-              company: data.default_company
+              company: data.default_company,
             };
           } else {
             return {

@@ -1,7 +1,13 @@
 <script context="module">
+    import { GetRoute as GetMarketRoute } from './market.svelte';
+
+    export const GetRoute = () => {
+        return `/buyers/`;
+    }
+
     export async function preload(page, session) {
         if( session.authenticated ) {
-            return this.redirect(301, '/market');
+            return this.redirect(301, GetMarketRoute());
         }
     }
 </script>
@@ -13,33 +19,11 @@
 
     let homeAuthenticationOpen = false;
     let authenticationContainerState = "signup";
-
-    const content = {
-        "title": "Conecta con exportadores calificados de latino ámerica y asegura tus pagos.",
-        "subtitle": "Encuentra los productos que necesites para las importaciones de tu empresa dentro de una variedad de opciones, de manera fácil y organizada.",
-        "features": [
-            {
-                "title": "Busca proveedores internacionales",
-                "description": "Encuentra empresas exportadoras de tu interés previamente verificadas, junto con su información relevante: certificados y otros productos.",
-                "advice": "*Todos los proveedores de nuestra plataforma han sido verificados en diferentes listas de antecedentes internacionales."
-            },
-            {
-                "title": "Conéctate fácilmente",
-                "description": "Establece un canal de comunicación directa a tráves del perfil del proveedor.",
-                "advice": ""
-            },
-            {
-                "title": "Realiza tus pagos de forma segura",
-                "description": "Evita procesos fraudulentos por medio de nuestro modelo fiduciario que nos permite asegurar tu pago y garantizar la transparencia de cualquier transacción.",
-                "advice": "Conoce más sobre este modelo contactando a nuestros asesores de venta."
-            }
-        ]
-    }
 </script>
 
 <style>
     .Header {
-        position: fixed;
+        position: relative;
         width: 100%;
         z-index: 10;
     }
@@ -53,6 +37,7 @@
     <Header 
         signupActionButton={() => {homeAuthenticationOpen = true; authenticationContainerState = "signup"}}
         loginActionButton={() => {homeAuthenticationOpen = true; authenticationContainerState = "login"}}
+        background="var(--principal-orange)" textColor="#FFFFFF"
     />
 </div>
 
@@ -60,7 +45,6 @@
     <Home 
         bind:homeAuthenticationOpen
         bind:authenticationContainerState
-        content={content}
     />
 </div>
 

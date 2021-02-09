@@ -4,6 +4,8 @@
   import CreateButton from '../../components/CreateButton/CreateButton.svelte';
   import ImageOutline from 'svelte-material-icons/ImageOutline.svelte';
   import DeleteCircleOutline from 'svelte-material-icons/DeleteCircleOutline.svelte';
+  import { _ } from 'svelte-i18n';
+
   export let imagePath; // If not, isn't required
   export let multiple = false;
   export let small = false;
@@ -37,6 +39,51 @@
     imageFile = files.accepted[0];
   }
 </script>
+
+<div
+  class="Dropzone"
+  style={imagePath || uploadedImage
+    ? `background-image: url(${uploadedImage ? uploadedImage : imagePath})`
+    : ''}
+>
+  {#if allowDelete}
+    <div class="delete-button" on:click={deleteFile}>
+      <DeleteCircleOutline size={25} color="var(--principal-color)" />
+    </div>
+  {/if}
+  <Dropzone
+    on:drop={handleFilesSelect}
+    accept={['image/*']}
+    containerStyles={`width: 100%; height: 100%; padding: 0; background-color: transparent;`}
+    {multiple}
+  >
+    <div
+      class={`dropzone-content ${
+        imagePath || uploadedImage ? 'image-defined' : ''
+      }`}
+    >
+      {#if small}
+        <CreateButton size={80} color="var(--extra-light-gray-transparent)" />
+      {:else}
+        {#if !imagePath && !uploadedImage}
+          <CloudUploadOutline size={80} />
+          <span class="Dropzone-title">{$_('dropZone.dragAndDropTheFile')}</span
+          >
+        {/if}
+        {#if !imagePath && !uploadedImage}
+          <span class="Dropzone-subtitle"
+            >{$_('dropZone.orUploadItFromYourComputer')}</span
+          >
+        {/if}
+
+        <div class="upload-card">
+          <ImageOutline size={25} />
+          <span>{$_('dropZone.uploadImage')}</span>
+        </div>
+      {/if}
+    </div>
+  </Dropzone>
+</div>
 
 <style>
   .Dropzone {
@@ -105,37 +152,3 @@
     opacity: 1;
   }
 </style>
-
-<div class="Dropzone"
-  style={imagePath || uploadedImage ? `background-image: url(${uploadedImage ? uploadedImage : imagePath})` : ''}>
-  {#if allowDelete}
-    <div class="delete-button" on:click={deleteFile}>
-      <DeleteCircleOutline size={25} color="var(--principal-color)" />
-    </div>
-  {/if}
-  <Dropzone
-    on:drop={handleFilesSelect}
-    accept={['image/*']}
-    containerStyles={`width: 100%; height: 100%; padding: 0; background-color: transparent;`}
-    {multiple}>
-    <div
-      class={`dropzone-content ${imagePath || uploadedImage ? 'image-defined' : ''}`}>
-      {#if small}
-        <CreateButton size={80} color="var(--extra-light-gray-transparent)" />
-      {:else}
-        {#if !imagePath && !uploadedImage}
-          <CloudUploadOutline size={80} />
-          <span class="Dropzone-title">Arrastra y suelta el archivo</span>
-        {/if}
-        {#if !imagePath && !uploadedImage}
-          <span class="Dropzone-subtitle">o selecciona otra opción</span>
-        {/if}
-
-        <div class="upload-card">
-          <ImageOutline size={25} />
-          <span>Subir imagen</span>
-        </div>
-      {/if}
-    </div>
-  </Dropzone>
-</div>

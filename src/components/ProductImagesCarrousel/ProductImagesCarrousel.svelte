@@ -129,6 +129,6 @@
     </div>
     <div class="ProductImagesCarrousel-main">
         <ProductDetailImage
-            imageSrc={actualImage.path} />
+            imageSrc={actualImage ? actualImage.path : ''} />
     </div>
 </div>

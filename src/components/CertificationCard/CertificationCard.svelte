@@ -1,11 +1,12 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores } from '@sapper/app';
-  import Modal from '../Modal.svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
-  import CertificationForm from '../../containers/CertificationForm/CertificationForm.svelte';
-  import CertificationsService from '../../services/suppliers/certifications.service.js';
-  import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
+  import { getContext } from "svelte";
+  import { stores } from "@sapper/app";
+  import Modal from "../Modal.svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
+  import CertificationForm from "../../containers/CertificationForm/CertificationForm.svelte";
+  import CertificationsService from "../../services/suppliers/certifications.service.js";
+  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
+  import { _ } from "svelte-i18n";
 
   export let id;
   export let media;
@@ -13,9 +14,10 @@
   export let description;
   export let onDelete;
   export let isSample = false;
+  export let onBoarding;
 
   const { session } = stores();
-  const isEditableProfile = getContext('isEditableProfile');
+  const isEditableProfile = getContext("isEditableProfile");
 
   let editableMode = false;
   let displayStory = false;
@@ -35,7 +37,7 @@
 
   async function deleteCertification() {
     toggleConfirmation();
-    if( !isSample ) {
+    if (!isSample) {
       try {
         const certificationsService = new CertificationsService();
         await certificationsService.deleteCertificationElement(
@@ -61,6 +63,83 @@
   }
 </script>
 
+{#if confirmationMode && isEditableProfile}
+  <ConfirmationModal
+    title={isSample
+      ? $_("certificationCard.createACertificateAndThisONeWillDisapear")
+      : `${$_("certificationCard.deleteCertificate")} ${name}`}
+    onAccept={deleteCertification}
+    onDecline={toggleConfirmation}
+  />
+{/if}
+<div
+  class="CertificationCard {onBoarding ? 'CertificationCard--Onboarding' : ''}"
+>
+  {#if editableMode && isEditableProfile}
+    <Modal on:click={toggleEditableMode}>
+      <CertificationForm
+        on:click={toggleEditableMode}
+        afterSubmit={reloadComponentData}
+        CertificationElement={isSample
+          ? null
+          : { id: id, name: name, description: description, media: media }}
+      />
+    </Modal>
+  {/if}
+
+  <figure
+    class="CertificationCard-media-container"
+    on:click={!onBoarding && toggleEditableMode}
+  >
+    {#if media && media.path}
+      <img src={media.path} alt={name} class="CertificationCard-media-image" />
+    {:else}
+      <img
+        src="/images/default_certification.png"
+        alt={name}
+        class="CertificationCard-media-image"
+      />
+    {/if}
+  </figure>
+
+  {#if isEditableProfile}
+    <div class="CertificationCard-edit-button">
+      <EditButton
+        size={25}
+        color="gray"
+        onEdit={toggleEditableMode}
+        onDelete={toggleConfirmation}
+        menuButton
+        disabled={onBoarding}
+      />
+    </div>
+  {/if}
+
+  <h4 class="CertificationCard-name">{name}</h4>
+
+  {#if description}
+    {#if displayStory}
+      <p class="CertificationCard-story">{description}</p>
+    {/if}
+  {/if}
+
+  <div class="CertificationCard-bottom">
+    <p class="CertificationCard-category">
+      {$_("certificationCard.certifications")}
+    </p>
+
+    {#if description}
+      <span on:click={toggleStoryDisplay}>
+        <a class="CertificationCard-story-link" id="story-link">
+          {displayStory
+            ? $_("certificationCard.less")
+            : $_("certificationCard.more")}
+        </a>
+      </span>
+    {/if}
+  </div>
+</div>
+
 <style>
   .CertificationCard {
     position: relative;
@@ -76,6 +155,13 @@
     border: 1px solid var(--principal-color);
     border-radius: 6px;
     cursor: pointer;
+  }
+  .CertificationCard--Onboarding {
+    z-index: 30;
+    background-color: white;
+    cursor: default;
+    margin: 0;
+    margin-top: 25px;
   }
   .CertificationCard-edit-button {
     position: absolute;
@@ -147,71 +233,8 @@
     .CertificationCard {
       min-width: 270px;
     }
+    .CertificationCard--Onboarding {
+      margin: 0;
+    }
   }
 </style>
-
-{#if confirmationMode && isEditableProfile}
-  <ConfirmationModal
-    title={isSample ? 
-      "Crea un certificado y este desaparacerá" : 
-      `Desea eliminar el Certificado ${name}`
-    }
-    onAccept={deleteCertification}
-    onDecline={toggleConfirmation} />
-{/if}
-<div class="CertificationCard">
-  {#if editableMode && isEditableProfile}
-    <Modal on:click={toggleEditableMode}>
-      <CertificationForm
-        on:click={toggleEditableMode}
-        afterSubmit={reloadComponentData}
-        CertificationElement={isSample ? null :
-          { id: id, name: name, description: description, media: media }
-        } />
-    </Modal>
-  {/if}
-
-  <figure
-    class="CertificationCard-media-container"
-    on:click={toggleEditableMode}>
-    {#if media && media.path}
-      <img src={media.path} alt={name} class="CertificationCard-media-image" />
-    {:else}
-      <img
-        src="/images/default_certification.png"
-        alt={name}
-        class="CertificationCard-media-image" />
-    {/if}
-  </figure>
-
-  {#if isEditableProfile}
-    <div class="CertificationCard-edit-button">
-      <EditButton
-        size={25}
-        color="gray"
-        onEdit={toggleEditableMode}
-        onDelete={toggleConfirmation}
-        menuButton />
-    </div>
-  {/if}
-
-  <h4 class="CertificationCard-name">{name}</h4>
-
-  {#if description}
-    {#if displayStory}
-      <p class="CertificationCard-story">{description}</p>
-    {/if}
-  {/if}
-
-  <div class="CertificationCard-bottom">
-    <p class="CertificationCard-category">Certificaciones</p>
-
-    {#if description}
-      <span on:click={toggleStoryDisplay}>
-        <a class="CertificationCard-story-link" id="story-link">
-          {displayStory ? "Ver menos" : "Ver más"}
-        </a>
-      </span>
-    {/if}
-  </div>
-</div>

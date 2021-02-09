@@ -1,9 +1,11 @@
 import RequestService from '../requests/request.service.js';
+import LocationService from './location.service.js';
 
 export default class SuppliersService extends RequestService {
 
     constructor() {
         super();
+        this._locationService = new LocationService();
     }
 
     get baseHeader() {
@@ -13,7 +15,7 @@ export default class SuppliersService extends RequestService {
     }
 
     get authPrefix() {
-        return "Bearer";
+        return "Token";
     }
 
     getSuppliersPath( accountname ) {
@@ -44,7 +46,7 @@ export default class SuppliersService extends RequestService {
         return this.get( RequestURL, Headers, null );
     }
 
-    updateSupplierSummary( accountname, summaryData, accessToken ) {
+    async updateSupplierSummary( accountname, saleLocationsToDelete, summaryData, accessToken ) {
         if( !accountname )
             throw new Error("accountname is required in SupplierService.updateSupplierSummary");
 
@@ -57,6 +59,14 @@ export default class SuppliersService extends RequestService {
         }
 
         const RequestURL = this.getSuppliersPath(accountname) + 'summary/';
+
+        for( let i = 0; i < saleLocationsToDelete.length; i++) {
+            await this._locationService.deleteSupplierSaleLocation(
+                accountname,
+                saleLocationsToDelete[i],
+                accessToken
+            )
+        }
 
         return this.patch( RequestURL, Headers, summaryData );
     }

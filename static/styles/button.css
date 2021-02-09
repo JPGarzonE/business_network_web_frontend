@@ -4,7 +4,6 @@
   max-width: 400px;
   border: none;
   border-radius: 4px;
-  text-transform: uppercase;
   letter-spacing: 0.065em;
   cursor: pointer;
   display: flex;
@@ -32,9 +31,9 @@
 
 .button--principal {
   margin: 0px;
-  border: 2px solid var(--principal-color);
   background-color: var(--principal-color);
   color: var(--secondary-color);
+  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -60,8 +59,8 @@
 }
 
 .button:disabled {
-  color: #b3b3b3;
+  color: #9E9FA0;
   border: none;
-  background-color: #cac8c875;
+  background-color: #E8E8E8;
   cursor: not-allowed;
 }

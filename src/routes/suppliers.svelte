@@ -1,7 +1,13 @@
 <script context="module">
+    import { GetRoute as GetMarketRoute } from './market.svelte';
+
+    export const GetRoute = () => {
+        return `/suppliers/`;
+    }
+
     export async function preload(page, session) {
         if( session.authenticated ) {
-            return this.redirect(301, '/market');
+            return this.redirect(301, GetMarketRoute());
         }
     }
 </script>
@@ -13,33 +19,11 @@
 
     let homeAuthenticationOpen = false;
     let authenticationContainerState = "signup";
-
-    const content = {
-        "title": "Conéctate con compradores calificados del exterior y asegura tus pagos.",
-        "subtitle": "Cuéntanos qué tipo de cliente estás buscando y nosotros lo encontramos por ti. Conecty es tu área comercial GRATIS.",
-        "features": [
-            {
-                "title": "Organiza la información de tu empresa.",
-                "description": "Sube a la plataforma tu oferta de productos exportables y las certificaciones que te respaldan.",
-                "advice": "*Mantenemos segura tu información. Tú escoges que mostrar al comprador."
-            },
-            {
-                "title": "Te conectamos con las empresas que te interesan.",
-                "description": "Buscaremos la oferta comercial que se ajuste a tu modelo de negocio y te ayudaremos a construir esa relación comercial.",
-                "advice": "*Todos nuestros compradores han sido verificados en diferentes listas de antecedentes internacionales"
-            },
-            {
-                "title": "Recibe tu pago de forma segura",
-                "description": "En Conecty mantenemos a salvo tu pago mientras se completa exitosamente la negociación.",
-                "advice": "Conoce más sobre este modelo contactando a nuestros asesores de venta."
-            }
-        ]
-    }
 </script>
 
 <style>
     .Header {
-        position: fixed;
+        position: relative;
         width: 100%;
         z-index: 10;
     }
@@ -65,6 +49,7 @@
     <Header 
         signupActionButton={() => {homeAuthenticationOpen = true; authenticationContainerState = "signup"}}
         loginActionButton={() => {homeAuthenticationOpen = true; authenticationContainerState = "login"}}
+        background="var(--principal-orange)" textColor="#FFFFFF"
     />
 </div>
 
@@ -72,7 +57,6 @@
     <Home 
         bind:homeAuthenticationOpen
         bind:authenticationContainerState
-        content={content}
     />
 </div>
 

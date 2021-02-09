@@ -6,6 +6,7 @@
   import Modal from "../Modal.svelte";
   import CompanyVerificationService from "../../services/verifications/company.verification.service.js";
   import CertificateUpload from "../../containers/CertificateUploadForm/CertificateUploadForm.svelte";
+  import { _ } from "svelte-i18n";
 
   const { session } = stores();
   const companyVerificationService = new CompanyVerificationService();
@@ -34,6 +35,61 @@
     }
   });
 </script>
+
+<div class="ProfileVerification">
+
+  {#if isVerifiedProfile}
+
+    <div class="ProfileVerification-card ProfileVerification-card--verified">
+      <span class="icon-check"><CheckDecagram size="22" /></span>
+      <span class="ProfileVerification-title">
+        {$_("profileVerification.verifiedCompany")}
+      </span>
+    </div>
+
+  {:else if isEditableProfile}
+
+    {#if verification && verification.state.toLowerCase() == "inprogress"}
+      <div
+        class="ProfileVerification-card ProfileVerification-card--inprogress"
+      >
+        <span class="ProfileVerification-title">
+          {$_("profileVerification.theCompanyIsInTheProcessOfVerification")}
+          <br/>
+          {$_("profileVerification.checkinTheNextFewHours")}
+          <b style="color:#5387cc;text-decoration:underline;"
+            >{$_("profileVerification.theMailIsFoundInTheCertificate")}
+          </b>
+          {$_("profileVerification.toFinishTheProcess")}
+        </span>
+      </div>
+    {:else if verification && verification.state.toLowerCase() == "none"}
+      <div class="ProfileVerification-card ProfileVerification-card--none">
+        <span class="ProfileVerification-title">
+          {$_("profileVerification.companyNotVerified")}
+        </span>
+      </div>
+
+      <p class="ProfileVerification-card--call-to-action">
+        <a href="/" on:click|preventDefault={toggleCertificateForm}>
+          {$_("profileVerification.clickHere")}
+        </a>
+        {$_("profileVerification.toUploadTheCertificate")}
+      </p>
+    {/if}
+    
+  {/if}
+
+  {#if uploadCertificateForm}
+    <Modal on:click={toggleCertificateForm}>
+      <CertificateUpload
+        on:click={toggleCertificateForm}
+        afterSubmit={profileVerified}
+        continueWithoutCertificate={toggleCertificateForm} />
+    </Modal>
+  {/if}
+
+</div>
 
 <style>
   .ProfileVerification-card {
@@ -82,50 +138,3 @@
     font-size: 0.9rem;
   }
 </style>
-
-<div class="ProfileVerification">
-
-  {#if isVerifiedProfile}
-
-    <div class="ProfileVerification-card ProfileVerification-card--verified">
-      <span class="icon-check"><CheckDecagram size="22" /></span>
-      <span class="ProfileVerification-title">Empresa verificada</span>
-    </div>
-
-  {:else if isEditableProfile}
-
-    {#if false && verification && verification.state.toLowerCase() == 'inprogress'}
-      <div
-        class="ProfileVerification-card ProfileVerification-card--inprogress">
-        <span class="ProfileVerification-title">
-          La empresa se encuentra en proceso de verificación.<br />
-          En las proximas horas revisa
-          <b style="color:#5387cc;text-decoration:underline;">el correo que se
-            encuentra en el certificado de cámara y comercio</b>
-          para finalizar el proceso.
-        </span>
-      </div>
-    {:else if true || verification && verification.state.toLowerCase() == 'none'}
-      <div class="ProfileVerification-card ProfileVerification-card--none">
-        <span class="ProfileVerification-title"> Empresa no verificada </span>
-      </div>
-
-      <p class="ProfileVerification-card--call-to-action">
-        Haz
-        <a href="/" on:click|preventDefault={toggleCertificateForm}>clic aquí</a>
-        para subir el certificado de cámara y comercio, de lo contrario no podras
-        publicar tu perfil
-      </p>
-    {/if}
-  {/if}
-
-  {#if uploadCertificateForm}
-    <Modal on:click={toggleCertificateForm}>
-      <CertificateUpload
-        on:click={toggleCertificateForm}
-        afterSubmit={profileVerified}
-        continueWithoutCertificate={toggleCertificateForm} />
-    </Modal>
-  {/if}
-
-</div>

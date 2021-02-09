@@ -1,12 +1,18 @@
 <script context="module">
+    import { GetRoute as GetMarketRoute } from './market.svelte';
+
+    export const GetRoute = () => {
+        return `/login/`;
+    }
+
     export async function preload(page, session) {
         if( session.authenticated )
-            return this.redirect(301, '/market');
+            return this.redirect(301, GetMarketRoute());
     }
 </script>
 
 <script>
-    import LandingBanner from "../components/MainBanners/LandingBanner.svelte";
+    import MainBanner from "../components/LandingPage/MainBanner.svelte";
     import AuthContainer from "../components/authentication/AuthContainer.svelte";
     import LoginForm from "../containers/LoginForm/LoginForm.svelte";
 </script>
@@ -51,7 +57,7 @@
 
 <div class="login">
     <div class="login-banner">
-        <LandingBanner name="Login" />
+        <MainBanner name="Login" />
     </div>
     <div class="login-form">
         <AuthContainer>

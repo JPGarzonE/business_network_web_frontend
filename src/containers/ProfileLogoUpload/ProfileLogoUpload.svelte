@@ -2,12 +2,12 @@
   import CompanyService from "../../services/companies/companies.service.js";
   import { stores } from "@sapper/app";
   import { getContext } from "svelte";
+  import { _ } from "svelte-i18n";
 
   export let actualLogo;
   export let afterSubmit;
   const { session } = stores();
-  const profileUsername = getContext("profileUsername");
-  const isSessionUserProfile = getContext("isSessionUserProfile");
+  const isEditableProfile = getContext('isEditableProfile');
 
   let imageUploaded = false;
   let newLogoFile;
@@ -51,11 +51,85 @@
       event.target.style.opacity = 1;
       event.target.style.cursor = "pointer";
     } catch (e) {
+      console.log(e);
       event.target.style.opacity = 1;
       event.target.style.cursor = "pointer";
     }
   }
 </script>
+
+<div class="ProfileLogoUpload">
+  <button class="ProfileLogoUpload-close-button" on:click>
+    <span>x</span>
+  </button>
+
+  <div class="ProfileLogoUpload-header">
+    <h4 class="ProfileLogoUpload-title">{$_("profileLogoUpload.addLogo")}</h4>
+  </div>
+  <div class="ProfileLogoUpload-content">
+    <label for="ProfileLogoUpload">
+      <figure
+        class="ProfileLogoUpload-logo-container {actualLogo && actualLogo.path
+          ? ''
+          : 'ProfileLogo-container--default'}"
+      >
+        <img
+          id="ProfileLogoUpload-image"
+          src={actualLogo && actualLogo.path
+            ? actualLogo.path
+            : "/images/profile_icon.svg"}
+          alt=""
+          class="ProfileLogoUpload-logo-image {actualLogo && actualLogo.path
+            ? ''
+            : 'ProfileLogo-image--default'}"
+        />
+        <span>
+          <i style="width:40px;height:40px;" class="icon icon-upload" />
+        </span>
+      </figure>
+    </label>
+
+    <label for="ProfileLogoUpload" class="ProfileLogoUpload-button-label">
+      <span class="ProfileLogoUpload-button button button--principal">
+        {imageUploaded
+          ? $_("profileLogoUpload.changeImage")
+          : $_("profileLogoUpload.uploadImage")}
+      </span>
+    </label>
+
+    <input
+      on:change={handleProfileLogoUploadChange}
+      type="file"
+      id="ProfileLogoUpload"
+      accept="images/*"
+      style="display: none;"
+    />
+
+    {#if imageUploaded}
+      <p class="ProfileLogoUpload-message">
+        {$_("profileLogoUpload.thisIsHowYourCompanyProfileImage")}
+      </p>
+    {:else}
+      <p class="ProfileLogoUpload-message">
+        {$_("profileLogoUpload.uploadTheLogoOrImageThatRepresentsYourComany")}
+        <br />
+        {$_(
+          "profileLogoUpload.youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals"
+        )}
+      </p>
+    {/if}
+  </div>
+  <div class="ProfileLogoUpload-footer">
+    {#if imageUploaded}
+      <button
+        type="button"
+        on:click|preventDefault={submit}
+        class="ProfileLogoUpload-button button button--principal"
+        >{$_("profileLogoUpload.saveLogo")}</button
+      >
+    {/if}
+  </div>
+</div>
 
 <style>
   @import "/styles/button.css";
@@ -185,61 +259,3 @@
     }
   }
 </style>
-
-<div class="ProfileLogoUpload">
-  <button class="ProfileLogoUpload-close-button" on:click>
-    <span>x</span>
-  </button>
-
-  <div class="ProfileLogoUpload-header">
-    <h4 class="ProfileLogoUpload-title">Agregar logo</h4>
-  </div>
-  <div class="ProfileLogoUpload-content">
-    <label for="ProfileLogoUpload">
-      <figure
-        class="ProfileLogoUpload-logo-container {actualLogo && actualLogo.path ? '' : 'ProfileLogo-container--default'}">
-        <img
-          id="ProfileLogoUpload-image"
-          src={actualLogo && actualLogo.path ? actualLogo.path : '/images/profile_icon.svg'}
-          alt={profileUsername}
-          class="ProfileLogoUpload-logo-image {actualLogo && actualLogo.path ? '' : 'ProfileLogo-image--default'}" />
-        <span>
-          <i style="width:40px;height:40px;" class="icon icon-upload" />
-        </span>
-      </figure>
-    </label>
-
-    <label for="ProfileLogoUpload" class="ProfileLogoUpload-button-label">
-      <span class="ProfileLogoUpload-button button button--principal">
-        {imageUploaded ? 'Cambiar imagen' : 'Subir imagen'}
-      </span>
-    </label>
-
-    <input
-      on:change={handleProfileLogoUploadChange}
-      type="file"
-      id="ProfileLogoUpload"
-      accept="images/*"
-      style="display: none;" />
-
-    {#if imageUploaded}
-      <p class="ProfileLogoUpload-message">
-        ¡Así va a quedar la imagen de perfil de tu empresa!
-      </p>
-    {:else}
-      <p class="ProfileLogoUpload-message">
-        ¡Sube el logo o una imagen que represente a tu empresa!
-        <br />
-        Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios.
-      </p>
-    {/if}
-  </div>
-  <div class="ProfileLogoUpload-footer">
-    {#if imageUploaded}
-      <button
-        type="button"
-        on:click|preventDefault={submit}
-        class="ProfileLogoUpload-button button button--principal">Guardar logo</button>
-    {/if}
-  </div>
-</div>

@@ -131,7 +131,7 @@ export default class ProductService extends RequestService {
     for (let i = 0; i < imagesToDelete.length; i++) {
       await this.deleteSupplierProductImage(
         productID,
-        imagesToDelete[i].id,
+        imagesToDelete[i],
         accessToken
       );
     }
@@ -164,7 +164,7 @@ export default class ProductService extends RequestService {
     for (let i = 0; i < imagesToDelete.length; i++) {
       await this.deleteSupplierProductImage(
         productID,
-        imagesToDelete[i].id,
+        imagesToDelete[i],
         accessToken
       );
     }

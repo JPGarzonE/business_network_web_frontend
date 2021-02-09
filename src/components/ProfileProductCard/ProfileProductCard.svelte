@@ -1,29 +1,37 @@
 <script>
-  import { getContext } from 'svelte';
-  import { stores, goto } from '@sapper/app';
-  import Modal from '../Modal.svelte';
-  import EditButton from '../EditButton/EditButton.svelte';
-  import ProductCard from '../ProductCard/ProductCard.svelte';
-  import ProductForm from '../../containers/ProductForm/ProductForm.svelte';
-  import ProductService from '../../services/suppliers/product.service.js';
-  import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.svelte';
+  import { getContext } from "svelte";
+  import { stores, goto } from "@sapper/app";
+  import { GetRoute as GetProductDetailRoute } from '../../routes/product/[product_id].svelte';
+  import Modal from "../Modal.svelte";
+  import EditButton from "../EditButton/EditButton.svelte";
+  import ProductCard from "../ProductCard/ProductCard.svelte";
+  import ProductForm from "../../containers/ProductForm/ProductForm.svelte";
+  import ProductService from "../../services/suppliers/product.service.js";
+  import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
 
   export let productElementOverview;
   export let isSample = false;
   export let onDelete;
+  export let onBoarding;
 
   const { session } = stores();
-  const isEditableProfile = getContext('isEditableProfile') ? getContext('isEditableProfile') : false;
-  const ProductID = productElementOverview && !isSample ? productElementOverview.id : null;
-  const ProductDetailPath = ProductID && !isSample ? `product/${ProductID}` : null;
+  const isEditableProfile = getContext("isEditableProfile")
+    ? getContext("isEditableProfile")
+    : false;
+  const ProductID =
+    productElementOverview && !isSample ? productElementOverview.id : null;
+  const ProductDetailPath =
+    ProductID && !isSample ? GetProductDetailRoute(ProductID) : null;
 
   let productElementDetail = null;
   let editableMode = false;
   let confirmationMode = false;
-  let productPrincipalImage = productElementOverview ? productElementOverview.principal_image : null;
+  $: productPrincipalImage = productElementOverview
+    ? productElementOverview.principal_image
+    : null;
 
   async function toggleEditableMode() {
-    if( isEditableProfile && productElementDetail == null && !isSample ) {
+    if (isEditableProfile && productElementDetail == null && !isSample) {
       await retrieveProductDetail(productElementOverview.id);
     }
 
@@ -34,14 +42,15 @@
   }
 
   function reloadComponentData(productElementData) {
+    console.log("Reload: ", productElementData);
     productElementOverview = productElementData;
-    productElementDetail = productElementData;
+    productElementDetail = null;
     editableMode = false;
   }
 
   async function onDeleteProduct() {
     try {
-      if( !isSample ) {
+      if (!isSample) {
         const productService = new ProductService();
         await productService.deleteSupplierProduct(
           $session.company_accountname,
@@ -52,29 +61,81 @@
       }
     } catch (e) {
       console.error(e);
-    }
-    finally {
+    } finally {
       toggleConfirmation();
     }
   }
 
   async function retrieveProductDetail(productID) {
-    if( !isSample ) {
+    if (!isSample) {
       try {
         const productService = new ProductService();
-        productElementDetail = await productService.getProductById(productID, $session.accessToken);
+        productElementDetail = await productService.getProductById(
+          productID,
+          $session.accessToken
+        );
       } catch (e) {
         console.error(e);
       }
     }
   }
 
-  async function productButtonDetailAction(){
-        document.body.style.cursor = "wait";
-        await goto(ProductDetailPath)
-        document.body.style.cursor = "auto";
-    }
+  async function productButtonDetailAction() {
+    document.body.style.cursor = "wait";
+    await goto(ProductDetailPath);
+    document.body.style.cursor = "auto";
+  }
 </script>
+
+{#if confirmationMode && isEditableProfile}
+  <ConfirmationModal
+    title={isSample
+      ? "Crea un producto y este desaparacerá"
+      : `Desea eliminar el producto ${productElementOverview.name}`}
+    onAccept={onDeleteProduct}
+    onDecline={toggleConfirmation}
+  />
+{/if}
+
+{#if editableMode && isEditableProfile}
+  <Modal on:click={toggleEditableMode}>
+    <ProductForm
+      on:click={toggleEditableMode}
+      afterSubmit={reloadComponentData}
+      ProductElement={isSample ? null : productElementDetail}
+    />
+  </Modal>
+{/if}
+
+<div
+  class="ProfileProductCard {onBoarding
+    ? 'ProfileProductCard--Onboarding'
+    : ''}"
+>
+  {#if isEditableProfile}
+    <div class="ProfileProductCard-edit-button">
+      <EditButton
+        size={25}
+        color="gray"
+        onEdit={toggleEditableMode}
+        onDelete={toggleConfirmation}
+        disabled={onBoarding}
+        menuButton
+      />
+    </div>
+  {/if}
+
+  <ProductCard
+    principalImage={productPrincipalImage}
+    name={productElementOverview.name}
+    withDetail
+    buttonDetailAction={ProductDetailPath ? productButtonDetailAction : ""}
+    subname={productElementOverview.category}
+    minimum_price={productElementOverview.minimum_price}
+    maximum_price={productElementOverview.maximum_price}
+    currency={productElementOverview.price_currency}
+  />
+</div>
 
 <style>
   .ProfileProductCard {
@@ -88,6 +149,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .ProfileProductCard--Onboarding {
+    z-index: 30;
+    background-color: white;
   }
 
   .ProfileProductCard-edit-button {
@@ -120,44 +185,3 @@
     }
   }
 </style>
-
-{#if confirmationMode && isEditableProfile}
-  <ConfirmationModal
-    title={isSample ? 
-      "Crea un producto y este desaparacerá" : 
-      `Desea eliminar el producto ${productElementOverview.name}`
-    }
-    onAccept={onDeleteProduct}
-    onDecline={toggleConfirmation} />
-{/if}
-
-{#if editableMode && isEditableProfile}
-  <Modal on:click={toggleEditableMode}>
-    <ProductForm
-      on:click={toggleEditableMode}
-      afterSubmit={reloadComponentData}
-      ProductElement={isSample ? null : productElementDetail} />
-  </Modal>
-{/if}
-
-<div class="ProfileProductCard">
-  {#if isEditableProfile}
-    <div class="ProfileProductCard-edit-button">
-      <EditButton
-        size={25}
-        color="gray"
-        onEdit={toggleEditableMode}
-        onDelete={toggleConfirmation}
-        menuButton />
-    </div>
-  {/if}
-
-  <ProductCard  principalImage={productPrincipalImage}
-    name={productElementOverview.name} withDetail
-    buttonDetailAction={ProductDetailPath ? productButtonDetailAction : ''}
-    subname={productElementOverview.category}
-    minimum_price={productElementOverview.minimum_price}
-    maximum_price={productElementOverview.maximum_price}
-    currency={productElementOverview.price_currency} 
-  />
-</div>

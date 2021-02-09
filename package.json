@@ -11,7 +11,9 @@
     "cookie-parser": "^1.4.5",
     "polka": "^0.5.2",
     "sirv": "^1.0.1",
+    "svelte": "^3.23.0",
     "svelte-file-dropzone": "0.0.10",
+    "svelte-i18n": "^3.0.4",
     "svelte-material-icons": "^1.0.3"
   },
   "main": "index.js",
@@ -24,19 +26,22 @@
   "author": "Conecty",
   "license": "ISC",
   "devDependencies": {
+    "@composi/gestures": "^1.0.9",
+    "@smui/button": "^2.0.0-beta.0",
     "@smui/checkbox": "^1.0.0",
+    "@smui/chips": "^2.0.0-beta.0",
     "@smui/menu": "^1.0.0",
     "@smui/select": "^1.0.0",
     "@smui/textfield": "^1.0.0",
     "css-loader": "^4.2.2",
     "mini-css-extract-plugin": "^0.11.0",
     "postcss-loader": "^3.0.0",
-    "sapper": "^0.27.16",
+    "sapper": "^0.27.13",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.1",
     "style-loader": "^1.2.1",
-    "svelte": "^3.24.0",
+    "svelte": "^3.23.0",
     "svelte-loader": "^2.13.6",
-    "webpack": "^4.44.0"
+    "webpack": "^4.43.0"
   }
 }

@@ -14,14 +14,14 @@
   let isVerifiedProfile = getContext("isVerifiedProfile");
   const isEditableProfile = getContext("isEditableProfile");
 
-  let verification;
+  let verification = null;
   let uploadCertificateForm = false;
 
   function toggleCertificateForm() {
     uploadCertificateForm = !uploadCertificateForm;
   }
-  function profileVerified() {
-    isVerifiedProfile = true;
+  function afterUpload( verificationData ) {
+    verification = verificationData;
     toggleCertificateForm();
   }
 
@@ -32,7 +32,6 @@
         $session.accessToken
       );
       verification = data;
-      console.log("verification: ", verification);
     }
   });
 </script>
@@ -91,7 +90,7 @@
     <Modal on:click={toggleCertificateForm}>
       <CertificateUpload
         on:click={toggleCertificateForm}
-        afterSubmit={profileVerified}
+        afterSubmit={afterUpload}
         continueWithoutCertificate={toggleCertificateForm} />
     </Modal>
   {/if}

@@ -151,6 +151,9 @@
     color: whitesmoke;
     margin-right: 5%;
   }
+  .lang li {
+    cursor: pointer;
+  }
   .line {
     border-left: 1px solid whitesmoke;
     margin: 0 10px 15px 10px;

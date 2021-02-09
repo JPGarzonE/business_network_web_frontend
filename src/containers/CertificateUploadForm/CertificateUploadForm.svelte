@@ -13,17 +13,33 @@
 
   let certificate = null; // File
 
-  async function submit() {
+  async function submit(event) {
+    const Target = event.target;
+    Target.style.opacity = 0.4;
+    Target.style.cursor = "not-allowed";
+
     if (certificate) {
-      const data = await companyVerificationService.uploadCompanyCertificate(
-        $session.company_accountname,
-        $session.accessToken,
-        certificate
-      );
-      if (data.verified) {
-        afterSubmit();
-      } else {
-        continueWithoutCertificate();
+      try {
+        const verificationData = await companyVerificationService.uploadCompanyCertificate(
+          $session.company_accountname,
+          $session.accessToken,
+          certificate
+        );
+        console.log("Aftersubmit: ", verificationData);
+        afterSubmit( verificationData );
+
+      } catch (e) {
+        const error = e.message;
+        fields.map((field) => {
+          if (error[field]) {
+            formErrorMessage += `${formErrorMessage ? "\n" : null}${field}: ${
+              error[field]
+            }`;
+          }
+        });
+      } finally {
+        Target.style.opacity = 1;
+        Target.style.cursor = "pointer";
       }
     }
   }

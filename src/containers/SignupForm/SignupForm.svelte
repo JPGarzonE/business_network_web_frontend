@@ -357,7 +357,7 @@
           class="button Signup-button button--secondary"
           style="color:{backgroundColor};background-color:{activeColor}"
           value={$_("signUpForm.acceptAndJoin")}
-          on:click={submitSignup}
+          on:click|preventDefault={submitSignup}
         />
       </div>
     {/if}

@@ -130,7 +130,7 @@
         class="button button--secondary"
         style="color:{activeColor};border:2px solid {activeColor}"
         value={$_("loginForm.signUp")}
-        on:click={signupRedirectionAction}
+        on:click|preventDefault={signupRedirectionAction}
       />
     </div>
   </form>

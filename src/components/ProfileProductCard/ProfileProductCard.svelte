@@ -116,7 +116,7 @@
     <div class="ProfileProductCard-edit-button">
       <EditButton
         size={25}
-        color="gray"
+        color="var(--secondary-text-color)"
         onEdit={toggleEditableMode}
         onDelete={toggleConfirmation}
         disabled={onBoarding}

@@ -106,7 +106,7 @@
     <div class="CertificationCard-edit-button">
       <EditButton
         size={25}
-        color="gray"
+        color="var(--secondary-text-color)"
         onEdit={toggleEditableMode}
         onDelete={toggleConfirmation}
         menuButton
@@ -201,7 +201,10 @@
   }
 
   .CertificationCard-category {
-    color: var(--principal-text-color);
+    color: var(--secondary-text-color);
+    line-height: 19px;
+    font-size: 16px;
+    letter-spacing: 0.216px;
   }
 
   .CertificationCard-story {

@@ -205,7 +205,7 @@
         "clickHere": "Clic aquí",
         "companyNotVerified": "Empresa no verificada",
         "haz": "haz ",
-        "theCompanyIsInTheProcessOfVerification": "La empresa se encuentra en proceso de verificación.",
+        "verificationInProcess": "Verificación en proceso",
         "theMailIsFoundInTheCertificate": "el correo que se encuentra en el certificado de cámara y comercio",
         "toFinishTheProcess": "para finalizar el proceso.",
         "toUploadTheCertificate": "para subir el certificado de cámara y comercio, de lo contrario no podras publicar tu perfil",

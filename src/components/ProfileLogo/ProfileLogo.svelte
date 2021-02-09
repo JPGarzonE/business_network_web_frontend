@@ -48,8 +48,8 @@
       <div class="CertificationCard-edit-button">
         <EditButton
           disabled={blank}
-          size={20}
-          color="var(--light-color)"
+          size={22}
+          color="var(--secondary-text-color)"
           onEdit={toggleEditableMode}
         />
       </div>
@@ -64,13 +64,13 @@
     min-width: 134px;
     max-height: 135px;
     min-height: 120px;
-    border-radius: 15px;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     margin: 20px auto;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     padding: 10px;
     border: 1px solid var(--principal-color);
     background-color: white;

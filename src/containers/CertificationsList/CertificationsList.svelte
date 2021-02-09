@@ -91,12 +91,14 @@
     padding: 15px;
     margin: 0 0 30px;
     border-bottom: 0.05em solid var(--light-color);
-    color: var(--principal-text-color);
+    color: var(--secondary-text-color);
     font-size: 1.1em;
     font-weight: 100;
     font-family: var(--body-font);
     text-align: center;
-    letter-spacing: 0.1em;
+    font-weight: bold;
+    line-height: 19px;
+    letter-spacing: 0.216px;
   }
 
   .CertificationsList-card--create {

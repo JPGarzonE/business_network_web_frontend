@@ -2,7 +2,8 @@
   import { stores } from "@sapper/app";
   import { getContext, onMount } from "svelte";
   import CheckDecagram from "svelte-material-icons/CheckDecagram.svelte";
-
+  import MessageAlertOutline from "svelte-material-icons/MessageAlertOutline.svelte";
+  import ProgressCheck from "svelte-material-icons/ProgressCheck.svelte";
   import Modal from "../Modal.svelte";
   import CompanyVerificationService from "../../services/verifications/company.verification.service.js";
   import CertificateUpload from "../../containers/CertificateUploadForm/CertificateUploadForm.svelte";
@@ -41,7 +42,7 @@
   {#if isVerifiedProfile}
 
     <div class="ProfileVerification-card ProfileVerification-card--verified">
-      <span class="icon-check"><CheckDecagram size="22" /></span>
+      <span class="card-icon"><CheckDecagram size="23" /></span>
       <span class="ProfileVerification-title">
         {$_("profileVerification.verifiedCompany")}
       </span>
@@ -53,24 +54,30 @@
       <div
         class="ProfileVerification-card ProfileVerification-card--inprogress"
       >
+        <span class="card-icon"><ProgressCheck size="20" /></span>
         <span class="ProfileVerification-title">
-          {$_("profileVerification.theCompanyIsInTheProcessOfVerification")}
-          <br/>
-          {$_("profileVerification.checkinTheNextFewHours")}
-          <b style="color:#5387cc;text-decoration:underline;"
-            >{$_("profileVerification.theMailIsFoundInTheCertificate")}
-          </b>
-          {$_("profileVerification.toFinishTheProcess")}
+          {$_("profileVerification.verificationInProcess")}
         </span>
       </div>
+      
+      <p class="ProfileVerification-card--call-to-action inprogress">
+        {$_("profileVerification.checkinTheNextFewHours")}
+        <b style="text-decoration:underline;"
+          >{$_("profileVerification.theMailIsFoundInTheCertificate")}
+        </b>
+        {$_("profileVerification.toFinishTheProcess")}
+      </p>
+
     {:else if verification && verification.state.toLowerCase() == "none"}
+
       <div class="ProfileVerification-card ProfileVerification-card--none">
-        <span class="ProfileVerification-title">
+        <span class="card-icon"><MessageAlertOutline size="20" /></span>
+        <span class="ProfileVerification-title ProfileVerification-title--none">
           {$_("profileVerification.companyNotVerified")}
         </span>
       </div>
 
-      <p class="ProfileVerification-card--call-to-action">
+      <p class="ProfileVerification-card--call-to-action error">
         <a href="/" on:click|preventDefault={toggleCertificateForm}>
           {$_("profileVerification.clickHere")}
         </a>
@@ -92,17 +99,29 @@
 </div>
 
 <style>
+  .error, .error a {
+    color: var(--error-color);
+  }
+
+  .inprogress {
+    color: var(--button-color);
+  }
+
+  .ProfileVerification {
+    margin: 25px 0px 15px;
+  }
+
   .ProfileVerification-card {
+    min-height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 15px 0px;
     padding: 7px;
     border-radius: 0px;
   }
-  .icon-check {
+  .card-icon {
     color: var(--secondary-color);
-    margin-right: 3%;
+    margin-right: 10px;
     display: flex;
   }
 
@@ -111,30 +130,28 @@
   }
 
   .ProfileVerification-card--inprogress {
-    padding: 15px 20px;
-    background-color: var(--light-color);
+    background-color: var(--button-color);
   }
 
   .ProfileVerification-card--none {
     background-color: var(--error-color);
   }
 
-  .ProfileVerification-card--none span {
-    padding: 5px 40px;
-  }
-
   .ProfileVerification-card--call-to-action {
-    color: var(--error-color);
-    font-size: 0.7rem;
-    margin: 0 20px 10px;
+    font-size: 0.75rem;
+    margin: 12px 20px 0px;
   }
   .ProfileVerification-card--call-to-action a {
-    color: var(--error-color);
     font-weight: bold;
   }
   .ProfileVerification-title {
     color: white;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.9375em;
+    letter-spacing: 0.216px;
+  }
+
+  .ProfileVerification-title--none {
+    font-size: 0.875em;
   }
 </style>

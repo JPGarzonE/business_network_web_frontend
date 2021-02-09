@@ -75,12 +75,12 @@
       <ProfileVerification />
 
       <div class="ProfileIdentity-NameContainer">
-        <p class="ProfileIdentity-name">{displayName}</p>
+        <h1 class="ProfileIdentity-name">{displayName}</h1>
         {#if isEditableProfile}
           <div class="ProfileIdentity-NameEditor">
             <EditButton
-              size={17}
-              color="gray"
+              size={22}
+              color="var(--secondary-text-color)"
               onEdit={toggleEditableMode}
               disabled={Onboarding}
             />
@@ -188,9 +188,11 @@
     margin: 70px auto 20px;
   }
   .ProfileIdentity-NameContainer {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-bottom: 15px;
   }
 
   .ProfileIdentity-content {
@@ -203,13 +205,21 @@
 
   .ProfileIdentity-name {
     max-width: 200px;
+    margin-inline: 40px;
     text-align: center;
-    text-transform: capitalize;
     font-size: 1.2em;
+    letter-spacing: 0.216px;
     font-weight: 100;
     color: var(--secondary-text-color);
   }
+  .ProfileIdentity-name::first-letter {
+    text-transform: uppercase;
+  }
+
   .ProfileIdentity-NameEditor {
+    position: absolute;
+    top: -5px;
+    right: 10px;
     margin: auto 0;
   }
 
@@ -222,9 +232,11 @@
     text-align: center;
     margin-bottom: 30px;
     padding: 0px 25px;
-    color: var(--light-color);
-    font-size: 15px;
-    text-transform: capitalize;
+    color: var(--secondary-text-color);
+    font-size: 1em;
+  }
+  .ProfileIdentity-industry::first-letter {
+    text-transform: uppercase;
   }
 
   .ProfileIdentity-industry {
@@ -247,7 +259,7 @@
     margin: 0 auto;
     margin-bottom: 0.9rem;
     font-size: 0.9rem;
-    color: #b3b3b3;
+    color: var(--secondary-text-color);
     margin-left: 10%;
   }
   .icon-wrapper {
@@ -271,11 +283,5 @@
   }
   .Onboarding {
     background-color: white;
-  }
-
-  @media screen and (min-width: 1024px) {
-    .ProfileIdentity-name {
-      font-size: 1.3em;
-    }
   }
 </style>

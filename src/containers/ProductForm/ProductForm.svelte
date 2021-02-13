@@ -271,6 +271,7 @@
       return productData;
     }
   }
+
   function deleteImage(id) {
     if (!imagesToDelete.includes(id)) imagesToDelete = [...imagesToDelete, id];
   }

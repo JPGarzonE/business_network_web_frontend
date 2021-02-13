@@ -79,7 +79,7 @@ export default class ProductService extends RequestService {
     if (!accountname)
       throw new Error('accountname is required in ProductService.createSupplierProductWithImage');
 
-    if (!principalImage || !secondaryImages)
+    if (!principalImage && !secondaryImages)
       throw new Error('at least an image is required in ProductService.createSupplierProductWithImage');
 
     if (!accessToken)
@@ -141,14 +141,14 @@ export default class ProductService extends RequestService {
 
   async updateSupplierProductWithImage({ accountname, productID, principalImage, secondaryImages, 
     imagesToDelete, productData, accessToken }) {
-    
-      if (!accountname)
+
+    if (!accountname)
       throw new Error('accountname is required in ProductService.updateSupplierProductWithImage');
 
     if (!productID)
       throw new Error('productID is required in ProductService.updateSupplierProductWithImage');
 
-    if (!principalImage || !secondaryImages)
+    if (!principalImage && !secondaryImages)
       throw new Error('at least an image is required in ProductService.createSupplierProductWithImage');
 
     if (!accessToken)

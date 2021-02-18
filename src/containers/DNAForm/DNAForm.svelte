@@ -153,7 +153,7 @@
         $session.company_accountname,
         newMediaFile,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return DnaElementData;
@@ -161,7 +161,7 @@
       const DnaElementData = await dnaService.createSupplierDnaelement(
         $session.company_accountname,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return DnaElementData;
@@ -177,7 +177,7 @@
         DNAElement.id,
         newMediaFile,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return DnaElementData;
@@ -186,7 +186,7 @@
         $session.company_accountname,
         DNAElement.id,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return DnaElementData;

@@ -13,32 +13,33 @@ export default class ProfilesService extends RequestService {
     return `buyers/${accountname}/`;
   }
 
-  getBuyerProfile(accountname, accessToken) {
+  getBuyerProfile( accountname, session ) {
     if (!accountname)
-      throw new Error(
-        'accountname is required in ProfilesService.getBuyerProfile'
-      );
+      throw new Error("accountname is required in ProfilesService.getBuyerProfile");
 
-    let headers = { 'Content-Type': 'application/json' };
+    if(!session)
+      throw new Error("session is required in ProfilesService.getBuyerProfile");
 
-    if (accessToken) headers['Authorization'] = 'Token ' + accessToken;
-
-    return this.get(
-      this.getBuyersProfilePath(accountname),
-      headers,
-      null,
-      null
-    );
+    return this.get({
+      endpoint: this.getBuyersProfilePath(accountname),
+      session: session
+    });
   }
 
-  updateBuyerProfile(userData, accountname, accessToken) {
-    let headers = { 'Content-Type': 'application/json' };
+  updateBuyerProfile( userData, accountname, session ) {
+    if(!userData)
+      throw new Error("userData is required in ProfilesService.updateBuyerProfile")
 
-    if (accessToken) headers['Authorization'] = 'Token ' + accessToken;
-    return this.patch(
-      this.getBuyersUpdateProfilePath(accountname),
-      headers,
-      userData
-    );
+    if (!accountname)
+      throw new Error("accountname is required in ProfilesService.updateBuyerProfile");
+
+    if(!session)
+      throw new Error("session is required in ProfilesService.updateBuyerProfile");
+
+    return this.patch({
+      endpoint: this.getBuyersUpdateProfilePath(accountname),
+      data: userData,
+      session: session
+    });
   }
 }

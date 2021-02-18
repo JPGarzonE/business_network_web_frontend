@@ -35,7 +35,7 @@
 
   onMount(() => {
     let mediaQuery = window.matchMedia("(min-width: 850px)");
-
+    mobile = !mediaQuery.matches;
     mediaQuery.addEventListener("change", handleWindowChange);
   });
 
@@ -47,7 +47,7 @@
     editableMode = !editableMode;
   }
   function reloadComponentData(productData) {
-    displayedProducts = [...displayedProducts, productData];
+    displayedProducts = [productData, ...displayedProducts];
     editableMode = false;
   }
 
@@ -224,6 +224,13 @@
     justify-content: center;
   }
 
+  .ProductShowLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--principal-color);
+    cursor: pointer;
+  }
   .ProductShowLink-less i,
   .ProductShowLink-more i {
     width: 19px;
@@ -256,14 +263,6 @@
     .ProductsList {
       margin: 25px 20px;
       padding: unset;
-    }
-
-    .ProductShowLink {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: var(--principal-color);
-      cursor: pointer;
     }
 
     .ProductShowLink + .ProductShowLink {

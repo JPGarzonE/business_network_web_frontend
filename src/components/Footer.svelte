@@ -1,20 +1,30 @@
 <script>
+  import { goto } from "@sapper/app";
+  import { GetRoute as GetRootRoute } from "../routes/index.svelte";
   import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
   import { _ } from "svelte-i18n";
 
   export let background =
     "linear-gradient(90deg, rgba(0,180,226,1) 0%, rgba(0,155,214,1) 30%, rgba(44,133,205,1) 79%)";
   export let textColor = "#FFFFFF";
+  export let freezeRedirections = false;
+
+  let gotoRoot = async () => {
+    if( !freezeRedirections ) {
+      document.body.style.cursor = "wait";
+      await goto( GetRootRoute() );
+      document.body.style.cursor = "auto";
+    }
+  }
+
 </script>
 
 <footer class="Footer" style="background:{background};color:{textColor};">
   <div class="Footer-content">
     <div class="Footer-slogan">
-      <a href="/" style="display:flex;">
-        <div class="Footer-wordmark">
-          <ConectyWhiteWordmark />
-        </div>
-      </a>
+      <div class="Footer-wordmark" on:click={gotoRoot}>
+        <ConectyWhiteWordmark />
+      </div>
       {$_("footer.withUs")}
     </div>
     <div class="Footer-email-container">
@@ -66,6 +76,7 @@
     width: 90px;
     height: 19px;
     margin: 0px 10px;
+    cursor: pointer;
   }
 
   .Footer-email-container,

@@ -13,15 +13,22 @@
   let formContentColor = darkMode ? "var(--white)" : "var(--light-color)";
   let secondaryContentColor = darkMode ? "var(--white)" : "#9E9FA0";
   
+  let Head = null;
+  let Link = null;
+
   onMount(async () => {
-    const Head = document.getElementsByTagName("head")[0];
-    const Link = document.createElement("link");
+    Head = document.getElementsByTagName("head")[0];
+    Link = document.createElement("link");
     Link.rel = "stylesheet";
     Link.type = "text/css";
     if (darkMode) Link.href = "/styles/material-inputs-dark-theme.css";
     else Link.href = "/styles/material-inputs-light-theme.css";
     Head.appendChild(Link);
   });
+
+  function deleteContainerStyles() {
+    Head.removeChild(Link);
+  }
 </script>
 
 <div class="AuthenticationContainer" style="background-color:{backgroundColor}">
@@ -34,6 +41,7 @@
       <div>
         <SignupForm
           loginRedirectionAction={() => (state = "login")}
+          onSignup={deleteContainerStyles}
           {backgroundColor}
           {activeColor}
           {inactiveColor}
@@ -49,6 +57,7 @@
       <div>
         <LoginForm
           signupRedirectionAction={() => (state = "signup")}
+          onLogin={deleteContainerStyles}
           {backgroundColor}
           {activeColor}
           {inactiveColor}

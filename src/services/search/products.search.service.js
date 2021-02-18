@@ -10,9 +10,7 @@ export default class ProductsSearchService extends SearchService {
         return super.searchPath + "products/";
     }
 
-    // params must be an object with key: value
-    // fields must be an array
-    searchProducts( query, params, fields ) {
+    searchProducts( query, params = {}, fields = [] ) {
         if( !query )
             throw new Error("query is required in ProductSearchService.searchProducts");
 

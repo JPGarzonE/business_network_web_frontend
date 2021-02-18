@@ -1,6 +1,5 @@
 <script>
   import { stores } from "@sapper/app";
-  import { getContext } from "svelte";
   import { _ } from "svelte-i18n";
 
   import FileUploadInput from "../../components/FileUploadInput/FIleUploadInput.svelte";
@@ -22,7 +21,7 @@
       try {
         const verificationData = await companyVerificationService.uploadCompanyCertificate(
           $session.company_accountname,
-          $session.accessToken,
+          $session,
           certificate
         );
         console.log("Aftersubmit: ", verificationData);

@@ -11,20 +11,24 @@ export default class CertificationsService extends RequestService {
     return `/suppliers/${accountname}/certificates/`;
   }
 
-  getSupplierCertifications(accountname) {
+  getSupplierCertifications(accountname, {limit = null, offset = null}) {
     if (!accountname)
       throw new Error(
         "accountname is required in CertificationsService.getSupplierCertifications"
       );
 
-    return this.get(
-      this.getSuppliersCertificationsPath(accountname),
-      { "Content-Type": "application/json" },
-      null
-    );
+    let params = {};
+
+    if( limit ) params.limit = limit;
+    if( offset ) params.offset = offset;
+
+    return this.get({
+      endpoint: this.getSuppliersCertificationsPath(accountname),
+      params
+    });
   }
 
-  getCertificationElementById(accountname, CertificationID, accessToken) {
+  getCertificationElementById(accountname, CertificationID, session) {
     if (!accountname)
       throw new Error(
         "accountname is required in CertificationsService.getCertificationElementById"
@@ -35,49 +39,42 @@ export default class CertificationsService extends RequestService {
         "CertificationID is required in CertificationsService.getCertificationElementById"
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        "accessToken is required in CertificationsService.getCertificationElementById"
+        "session is required in CertificationsService.getCertificationElementById"
       );
 
-    let headers = {
-      "Content-Type": "application/json",
-      Authorization: "Token " + accessToken,
-    };
+    const endpoint = this.getSuppliersCertificationsPath(accountname) + CertificationID + '/';
 
-    const RequestUrl = this.getSuppliersCertificationsPath(accountname) + CertificationID + '/';
-
-    return this.get(RequestUrl, headers, null);
+    return this.get({
+      endpoint,
+      session
+    });
   }
 
-  createSupplierCertificationElement(accountname, certificationData, accessToken) {
+  createSupplierCertificationElement(accountname, certificationData, session) {
     if (!accountname)
       throw new Error(
         "accountname is required in CertificationsService.createSupplierCertificationElement"
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        "accessToken is required in CertificationsService.createSupplierCertificationElement"
+        "session is required in CertificationsService.createSupplierCertificationElement"
       );
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Token " + accessToken,
-    };
-
-    return this.post(
-      this.getSuppliersCertificationsPath(accountname),
-      headers,
-      certificationData
-    );
+    return this.post({
+      endpoint: this.getSuppliersCertificationsPath(accountname),
+      data: certificationData,
+      session
+    });
   }
 
   async createSupplierCertificationElementWithImage(
     accountname,
     image,
     certificationData,
-    accessToken
+    session
   ) {
     if (!accountname)
       throw new Error(
@@ -89,31 +86,26 @@ export default class CertificationsService extends RequestService {
         "logo is required in CertificationsService.createSupplierCertificationElementWithImage"
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        "accessToken is required in CertificationsService.createSupplierCertificationElementWithImage"
+        "session is required in CertificationsService.createSupplierCertificationElementWithImage"
       );
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Token " + accessToken,
-    };
-
-    const Image = await this._imageService.uploadImage(image, accessToken);
+    const Image = await this._imageService.uploadImage(image, session);
     certificationData.logo_id = Image.id;
 
-    return this.post(
-      this.getSuppliersCertificationsPath(accountname),
-      headers,
-      certificationData
-    );
+    return this.post({
+      endpoint: this.getSuppliersCertificationsPath(accountname),
+      data: certificationData,
+      session
+    });
   }
 
   updateSupplierCertificationElement(
     accountname,
     certificationID,
     certificationData,
-    accessToken
+    session
   ) {
     if (!accountname)
       throw new Error(
@@ -125,20 +117,19 @@ export default class CertificationsService extends RequestService {
         "certificationID is required in CertificationsService.updateSupplierCertificationElement"
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        "accessToken is required in CertificationsService.updateSupplierCertificationElement"
+        "session is required in CertificationsService.updateSupplierCertificationElement"
       );
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Token " + accessToken,
-    };
+    const endpoint = this.getSuppliersCertificationsPath(accountname) 
+      + certificationID + "/";
 
-    const RequestUrl =
-      this.getSuppliersCertificationsPath(accountname) + certificationID + "/";
-
-    return this.patch(RequestUrl, headers, certificationData);
+    return this.patch({
+      endpoint,
+      data: certificationData,
+      session
+    });
   }
 
   async updateSupplierCertificationElementWithImage(
@@ -146,7 +137,7 @@ export default class CertificationsService extends RequestService {
     certificationID,
     image,
     certificationData,
-    accessToken
+    session
   ) {
     if (!accountname)
       throw new Error(
@@ -163,26 +154,25 @@ export default class CertificationsService extends RequestService {
         "logo is required in CertificationsService.updateSupplierCertificationElementWithImage"
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        "accessToken is required in CertificationsService.updateSupplierCertificationElementWithImage"
+        "session is required in CertificationsService.updateSupplierCertificationElementWithImage"
       );
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Token " + accessToken,
-    };
+    const endpoint = this.getSuppliersCertificationsPath(accountname) 
+      + certificationID + "/";
 
-    const RequestUrl =
-      this.getSuppliersCertificationsPath(accountname) + certificationID + "/";
-
-    const Image = await this._imageService.uploadImage(image, accessToken);
+    const Image = await this._imageService.uploadImage(image, session);
     certificationData.logo_id = Image.id;
 
-    return this.patch(RequestUrl, headers, certificationData);
+    return this.patch({
+      endpoint,
+      data: certificationData,
+      session
+    });
   }
 
-  deleteCertificationElement(accountname, certificationID, accessToken) {
+  deleteCertificationElement(accountname, certificationID, session) {
     if (!accountname)
       throw new Error(
         "accountname is required in CertificationsService.deleteCertificationElement"
@@ -193,19 +183,17 @@ export default class CertificationsService extends RequestService {
         "certificationID is required in CertificationsService.deleteCertificationElement"
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        "accessToken is required in CertificationsService.deleteCertificationElement"
+        "session is required in CertificationsService.deleteCertificationElement"
       );
 
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Token " + accessToken,
-    };
+    const endpoint = this.getSuppliersCertificationsPath(accountname)
+      + certificationID + "/";
 
-    const RequestUrl =
-      this.getSuppliersCertificationsPath(accountname) + certificationID + "/";
-
-    return this.delete(RequestUrl, headers);
+    return this.delete({
+      endpoint,
+      session
+    });
   }
 }

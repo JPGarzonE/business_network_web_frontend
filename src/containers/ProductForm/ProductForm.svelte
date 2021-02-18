@@ -221,16 +221,16 @@
           newMediaFiles.secondary3,
         ],
         productData: dataToSubmit,
-        accessToken: $session.accessToken,
+        session: $session,
       });
 
       return productData;
     } else {
-      const productData = await productService.createSupplierProduct({
-        accountname: $session.company_accountname,
-        productData: dataToSubmit,
-        accessToken: $session.accessToken,
-      });
+      const productData = await productService.createSupplierProduct(
+        $session.company_accountname,
+        dataToSubmit,
+        $session,
+      );
 
       return productData;
     }
@@ -256,7 +256,7 @@
         ],
         imagesToDelete: imagesToDelete,
         productData: dataToSubmit,
-        accessToken: $session.accessToken,
+        session: $session,
       });
       return productData;
     } else {
@@ -265,7 +265,7 @@
         productID: ProductElement.id,
         imagesToDelete: imagesToDelete,
         productData: dataToSubmit,
-        accessToken: $session.accessToken,
+        session: $session,
       });
 
       return productData;

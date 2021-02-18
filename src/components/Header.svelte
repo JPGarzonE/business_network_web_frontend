@@ -1,20 +1,27 @@
 <script>
   import { goto } from "@sapper/app";
   import { stores } from "@sapper/app";
+  import { getContext, hasContext } from "svelte";
+  import { GetRoute as GetMarketRoute } from '../routes/market.svelte';
+  import { GetRoute as GetRootRoute } from '../routes/index.svelte';
   import ButtonChat from "./ButtonChat/ButtonChat.svelte";
   import ProfileIconMenu from "./ProfileIconMenu/ProfileIconMenu.svelte";
   import ConectyWhiteWordmark from "./Wordmarks/ConectyWhiteWordmark.svelte";
   import HomeOutline from "svelte-material-icons/HomeOutline.svelte";
-  import { _, locale, locales } from "svelte-i18n";
+  import { _, locale } from "svelte-i18n";
 
+  export let freezeRedirections = false;
   export let background =
     "linear-gradient(90deg, rgba(0,180,226,1) 0%, rgba(0,155,214,1) 30%, rgba(44,133,205,1) 79%)";
   export let textColor = "#FFFFFF";
 
   const { session, page } = stores();
 
+  let activeMarketOption = true;
+  if( hasContext("activeMarketOption") )
+    activeMarketOption = getContext("activeMarketOption")
+
   let userIsAuthenticated = false;
-  let actualPath = null;
   let company;
 
   session.subscribe((session) => {
@@ -22,22 +29,22 @@
     company = session.company;
   });
 
-  page.subscribe((page) => {
-    actualPath = page.path;
-  });
-
   let logoSrc = company && company.logo ? company.logo.path : null;
 
   let gotoRoot = async () => {
-    document.body.style.cursor = "wait";
-    await goto("/");
-    document.body.style.cursor = "auto";
+    if( !freezeRedirections ) {
+      document.body.style.cursor = "wait";
+      await goto( GetRootRoute() );
+      document.body.style.cursor = "auto";
+    }
   };
 
   let gotoMarket = async () => {
-    document.body.style.cursor = "wait";
-    await goto("/market");
-    document.body.style.cursor = "auto";
+    if( !freezeRedirections ) {
+      document.body.style.cursor = "wait";
+      await goto( GetMarketRoute() );
+      document.body.style.cursor = "auto";
+    }
   };
 </script>
 
@@ -78,23 +85,26 @@
         <div>ENG</div>
       </li>
     </ul>
-    {#if userIsAuthenticated}
-      <div class="Header-user-data">
-        {#if actualPath !== `/market`}
-          <div class="Header-user-data-market">
-            <ButtonChat
-              title={$_("header.goToTheMarket")}
-              buttonAction={gotoMarket}
+
+    <div class="Header-user-data">
+      {#if activeMarketOption}
+        <div class="Header-user-data-market">
+          <ButtonChat
+            title={$_("header.goToTheMarket")}
+            buttonAction={gotoMarket}
             >
-              <span slot="button-icon" style="display: flex">
-                <HomeOutline size={20} />
-              </span>
-            </ButtonChat>
-          </div>
-        {/if}
+            <span slot="button-icon" style="display: flex">
+              <HomeOutline size={20} />
+            </span>
+          </ButtonChat>
+        </div>
+      {/if}
+
+      {#if userIsAuthenticated}
         <ProfileIconMenu {logoSrc} />
-      </div>
-    {/if}
+      {/if}
+    </div>
+
   </div>
 </header>
 
@@ -141,15 +151,14 @@
     min-width: 138px;
     display: none;
     align-items: center;
-    margin-right: 36px;
   }
   .lang {
     display: flex;
     list-style-type: none;
     flex-direction: row;
     justify-content: space-between;
+    padding: 0;
     color: whitesmoke;
-    margin-right: 5%;
   }
   .lang li {
     cursor: pointer;
@@ -167,9 +176,6 @@
   @media screen and (min-width: 475px) {
     .Header {
       height: 89px;
-    }
-    .lang {
-      margin-right: 30%;
     }
   }
   @media screen and (min-width: 625px) {
@@ -189,18 +195,12 @@
     .Header-user-data-market {
       display: flex;
     }
-    .lang {
-      margin-right: 40%;
-    }
   }
   @media screen and (min-width: 1000px) {
   }
   @media screen and (min-width: 1445px) {
     .Header-container {
       padding: 0 10em;
-    }
-    .lang {
-      margin-right: 45%;
     }
   }
 </style>

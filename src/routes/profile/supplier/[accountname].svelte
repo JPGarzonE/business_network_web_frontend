@@ -12,8 +12,9 @@
 
     const profileData = await profilesService.getSupplierProfile(
       accountname,
-      session.accessToken
+      session
     );
+
     return {
       editable: profileData.editable,
       supplier: profileData.supplier,

@@ -1,22 +1,24 @@
 <script>
-    import { goto } from "@sapper/app";
-    import { GetRoute as GetSignupRoute } from '../../routes/signup.svelte';
-    import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
-    import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
-    import LoginService from "../../services/authentication/login.service.js";
-    import Textfield from "@smui/textfield";
-    import HelperText from "@smui/textfield/helper-text";
-    import { validateEmailPattern } from "../../validators/formValidators.js";
-    import { setCookie } from "../../utils/cookie.js";
-    import { _ } from "svelte-i18n";
+	import { goto, stores } from "@sapper/app";
+	import { GetRoute as GetSignupRoute } from '../../routes/signup.svelte';
+	import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
+	import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
+	import { GetRoute as GetCompanySelectRoleRoute } from '../../routes/company/select-role.svelte';
+	import AuthService from "../../services/authentication/auth.service.js";
+	import Textfield from "@smui/textfield";
+	import HelperText from "@smui/textfield/helper-text";
+	import { validateEmailPattern } from "../../validators/formValidators.js";
+	import { _ } from "svelte-i18n";
 
-    export let signupRedirectionAction = async ()=> await goto(GetSignupRoute());
-    export let backgroundColor; 
-    export let activeColor;
-    export let formContentColor;
-    export let secondaryContentColor;
+	export let signupRedirectionAction = async ()=> await goto(GetSignupRoute());
+	export let onLogin = () => false;
+	export let backgroundColor; 
+	export let activeColor;
+	export let formContentColor;
+	export let secondaryContentColor;
 
-    const loginService = new LoginService();
+	const authService = new AuthService();
+	const { session } = stores();
 
     let email = '';
     let password = '';
@@ -40,27 +42,34 @@
         try{
             if( !isValidBeforeSumbit ) throw new Error("Invalid");
             
-            const data = await loginService.login( email, password );
-            let accountname = data.access_user.default_company.accountname;
-            let isBuyer = data.access_user.default_company.is_buyer;
-            let isSupplier = data.access_user.default_company.is_supplier;
+            const data = await authService.login( email, password );
+            let accountname = data.access_company.accountname;
+            let isBuyer = data.access_company.is_buyer;
+            let isSupplier = data.access_company.is_supplier;
 
-            setCookie("JPGE", data.access_token, 1);
-            setCookie("access_accountname", accountname, 1);
-            
-            // Here we not use goto because the server has to render an authenticated content after login
-            // With goto this not happen because the render acts only on the client
-            if( isBuyer )
-                location.href = GetBuyerProfileRoute(accountname);
-            else if( isSupplier )
-                location.href = GetSupplierProfileRoute(accountname);
+            authService.setSession({ 
+              session: $session, 
+              tokens: data.tokens, 
+              user: data.user, 
+              access_company: data.access_company 
+            });
+
+			if( isSupplier )
+				await goto( GetSupplierProfileRoute(accountname) );
+			else if( isBuyer )
+				await goto( GetBuyerProfileRoute(accountname) );
+			else
+				await goto( GetCompanySelectRoleRoute(accountname) );
+      	
+			onLogin();
         }
         catch(e){
+            console.log("Error: ", e);
             const errors = e.message;
-            if (errors.non_field_errors || errors.password)
-                submitErrorMessage = "Credenciales inválidas";
-            else if (errors == "Invalid")
+            if (errors == "Invalid")
                 submitErrorMessage = $_("loginForm.invalidData");
+            else if (e.status === 401)
+                submitErrorMessage = errors.detail;
             else
                 submitErrorMessage = "Hubo un error en la aplicación, intente más tarde";
 

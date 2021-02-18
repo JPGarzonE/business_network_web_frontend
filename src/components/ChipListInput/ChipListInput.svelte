@@ -90,7 +90,7 @@
         </div>
     </div>
 
-    <Set bind:chips={items} let:chip key={(chip) => chip.key} input>
+    <Set bind:chips={items} let:chip key={(chip) => chip.key || chip.id} input>
         <EditableChip {validateItemValue} 
             isEditable={itemsAreEditable}
             key={chip.key}

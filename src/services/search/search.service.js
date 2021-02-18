@@ -26,7 +26,10 @@ export default class SearchService extends RequestService{
         if( !endpoint )
             throw new Error("Endpoint is required in SearchService.customSearch");
 
-        return this.get( endpoint, {'Content-Type': 'application/json'}, params);;
+        return this.get({
+            endpoint,
+            params
+        });
     }
 
 }

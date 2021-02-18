@@ -18,86 +18,76 @@ export default class LocationService extends RequestService{
         if( !accountname )
             throw new Error("accountname is required in LocationService.getSupplierLocations");
 
-        return this.get( this.getSupplierLocationsPath( accountname ), {'Content-Type': 'application/json'}, null );
+        return this.get({
+            endpoint: this.getSupplierLocationsPath(accountname)
+        });
     }
 
-    getLocationByAccountnameAndId( accountname, locationID, accessToken ){
+    getSupplierLocationById( accountname, locationID ){
         if( !accountname )
             throw new Error("accountname is required in LocationService.getLocationByAccountnameAndId");
-
-        if( !accessToken )
-            throw new Error("accessToken is required in LocationService.getLocationByAccountnameAndId");
 
         if( !locationID )
             throw new Error("locationID is required in LocationService.getLocationByAccountnameAndId");
 
-        const RequestUrl = this.getSupplierLocationsPath(accountname) + locationID + "/";
+        const endpoint = this.getSupplierLocationsPath(accountname) + locationID + "/";
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
-
-        return this.get( RequestUrl, headers, null );
+        return this.get( { endpoint } );
     }
 
-    createSupplierLocation( accountname, locationData, accessToken ){
+    createSupplierLocation( accountname, locationData, session ){
         if( !accountname )
             throw new Error("accountname is required in LocationService.createSupplierLocation");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in LocationService.createSupplierLocation");
+        if( !session )
+            throw new Error("session is required in LocationService.createSupplierLocation");
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
-
-        return this.post(this.getSupplierLocationsPath(accountname), headers, locationData);
+        return this.post({
+            endpoint: this.getSupplierLocationsPath(accountname),
+            data: locationData,
+            session
+        });
     }
 
-    updateSupplierLocation( accountname, locationID, locationData, accessToken ){
+    updateSupplierLocation( accountname, locationID, locationData, session ){
         if( !accountname )
             throw new Error("accountname is required in LocationService.updateSupplierLocation");
 
         if( !locationID )
             throw new Error("locationID is required in LocationService.updateSupplierLocation");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in LocationService.updateSupplierLocation");
+        if( !session )
+            throw new Error("session is required in LocationService.updateSupplierLocation");
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+        const endpoint = this.getSupplierLocationsPath(accountname) + locationID + "/";
 
-        const RequestUrl = this.getSupplierLocationsPath(accountname) + locationID + "/";
-
-        return this.patch(RequestUrl, headers, locationData );
+        return this.patch({
+            endpoint,
+            data: locationData,
+            session
+        });
     }
 
     deleteSupplierLocation(){
         
     }
 
-    deleteSupplierSaleLocation( accountname, saleLocationID, accessToken ) {
+    deleteSupplierSaleLocation( accountname, saleLocationID, session ) {
         if( !accountname )
             throw new Error("accountname is required in LocationService.deleteSupplierSaleLocation");
 
         if( !saleLocationID )
             throw new Error("saleLocationID is required in LocationService.deleteSupplierSaleLocation");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in LocationService.deleteSupplierSaleLocation");
+        if( !session )
+            throw new Error("session is required in LocationService.deleteSupplierSaleLocation");
 
-        const Headers = {
-            'Content-Type': 'application/json',
-            Authorization: 'Token ' + accessToken
-        }
+        const endpoint = this.getSupplierSaleLocationsPath( accountname ) + saleLocationID + '/';
 
-        const RequestUrl = this.getSupplierSaleLocationsPath( accountname ) + saleLocationID + '/';
-
-        return this.delete(RequestUrl, Headers);
+        return this.delete({
+            endpoint,
+            session
+        });
     }
 
 }

@@ -10,15 +10,11 @@ export default class ShowcaseService extends RequestService {
         return '/market/showcase/';
     }
 
-    getShowcase(accessToken) {
-        if( !accessToken )
-            throw new Error("Access token is required in get showcase");
+    getShowcase( session = {} ) {
 
-        let headers = {
-            "Content-type": "application/json",
-            "Authorization": "Token " + accessToken
-        }
-
-        return this.get(this.showcasePath, headers, null);
+        return this.get({
+            endpoint: this.showcasePath,
+            session
+        });
     }
 }

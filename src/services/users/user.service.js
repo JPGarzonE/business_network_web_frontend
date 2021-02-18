@@ -10,19 +10,25 @@ export default class UserService extends RequestService{
         return '/users/';
     }
 
-    getUser( username, accessToken ){
+    getUser( username ){
+        if( !username )
+            throw new Error("username is required in UserService.getUser()");
+
         // Tiene que terminar en '/' por restricciones de la API
-        let requestPath = username ? this.userPath + username + "/" : this.userPath;
+        const endpoint = this.userPath + username + "/";
 
-        let headers = {'Content-Type': 'application/json'}
-    
-        if( accessToken && accessToken.length >= 16 )
-            headers["Authorization"] = 'Token ' + accessToken;
-
-        return this.get( requestPath, headers, null);
+        return this.get( { endpoint } );
     }
 
-    getUsers(){
-        return this.getUser(null, null);
+    getUsers( {limit = null, offset = null} ){
+        let params = {};
+
+        if( limit ) params.limit = limit;
+        if( offset ) params.offset = offset;
+
+        return this.get({
+            endpoint: this.userPath,
+            params
+        });
     }
 }

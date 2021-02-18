@@ -3,6 +3,7 @@
   import LogoUpload from "../../containers/ProfileLogoUpload/ProfileLogoUpload.svelte";
   import { getContext } from "svelte";
   import EditButton from "../EditButton/EditButton.svelte";
+
   export let logo;
   export let blank = false;
 

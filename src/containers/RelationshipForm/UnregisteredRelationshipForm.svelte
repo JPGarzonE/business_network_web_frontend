@@ -164,7 +164,7 @@
         if (editMode) {
           const unregisteredRelationshipData = await unregisteredRelationshipService.updateUnregisteredRelationshipType(
             $session.company_accountname,
-            $session.accessToken,
+            $session,
             relationshipID,
             relationshipType
           );
@@ -180,7 +180,7 @@
 
           const unregisteredRelationshipData = await unregisteredRelationshipService.createUnregisteredRelationship(
             $session.company_accountname,
-            $session.accessToken,
+            $session,
             dataToSubmit,
             relationshipType
           );

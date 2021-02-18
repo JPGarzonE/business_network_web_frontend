@@ -72,13 +72,17 @@ export function validatePasswordConfirmation(password, passwordConfirm) {
   else return { message: 'Las contraseñas NO coinciden', isValid: false };
 }
 
-export function validateNIT(nit) {
-  let nitMatch = nit.match(/^(\d{9,9}((.)\d)?)$/);
+export function validateLegalIdentifier( legalIdentifier ) {
+  let legalIdentifierMatch = legalIdentifier.match(/^(\d{9,9}((.)\d)?)$/);
 
-  if (nitMatch) return { message: 'El NIT es correcto', isValid: true };
+  if (legalIdentifierMatch)
+    return { 
+      message: 'El numero de identificación legal es correcto', 
+      isValid: true 
+    };
   else
     return {
-      message: 'El NIT no cumple con el patron correcto',
+      message: 'El numero de identificación legal no es correcto',
       isValid: false,
     };
 }

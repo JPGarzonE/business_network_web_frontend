@@ -1,4 +1,9 @@
-export const API_URL = "https://api.joinconecty.com";
+import { writable } from 'svelte/store';
+
+export const refreshSession = writable({});
+
+// export const API_URL = "https://api.joinconecty.com";
+export const API_URL = "http://localhost:8000";
 export const INDUSTRIES = [
   "agremiaciones y camaras de comercio", 
   "agroindustria", 

@@ -6,18 +6,20 @@ export default class UnregisteredCompaniesService extends RequestService {
         super();
     }
 
-    get baseHeader() {
-        return {
-            'Content-Type': 'application/json'
-        }
-    }
-
-    get authPrefix() {
-        return "Bearer";
-    }
-
     get unregisteredPath() {
         return '/unregistered-companies/';
+    }
+
+    getUnregisteredCompanies( {limit = null, offset = null} ) {
+        let params = {};
+
+        if( limit ) params.limit = limit;
+        if( offset ) params.offset = offset;
+
+        return this.get({
+            endpoint: this.unregisteredPath,
+            params
+        });
     }
 
     getUnregisteredCompany( unregisteredCompanyID ) {
@@ -26,30 +28,27 @@ export default class UnregisteredCompaniesService extends RequestService {
                 "unregisteredCompanyID is required in UnregisteredCompaniesService.getUnregisteredCompany"
             );
 
-        const Headers = {...this.baseHeader};
+        const endpoint = `${this.unregisteredPath}${unregisteredCompanyID}/`;
 
-        const RequestURL = `${this.unregisteredPath}${unregisteredCompanyID}/`;
-
-        return this.get( RequestURL, Headers, null );
+        return this.get( { endpoint } );
     }
 
-    createUnregisteredCompany( unregisteredCompanyData, accessToken ) {
+    createUnregisteredCompany( unregisteredCompanyData, session ) {
         if( !unregisteredCompanyData )
             throw new Error(
                 "unregisteredCompanyData is required in UnregisteredCompaniesService.createUnregisteredCompany"
             );
 
-        if( !accessToken )
+        if( !session )
             throw new Error(
-                "accessToken is required in UnregisteredCompaniesService.createUnregisteredCompany"
+                "session is required in UnregisteredCompaniesService.createUnregisteredCompany"
             );
 
-        const Headers = {
-            ...this.baseHeader,
-            Authorization: `${this.authPrefix} ${accessToken}`
-        };
-
-        return this.post( this.unregisteredPath, Headers, unregisteredCompanyData );
+        return this.post({
+            endpoint: this.unregisteredPath,
+            data: unregisteredCompanyData,
+            session
+        });
     }
     
 }

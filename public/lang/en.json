@@ -38,6 +38,12 @@
         "talkToOurSalesConsultantToCOntact": "Talk to our sales consultant and will get in touch.",
         "thisUserDoNotHaveRegisteredContactNumber": "This User Do not have registered contact number"
     },
+    "company:select-role": {
+        "welcomeTitle": "Welcome to Conecty!",
+        "selectSubtitle": "Which profile do you want to start with?",
+        "buyerOption": "Buyer",
+        "supplierOption": "Supplier"
+    },
     "contactUsButton": {
         "getInTouch": "Get in touch"
     },

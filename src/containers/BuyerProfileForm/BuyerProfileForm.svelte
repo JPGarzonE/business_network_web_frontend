@@ -5,7 +5,7 @@
     import {
         validateString,
         validateEmailPattern,
-        validateNIT,
+        validateLegalIdentifier,
     } from "../../validators/formValidators.js";
 
     export let buyer;
@@ -38,7 +38,7 @@
         const profileData = await profilesService.updateBuyerProfile(
             userData,
             $session.company_accountname,
-            $session.accessToken
+            $session
         );
         currentEdit = "";
         if (!profileData.id) {
@@ -126,7 +126,7 @@
             type="text"
             bind:value={formFields.companyID}
             onEdit={changeCurrentEdit}
-            validationFunc={validateNIT}
+            validationFunc={validateLegalIdentifier}
             maxLength={15} />
     </div>
     {#if !successUpdate && statusMessage}

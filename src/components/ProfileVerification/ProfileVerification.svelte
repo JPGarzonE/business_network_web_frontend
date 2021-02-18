@@ -27,11 +27,16 @@
 
   onMount(async () => {
     if (isEditableProfile) {
-      const data = await companyVerificationService.getCompanyVerification(
-        $session.company_accountname,
-        $session.accessToken
-      );
-      verification = data;
+      try {
+        const data = await companyVerificationService.getCompanyVerification(
+          $session.company_accountname,
+          $session
+        );
+        verification = data;
+      }
+      catch(e) {
+        console.log("Error: ", e);
+      }
     }
   });
 </script>

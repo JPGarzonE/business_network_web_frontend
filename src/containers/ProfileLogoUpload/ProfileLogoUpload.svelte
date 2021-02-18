@@ -42,7 +42,7 @@
         const Company = await companyService.updateCompanyLogo(
           $session.company_accountname,
           newLogoFile,
-          $session.accessToken
+          $session
         );
 
         afterSubmit(Company);
@@ -141,6 +141,10 @@
     z-index: 20;
     bottom: auto;
     background-color: white;
+  }
+
+  .ProfileLogo-image--default {
+    padding: 20px;
   }
 
   .ProfileLogoUpload-close-button {

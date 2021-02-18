@@ -15,58 +15,51 @@ export default class CompanyVerificationService extends RequestService {
     return '/companies/verification/verify/';
   }
 
-  getCompanyVerification(accountname, accessToken) {
+  getCompanyVerification(accountname, session) {
     if (!accountname)
       throw new Error(
         'accountname is required in CompanyVerificationService.getCompanyVerification'
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        'accessToken is required in CompanyVerificationService.getCompanyVerification'
+        'session is required in CompanyVerificationService.getCompanyVerification'
       );
 
-    let header = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
-    };
-
-    return this.get(this.getCompanyVerificationPath(accountname), header, null);
+    return this.get({
+      endpoint: this.getCompanyVerificationPath(accountname),
+      session
+    });
   }
 
-  addCertificateToCompanyVerification(accountname, accessToken, certificateID) {
+  _addCertificateToCompanyVerification(accountname, session, certificateID) {
     if (!accountname)
       throw new Error(
-        'accountname is required in CompanyVerificationService.addCertificateToCompanyVerification'
+        'accountname is required in CompanyVerificationService._addCertificateToCompanyVerification'
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        'AccessToken is required in CompanyVerificationService.addCertificateToCompanyVerification'
+        'session is required in CompanyVerificationService._addCertificateToCompanyVerification'
       );
 
     if (!certificateID)
       throw new Error(
-        'CertificateID is required in CompanyVerificationService.addCertificateToCompanyVerification'
+        'CertificateID is required in CompanyVerificationService._addCertificateToCompanyVerification'
       );
 
     let data = {
       files: [certificateID],
     };
 
-    let header = {
-      'Content-Type': 'application/json',
-      Authorization: 'Token ' + accessToken,
-    };
-
-    return this.patch(
-      this.getCompanyVerificationPath(accountname),
-      header,
-      data
-    );
+    return this.patch({
+      endpoint: this.getCompanyVerificationPath(accountname),
+      data,
+      session
+    });
   }
 
-  async uploadCompanyCertificate(accountname, accessToken, certificateFile) {
+  async uploadCompanyCertificate(accountname, session, certificateFile) {
     /* Upload certificate file and associate to the verification of the company */
 
     if (!accountname)
@@ -74,9 +67,9 @@ export default class CompanyVerificationService extends RequestService {
         'accountname is required in CompanyVerificationService.uploadCompanyCertificate'
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        'AccessToken is required in CompanyVerificationService.uploadCompanyCertificate'
+        'session is required in CompanyVerificationService.uploadCompanyCertificate'
       );
 
     if (!certificateFile)
@@ -86,15 +79,14 @@ export default class CompanyVerificationService extends RequestService {
 
     const File = await this._fileService.uploadFile(
       certificateFile,
-      accessToken
-    );
-    const verification = await this.addCertificateToCompanyVerification(
-      accountname,
-      accessToken,
-      File.id
+      session
     );
 
-    return verification;
+    return this._addCertificateToCompanyVerification(
+      accountname,
+      session,
+      File.id
+    );
   }
 
   verifiyUserAccount(validationToken) {
@@ -107,10 +99,9 @@ export default class CompanyVerificationService extends RequestService {
       token: validationToken,
     };
 
-    return this.post(
-      this.verifyAccountPath,
-      { 'Content-Type': 'application/json' },
+    return this.post({
+      endpoint: this.verifyAccountPath,
       data
-    );
+    });
   }
 }

@@ -2,7 +2,10 @@
     export let status;
     export let error;
 
-    if( error.message.includes("404") ) status = 404;
+    if( error.message.name === 'RequestError' )
+        status = 500;
+    else if( error.message.includes("404") ) 
+        status = 404;
 
     const DEV = (process.env.NODE_ENV === 'development');
 </script>

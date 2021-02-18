@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import MainBanner from "../../components/LandingPage/MainBanner.svelte";
   import FeatureSection from "../../components/LandingPage/FeatureSection.svelte";
   import ContactSection from "../../components/LandingPage/ContactSection.svelte";
@@ -11,6 +11,7 @@
   export let authenticationContainerState = "signup";
   export let homeAuthenticationOpen = false;
   let homeAuthenticationMediaQuery;
+  let browserDocument = null;
 
   onMount(async () => {
     homeAuthenticationMediaQuery = window.matchMedia("(min-width: 1000px)");
@@ -22,7 +23,13 @@
       "change",
       toggleHomeAuthenticationDisplay
     );
-    document.onscroll = toggleHomeAuthenticationDisplay;
+    browserDocument = document;
+    browserDocument.onscroll = toggleHomeAuthenticationDisplay;
+  });
+
+  onDestroy(() => {
+    if( browserDocument )
+      browserDocument.body.style.overflow = "scroll";
   });
 
   function toggleHomeAuthenticationDisplay() {
@@ -37,11 +44,11 @@
     !homeAuthenticationMediaQuery.matches &&
     homeAuthenticationOpen
   )
-    document.body.style.overflow = "hidden";
+    browserDocument.body.style.overflow = "hidden";
 
   const closeHomeAuthentication = () => {
     homeAuthenticationOpen = false;
-    document.body.style.overflow = "scroll";
+    browserDocument.body.style.overflow = "scroll";
   };
 </script>
 

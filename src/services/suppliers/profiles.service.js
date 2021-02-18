@@ -10,16 +10,14 @@ export default class ProfilesService extends RequestService {
        return `suppliers/${accountname}/profile/`;
     }
 
-    getSupplierProfile( accountname, accessToken ) {
+    getSupplierProfile( accountname, session = {} ) {
         if( !accountname ) 
             throw new Error("accountname is required in ProfilesService.getSupplierProfile");
 
-        let headers = {'Content-Type': 'application/json'}
-
-        if( accessToken )
-            headers['Authorization'] = 'Token ' + accessToken;
-
-        return this.get(this.getSupplierProfilePath(accountname), headers, null, null);
+        return this.get({
+            endpoint: this.getSupplierProfilePath(accountname),
+            session
+        });
     }
 
 }

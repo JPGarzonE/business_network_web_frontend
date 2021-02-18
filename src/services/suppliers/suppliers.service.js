@@ -8,67 +8,67 @@ export default class SuppliersService extends RequestService {
         this._locationService = new LocationService();
     }
 
-    get baseHeader() {
-        return {
-            'Content-Type': 'application/json'
-        }
-    }
-
-    get authPrefix() {
-        return "Token";
-    }
-
     getSuppliersPath( accountname ) {
-        return `/suppliers/${accountname}/`;
+        if( accountname )
+            return `/suppliers/${accountname}/`;
+        else
+            return '/suppliers/';
+    }
+
+    getSuppliers( {limit = null, offset = null} ) {
+        let params = {};
+
+        if( limit ) params.limit = limit;
+        if( offset ) params.offset = offset;
+
+        return this.get({
+            endpoint: this.getSuppliersPath(),
+            params
+        });
     }
 
     getSupplier( accountname ) {
         if( !accountname )
             throw new Error("accountname is required in SupplierService.getSupplier");
 
-        const Headers = {...this.baseHeader};
-
-        return this.get( 
-            this.getSuppliersPath(accountname),
-            Headers,
-            null
-        );
+        return this.get({
+            endpoint: this.getSuppliersPath(accountname)
+        });
     }
 
     getSupplierSummary( accountname ) {
         if( !accountname )
             throw new Error("accountname is required in SupplierService.getSupplierSummary");
 
-        const Headers = {...this.baseHeader};
+        const endpoint = this.getSuppliersPath(accountname) + 'summary/';
 
-        const RequestURL = this.getSuppliersPath(accountname) + 'summary/';
-
-        return this.get( RequestURL, Headers, null );
+        return this.get({
+            endpoint
+        });
     }
 
-    async updateSupplierSummary( accountname, saleLocationsToDelete, summaryData, accessToken ) {
+    async updateSupplierSummary( accountname, saleLocationsToDelete, summaryData, session ) {
         if( !accountname )
             throw new Error("accountname is required in SupplierService.updateSupplierSummary");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in SupplierService.updateSupplierSummary");
+        if( !session )
+            throw new Error("session is required in SupplierService.updateSupplierSummary");
 
-        const Headers = {
-            ...this.baseHeader,
-            Authorization: `${this.authPrefix} ${accessToken}`
-        }
-
-        const RequestURL = this.getSuppliersPath(accountname) + 'summary/';
+        const endpoint = this.getSuppliersPath(accountname) + 'summary/';
 
         for( let i = 0; i < saleLocationsToDelete.length; i++) {
             await this._locationService.deleteSupplierSaleLocation(
                 accountname,
                 saleLocationsToDelete[i],
-                accessToken
+                session
             )
         }
 
-        return this.patch( RequestURL, Headers, summaryData );
+        return this.patch({
+            endpoint,
+            data: summaryData,
+            session
+        });
     }
 
 }

@@ -1,6 +1,8 @@
 <script>
-    import { stores } from "@sapper/app";
-    import { GetRoute as GetRootRoute } from  '../../routes/index.svelte';
+    import { goto, stores } from "@sapper/app";
+    import { getContext, hasContext } from "svelte";
+    import AuthService from '../../services/authentication/auth.service.js';
+    import { GetRoute as GetRootRoute } from '../../routes/index.svelte';
     import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
     import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
     import ProfileIcon from "../ProfileIcon/ProfileIcon.svelte";
@@ -8,12 +10,20 @@
     import ChevronDown from "svelte-material-icons/ChevronDown.svelte";
     import ChevronUp from "svelte-material-icons/ChevronUp.svelte";
     import PencilOutline from "svelte-material-icons/PencilOutline.svelte";
-    import { deleteCookie } from "../../utils/cookie.js";
     import { _ } from 'svelte-i18n';
 
     export let logoSrc;
 
+    const authService = new AuthService();
     const { session, page } = stores();
+
+    let activeEditProfileOption = true;
+    if( hasContext("activeEditProfileOption") )
+      activeEditProfileOption = getContext("activeEditProfileOption")
+
+    let activeSignOutOption = true;
+    if( hasContext("activeSignOutOption") )
+      activeSignOutOption = getContext("activeSignOutOption");
 
     let displayMenu = false;
     let actualPath = null;
@@ -40,19 +50,16 @@
     else if( companyIsBuyer )
         sessionProfilePath = GetBuyerProfileRoute(sessionCompanyAccountname);
 
-    let gotoProfile = () => {
+    let gotoProfile = async () => {
         if( sessionIsAuthenticated ) {
             document.body.style.cursor = "wait";
-            location.href = sessionProfilePath;
+            await goto(sessionProfilePath)
             document.body.style.cursor = "auto";
         }
     }
-    
+
     async function closeSession() {
-        deleteCookie("JPGE");
-        deleteCookie("access_accountname");
-        /* goto isn't used because the session has to be
-        closed from the server and goto happens on the client */
+        await authService.closeSession( $session );
         location.href = GetRootRoute();
     }
 </script>
@@ -73,17 +80,19 @@
 
     {#if sessionIsAuthenticated}
         <div class="ProfileIconMenu-dropdown" class:hide={!displayMenu} >
-            {#if actualPath !== sessionProfilePath}
+            {#if activeEditProfileOption && actualPath !== sessionProfilePath}
             <div class="ProfileIconMenu-option" on:click={gotoProfile}>
                 <span>{$_('profileIconMenu.editProfile')}</span>
                 <PencilOutline size=16 color="var(--secondary-text-color)" />
             </div>
             {/if}
 
+            {#if activeSignOutOption}
             <div class="ProfileIconMenu-option" on:click={closeSession}>
                 <span>{$_('profileIconMenu.signOut')}</span>
                 <ArrowCollapseRight size=16 color="var(--secondary-text-color)" />
             </div>
+            {/if}
         </div>
     {/if}
 </div>
@@ -96,6 +105,7 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    margin-left: 36px;
   }
 
   .ProfileIconMenu {

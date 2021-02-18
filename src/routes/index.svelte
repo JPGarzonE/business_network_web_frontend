@@ -13,9 +13,12 @@
 </script>
 
 <script>
+  import { setContext } from "svelte";
   import Header from "../components/Header.svelte";
   import Home from "../containers/Home/Home.svelte";
   import Footer from "../components/Footer.svelte";
+
+  setContext("activeMarketOption", false);
 
   let homeAuthenticationOpen = false;
   let authenticationContainerState = "signup";

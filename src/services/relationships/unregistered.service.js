@@ -6,33 +6,25 @@ export default class UnregisteredRelationshipService extends RequestService {
     super();
   }
 
-  get baseHeader() {
-    return {
-      'Content-Type': 'application/json'
-    }
-  }
-
-  get authPrefix() {
-    return "Bearer";
-  }
-
   getCompanyUnregisteredRelationshipsPath(accountname) {
     return `/companies/${accountname}/unregistered-relationships/`;
   }
 
-  getCompanyUnregisteredRelationships( accountname ) {
+  getCompanyUnregisteredRelationships( accountname, {limit = null, offset = null} ) {
     if ( !accountname )
       throw new Error(
         'accountname is required in UnregisteredRelationshipService.getCompanyUnregisteredRelationships'
       );
 
-    const Headers = {...this.baseHeader};
+    let params = {};
 
-    return this.get(
-      this.getCompanyUnregisteredRelationshipsPath( accountname ),
-      Headers,
-      null
-    );
+    if( limit ) params.limit = limit;
+    if( offset ) params.offset = offset;
+
+    return this.get({
+      endpoint: this.getCompanyUnregisteredRelationshipsPath(accountname),
+      params
+    });
   }
 
   getCompanyUnregisteredRelationshipByID( accountname, unregisteredRelationshipID ) {
@@ -46,29 +38,27 @@ export default class UnregisteredRelationshipService extends RequestService {
         'unregisteredRelationshipID is required in UnregisteredRelationshipService.getCompanyUnregisteredRelationshipByID'
       );
 
-    const Headers = {...this.baseHeader}
-
-    const RequestUrl = this.getCompanyUnregisteredRelationshipsPath( accountname ) 
+    const endpoint = this.getCompanyUnregisteredRelationshipsPath( accountname ) 
       + unregisteredRelationshipID + '/';
 
-    return this.get( RequestUrl, Headers, null );
+    return this.get( { endpoint } );
   }
 
-  createUnregisteredRelationship( companyAccountname, accessToken, unregisteredCompanyData, relationshipType ) {
+  createUnregisteredRelationship( companyAccountname, session, unregisteredCompanyData, relationshipType ) {
 
     if (!companyAccountname)
       throw new Error(
         'companyAccountname is required in UnregisteredRelationshipService.createUnregisteredRelationship'
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        'accessToken is required in UnregisteredRelationshipService.createUnregisteredRelationship'
+        'session is required in UnregisteredRelationshipService.createUnregisteredRelationship'
       );
 
     if (!unregisteredCompanyData.name)
       throw new Error(
-        'name is required in UnregisteredRelationshipService.createUnregisteredRelationship'
+        'unregisteredCompanyData name is required in UnregisteredRelationshipService.createUnregisteredRelationship'
       );
 
     if (!relationshipType)
@@ -76,28 +66,23 @@ export default class UnregisteredRelationshipService extends RequestService {
         'relationshipType is required in UnregisteredRelationshipService.createUnregisteredRelationship'
       );
 
-    const headers = {
-      ...this.baseHeader,
-      Authorization: `${this.authPrefix} ${accessToken}`,
-    };
-
     const RelationshipData = {
       unregistered: {
         ...unregisteredCompanyData,
       },
-      type: relationshipType,
+      type: relationshipType
     };
 
-    return this.post(
-      this.getCompanyUnregisteredRelationshipsPath( companyAccountname ) ,
-      headers,
-      RelationshipData
-    );
+    return this.post({
+      endpoint: this.getCompanyUnregisteredRelationshipsPath( companyAccountname ),
+      data: RelationshipData,
+      session
+    });
   }
 
   updateUnregisteredRelationshipType(
     companyAccountname,
-    accessToken,
+    session,
     relationshipID,
     relationshipType
   ) {
@@ -106,9 +91,9 @@ export default class UnregisteredRelationshipService extends RequestService {
         'companyAccountname is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        'accessToken is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
+        'session is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
       );
 
     if (!relationshipID)
@@ -121,21 +106,20 @@ export default class UnregisteredRelationshipService extends RequestService {
         'relationshipType is required in UnregisteredRelationshipService.updateUnregisteredRelationshipType'
       );
 
-    const RequestUrl = this.getCompanyUnregisteredRelationshipsPath( companyAccountname ) + relationshipID + '/';
-
-    const headers = {
-      ...this.baseHeader,
-      Authorization: `${this.authPrefix} ${accessToken}`,
-    };
+    const endpoint = this.getCompanyUnregisteredRelationshipsPath( companyAccountname ) + relationshipID + '/';
 
     const RelationshipData = {
       type: relationshipType,
     };
 
-    return this.patch( RequestUrl, headers, RelationshipData );
+    return this.patch({
+      endpoint,
+      data: RelationshipData,
+      session
+    });
   }
 
-  deleteUnregisteredRelationship(companyAccountname, relationshipID, accessToken) {
+  deleteUnregisteredRelationship(companyAccountname, relationshipID, session) {
     if (!companyAccountname)
       throw new Error(
         'companyAccountname is required in UnregisteredRelationshipService.deleteUnregisteredRelationship'
@@ -146,19 +130,17 @@ export default class UnregisteredRelationshipService extends RequestService {
         'relationshipID is required in UnregisteredRelationshipService.deleteUnregisteredRelationship'
       );
 
-    if (!accessToken)
+    if (!session)
       throw new Error(
-        'accessToken is required in UnregisteredRelationshipService.deleteUnregisteredRelationship'
+        'session is required in UnregisteredRelationshipService.deleteUnregisteredRelationship'
       );
 
-    const headers = {
-      ...this.baseHeader,
-      Authorization: `${this.authPrefix} ${accessToken}`,
-    };
+    const endpoint = this.getCompanyUnregisteredRelationshipsPath(companyAccountname) 
+      + relationshipID + '/';
 
-    return this.delete(
-      this.getCompanyUnregisteredRelationshipsPath(companyAccountname) + '/' + relationshipID,
-      headers
-    );
+    return this.delete({
+      endpoint,
+      session
+    });
   }
 }

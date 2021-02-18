@@ -6,53 +6,36 @@ export default class ImageService extends RequestService {
         super();
     }
 
-    get imagesPath(){
-        return "/images/";
+    getImagesPath( id ){
+        if( id )
+            return `/images/${id}/`;
+        else
+            return "/images/";
     }
 
-    get imagesURL(){
-        const RequestURL = this.URL;
-        const imagesPath = this.imagesPath;
-        RequestURL.pathname = imagesPath.startsWith("/") ? imagesPath : "/" + imagesPath;
-        return RequestURL;
-    }
-
-    async uploadImage( image, accessToken ){
+    async uploadImage( image, session ){
         if( !image )
             throw new Error("Image is required in ImageService.uploadUserImage");
 
-        if( !accessToken )
-            throw new Error("AccessToken is required in ImageService.uploadUserImage");
+        if( !session )
+            throw new Error("session is required in ImageService.uploadUserImage");
 
         let data = new FormData()
         data.append('image', image);
 
-        const headers = {
-            'Authorization': 'Token ' + accessToken
-        }
-
-        return fetch( this.imagesURL, {
-            method: 'POST',
-            headers: headers,
-            body: data
-        })
-        .then( (response)=>{
-            return response.json().then( data => {
-                if( response.ok )
-                    return data
-                else
-                    throw new RequestError({
-                        status: response.status,
-                        message: data
-                    });
-            })
+        return this.post({
+            endpoint: this.getImagesPath(),
+            data,
+            session
         });
     }
 
     getImageById( imageID ){
         if( !imageID )
             throw new Error("Image ID is required in ImageService.getImageById");
-        
-        return this.get( this.imagesPath, {'Content-Type': 'application/json'}, null );
+
+        return this.get({
+            endpoint: this.getImagesPath( imageID )
+        });
     }
 }

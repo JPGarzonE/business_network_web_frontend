@@ -20,83 +20,74 @@ export default class DNAService extends RequestService{
         if( !accountname )
             throw new Error("accountname is required in DNAService.getSupplierDNA");
 
-        return this.get( this.getSupplierDNAPath( accountname ), {'Content-Type': 'application/json'}, null );
+        return this.get({
+            endpoint: this.getSupplierDNAPath( accountname )
+        });
     }
 
-    getDnaelementById( dnaelementID, accessToken ){
+    getDnaelementById( dnaelementID ){
         if( !dnaelementID )
             throw new Error("dnaelementID is required in DNAService.getDnalementById");
-    
-        if( !accessToken )
-            throw new Error("accessToken is required in DNAService.getDnaelementById");
-        
-        let headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
 
-        const RequestUrl = this.DNAPath + dnaelementID + "/";
+        const endpoint = this.DNAPath + dnaelementID + "/";
 
-        return this.get( RequestUrl, headers, null );
+        return this.get( { endpoint } );
     }
 
-    createSupplierDnaelement( accountname, dnaelementData, accessToken ){
+    createSupplierDnaelement( accountname, dnaelementData, session ){
         if( !accountname )
             throw new Error("accountname is required in DNAService.createSupplierDnaelement");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in DNAService.createSupplierDnaelement");
+        if( !session )
+            throw new Error("session is required in DNAService.createSupplierDnaelement");
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
-
-        return this.post(this.getSupplierDNAPath(accountname), headers, dnaelementData );
+        return this.post({
+            endpoint: this.getSupplierDNAPath(accountname),
+            data: dnaelementData,
+            session
+        });
     }
 
-    async createSupplierDnaelementWithImage( accountname, image, dnaelementData, accessToken ){
+    async createSupplierDnaelementWithImage( accountname, image, dnaelementData, session ){
         if( !accountname )
             throw new Error("accountname is required in DNAService.createSupplierDnaelementWithImage");
 
         if( !image )
             throw new Error("logo is required in DNAService.createSupplierDnaelementWithImage");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in DNAService.createSupplierDnaelementWithImage");
+        if( !session )
+            throw new Error("session is required in DNAService.createSupplierDnaelementWithImage");
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+        const Image = await this._imageService.uploadImage( image, session );
+        dnaelementData.image_id = Image.id;
 
-        const Image = await this._imageService.uploadImage( image, accessToken );
-        dnaelementData.media_id = Image.id;
-
-        return this.post( this.getSupplierDNAPath(accountname), headers, dnaelementData );
+        return this.post({
+            endpoint: this.getSupplierDNAPath(accountname),
+            data: dnaelementData,
+            session
+        });
     }
 
-    updateSupplierDnaelement( accountname, dnaelementID, dnaelementData, accessToken ){
+    updateSupplierDnaelement( accountname, dnaelementID, dnaelementData, session ){
         if( !accountname )
             throw new Error("accountname is required in DNAService.updateSupplierDnaelement");
 
         if( !dnaelementID )
             throw new Error("dnaelmentID is required in DNAService.updateSupplierDnaelement");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in DNAService.updateSupplierDnaelement");
+        if( !session )
+            throw new Error("session is required in DNAService.updateSupplierDnaelement");
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+        const endpoint = this.getSupplierDNAPath(accountname) + dnaelementID + "/";
 
-        const RequestUrl = this.getSupplierDNAPath(accountname) + dnaelementID + "/";
-
-        return this.patch(RequestUrl, headers, dnaelementData );
+        return this.patch({
+            endpoint,
+            data: dnaelementData,
+            session
+        });
     }
 
-    async updateSupplierDnaelementWithImage( accountname, dnaelementID, image, dnaelementData, accessToken ){
+    async updateSupplierDnaelementWithImage( accountname, dnaelementID, image, dnaelementData, session ){
         if( !accountname )
             throw new Error("accountname is required in DnaelementService.updateSupplierDnaelementWithImage");
 
@@ -106,20 +97,19 @@ export default class DNAService extends RequestService{
         if( !image )
             throw new Error("logo is required in DnaelementService.updateSupplierDnaelementWithImage");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in DnaelementService.updateSupplierDnaelementWithImage");
+        if( !session )
+            throw new Error("session is required in DnaelementService.updateSupplierDnaelementWithImage");
 
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token ' + accessToken
-        }
+        const endpoint = this.getSupplierDNAPath(accountname) + dnaelementID + "/";
 
-        const RequestUrl = this.getSupplierDNAPath(accountname) + dnaelementID + "/";
+        const Image = await this._imageService.uploadImage( image, session );
+        dnaelementData.image_id = Image.id;
 
-        const Image = await this._imageService.uploadImage( image, accessToken );
-        dnaelementData.media_id = Image.id;
-
-        return this.patch( RequestUrl, headers, dnaelementData );
+        return this.patch({
+            endpoint,
+            data: dnaelementData,
+            session
+        });
     }
 
     deleteDnaelement(){

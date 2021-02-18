@@ -120,7 +120,7 @@
         $session.company_accountname,
         newMediaFile,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return certificationData;
@@ -128,7 +128,7 @@
       const certificationData = await certificationsService.createSupplierCertificationElement(
         $session.company_accountname,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return certificationData;
@@ -144,7 +144,7 @@
         certificationEditData.id,
         newMediaFile,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return certificationData;
@@ -153,7 +153,7 @@
         $session.company_accountname,
         certificationEditData.id,
         dataToSubmit,
-        $session.accessToken
+        $session
       );
 
       return certificationData;

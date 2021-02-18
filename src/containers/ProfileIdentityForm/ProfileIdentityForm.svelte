@@ -53,7 +53,7 @@
 
 	$: validBeforeSubmit = displayNameValidation.isValid && industryValidation.isValid &&
 		countryValidation.isValid && cityValidation.isValid && 
-		addressValidation.isValid && saleLocationsValidation.isValid;
+    addressValidation.isValid && saleLocationsValidation.isValid;
   
   async function submit(event) {
     const Target = event.target;
@@ -67,6 +67,7 @@
         afterSubmit(supplierSummary);
       }
     } catch (e) {
+      console.log("Error: ", e);
       const error = e.message;
       submitErrorMessage = "";
       let existErrorField = false;
@@ -83,6 +84,7 @@
 
       if (!existErrorField && !error)
         submitErrorMessage = $_("profileIdentityForm.invalidData");
+      else if (e.status === 401) submitErrorMessage = error.detail;
       else if (!existErrorField) submitErrorMessage = error;
     } finally {
       Target.style.opacity = 1;
@@ -92,7 +94,7 @@
 
   async function submitProfileIdentity() {
 
-		const supplierService = new SuppliersService();
+    const supplierService = new SuppliersService();
 		
     let dataToSubmit = {
 			display_name: displayName,
@@ -107,7 +109,7 @@
       $session.company_accountname,
       saleLocationsToDelete,
       dataToSubmit,
-      $session.accessToken
+      $session
     );
 
     return SupplierSummary;

@@ -12,7 +12,7 @@
 
     const profileData = await profilesService.getBuyerProfile(
       accountname,
-      session.accessToken
+      session
     );
 
     return {

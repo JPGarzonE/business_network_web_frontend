@@ -1,28 +1,25 @@
 <script context="module">
     import ShowcaseService from "../services/market/showcase.service.js";
-    import { GetRoute as GetRootRoute } from './index.svelte';
     import { _ } from "svelte-i18n";
 
     export const GetRoute = () => {
         return `/market/`;
     }
 
-  export async function preload(page, session) {
-    if (session.authenticated) {
-      const showcaseService = new ShowcaseService();
+    export async function preload(page, session) {
+        const showcaseService = new ShowcaseService();
 
-      const data = await showcaseService.getShowcase(session.accessToken);
-      return {
-          showcase: data
-      };
+        session = session.authenticated ? session : {};
+
+        const data = await showcaseService.getShowcase( session );
+        return {
+            showcase: data
+        };
     }
-    else {
-        return this.redirect(301, GetRootRoute());
-    }
-  }
 </script>
 
 <script>
+  import { setContext } from "svelte";
   import Header from "../components/Header.svelte";
   import MarketBanner from "../components/Market/MarketBanner.svelte";
   import ProductSearch from "../containers/Search/ProductSearch/ProductSearch.svelte";
@@ -30,6 +27,8 @@
   import Footer from "../components/Footer.svelte";
 
   export let showcase;
+
+  setContext("activeMarketOption", false);
 
   let showcaseResults = [];
   let searchQuery = "";

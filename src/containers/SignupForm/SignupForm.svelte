@@ -1,38 +1,37 @@
 <script>
-  import { goto } from "@sapper/app";
+  import { goto, stores } from "@sapper/app";
   import { GetRoute as GetLoginRoute } from '../../routes/login.svelte';
-  import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
-  import { INDUSTRIES } from "../../store/store.js";
-  import SignupService from "../../services/authentication/signup.service.js";
+  import { GetRoute as GetBuyerProfileRoute } from '../../routes/profile/buyer/[accountname].svelte';
+	import { GetRoute as GetSupplierProfileRoute } from '../../routes/profile/supplier/[accountname].svelte';
+	import { GetRoute as GetCompanySelectRoleRoute } from '../../routes/company/select-role.svelte';
+  import AuthService from "../../services/authentication/auth.service.js";
   import StepsCarousel from "../../components/StepsCarousel/StepsCarousel.svelte";
   import Textfield from "@smui/textfield";
   import HelperText from "@smui/textfield/helper-text";
-  import Select, { Option } from "@smui/select";
-  import SelectHelperText from "@smui/select/helper-text";
   import CheckBox from "@smui/checkbox";
-  import FileUploadInput from "../../components/FileUploadInput/FIleUploadInput.svelte";
   import { 
     validateString, 
     validateEmailPattern,  
     validatePassword, 
     validatePasswordConfirmation, 
-    validateNIT
+    validateLegalIdentifier
   } 
   from "../../validators/formValidators.js";
-  import { setCookie } from "../../utils/cookie.js";
   import { _ } from "svelte-i18n";
 
   export let loginRedirectionAction = async () => await goto(GetLoginRoute());
+  export let onSignup = () => false;
   export let backgroundColor; 
   export let activeColor;
   export let inactiveColor;
   export let formContentColor;
   export let secondaryContentColor;
 
-  const signupService = new SignupService();
+  const authService = new AuthService();
+  const { session } = stores();
 
   const fields = ['full_name', 'email', 'name', 'legal_identifier', 
-      'industry', 'password', 'password_confirmation'];
+    'password', 'password_confirmation'];
   
   let steps = { 1: null, 2: null }
   let actualStep = 1;
@@ -45,21 +44,18 @@
   let passwordConfirmation = '';
   let companyName = '';
   let legalIdentifier = '';
-  let industry = '';
-  let certificate = null; // File
 
   $: fullNameValidation = validateString(fullName, 3, 50, true, "Nombre completo válido");
   $: emailValidation = validateEmailPattern( email );
   $: passwordValidation = validatePassword( password );
   $: passwordConfirmationValidation = validatePasswordConfirmation( password, passwordConfirmation );
   $: companyNameValidation = validateString(companyName, 3, 50, true, "Nombre de la empresa válido");
-  $: legalIdentifierValidation = validateNIT( legalIdentifier );
-  $: industryValidation = validateString(industry, 3, 50, true, "La industria es válida");
+  $: legalIdentifierValidation = validateLegalIdentifier( legalIdentifier );
 
   $: firstStepValid = fullNameValidation.isValid && emailValidation.isValid 
       && passwordValidation.isValid && passwordConfirmationValidation.isValid;
-  $: validBeforeSubmit = firstStepValid && companyNameValidation.isValid && legalIdentifierValidation.isValid 
-      && industryValidation.isValid && termsAndConditionsSelected;
+  $: validBeforeSubmit = firstStepValid && companyNameValidation.isValid 
+      && legalIdentifierValidation.isValid && termsAndConditionsSelected;
 
   
   async function submitSignup( event ) {
@@ -71,24 +67,33 @@
       if( !termsAndConditionsSelected ) throw new Error("Acepta los terminos y condiciones");
       else if( !validBeforeSubmit ) throw new Error();
 
-      let userData = {
+      let signupData = {
           email: email, full_name: fullName,
-          password: password, password_confirmation: passwordConfirmation,
-          name: companyName, legal_identifier: legalIdentifier, industry: industry
+          name: companyName, legal_identifier: legalIdentifier,
+          password: password, password_confirmation: passwordConfirmation
       }
 
-      let data;
-      if( certificate ) data = await signupService.signupSupplierWithCertificate( userData, certificate );
-      else data = await signupService.signupSupplier( userData );
+      const data = await authService.signupCompany( signupData );
 
-      let accountname = data.company.accountname;
+      let accountname = data.access_company.accountname;
+      let isBuyer = data.access_company.is_buyer;
+      let isSupplier = data.access_company.is_supplier;
 
-      setCookie("JPGE", data.access_token, 1);
-      setCookie("access_username", accountname, 1);
+      authService.setSession({
+        session: $session,
+        tokens: data.tokens,
+        user: data.user,
+        access_company: data.access_company
+      })
       
-      // Here we not use goto because the server has to render an authenticated content after login
-      // With goto this not happen because the render acts only on the client
-      location.href = GetSupplierProfileRoute(accountname);
+      if( isSupplier )
+				await goto( GetSupplierProfileRoute(accountname) );
+			else if( isBuyer )
+				await goto( GetBuyerProfileRoute(accountname) );
+			else
+        await goto( GetCompanySelectRoleRoute(accountname) );
+      
+      onSignup();
     }
     catch(e) {
       console.log("error: ", e);
@@ -111,8 +116,8 @@
       if (!existErrorField && !error)
         submitErrorMessage = $_("signUpForm.invalidData");
       else if (!existErrorField) {
-        if( error['non_field_errors'] )
-          submitErrorMessage = error['non_field_errors'];
+        if( e.status === 401 )
+          submitErrorMessage = error.detail;
         else
           submitErrorMessage = error;
       }
@@ -308,33 +313,6 @@
         </HelperText>
       </div>
 
-      <div class="form-group">
-        <Select bind:value={industry} label="Industria*" variant="outlined">
-          <Option value="" />
-          {#each INDUSTRIES as industryOption}
-            <Option value={industryOption} selected={industry == industryOption}
-              >{industryOption}</Option
-            >
-          {/each}
-        </Select>
-
-        <SelectHelperText>{industryValidation.message}</SelectHelperText>
-      </div>
-
-      <div class="form-group" style="margin-top:1.6em;">
-        <FileUploadInput
-          name="Certificate"
-          message={$_("signUpForm.uploadCertificate")}
-          inputColor={activeColor}
-          acceptFiles={["application/pdf"]}
-          bind:value={certificate}
-        />
-        <p class="SignupForm-certificate-helper" style="color:{activeColor}">
-          {$_("signUpForm.uploadCertificateOfExistence")} <br />
-          {$_("signUpForm.ifYouDoNotHaveItAtTheMoment")}
-        </p>
-      </div>
-
       <div class="SignupForm-terms">
         <CheckBox bind:checked={termsAndConditionsSelected} />
         <p style="color:{secondaryContentColor}">
@@ -432,20 +410,13 @@
     text-decoration: none;
     letter-spacing: 0.22px;
   }
-  .SignupForm-certificate-helper {
-    width: 100%;
-    margin-left: 1em;
-    margin-top: 0.5em;
-    font-size: 0.8em;
-    letter-spacing: 0.22px;
-    color: var(--error-color);
-  }
   .SignupForm-terms {
     display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 27px;
   }
   .SignupForm-terms p {
-    margin-top: 0.7em;
     font-size: 0.8em;
     letter-spacing: 0.22px;
   }

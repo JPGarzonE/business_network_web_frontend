@@ -38,6 +38,12 @@
         "talkToOurSalesConsultantToCOntact": "Hable con nuestros asesores de venta y lo contactaremos por usted.",
         "thisUserDoNotHaveRegisteredContactNumber": "Este usuario no tiene asignado un número de contacto."
     },
+    "company:select-role": {
+        "welcomeTitle": "¡Bienvenido a Conecty!",
+        "selectSubtitle": "¿Qué perfil estás interesado en crear primero?",
+        "buyerOption": "Comprador",
+        "supplierOption": "Proveedor"
+    },
     "contactUsButton": {
         "getInTouch": "Contáctanos"
     },
@@ -252,7 +258,7 @@
         "password": "Contraseña*",
         "personalData": "Información personal",
         "signUpInformation": "Datos básicos personales",
-        "taxID": "NIT*",
+        "taxID": "Numero de identificación legal*",
         "termsAndConditions": "términos y condiciones",
         "theDataProtectionPolicy": "la política de protección de datos",
         "uploadCertificate": "Subir certificado",

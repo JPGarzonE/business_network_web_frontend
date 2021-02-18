@@ -6,27 +6,23 @@ export default class RelationshipService extends RequestService{
         super();
     }
 
-    get baseHeader() {
-        return {
-            'Content-Type': 'application/json'
-        }
-    }
-
-    get authPrefix() {
-        return "Bearer";
-    }
-
     getCompanyRelationshipsPath( accountname ){
         return `/companies/${accountname}/relationships/`;
     }
 
-    getCompanyRelationships( accountname ){
+    getCompanyRelationships( accountname, {limit = null, offset = null} ){
         if( !accountname )
             throw new Error("accountname is required in RelationshipService.getCompanyRelationships");
 
-        const Headers = {...this.baseHeader};
+        let params = {};
 
-        return this.get( this.getCompanyRelationshipsPath(accountname), Headers, null );
+        if( limit ) params.limit = limit;
+        if( offset ) params.offset = offset;
+
+        return this.get({
+            endpoint: this.getCompanyRelationshipsPath(accountname),
+            params
+        });
     }
 
     getCompanyRelationship( accountname, relationshipID ){
@@ -36,11 +32,10 @@ export default class RelationshipService extends RequestService{
         if( !relationshipID )
             throw new Error("Relationship ID is required in RelationshipService.getCompanyRelationship");
 
-        const Headers = {...this.baseHeader};
 
-        const RequestUrl = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
+        const endpoint = this.getCompanyRelationshipsPath(accountname) + relationshipID + "/";
 
-        return this.get( RequestUrl, Headers, null );
+        return this.get( { endpoint } );
     }
 
     getCompanyRelationshipFilteredByAddressedCompany( accountname, addressedCompanyID ){
@@ -50,53 +45,49 @@ export default class RelationshipService extends RequestService{
         if( !addressedCompanyID )
             throw new Error("addressedCompanyID is required in RelationshipService.getCompanyRelationshipFilteredByAddressedCompany");
 
-        const Headers = {...this.baseHeader};
-
-        return this.get( 
-            this.getCompanyRelationshipsPath(accountname), 
-            Headers, 
-            {'addressed_id': addressedCompanyID} 
-        );
+        return this.get({
+            endpoint: this.getCompanyRelationshipsPath(accountname),
+            params: {
+                addressed_id: addressedCompanyID
+            }
+        });
     }
 
-    updateCompanyRelationship( accountname, relationshipID, relationshipData, accessToken ){
+    updateCompanyRelationship( accountname, relationshipID, relationshipData, session ){
         if( !accountname )
             throw new Error("accountname is required in RelationshipService.updateCompanyRelationship");
 
         if( !relationshipID )
             throw new Error("Relationship ID is required in RelationshipService.updateCompanyRelationship");
 
-        if( !accessToken )
-            throw new Error("accessToken is required in RelationshipService.updateCompanyRelationship");
+        if( !session )
+            throw new Error("session is required in RelationshipService.updateCompanyRelationship");
 
-        const Headers = {
-            ...this.baseHeader,
-            'Authorization': `${this.authPrefix} ${accessToken}`
-        }
+        const endpoint = `${this.getCompanyRelationshipsPath(accountname)}${relationshipID}/`;
 
-        const RequestUrl = `${this.getCompanyRelationshipsPath(accountname)}${relationshipID}/`;
-
-        return this.patch( RequestUrl, Headers, relationshipData );
+        return this.patch({
+            endpoint,
+            data: relationshipData,
+            session
+        });
     }
 
-    deleteCompanyRelationship( accountname, relationshipID, accessToken ){
+    deleteCompanyRelationship( accountname, relationshipID, session ){
         if( !accountname )
             throw new Error("accountname is required in RelationshipService.updateCompanyRelationship");
 
         if( !relationshipID )
             throw new Error("relationshipID is required in RelationshipService.updateCompanyRelationship");
         
-        if( !accessToken )
-            throw new Error("accessToken is required in RelationshipService.updateCompanyRelationship");
+        if( !session )
+            throw new Error("session is required in RelationshipService.updateCompanyRelationship");
 
-        const headers = {
-            ...this.baseHeader,
-            'Authorization': `${this.authPrefix} ${accessToken}`
-        }
+        const endpoint = `${this.getCompanyRelationshipsPath(accountname)}${relationshipID}/`;
 
-        const RequestUrl = `${this.getCompanyRelationshipsPath(accountname)}${relationshipID}/`;
-
-        return this.delete( RequestUrl, headers );
+        return this.delete({
+            endpoint,
+            session
+        });
     }
 
 }

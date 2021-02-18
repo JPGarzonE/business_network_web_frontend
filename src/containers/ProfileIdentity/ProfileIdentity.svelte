@@ -27,6 +27,7 @@
   principalLocation = principalLocation ? principalLocation : {};
 
   let editableMode = false;
+  industry = industry ? industry : '';
   $: address = principalLocation.address ? principalLocation.address : '';
   let principalLocationSubtitle;
 
@@ -89,7 +90,9 @@
       </div>
 
       <div class="ProfileIdentity-subheadline">
+        {#if industry}
         <p class="ProfileIdentity-industry">{industry}</p>
+        {/if}
       </div>
 
       <div class="ProfileIdentity-data">

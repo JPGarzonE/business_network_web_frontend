@@ -60,12 +60,12 @@
     id="certifications-list"
     beginningItemsNumber={certificationsList.length}
   >
-    {#each certificationsList as element}
+    {#each certificationsList as supplierCertificate}
       <CertificationCard
-        id={element.certificate.id}
-        media={element.certificate.logo}
-        name={element.certificate.name}
-        description={element.certificate.description}
+        id={supplierCertificate.id}
+        media={supplierCertificate.certificate.logo}
+        name={supplierCertificate.certificate.name}
+        description={supplierCertificate.certificate.description}
         onDelete={onDeleteCertification}
       />
     {:else}

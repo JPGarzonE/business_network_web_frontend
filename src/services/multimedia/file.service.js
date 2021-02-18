@@ -7,55 +7,37 @@ export default class FileService extends RequestService {
         super();
     }
 
-    get filesPath(){
-        return "/files/";
+    getFilesPath( id ){
+        if( id )
+            return `/files/${id}/`;
+        else
+           return "/files/";
     }
 
-    get filesURL(){
-        const RequestURL = this.URL;
-        const filesPath = this.filesPath;
-        RequestURL.pathname = filesPath.startsWith("/") ? filesPath : "/" + filesPath;
-        return RequestURL;
-    }
-
-    async uploadFile( file, accessToken ){
+    async uploadFile( file, session ){
         if( !file )
             throw new Error("File is required in FileService.uploadUserFile");
 
-        if( !accessToken )
-            throw new Error("AccessToken is required in FileService.uploadUserFile");
+        if( !session )
+            throw new Error("session is required in FileService.uploadUserFile");
 
         let data = new FormData();
         data.append('file', file);
-        data.append('purpose', 'Company comercial certificate');
 
-        const headers = {
-            'Authorization': 'Token ' + accessToken
-        }
-
-        return fetch( this.filesURL, {
-            method: 'POST',
-            headers: headers,
-            body: data
-        })
-        .then( async (response)=>{
-            return response.json().then( data => {
-                if( response.ok )
-                    return data
-                else
-                    throw new RequestError({
-                        status: response.status,
-                        message: data
-                    });
-            })
+        return this.post({
+            endpoint: this.getFilesPath(),
+            data,
+            session
         });
     }
 
     getFileById( fileID ){
         if( !fileID )
             throw new Error("File ID is required in FileService.getFileById");
-        
-        return this.get( this.filesPath, {'Content-Type': 'application/json'}, null );
+
+        return this.get({
+            endpoint: this.getFilesPath( fileID )
+        });
     }
 
 }

@@ -1,37 +1,37 @@
 <script>
-  import { onMount, afterUpdate, onDestroy } from "svelte";
-  import { _ } from "svelte-i18n";
-  import Pencil from "svelte-material-icons/PencilOutline.svelte";
-  import AddCert from "svelte-material-icons/ImagePlus.svelte";
+  import { onMount, afterUpdate, onDestroy } from 'svelte';
+  import { _ } from 'svelte-i18n';
+  import Pencil from 'svelte-material-icons/PencilOutline.svelte';
+  import AddCert from 'svelte-material-icons/ImagePlus.svelte';
 
   export let handleCancel;
   export let handlePrev;
 
   afterUpdate(async () => {
-    document.getElementsByTagName("body")[0].classList.add("noScroll");
+    document.getElementsByTagName('body')[0].classList.add('noScroll');
   });
   onDestroy(async () => {
-    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+    document.getElementsByTagName('body')[0].classList.remove('noScroll');
   });
   onMount(async () => {
     scrollToTargetAdjusted();
   });
 
   function scrollToTargetAdjusted() {
-    const btn = document.getElementById("RelationshipCreate");
-    const arrow = document.getElementById("arrowDesktopRelationShip");
+    const btn = document.getElementById('RelationshipCreate');
+    const arrow = document.getElementById('arrowDesktopRelationShip');
     const btnPosition = btn.getBoundingClientRect();
     const offset = arrow.getBoundingClientRect();
-    const offsetPosition = btnPosition.top - offset.top;
+    const offsetPosition = btnPosition.top - offset.top - 15;
     window.scrollBy({
       top: offsetPosition,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >{$_("onBoardingFifthStep.endTour")}</button
+  >{$_('onBoardingFifthStep.endTour')}</button
 >
 
 <img
@@ -49,10 +49,10 @@
         <Pencil size={60} color="white" />
       </span>
       <span class="Text Pencil-Text">
-        {$_("onBoardingFifthStep.editAndDelete")}
+        {$_('onBoardingFifthStep.editAndDelete')}
         <br />
         <span class="Text--description">
-          {$_("onBoardingFifthStep.clickToModifyOrDeletePrevieusData")}<span />
+          {$_('onBoardingFifthStep.clickToModifyOrDeletePrevieusData')}<span />
         </span></span
       >
     </div>
@@ -62,8 +62,8 @@
       </span>
       <div class="Text-Arrow-container">
         <span class="Text AddCert-Text">
-          {$_("onBoardingFifthStep.addYour")}<br />
-          {$_("onBoardingFifthStep.clients")}
+          {$_('onBoardingFifthStep.addYour')}<br />
+          {$_('onBoardingFifthStep.clients')}
           <br />
         </span>
         <img
@@ -75,14 +75,14 @@
       </div>
 
       <span class="Text--description">
-        {$_("onBoardingFifthStep.addPhotoAndDescription")}</span
+        {$_('onBoardingFifthStep.addPhotoAndDescription')}</span
       >
     </div>
   </div>
 </div>
 
 <style>
-  @import "/styles/button.css";
+  @import '/styles/button.css';
   .button--secondary {
     position: absolute;
     top: 10%;
@@ -112,16 +112,15 @@
     display: flex;
     justify-content: flex-end;
     height: 100%;
-    display: flex;
     align-items: center;
   }
   .Main-Container {
-    max-width: 1400px;
-    padding: 25px;
-    z-index: 20;
     display: flex;
     position: relative;
     justify-content: flex-end;
+    max-width: 1400px;
+    padding: 25px;
+    z-index: 20;
     height: 100%;
     margin-left: 140px;
   }
@@ -134,7 +133,9 @@
     left: -15px;
     bottom: 470px;
   }
-
+  .Second-Arrow {
+    margin-right: 10px;
+  }
   .Text {
     color: white;
     font-size: 24px;
@@ -153,10 +154,10 @@
   .Edit-Delete {
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
+    justify-content: center;
     position: relative;
     height: 100%;
-    justify-content: center;
+    margin-left: 10px;
     margin-top: 365px;
   }
   .Icon {
@@ -168,10 +169,23 @@
   .Add-Cert {
     display: flex;
     flex-direction: column;
-    margin-right: 50px;
+    margin-right: 0px;
   }
   .Text-Arrow-container {
     display: flex;
     justify-content: space-between;
+  }
+  @media only screen and (max-width: 1400px) {
+    .Edit-Delete {
+      margin-left: calc(520px - 36.35vw);
+      margin-left: 70px;
+    }
+    .Second-Arrow {
+      margin-right: 0px;
+      margin-left: 10px;
+    }
+    .Add-Cert {
+      margin-right: 90px;
+    }
   }
 </style>

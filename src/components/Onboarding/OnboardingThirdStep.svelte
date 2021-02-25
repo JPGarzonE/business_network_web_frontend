@@ -1,18 +1,18 @@
 <script>
-  import { afterUpdate, onDestroy, onMount } from "svelte";
-  import Pencil from "svelte-material-icons/PencilOutline.svelte";
-  import AddCert from "svelte-material-icons/ImagePlus.svelte";
-  import { _ } from "svelte-i18n";
+  import { afterUpdate, onDestroy, onMount } from 'svelte';
+  import Pencil from 'svelte-material-icons/PencilOutline.svelte';
+  import AddCert from 'svelte-material-icons/ImagePlus.svelte';
+  import { _ } from 'svelte-i18n';
 
   export let handleCancel;
   export let handleNext;
   export let handlePrev;
 
   afterUpdate(async () => {
-    document.getElementsByTagName("body")[0].classList.add("noScroll");
+    document.getElementsByTagName('body')[0].classList.add('noScroll');
   });
   onDestroy(() => {
-    document.getElementsByTagName("body")[0].classList.remove("noScroll");
+    document.getElementsByTagName('body')[0].classList.remove('noScroll');
   });
 
   onMount(() => {
@@ -21,7 +21,7 @@
 </script>
 
 <button class="button button--secondary" on:click={handleCancel}
-  >{$_("onBoardingThirdStep.endTour")}</button
+  >{$_('onBoardingThirdStep.endTour')}</button
 >
 <img
   src="/images/chevron-right.svg"
@@ -44,10 +44,10 @@
         <Pencil size={60} color="white" />
       </span>
       <span class="Text Pencil-Text">
-        {$_("onBoardingThirdStep.editAndDelete")}
+        {$_('onBoardingThirdStep.editAndDelete')}
         <br />
         <span class="Text--description">
-          {$_("onBoardingThirdStep.clickToModifyOrDeletePreviousData")}<span />
+          {$_('onBoardingThirdStep.clickToModifyOrDeletePreviousData')}<span />
         </span></span
       >
     </div>
@@ -57,8 +57,8 @@
       </span>
       <div class="Text-Arrow-container">
         <span class="Text AddCert-Text">
-          {$_("onBoardingThirdStep.addYour")}<br />
-          {$_("onBoardingThirdStep.certifications")}
+          {$_('onBoardingThirdStep.addYour')}<br />
+          {$_('onBoardingThirdStep.certifications')}
           <br />
         </span>
         <img
@@ -70,14 +70,14 @@
       </div>
 
       <span class="Text--description">
-        {$_("onBoardingThirdStep.addCertification")}</span
+        {$_('onBoardingThirdStep.addCertification')}</span
       >
     </div>
   </div>
 </div>
 
 <style>
-  @import "/styles/button.css";
+  @import '/styles/button.css';
   .button--secondary {
     position: absolute;
     top: 10%;
@@ -112,21 +112,21 @@
     height: 100%;
   }
   .Main-Container {
+    position: relative;
+    display: flex;
     align-self: flex-start;
     max-width: 1400px;
     padding: 25px;
     z-index: 20;
-    display: flex;
     margin: 70px auto 0 auto;
-    position: relative;
     justify-content: flex-end;
   }
   .Arrow {
     width: fit-content;
   }
   .First-Arrow {
-    top: -15px;
     position: absolute;
+    top: -15px;
     left: -50px;
   }
   .Second-Arrow {
@@ -145,13 +145,14 @@
     display: inline-block;
     color: white;
     width: 70%;
+    min-width: 180px;
   }
 
   .Edit-Delete {
     display: flex;
     flex-direction: column;
-    margin-left: 70px;
     position: relative;
+    margin-left: 70px;
     margin-top: 8%;
   }
   .Icon {
@@ -168,5 +169,17 @@
   .Text-Arrow-container {
     display: flex;
     justify-content: space-between;
+  }
+  @media only screen and (max-width: 1400px) {
+    .Edit-Delete {
+      margin-left: calc(565px - 35vw);
+    }
+    .Second-Arrow {
+      margin-right: 0px;
+      margin-left: 10px;
+    }
+    .Add-Cert {
+      margin-right: 80px;
+    }
   }
 </style>

@@ -133,8 +133,8 @@
               category: "Categoría",
               minimum_price: "Precio",
             }}
-            isSample
             {onBoarding}
+            isSample
           />
         {/if}
       {/each}
@@ -157,6 +157,7 @@
               minimum_price: "Precio",
             }}
             isSample
+            {onBoarding}
           />
         {/if}
       {/each}
@@ -168,7 +169,8 @@
       {#if displayedProducts.length > 4}
         <span
           class="ProductShowLink ProductShowLink-less"
-          on:click={showLessGondola}>
+          on:click={showLessGondola}
+        >
           <i class="icon-next" />
           {$_("productList.lessProducts")}
         </span>
@@ -177,7 +179,8 @@
       {#if !displayedAll}
         <span
           class="ProductShowLink ProductShowLink-more"
-          on:click={showMoreGondola}>
+          on:click={showMoreGondola}
+        >
           <i class="icon-next" />
           {$_("productList.moreProducts")}
         </span>

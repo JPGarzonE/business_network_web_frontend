@@ -1,7 +1,7 @@
 <script>
   import { getContext } from "svelte";
   import { stores, goto } from "@sapper/app";
-  import { GetRoute as GetProductDetailRoute } from '../../routes/product/[product_id].svelte';
+  import { GetRoute as GetProductDetailRoute } from "../../routes/product/[product_id].svelte";
   import Modal from "../Modal.svelte";
   import EditButton from "../EditButton/EditButton.svelte";
   import ProductCard from "../ProductCard/ProductCard.svelte";
@@ -153,6 +153,7 @@
   .ProfileProductCard--Onboarding {
     z-index: 30;
     background-color: white;
+    width: 32%;
   }
 
   .ProfileProductCard-edit-button {
@@ -173,7 +174,7 @@
 
   @media screen and (min-width: 1030px) {
     .ProfileProductCard {
-      width: 40%;
+      width: 32%;
       margin-right: 2%;
     }
   }

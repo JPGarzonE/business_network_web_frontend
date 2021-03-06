@@ -1,9 +1,19 @@
 <script>
-  import Whatsapp from 'svelte-material-icons/Whatsapp.svelte';
+  import Whatsapp from "svelte-material-icons/Whatsapp.svelte";
+  import { _ } from "svelte-i18n";
 
-  export let title = "¡Chatea ahora mismo!";
-  export let buttonAction = () => alert('Life has never Svelte better');
+  export let title = $_("buttonChat.chatNow");
+  export let buttonAction = () => alert("Life has never Svelte better");
 </script>
+
+<button on:click={buttonAction}>
+  <span class="iconButton-Chat-icon">
+    <slot name="button-icon">
+      <Whatsapp size={18} />
+    </slot>
+  </span>
+  <span class="icon-button-chat-text">{title}</span>
+</button>
 
 <style>
   button {
@@ -28,12 +38,3 @@
     font-size: 1.05em;
   }
 </style>
-
-<button on:click={buttonAction}>
-  <span class="iconButton-Chat-icon">
-      <slot name="button-icon">
-        <Whatsapp size={18} />
-      </slot>
-  </span>
-  <span class="icon-button-chat-text">{title}</span>
-</button>

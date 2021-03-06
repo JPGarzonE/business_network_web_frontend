@@ -4,6 +4,20 @@
         "signIn": "Iniciar Sesión",
         "signUp": "Crear Cuenta"
     },
+    "buttonChat":{
+        "chatNow":"¡Chatea ahora mismo!"
+    },
+    "BuyerProfileForm":{
+        "companyName":"Nombre de la empresa:",
+        "contactEmail":"Email de contacto:",
+        "mobilePhoneNumber":"Número de teléfono móvil:",
+        "companyDescription":"Descripción de la empresa:",
+        "legalIdentifier":"Identificador legal:",
+        "finalize":"Finalizar"
+    },
+    "buyerProfileField":{
+        "edit":"Editar"
+    },
     "certificateUploadForm": {
         "continueWhitoutCertificate": "Continuar, sin certificado",
         "noVerifiedProfile": "Tu perfíl no ha sido verificado",
@@ -46,6 +60,9 @@
     },
     "contactUsButton": {
         "getInTouch": "Contáctanos"
+    },
+    "dnaCard":{
+            "LookHistory":"Look History"
     },
     "dropZone": {
         "dragAndDropTheFile": "Arrastra y suelta el archivo",
@@ -205,6 +222,10 @@
         "uploadImage": "Subir imagen",
         "uploadTheLogoOrImageThatRepresentsYourComany": "¡Sube el logo o una imagen que represente a tu empresa!",
         "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "Tendrás más oportunidades de atraer nuevos aliados y cerrar negocios."
+    },
+    "profileProductCard":{
+        "createAProduct":"Crea un producto y este desaparacerá",
+        "deleteProduct":"Desea eliminar el producto"
     },
     "profileVerification": {
         "checkinTheNextFewHours": "En las proximas horas revisa",

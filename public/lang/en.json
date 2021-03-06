@@ -4,6 +4,20 @@
         "signIn": "Sign In",
         "signUp": "Sign Up"
     },
+    "buttonChat":{
+        "chatNow":"¡Chatea Rigth Now!"
+    },
+    "BuyerProfileForm":{
+        "companyName":"Company name:",
+        "contactEmail":"Contact email:",
+        "mobilePhoneNumber":"Mobile phone number:",
+        "companyDescription":"Company description:",
+        "legalIdentifier":"Legal identifier:",
+        "finalize":"Finalize"
+    },
+    "buyerProfileField":{
+        "edit":"Edit"
+    },
     "certificateUploadForm": {
         "continueWhitoutCertificate": "Continue, no certificate",
         "noVerifiedProfile": "Your profile has not been verified",
@@ -46,6 +60,9 @@
     },
     "contactUsButton": {
         "getInTouch": "Get in touch"
+    },
+    "dnaCard":{
+            "LookHistory":"Ver historia"
     },
     "dropZone": {
         "dragAndDropTheFile": "Drag and drop the file",
@@ -205,6 +222,10 @@
         "uploadImage": "Upload image",
         "uploadTheLogoOrImageThatRepresentsYourComany": "Upload the logo or image that represents your company!",
         "youWillHaveMoreOpportunitiesToAttractNewCostumersAndCloseDeals": "You will have more opportunities to attract new costumers and close deals."
+    },
+    "profileProductCard":{
+        "createAProduct":"Create a product and will disapear",
+        "deleteProduct":"Delete the producto"
     },
     "profileVerification": {
         "checkinTheNextFewHours": "In the next few hours check out",

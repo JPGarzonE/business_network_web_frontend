@@ -8,6 +8,7 @@
   import ProductForm from "../../containers/ProductForm/ProductForm.svelte";
   import ProductService from "../../services/suppliers/product.service.js";
   import ConfirmationModal from "../ConfirmationModal/ConfirmationModal.svelte";
+  import { _ } from "svelte-i18n";
 
   export let productElementOverview;
   export let isSample = false;
@@ -90,8 +91,10 @@
 {#if confirmationMode && isEditableProfile}
   <ConfirmationModal
     title={isSample
-      ? "Crea un producto y este desaparacerá"
-      : `Desea eliminar el producto ${productElementOverview.name}`}
+      ? $_("profileProductCard.createAProduct")
+      : `${$_("profileProductCard.deleteProduct")} ${
+          productElementOverview.name
+        }`}
     onAccept={onDeleteProduct}
     onDecline={toggleConfirmation}
   />
